@@ -9,6 +9,10 @@ import { UserProfile, UserResponse, ProgressStats } from "../types";
 
 interface UserContextType {
   user: UserProfile | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (token: string, userData: any) => void;
+  logout: () => void;
   setUser: (user: UserProfile) => void;
   responses: UserResponse[];
   addResponse: (response: UserResponse) => void;
@@ -20,6 +24,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [responses, setResponses] = useState<UserResponse[]>([]);
   const [stats, setStats] = useState<ProgressStats>({
     totalExercises: 0,
@@ -32,29 +37,43 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userProfile");
+    // Charger depuis localStorage
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
     const storedResponses = localStorage.getItem("userResponses");
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else {
-      const defaultUser: UserProfile = {
-        id: `user_${Date.now()}`,
-        name: "Utilisateur",
-        currentLevel: "B1",
-        targetLevel: "C1",
-        strengths: [],
-        weaknesses: [],
-        completedExercises: 0,
-        totalScore: 0,
-        createdAt: new Date(),
-        lastActivity: new Date()
-      };
-      setUser(defaultUser);
+    if (storedToken && storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setToken(storedToken);
+        
+        // Convertir les données du backend en UserProfile
+        const userProfile: UserProfile = {
+          id: userData.id || `user_${Date.now()}`,
+          name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
+          currentLevel: userData.currentLevel || "B1",
+          targetLevel: userData.targetLevel || "C1",
+          strengths: [],
+          weaknesses: userData.weaknesses || [],
+          completedExercises: 0,
+          totalScore: 0,
+          createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
+          lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date()
+        };
+        setUser(userProfile);
+      } catch (error) {
+        console.error("Erreur chargement utilisateur:", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
     }
 
     if (storedResponses) {
-      setResponses(JSON.parse(storedResponses));
+      try {
+        setResponses(JSON.parse(storedResponses));
+      } catch (error) {
+        console.error("Erreur chargement réponses:", error);
+      }
     }
   }, []);
 
@@ -67,6 +86,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     localStorage.setItem("userResponses", JSON.stringify(responses));
     updateStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responses]);
 
   const addResponse = (response: UserResponse) => {
@@ -126,8 +146,51 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return streak;
   };
 
+  const login = (newToken: string, userData: any) => {
+    setToken(newToken);
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(userData));
+    
+    const userProfile: UserProfile = {
+      id: userData.id || `user_${Date.now()}`,
+      name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
+      currentLevel: userData.currentLevel || "B1",
+      targetLevel: userData.targetLevel || "C1",
+      strengths: [],
+      weaknesses: userData.weaknesses || [],
+      completedExercises: 0,
+      totalScore: 0,
+      createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
+      lastActivity: new Date()
+    };
+    setUser(userProfile);
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem("userResponses");
+    localStorage.removeItem("levelAssessed");
+  };
+
+  const isAuthenticated = !!token && !!user;
+
   return (
-    <UserContext.Provider value={{ user, setUser, responses, addResponse, stats, updateStats }}>
+    <UserContext.Provider value={{ 
+      user, 
+      token,
+      isAuthenticated,
+      login,
+      logout,
+      setUser, 
+      responses, 
+      addResponse, 
+      stats, 
+      updateStats 
+    }}>
       {children}
     </UserContext.Provider>
   );

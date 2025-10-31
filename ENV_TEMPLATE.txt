@@ -1,0 +1,81 @@
+# Copiez ce contenu dans un fichier nommé .env à la racine du projet
+# /media/franck/M2_2To_990_windows/programmation/learning_english/.env
+
+# ==================================
+# SERVEUR
+# ==================================
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
+
+# ==================================
+# BASE DE DONNÉES
+# ==================================
+DATABASE_URL=./database/learning_english.db
+
+# ==================================
+# AUTHENTIFICATION JWT
+# ==================================
+# Générez avec: openssl rand -base64 32
+JWT_SECRET=CHANGEZ_CETTE_CLE_SECRETE_SUPER_FORTE_JWT_2025
+JWT_EXPIRES_IN=7d
+REFRESH_TOKEN_SECRET=CHANGEZ_CETTE_CLE_SECRETE_REFRESH_TOKEN_2025
+REFRESH_TOKEN_EXPIRES_IN=30d
+
+# ==================================
+# COMPTE ADMINISTRATEUR
+# ==================================
+ADMIN_EMAIL=admin@learning-english.local
+ADMIN_PASSWORD=DEFINISSEZ_UN_MOT_DE_PASSE_TRES_SECURISE_ICI
+
+# ==================================
+# ENVOI D'EMAILS (SMTP)
+# ==================================
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=votre-email@gmail.com
+SMTP_PASSWORD=votre-app-password-gmail
+EMAIL_FROM=noreply@learning-english.local
+EMAIL_FROM_NAME=AI English Trainer
+
+# ==================================
+# SÉCURITÉ
+# ==================================
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+EMAIL_VERIFICATION_TOKEN_EXPIRES=24
+PASSWORD_RESET_TOKEN_EXPIRES=1
+
+# ==================================
+# SESSIONS
+# ==================================
+SESSION_SECRET=CHANGEZ_CETTE_CLE_SECRETE_SESSION_2025
+SESSION_MAX_AGE=86400000
+
+# ==================================
+# RGPD & CONFORMITÉ
+# ==================================
+DATA_RETENTION_DAYS=365
+ENABLE_ANALYTICS=false
+COOKIE_SECURE=false
+
+# ==================================
+# LOGGING
+# ==================================
+LOG_LEVEL=info
+LOG_FILE=./logs/app.log
+
+# ==================================
+# BACKUP
+# ==================================
+BACKUP_ENABLED=true
+BACKUP_INTERVAL_HOURS=24
+BACKUP_RETENTION_DAYS=30
+BACKUP_PATH=./backups
+
+# ==================================
+# CORS
+# ==================================
+CORS_ORIGIN=http://localhost:3000
+

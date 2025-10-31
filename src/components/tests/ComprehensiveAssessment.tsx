@@ -8,9 +8,9 @@ import React, { useState } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
   FormControlLabel, FormControl, Alert,
-  TextField, LinearProgress, Chip, IconButton, Tooltip
+  TextField, LinearProgress, Chip, IconButton, Tooltip, Grid
 } from "@mui/material";
-import { CheckCircle, Headphones, MenuBook, Edit, PlayArrow, Stop, VolumeUp } from "@mui/icons-material";
+import { CheckCircle, Headphones, MenuBook, Edit, PlayArrow, Stop, VolumeUp, CheckCircleOutline } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
@@ -256,7 +256,517 @@ const assessmentQuestions: AssessmentQuestion[] = [
     level: "B2",
     points: 2
   }
-];
+  ];
+
+/**
+ * Génère une explication grammaticale détaillée pour chaque question
+ */
+const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean): JSX.Element => {
+  const explanations: { [key: string]: JSX.Element } = {
+    // LISTENING QUESTIONS
+    l1: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Past Simple (Passé simple)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le <strong>Past Simple</strong> est utilisé pour décrire une action terminée dans le passé, 
+          souvent accompagnée d'un indicateur de temps précis.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Forme affirmative : Sujet + verbe-ed (ou verbe irrégulier)<br/>
+          • Exemple : "The system <strong>was deployed</strong> yesterday."<br/>
+          • Indicateurs : yesterday, last week, in 2020, ago
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>⚠️ Attention :</strong> "was deployed" est à la voix passive. 
+          Voix active équivalente : "They deployed the system yesterday."
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres exemples :</strong><br/>
+          • "I worked on this project last month."<br/>
+          • "The bug was fixed two days ago."<br/>
+          • "She tested the application yesterday."
+        </Typography>
+      </Box>
+    ),
+    l2: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Present Perfect Continuous</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le <strong>Present Perfect Continuous</strong> exprime une action qui a commencé dans le passé 
+          et qui continue jusqu'à maintenant, avec emphase sur la durée.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Have/Has + been + verbe-ing<br/>
+          • Exemple : "We <strong>have been working</strong> for three months."<br/>
+          • Indicateurs : for (durée), since (point de départ)
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Différence avec Present Perfect Simple :</strong><br/>
+          • Perfect Continuous : emphase sur la durée/continuité<br/>
+          • Perfect Simple : emphase sur le résultat/achèvement<br/>
+          Exemple : "I have been reading" (je lis encore) vs "I have read" (j'ai fini)
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres exemples :</strong><br/>
+          • "She has been learning English for 5 years."<br/>
+          • "They have been developing this feature since January."<br/>
+          • "The server has been running continuously."
+        </Typography>
+      </Box>
+    ),
+    l3: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Modal Perfect (Could have + past participle)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>"Could have + past participle"</strong> exprime une possibilité dans le passé qui 
+          ne s'est pas réalisée (regret, reproche, ou constat).
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Modal (could/should/would) + have + past participle<br/>
+          • Exemple : "The vulnerability <strong>could have been prevented</strong>."<br/>
+          • Signification : C'était possible de le prévenir, mais ça n'a pas été fait.
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Autres modaux au passé :</strong><br/>
+          • <strong>Should have :</strong> obligation non respectée (reproche)<br/>
+          &nbsp;&nbsp;"You should have tested the code."<br/>
+          • <strong>Would have :</strong> conditionnel passé<br/>
+          &nbsp;&nbsp;"I would have fixed it if I had known."<br/>
+          • <strong>Must have :</strong> déduction logique sur le passé<br/>
+          &nbsp;&nbsp;"He must have forgotten the meeting."
+        </Typography>
+        <Typography variant="body2">
+          <strong>Exemples IT :</strong><br/>
+          • "The data breach could have been prevented with proper encryption."<br/>
+          • "The deployment should have been tested in staging first."<br/>
+          • "The bug would have been caught if we had unit tests."
+        </Typography>
+      </Box>
+    ),
+    l4: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Present Perfect + Cause/Effect</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le <strong>Present Perfect</strong> est utilisé ici pour montrer un résultat présent 
+          d'une action passée. "By implementing" (gérondif) exprime le moyen/la cause.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • By + verb-ing (moyen) → résultat<br/>
+          • Exemple : "<strong>By implementing</strong> CI/CD, time <strong>has decreased</strong>."<br/>
+          • "By" = "en faisant", "grâce à"
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Vocabulaire clé :</strong><br/>
+          • <strong>Significantly :</strong> de manière significative<br/>
+          • <strong>Decrease :</strong> diminuer (≠ increase : augmenter)<br/>
+          • <strong>Deployment :</strong> déploiement, mise en production
+        </Typography>
+        <Typography variant="body2">
+          <strong>Expressions similaires :</strong><br/>
+          • "By using automation, we have improved efficiency."<br/>
+          • "Through refactoring, code quality has increased."<br/>
+          • "Thanks to monitoring, downtime has reduced."
+        </Typography>
+      </Box>
+    ),
+    l5: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Third Conditional (Inversion)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le <strong>Third Conditional</strong> exprime une situation hypothétique dans le passé 
+          et son résultat irréel. L'inversion avec "Had" rend la phrase plus formelle.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure classique :</strong><br/>
+          • If + past perfect → would have + past participle<br/>
+          • "If the team <strong>had followed</strong> practices, breach <strong>would not have occurred</strong>."
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "warning.light", p: 2, borderRadius: 1 }}>
+          <strong>Structure avec inversion (formelle) :</strong><br/>
+          • <strong>Had + sujet + past participle</strong> → would have + past participle<br/>
+          • "<strong>Had the team followed</strong> practices, breach would not have occurred."<br/>
+          • Note : "If" disparaît, "had" passe en tête
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Signification :</strong> L'équipe n'a PAS suivi les bonnes pratiques, 
+          et en conséquence, la faille de sécurité s'est produite.
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres exemples avec inversion :</strong><br/>
+          • "Had I known, I would have acted differently."<br/>
+          • "Had they tested properly, the bug would have been caught."<br/>
+          • "Had we deployed earlier, the deadline would have been met."
+        </Typography>
+      </Box>
+    ),
+    l6: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Present Continuous Passive</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le <strong>Present Continuous Passive</strong> décrit une action en cours de réalisation 
+          au moment présent, à la voix passive (l'agent n'est pas l'acteur principal).
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Is/Are + being + past participle<br/>
+          • Exemple : "The application <strong>is being tested</strong> by the QA team."<br/>
+          • Forme active : "The QA team is testing the application."
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Quand l'utiliser :</strong><br/>
+          • Action en cours maintenant<br/>
+          • Focus sur l'objet de l'action (pas l'agent)<br/>
+          • Processus temporaire
+        </Typography>
+        <Typography variant="body2">
+          <strong>Exemples IT :</strong><br/>
+          • "The code is being reviewed by senior developers."<br/>
+          • "New features are being developed right now."<br/>
+          • "The database is being migrated to the cloud."<br/>
+          • "Security patches are being deployed across all servers."
+        </Typography>
+      </Box>
+    ),
+    
+    // READING QUESTIONS
+    r1: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Compréhension écrite : Idée principale</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le texte parle de la <strong>dette technique</strong> : des solutions rapides qui créent 
+          des problèmes à long terme.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Vocabulaire clé :</strong><br/>
+          • <strong>Technical debt :</strong> dette technique<br/>
+          • <strong>Shortcuts :</strong> raccourcis, solutions rapides<br/>
+          • <strong>Accumulate interest :</strong> accumuler des intérêts (métaphore financière)<br/>
+          • <strong>Maintenance costs :</strong> coûts de maintenance
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Expressions courantes IT :</strong><br/>
+          • "Quick and dirty solution" = solution rapide mais de mauvaise qualité<br/>
+          • "Cut corners" = prendre des raccourcis<br/>
+          • "Pay down technical debt" = rembourser la dette technique<br/>
+          • "Code smells" = signes de mauvaise qualité de code
+        </Typography>
+      </Box>
+    ),
+    r2: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Compréhension : Cause et conséquence</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le texte explique que la dette technique <strong>augmente les coûts de maintenance</strong>.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Mots de liaison cause/conséquence :</strong><br/>
+          • <strong>Because / Since / As :</strong> parce que<br/>
+          • <strong>Therefore / Thus / Hence :</strong> donc, par conséquent<br/>
+          • <strong>As a result / Consequently :</strong> en conséquence<br/>
+          • <strong>Due to / Owing to :</strong> en raison de
+        </Typography>
+        <Typography variant="body2">
+          <strong>Exemple :</strong> "Due to technical debt, maintenance costs increased."
+        </Typography>
+      </Box>
+    ),
+    r3: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Acronyme : RAG (Retrieval-Augmented Generation)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>RAG</strong> est un framework d'IA qui combine génération de texte et recherche 
+          d'informations externes pour des réponses plus précises.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Vocabulaire technique IA :</strong><br/>
+          • <strong>Framework :</strong> cadre de travail, infrastructure<br/>
+          • <strong>Retrieval :</strong> récupération, recherche<br/>
+          • <strong>Augmented :</strong> augmenté, amélioré<br/>
+          • <strong>Query :</strong> requête, interrogation<br/>
+          • <strong>Corpus :</strong> ensemble de documents
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres acronymes IA courants :</strong><br/>
+          • LLM: Large Language Model<br/>
+          • NLP: Natural Language Processing<br/>
+          • MLOps: Machine Learning Operations<br/>
+          • API: Application Programming Interface
+        </Typography>
+      </Box>
+    ),
+    r4: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Compréhension : Mécanisme de fonctionnement</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          RAG améliore les réponses en <strong>accédant à des sources de connaissances externes</strong>, 
+          pas seulement aux données pré-entraînées.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Expression : "Rather than"</strong><br/>
+          • Signification : "plutôt que", "au lieu de"<br/>
+          • Exemple : "Rather than relying on memory, it queries a database."<br/>
+          • Synonymes : instead of, in lieu of
+        </Typography>
+        <Typography variant="body2">
+          <strong>Expressions de comparaison :</strong><br/>
+          • "Unlike X, Y does..." = Contrairement à X, Y fait...<br/>
+          • "Whereas X is limited, Y can..." = Alors que X est limité, Y peut...<br/>
+          • "In contrast to X, Y..." = Par opposition à X, Y...
+        </Typography>
+      </Box>
+    ),
+    r5: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>MLOps : Machine Learning Operations</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          MLOps applique les principes DevOps au machine learning pour <strong>déployer et maintenir 
+          des modèles en production</strong>.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Vocabulaire MLOps :</strong><br/>
+          • <strong>Deploy :</strong> déployer, mettre en production<br/>
+          • <strong>Monitor :</strong> surveiller, monitorer<br/>
+          • <strong>Maintain :</strong> maintenir, entretenir<br/>
+          • <strong>Pipeline :</strong> chaîne de traitement automatisée<br/>
+          • <strong>Versioning :</strong> gestion des versions
+        </Typography>
+        <Typography variant="body2">
+          <strong>Concepts MLOps clés :</strong><br/>
+          • Model training pipeline<br/>
+          • Continuous Integration / Continuous Deployment (CI/CD)<br/>
+          • Model monitoring and drift detection<br/>
+          • A/B testing for models
+        </Typography>
+      </Box>
+    ),
+    r6: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Compréhension : Détails du texte</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Le texte mentionne automated testing, CI/CD, model versioning, et performance monitoring, 
+          mais PAS le <strong>déploiement manuel</strong>.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Astuce lecture :</strong><br/>
+          • Questions "NOT mentioned" = attention redoublée<br/>
+          • Scanner le texte pour chaque option<br/>
+          • Éliminer les options présentes<br/>
+          • La réponse est celle qui n'apparaît PAS
+        </Typography>
+        <Typography variant="body2">
+          <strong>Mots de négation en anglais :</strong><br/>
+          • Which is NOT...<br/>
+          • Except for...<br/>
+          • All of the following EXCEPT...<br/>
+          • Neither... nor...
+        </Typography>
+      </Box>
+    ),
+    
+    // WRITING QUESTIONS
+    w1: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Passive Voice (Past Simple)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "The bug <strong>was</strong> fixed" est à la voix passive au passé simple.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure voix passive :</strong><br/>
+          • Be (conjugué) + past participle<br/>
+          • Passé simple : was/were + past participle<br/>
+          • Exemple : "was fixed", "were tested", "was deployed"
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Quand utiliser la voix passive :</strong><br/>
+          • Agent inconnu ou non important<br/>
+          • Focus sur l'objet, pas l'agent<br/>
+          • Style formel/technique
+        </Typography>
+        <Typography variant="body2">
+          <strong>Exemples IT :</strong><br/>
+          • "The code was reviewed by the team."<br/>
+          • "The server was restarted at midnight."<br/>
+          • "All tests were passed successfully."
+        </Typography>
+      </Box>
+    ),
+    w2: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Present Perfect Continuous</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "We have <strong>been</strong> implementing" exprime une action commencée dans le passé 
+          et qui continue.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Have/Has + been + verb-ing<br/>
+          • Exemple : "have been implementing"<br/>
+          • Indicateur temporel : "for two years" (durée)
+        </Typography>
+        <Typography variant="body2">
+          <strong>⚠️ Erreurs courantes :</strong><br/>
+          • ❌ "have implementing" → ✅ "have been implementing"<br/>
+          • ❌ "have been implement" → ✅ "have been implementing"<br/>
+          • ❌ "has been implementing" (avec "we") → ✅ "have been implementing"
+        </Typography>
+      </Box>
+    ),
+    w3: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Expression : "instead of"</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "Instead of" = au lieu de, à la place de
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Instead of + noun/gerund<br/>
+          • Exemple : "instead of better approaches"<br/>
+          • Avec verbe : "instead of using" (gérondif)
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>⚠️ Ne pas confondre :</strong><br/>
+          • <strong>Instead of :</strong> au lieu de (+ nom/gérondif)<br/>
+          • <strong>Instead :</strong> à la place (seul, sans "of")<br/>
+          Exemple : "I didn't go; I stayed home instead."
+        </Typography>
+        <Typography variant="body2">
+          <strong>Expressions similaires :</strong><br/>
+          • "Rather than" = plutôt que<br/>
+          • "In place of" = à la place de<br/>
+          • "As an alternative to" = comme alternative à
+        </Typography>
+      </Box>
+    ),
+    w4: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Third Conditional (Past Perfect)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "Had the team <strong>conducted</strong> the audit" = Si l'équipe avait effectué l'audit
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Verbes acceptés :</strong><br/>
+          • <strong>conducted</strong> (mener, effectuer) - le plus courant<br/>
+          • <strong>performed</strong> (réaliser, effectuer)<br/>
+          • <strong>done</strong> (faire) - moins formel<br/>
+          • <strong>completed</strong> (compléter, achever)
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>Collocations avec "audit" :</strong><br/>
+          • Conduct an audit (le plus fréquent)<br/>
+          • Perform an audit<br/>
+          • Carry out an audit<br/>
+          • Complete an audit
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres exemples :</strong><br/>
+          • "Had we conducted a code review..."<br/>
+          • "Had they performed load testing..."<br/>
+          • "Had the team completed the migration..."
+        </Typography>
+      </Box>
+    ),
+    w5: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Inversion (Emphase)</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "Not only <strong>did it make</strong>" est une structure d'inversion pour l'emphase.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Not only + auxiliaire + sujet + verbe de base<br/>
+          • Exemple : "Not only <strong>did it make</strong> the system more secure"<br/>
+          • Normal : "It not only made the system more secure"
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "warning.light", p: 2, borderRadius: 1 }}>
+          <strong>⚠️ Après "not only" en début de phrase :</strong><br/>
+          • L'ordre sujet-verbe s'inverse<br/>
+          • On ajoute un auxiliaire (do/does/did)<br/>
+          • Niveau C1 - Structure formelle
+        </Typography>
+        <Typography variant="body2">
+          <strong>Autres structures similaires :</strong><br/>
+          • "Never have I seen..." (jamais je n'ai vu...)<br/>
+          • "Rarely does he..." (rarement il...)<br/>
+          • "Seldom do we..." (rarement nous...)<br/>
+          • "Only then did I realize..." (c'est alors que j'ai réalisé...)
+        </Typography>
+      </Box>
+    ),
+    w6: (
+      <Box>
+        <Typography variant="body1" paragraph>
+          <strong>Règle : Present Continuous Passive</strong>
+        </Typography>
+        <Typography variant="body2" paragraph>
+          "The application <strong>is being</strong> tested" exprime une action passive en cours.
+        </Typography>
+        <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
+          <strong>Structure :</strong><br/>
+          • Is/Are + being + past participle<br/>
+          • Exemple : "<strong>is being</strong> tested"<br/>
+          • Note : deux mots nécessaires ("is" + "being")
+        </Typography>
+        <Typography variant="body2" paragraph>
+          <strong>⚠️ Erreurs fréquentes :</strong><br/>
+          • ❌ "is tested" → présent simple passif (pas en cours)<br/>
+          • ❌ "is testing" → présent continu actif (mauvaise voix)<br/>
+          • ❌ "has been tested" → present perfect (action terminée)<br/>
+          • ✅ "is being tested" → présent continu passif (action en cours)
+        </Typography>
+        <Typography variant="body2">
+          <strong>Exemples IT :</strong><br/>
+          • "The code is being reviewed right now."<br/>
+          • "New features are being developed as we speak."<br/>
+          • "The database is being migrated this week."
+        </Typography>
+      </Box>
+    )
+  };
+
+  return explanations[question.id] || (
+    <Typography variant="body2">
+      Explication à venir pour cette question.
+    </Typography>
+  );
+};
 
 export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [currentSection, setCurrentSection] = useState<"listening" | "reading" | "writing">("listening");
@@ -264,6 +774,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [completed, setCompleted] = useState(false);
   const [assessedLevel, setAssessedLevel] = useState<LanguageLevel | null>(null);
+  const [showCorrection, setShowCorrection] = useState(false);
   const { user, setUser } = useUser();
   const { speak, stop, isSpeaking, isSupported } = useTextToSpeech();
 
@@ -357,6 +868,149 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
 
   const isAnswered = answers[currentQuestion?.id] !== undefined;
 
+  const getQuestionResult = (question: AssessmentQuestion) => {
+    const userAnswer = answers[question.id]?.toLowerCase().trim();
+    if (Array.isArray(question.correctAnswer)) {
+      return question.correctAnswer.some(ans => userAnswer === ans.toLowerCase());
+    }
+    return userAnswer === question.correctAnswer.toLowerCase();
+  };
+
+  // Écran de correction détaillée
+  if (showCorrection && completed && assessedLevel) {
+    return (
+      <Box sx={{ p: 3, maxWidth: 1200, mx: "auto" }}>
+        <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+          📝 Correction détaillée de l'évaluation
+        </Typography>
+
+        <Alert severity="info" sx={{ mb: 3 }}>
+          <Typography variant="body2">
+            Voici la correction complète avec explications grammaticales, exemples et exceptions.
+            Prenez le temps de bien comprendre chaque point.
+          </Typography>
+        </Alert>
+
+        {assessmentQuestions.map((question, index) => {
+          const isCorrect = getQuestionResult(question);
+          const userAnswer = answers[question.id];
+          const correctAnswer = Array.isArray(question.correctAnswer) 
+            ? question.correctAnswer[0] 
+            : question.correctAnswer;
+
+          return (
+            <Card 
+              key={question.id} 
+              sx={{ 
+                mb: 3, 
+                border: 2, 
+                borderColor: isCorrect ? "success.main" : "error.main" 
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+                  <Chip 
+                    label={`Question ${index + 1}`} 
+                    color={isCorrect ? "success" : "error"}
+                  />
+                  <Chip label={question.section.toUpperCase()} size="small" />
+                  <Chip label={`Niveau ${question.level}`} size="small" variant="outlined" />
+                  {isCorrect ? (
+                    <CheckCircle color="success" />
+                  ) : (
+                    <Box sx={{ color: "error.main", display: "flex", alignItems: "center", gap: 0.5 }}>
+                      ❌ <Typography variant="body2">Incorrect</Typography>
+                    </Box>
+                  )}
+                </Box>
+
+                {/* Question */}
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  {question.question}
+                </Typography>
+
+                {/* Texte audio/lecture si applicable */}
+                {question.audioText && (
+                  <Box sx={{ mb: 2, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
+                    <Typography variant="body2" sx={{ fontStyle: "italic" }}>
+                      🔊 Texte audio : "{question.audioText}"
+                    </Typography>
+                  </Box>
+                )}
+
+                {question.readingText && (
+                  <Box sx={{ mb: 2, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
+                    <Typography variant="body2">
+                      {question.readingText}
+                    </Typography>
+                  </Box>
+                )}
+
+                {/* Réponses */}
+                <Box sx={{ mb: 3 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                      <Box sx={{ p: 2, bgcolor: isCorrect ? "success.light" : "error.light", borderRadius: 1 }}>
+                        <Typography variant="subtitle2" sx={{ color: isCorrect ? "success.dark" : "error.dark", mb: 1 }}>
+                          {isCorrect ? "✅ Votre réponse (correcte)" : "❌ Votre réponse"}
+                        </Typography>
+                        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                          {userAnswer || "(non répondu)"}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    {!isCorrect && (
+                      <Grid item xs={12} md={6}>
+                        <Box sx={{ p: 2, bgcolor: "success.light", borderRadius: 1 }}>
+                          <Typography variant="subtitle2" sx={{ color: "success.dark", mb: 1 }}>
+                            ✅ Réponse correcte
+                          </Typography>
+                          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                            {correctAnswer}
+                          </Typography>
+                          {Array.isArray(question.correctAnswer) && question.correctAnswer.length > 1 && (
+                            <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                              Autres réponses acceptées : {question.correctAnswer.slice(1).join(", ")}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Box>
+
+                {/* Explication détaillée */}
+                <Box sx={{ p: 3, bgcolor: "primary.light", borderRadius: 2 }}>
+                  <Typography variant="h6" sx={{ color: "white", mb: 2 }}>
+                    📚 Explication grammaticale
+                  </Typography>
+                  <Box sx={{ p: 2, bgcolor: "white", borderRadius: 1 }}>
+                    {getDetailedExplanation(question, isCorrect)}
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          );
+        })}
+
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
+          <Button 
+            variant="outlined" 
+            onClick={() => setShowCorrection(false)}
+          >
+            Retour au résultat
+          </Button>
+          <Button 
+            variant="contained" 
+            onClick={onComplete}
+          >
+            Terminer et continuer
+          </Button>
+        </Box>
+      </Box>
+    );
+  }
+
   if (completed && assessedLevel) {
     return (
       <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
@@ -413,13 +1067,22 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
               Les exercices seront adaptés à votre niveau. Vous pouvez commencer dès maintenant !
             </Typography>
 
-            <Button 
-              variant="contained" 
-              size="large"
-              onClick={onComplete}
-            >
-              Commencer les exercices
-            </Button>
+            <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+              <Button 
+                variant="outlined" 
+                size="large"
+                onClick={() => setShowCorrection(true)}
+              >
+                📝 Voir la correction détaillée
+              </Button>
+              <Button 
+                variant="contained" 
+                size="large"
+                onClick={onComplete}
+              >
+                Commencer les exercices
+              </Button>
+            </Box>
           </CardContent>
         </Card>
       </Box>

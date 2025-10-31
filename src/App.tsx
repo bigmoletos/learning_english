@@ -12,14 +12,17 @@ import {
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon, School, Psychology, Assessment,
-  Menu as MenuIcon, VolumeUp
+  Menu as MenuIcon, VolumeUp, ExitToApp
 } from "@mui/icons-material";
-import { UserProvider } from "./contexts/UserContext";
+import { UserProvider, useUser } from "./contexts/UserContext";
 import { Dashboard } from "./components/layout/Dashboard";
 import { ProgressTracker } from "./components/progress/ProgressTracker";
 import { ExerciseList } from "./components/exercises/ExerciseList";
 import { ComprehensiveAssessment } from "./components/tests/ComprehensiveAssessment";
 import { AdaptiveLearningPlan } from "./components/learning/AdaptiveLearningPlan";
+import { Login } from "./components/auth/Login";
+import { Signup } from "./components/auth/Signup";
+import { ForgotPassword } from "./components/auth/ForgotPassword";
 
 const theme = createTheme({
   palette: {
@@ -49,12 +52,49 @@ const theme = createTheme({
 
 type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning";
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { isAuthenticated, login, logout, user } = useUser();
   const [currentView, setCurrentView] = useState<ViewType>("dashboard");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showAssessment, setShowAssessment] = useState(() => {
     return !localStorage.getItem("levelAssessed");
   });
+
+  // Afficher Login/Signup/ForgotPassword si non authentifié
+  if (!isAuthenticated) {
+    if (showForgotPassword) {
+      return (
+        <ForgotPassword
+          onSwitchToLogin={() => setShowForgotPassword(false)}
+          onSuccess={() => {
+            setShowForgotPassword(false);
+          }}
+        />
+      );
+    }
+    if (showSignup) {
+      return (
+        <Signup
+          onSuccess={(newToken, userData) => {
+            login(newToken, userData);
+            setShowSignup(false);
+          }}
+          onSwitchToLogin={() => setShowSignup(false)}
+        />
+      );
+    }
+    return (
+      <Login
+        onSuccess={(newToken, userData) => {
+          login(newToken, userData);
+        }}
+        onSwitchToSignup={() => setShowSignup(true)}
+        onSwitchToForgotPassword={() => setShowForgotPassword(true)}
+      />
+    );
+  }
 
   const menuItems = [
     { id: "dashboard" as ViewType, label: "Tableau de bord", icon: <DashboardIcon /> },
@@ -120,10 +160,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <UserProvider>
-        <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
           <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar>
               <IconButton
@@ -138,9 +175,21 @@ const App: React.FC = () => {
               <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                 AI English Trainer for IT Professionals
               </Typography>
-              <Typography variant="body2" sx={{ fontStyle: "italic" }}>
+              {user && (
+                <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
+                  {user.name}
+                </Typography>
+              )}
+              <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
                 B2 → C1
               </Typography>
+              <IconButton
+                color="inherit"
+                onClick={logout}
+                title="Déconnexion"
+              >
+                <ExitToApp />
+              </IconButton>
             </Toolbar>
           </AppBar>
 
@@ -216,6 +265,15 @@ const App: React.FC = () => {
             </Container>
           </Box>
         </Box>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <UserProvider>
+        <AppContent />
       </UserProvider>
     </ThemeProvider>
   );
