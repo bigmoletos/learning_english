@@ -14,10 +14,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Protocols",
+            "Database Optimization",
+            "API Development",
+            "Cloud Migration"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -59,10 +59,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "DevOps Practices",
+            "Scrum Framework",
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Waterfall Methodology"
           ],
           "correctAnswer": "Agile"
         },
@@ -105,9 +105,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Monolithic Architecture",
+            "Serverless Computing",
+            "Container Orchestration"
           ],
           "correctAnswer": "Microservices"
         },
@@ -149,10 +149,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -194,10 +194,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
+            "Cost Reduction",
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement"
           ],
           "correctAnswer": "IoT"
         },
@@ -239,10 +239,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "DevSecOps"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -285,9 +285,9 @@
           "type": "multiple_choice",
           "options": [
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "5G"
         },
@@ -329,10 +329,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction",
+            "Quantum Computing"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -374,10 +374,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "Edge Computing"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -419,10 +419,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
+            "Cost Reduction",
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -464,10 +464,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Database Optimization",
+            "API Development",
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Protocols"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -510,9 +510,9 @@
           "type": "multiple_choice",
           "options": [
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Waterfall Methodology",
+            "DevOps Practices",
+            "Scrum Framework"
           ],
           "correctAnswer": "Agile"
         },
@@ -555,9 +555,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Serverless Computing",
+            "Container Orchestration",
+            "Monolithic Architecture"
           ],
           "correctAnswer": "Microservices"
         },
@@ -600,9 +600,9 @@
           "type": "multiple_choice",
           "options": [
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -645,9 +645,9 @@
           "type": "multiple_choice",
           "options": [
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization"
           ],
           "correctAnswer": "IoT"
         },
@@ -689,10 +689,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction",
+            "Performance Optimization",
+            "DevSecOps"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -734,10 +734,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction",
+            "5G"
           ],
           "correctAnswer": "5G"
         },
@@ -780,9 +780,9 @@
           "type": "multiple_choice",
           "options": [
             "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization",
+            "Security Enhancement"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -825,9 +825,9 @@
           "type": "multiple_choice",
           "options": [
             "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -870,9 +870,9 @@
           "type": "multiple_choice",
           "options": [
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -914,10 +914,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Protocols",
+            "Database Optimization",
+            "API Development",
+            "Cloud Migration"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -959,10 +959,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Scrum Framework",
+            "DevOps Practices",
+            "Waterfall Methodology",
+            "Agile"
           ],
           "correctAnswer": "Agile"
         },
@@ -1005,9 +1005,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Container Orchestration",
+            "Serverless Computing",
+            "Monolithic Architecture"
           ],
           "correctAnswer": "Microservices"
         },
@@ -1050,9 +1050,9 @@
           "type": "multiple_choice",
           "options": [
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -1094,10 +1094,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement"
           ],
           "correctAnswer": "IoT"
         },
@@ -1139,10 +1139,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
             "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -1184,10 +1184,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
+            "Security Enhancement",
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction"
           ],
           "correctAnswer": "5G"
         },
@@ -1229,10 +1229,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction",
+            "Performance Optimization",
+            "Quantum Computing"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -1274,10 +1274,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "Edge Computing"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -1319,10 +1319,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -1365,9 +1365,9 @@
           "type": "multiple_choice",
           "options": [
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "API Development",
+            "Database Optimization",
+            "Security Protocols"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -1409,10 +1409,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "DevOps Practices",
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Waterfall Methodology",
+            "Scrum Framework"
           ],
           "correctAnswer": "Agile"
         },
@@ -1455,9 +1455,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Monolithic Architecture",
+            "Container Orchestration",
+            "Serverless Computing"
           ],
           "correctAnswer": "Microservices"
         },
@@ -1500,9 +1500,9 @@
           "type": "multiple_choice",
           "options": [
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -1544,10 +1544,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "IoT"
         },
@@ -1589,10 +1589,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction",
+            "DevSecOps"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -1634,10 +1634,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
+            "Security Enhancement",
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction"
           ],
           "correctAnswer": "5G"
         },
@@ -1680,9 +1680,9 @@
           "type": "multiple_choice",
           "options": [
             "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -1725,9 +1725,9 @@
           "type": "multiple_choice",
           "options": [
             "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -1769,10 +1769,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
+            "Performance Optimization",
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -1815,9 +1815,9 @@
           "type": "multiple_choice",
           "options": [
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "API Development",
+            "Database Optimization",
+            "Security Protocols"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -1859,10 +1859,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Scrum Framework",
+            "DevOps Practices",
+            "Waterfall Methodology",
+            "Agile"
           ],
           "correctAnswer": "Agile"
         },
@@ -1904,10 +1904,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Container Orchestration",
+            "Serverless Computing",
+            "Monolithic Architecture",
+            "Microservices"
           ],
           "correctAnswer": "Microservices"
         },
@@ -1949,10 +1949,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction",
+            "Performance Optimization",
+            "Blockchain"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -1995,9 +1995,9 @@
           "type": "multiple_choice",
           "options": [
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization",
+            "Security Enhancement"
           ],
           "correctAnswer": "IoT"
         },
@@ -2040,9 +2040,9 @@
           "type": "multiple_choice",
           "options": [
             "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -2085,9 +2085,9 @@
           "type": "multiple_choice",
           "options": [
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization",
+            "Security Enhancement"
           ],
           "correctAnswer": "5G"
         },
@@ -2129,10 +2129,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "Quantum Computing"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -2174,10 +2174,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "Edge Computing"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -2220,9 +2220,9 @@
           "type": "multiple_choice",
           "options": [
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization",
+            "Security Enhancement"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -2264,10 +2264,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "API Development",
+            "Security Protocols",
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Database Optimization"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -2309,10 +2309,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "DevOps Practices",
+            "Scrum Framework",
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Waterfall Methodology"
           ],
           "correctAnswer": "Agile"
         },
@@ -2355,9 +2355,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Serverless Computing",
+            "Container Orchestration",
+            "Monolithic Architecture"
           ],
           "correctAnswer": "Microservices"
         },
@@ -2399,10 +2399,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
+            "Cost Reduction",
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -2444,10 +2444,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "IoT"
         },
@@ -2489,10 +2489,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
             "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -2534,10 +2534,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Performance Optimization",
+            "Security Enhancement",
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction"
           ],
           "correctAnswer": "5G"
         },
@@ -2580,9 +2580,9 @@
           "type": "multiple_choice",
           "options": [
             "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -2625,9 +2625,9 @@
           "type": "multiple_choice",
           "options": [
             "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -2669,10 +2669,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "AI Ethics"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -2714,10 +2714,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Database Optimization",
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Protocols",
+            "API Development"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -2760,9 +2760,9 @@
           "type": "multiple_choice",
           "options": [
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Waterfall Methodology",
+            "Scrum Framework",
+            "DevOps Practices"
           ],
           "correctAnswer": "Agile"
         },
@@ -2804,10 +2804,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Monolithic Architecture",
+            "Serverless Computing",
+            "Container Orchestration",
+            "Microservices"
           ],
           "correctAnswer": "Microservices"
         },
@@ -2849,10 +2849,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -2895,9 +2895,9 @@
           "type": "multiple_choice",
           "options": [
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization"
           ],
           "correctAnswer": "IoT"
         },
@@ -2939,10 +2939,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "DevSecOps"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -2984,10 +2984,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
+            "Cost Reduction",
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization"
           ],
           "correctAnswer": "5G"
         },
@@ -3030,9 +3030,9 @@
           "type": "multiple_choice",
           "options": [
             "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -3074,10 +3074,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "Edge Computing"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -3120,9 +3120,9 @@
           "type": "multiple_choice",
           "options": [
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -3164,10 +3164,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Database Optimization",
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "API Development",
+            "Security Protocols"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -3210,9 +3210,9 @@
           "type": "multiple_choice",
           "options": [
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Scrum Framework",
+            "Waterfall Methodology",
+            "DevOps Practices"
           ],
           "correctAnswer": "Agile"
         },
@@ -3254,10 +3254,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Monolithic Architecture",
+            "Serverless Computing",
+            "Container Orchestration",
+            "Microservices"
           ],
           "correctAnswer": "Microservices"
         },
@@ -3299,10 +3299,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
+            "Performance Optimization",
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -3344,10 +3344,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement",
+            "IoT"
           ],
           "correctAnswer": "IoT"
         },
@@ -3390,9 +3390,9 @@
           "type": "multiple_choice",
           "options": [
             "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -3434,10 +3434,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "5G"
           ],
           "correctAnswer": "5G"
         },
@@ -3479,10 +3479,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction",
+            "Quantum Computing"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -3524,10 +3524,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
+            "Security Enhancement",
             "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -3569,10 +3569,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "AI Ethics"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -3614,10 +3614,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "API Development",
+            "Database Optimization",
+            "Security Protocols",
+            "Cloud Migration"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -3659,10 +3659,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Waterfall Methodology",
+            "Scrum Framework",
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "DevOps Practices"
           ],
           "correctAnswer": "Agile"
         },
@@ -3705,9 +3705,9 @@
           "type": "multiple_choice",
           "options": [
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Container Orchestration",
+            "Monolithic Architecture",
+            "Serverless Computing"
           ],
           "correctAnswer": "Microservices"
         },
@@ -3750,9 +3750,9 @@
           "type": "multiple_choice",
           "options": [
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -3795,9 +3795,9 @@
           "type": "multiple_choice",
           "options": [
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement"
           ],
           "correctAnswer": "IoT"
         },
@@ -3840,9 +3840,9 @@
           "type": "multiple_choice",
           "options": [
             "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -3885,9 +3885,9 @@
           "type": "multiple_choice",
           "options": [
             "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Cost Reduction",
+            "Performance Optimization"
           ],
           "correctAnswer": "5G"
         },
@@ -3929,10 +3929,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "Quantum Computing"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -3974,10 +3974,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Performance Optimization",
+            "Security Enhancement",
+            "Edge Computing"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -4020,9 +4020,9 @@
           "type": "multiple_choice",
           "options": [
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Security Enhancement",
+            "Cost Reduction"
           ],
           "correctAnswer": "AI Ethics"
         },
@@ -4064,10 +4064,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Database Optimization",
+            "API Development",
             "Cloud Migration",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Protocols"
           ],
           "correctAnswer": "Cloud Migration"
         },
@@ -4109,10 +4109,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Waterfall Methodology",
             "Agile",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Scrum Framework",
+            "DevOps Practices"
           ],
           "correctAnswer": "Agile"
         },
@@ -4154,10 +4154,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Serverless Computing",
             "Microservices",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Container Orchestration",
+            "Monolithic Architecture"
           ],
           "correctAnswer": "Microservices"
         },
@@ -4199,10 +4199,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Security Enhancement",
+            "Performance Optimization",
             "Blockchain",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction"
           ],
           "correctAnswer": "Blockchain"
         },
@@ -4245,9 +4245,9 @@
           "type": "multiple_choice",
           "options": [
             "IoT",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction"
           ],
           "correctAnswer": "IoT"
         },
@@ -4289,10 +4289,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "DevSecOps",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Performance Optimization",
+            "Cost Reduction",
+            "Security Enhancement",
+            "DevSecOps"
           ],
           "correctAnswer": "DevSecOps"
         },
@@ -4334,10 +4334,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
-            "5G",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Cost Reduction",
+            "Security Enhancement",
+            "Performance Optimization",
+            "5G"
           ],
           "correctAnswer": "5G"
         },
@@ -4379,10 +4379,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
             "Quantum Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization"
           ],
           "correctAnswer": "Quantum Computing"
         },
@@ -4425,9 +4425,9 @@
           "type": "multiple_choice",
           "options": [
             "Edge Computing",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization",
+            "Cost Reduction"
           ],
           "correctAnswer": "Edge Computing"
         },
@@ -4469,10 +4469,10 @@
           "text": "What is the main topic?",
           "type": "multiple_choice",
           "options": [
+            "Cost Reduction",
             "AI Ethics",
-            "Other 1",
-            "Other 2",
-            "Other 3"
+            "Security Enhancement",
+            "Performance Optimization"
           ],
           "correctAnswer": "AI Ethics"
         },
