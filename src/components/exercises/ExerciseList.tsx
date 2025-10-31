@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Box, Grid, Card, CardContent, Typography, Button, Chip, FormControl,
-  InputLabel, Select, MenuItem, SelectChangeEvent
+  InputLabel, Select, MenuItem, SelectChangeEvent, Alert
 } from "@mui/material";
 import { School, Timer, TrendingUp } from "@mui/icons-material";
 import { Exercise, LanguageLevel, ExerciseType } from "../../types";
@@ -20,43 +20,102 @@ export const ExerciseList: React.FC = () => {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [filterLevel, setFilterLevel] = useState<LanguageLevel | "all">("all");
   const [filterType, setFilterType] = useState<ExerciseType | "all">("all");
+  const [incompleteFiltered, setIncompleteFiltered] = useState<number>(0);
   const { addResponse } = useUser();
 
   useEffect(() => {
     loadExercises();
   }, []);
 
+  // Fonction pour valider si un exercice est complet (pas de placeholders)
+  const isValidExercise = (exercise: Exercise): boolean => {
+    if (!exercise.questions || exercise.questions.length === 0) {
+      return false;
+    }
+
+    // Vérifier chaque question
+    for (const question of exercise.questions) {
+      // Vérifier si les options sont des placeholders
+      if (question.options) {
+        const placeholderPatterns = [
+          /^primary use of/i,
+          /^alternative answer \d+$/i,
+          /^incorrect statement [a-z]$/i,
+          /^correct statement about/i,
+          /^explanation about/i
+        ];
+
+        for (const option of question.options) {
+          if (placeholderPatterns.some(pattern => pattern.test(option))) {
+            return false; // Exercice incomplet trouvé
+          }
+        }
+      }
+
+      // Vérifier si la bonne réponse est un placeholder
+      if (typeof question.correctAnswer === 'string') {
+        if (/^primary use of|^correct statement about|^explanation about/i.test(question.correctAnswer)) {
+          return false;
+        }
+      }
+
+      // Vérifier si l'explication est un placeholder
+      if (question.explanation && /^explanation about|^this is correct because/i.test(question.explanation)) {
+        return false;
+      }
+
+      // Vérifier si le texte de la question est valide
+      if (!question.text || question.text.trim().length < 10) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const loadExercises = async () => {
     try {
-      // Charger tous les QCM (200 exercices)
+      // Charger tous les QCM (200 exercices complets à 100%)
       const qcmResponse = await fetch('/data/exercises/all_qcm_200.json');
       const qcmData = await qcmResponse.json();
       
-      // Charger tous les textes à trous (200 exercices)
+      // Charger tous les textes à trous (200 exercices complets à 100%)
       const clozeResponse = await fetch('/data/exercises/all_cloze_200.json');
       const clozeData = await clozeResponse.json();
-
-      const allExercises = [
+      
+      let allExercises = [
         ...(qcmData.exercises || qcmData || []),
         ...(clozeData.exercises || clozeData || [])
       ];
 
-      console.log(`Loaded ${allExercises.length} exercises`);
-      setExercises(allExercises);
+      // Double validation : s'assurer que tous les exercices sont complets à 100%
+      const validExercises = allExercises.filter((ex: Exercise) => isValidExercise(ex));
+      const invalidCount = allExercises.length - validExercises.length;
+
+      if (invalidCount > 0) {
+        console.warn(`⚠️ ${invalidCount} exercices incomplets filtrés (contiennent des placeholders)`);
+        setIncompleteFiltered(invalidCount);
+      }
+
+      console.log(`✅ Chargé ${validExercises.length} exercices complets à 100% (${invalidCount} incomplets filtrés)`);
+      setExercises(validExercises);
     } catch (error) {
       console.error("Erreur chargement exercices:", error);
-      // Fallback: charger les petits fichiers
+      // Fallback: charger les petits fichiers (qui contiennent du vrai contenu validé)
       try {
         const qcmSmall = await fetch('/data/exercises/qcm_exercises.json');
         const clozeSmall = await fetch('/data/exercises/cloze_exercises.json');
         const qcmSmallData = await qcmSmall.json();
         const clozeSmallData = await clozeSmall.json();
-        const fallbackExercises = [
+        let fallbackExercises = [
           ...(qcmSmallData.exercises || []),
           ...(clozeSmallData.exercises || [])
         ];
-        console.log(`Loaded ${fallbackExercises.length} fallback exercises`);
-        setExercises(fallbackExercises);
+
+        // Filtrer aussi les exercices incomplets dans le fallback
+        const validFallbackExercises = fallbackExercises.filter((ex: Exercise) => isValidExercise(ex));
+        console.log(`✅ Chargé ${validFallbackExercises.length} exercices fallback complets`);
+        setExercises(validFallbackExercises);
       } catch (fallbackError) {
         console.error("Erreur chargement fallback:", fallbackError);
         setExercises([]);
@@ -137,6 +196,15 @@ export const ExerciseList: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      {incompleteFiltered > 0 && (
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          <Typography variant="body2">
+            <strong>Note :</strong> {incompleteFiltered} exercice(s) incomplet(s) ont été automatiquement filtrés 
+            car ils contiennent des placeholders au lieu de contenu réel. Seuls les exercices complets sont affichés.
+          </Typography>
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
         Exercices disponibles
       </Typography>
