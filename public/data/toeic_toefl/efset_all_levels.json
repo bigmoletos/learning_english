@@ -1,0 +1,628 @@
+{
+  "tests": [
+    {
+      "id": "efset_a1",
+      "type": "efset",
+      "level": "A1",
+      "title": "EF SET - Test d'anglais complet - Niveau A1",
+      "description": "Testez vos 4 compétences en anglais au niveau A1 : Reading, Listening, Writing, Speaking",
+      "duration": 30,
+      "totalPoints": 28,
+      "adaptive": false,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 6,
+          "timeLimit": 10,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "r1",
+              "level": "A1",
+              "text": "I ___ a developer.",
+              "options": [
+                "am",
+                "is",
+                "are",
+                "be"
+              ],
+              "correctAnswer": "am",
+              "explanation": "Use 'am' with 'I' in present simple.",
+              "points": 2
+            },
+            {
+              "id": "r2",
+              "level": "A1",
+              "text": "She ___ code every day.",
+              "options": [
+                "write",
+                "writes",
+                "writing",
+                "written"
+              ],
+              "correctAnswer": "writes",
+              "explanation": "Use 'writes' with 'she' in present simple (third person).",
+              "points": 2
+            },
+            {
+              "id": "r3",
+              "level": "A1",
+              "text": "What ___ you do?",
+              "options": [
+                "do",
+                "does",
+                "is",
+                "are"
+              ],
+              "correctAnswer": "do",
+              "explanation": "Use 'do' with 'you' in questions.",
+              "points": 2
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 2,
+          "timeLimit": 10,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "l1",
+              "level": "A1",
+              "text": "What does the speaker say?",
+              "audioText": "Hello, I am a software developer.",
+              "options": [
+                "The speaker is a teacher",
+                "The speaker is a developer",
+                "The speaker is a student",
+                "The speaker is a manager"
+              ],
+              "correctAnswer": "The speaker is a developer",
+              "explanation": "The audio clearly states 'I am a software developer'.",
+              "points": 2
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 10,
+          "timeLimit": 10,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "A1",
+              "text": "Write 3-5 sentences about your work. Use simple present tense.",
+              "type": "essay",
+              "points": 10,
+              "minWords": 30,
+              "maxWords": 50,
+              "rubric": {
+                "content": 4,
+                "organization": 3,
+                "language": 2,
+                "vocabulary": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 10,
+          "timeLimit": 5,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "A1",
+              "text": "Introduce yourself and describe what you do at work. Speak for 30-60 seconds.",
+              "type": "speaking",
+              "points": 10,
+              "duration": 60,
+              "rubric": {
+                "fluency": 3,
+                "pronunciation": 2,
+                "vocabulary": 2,
+                "grammar": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efset_a2",
+      "type": "efset",
+      "level": "A2",
+      "title": "EF SET - Test d'anglais complet - Niveau A2",
+      "description": "Testez vos 4 compétences en anglais au niveau A2 : Reading, Listening, Writing, Speaking",
+      "duration": 40,
+      "totalPoints": 37,
+      "adaptive": false,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 5,
+          "timeLimit": 15,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "r1",
+              "level": "A2",
+              "text": "I ___ English for two years.",
+              "options": [
+                "study",
+                "studied",
+                "have studied",
+                "am studying"
+              ],
+              "correctAnswer": "have studied",
+              "explanation": "Use present perfect for actions started in the past and continuing now.",
+              "points": 2
+            },
+            {
+              "id": "r2",
+              "level": "A2",
+              "text": "The application ___ yesterday.",
+              "options": [
+                "deploy",
+                "deployed",
+                "was deployed",
+                "deploying"
+              ],
+              "correctAnswer": "was deployed",
+              "explanation": "Use passive voice in past simple for completed actions.",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 2,
+          "timeLimit": 15,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "l1",
+              "level": "A2",
+              "text": "What did the team do yesterday?",
+              "audioText": "We deployed the new version of the application yesterday.",
+              "options": [
+                "They tested the application",
+                "They deployed the application",
+                "They designed the application",
+                "They documented the application"
+              ],
+              "correctAnswer": "They deployed the application",
+              "explanation": "The audio states 'We deployed the new version'.",
+              "points": 2
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 15,
+          "timeLimit": 15,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "A2",
+              "text": "Describe your typical day at work. Write 5-7 sentences using present simple and present continuous.",
+              "type": "essay",
+              "points": 15,
+              "minWords": 50,
+              "maxWords": 100,
+              "rubric": {
+                "content": 6,
+                "organization": 4,
+                "language": 3,
+                "vocabulary": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 15,
+          "timeLimit": 10,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "A2",
+              "text": "Describe your daily routine at work. Speak for 1-2 minutes.",
+              "type": "speaking",
+              "points": 15,
+              "duration": 120,
+              "rubric": {
+                "fluency": 4,
+                "pronunciation": 3,
+                "vocabulary": 3,
+                "grammar": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efset_b1",
+      "type": "efset",
+      "level": "B1",
+      "title": "EF SET - Test d'anglais complet - Niveau B1",
+      "description": "Testez vos 4 compétences en anglais au niveau B1 : Reading, Listening, Writing, Speaking",
+      "duration": 50,
+      "totalPoints": 49,
+      "adaptive": true,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 6,
+          "timeLimit": 20,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "r1",
+              "level": "B1",
+              "text": "If I ___ more time, I would improve the code.",
+              "options": [
+                "have",
+                "had",
+                "has",
+                "having"
+              ],
+              "correctAnswer": "had",
+              "explanation": "Use past simple in second conditional (if-clause).",
+              "points": 3
+            },
+            {
+              "id": "r2",
+              "level": "B1",
+              "text": "The system ___ by the team last week.",
+              "options": [
+                "updated",
+                "was updated",
+                "has updated",
+                "updating"
+              ],
+              "correctAnswer": "was updated",
+              "explanation": "Passive voice in past simple for completed actions.",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 3,
+          "timeLimit": 20,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "l1",
+              "level": "B1",
+              "text": "What is mentioned about CI/CD?",
+              "audioText": "Continuous Integration helps teams integrate code changes more frequently and reliably.",
+              "options": [
+                "It requires manual intervention",
+                "It helps integrate code more frequently",
+                "It slows down development",
+                "It only works for small teams"
+              ],
+              "correctAnswer": "It helps integrate code more frequently",
+              "explanation": "The audio states that CI helps integrate code changes more frequently.",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 20,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "B1",
+              "text": "Explain how your team collaborates on projects. Write 100-150 words using past simple and present perfect.",
+              "type": "essay",
+              "points": 20,
+              "minWords": 100,
+              "maxWords": 150,
+              "rubric": {
+                "content": 8,
+                "organization": 6,
+                "language": 4,
+                "vocabulary": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 20,
+          "timeLimit": 15,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "B1",
+              "text": "Explain how your team works on a project. Speak for 2-3 minutes.",
+              "type": "speaking",
+              "points": 20,
+              "duration": 180,
+              "rubric": {
+                "fluency": 6,
+                "pronunciation": 5,
+                "vocabulary": 5,
+                "grammar": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efset_b2",
+      "type": "efset",
+      "level": "B2",
+      "title": "EF SET - Test d'anglais complet - Niveau B2",
+      "description": "Testez vos 4 compétences en anglais au niveau B2 : Reading, Listening, Writing, Speaking",
+      "duration": 60,
+      "totalPoints": 59,
+      "adaptive": true,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 6,
+          "timeLimit": 25,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "r1",
+              "level": "B2",
+              "text": "Technical debt accumulates when teams choose quick solutions ___ better approaches.",
+              "options": [
+                "instead of",
+                "instead",
+                "rather",
+                "than"
+              ],
+              "correctAnswer": "instead of",
+              "explanation": "'Instead of' means 'rather than' or 'as an alternative to'.",
+              "points": 3
+            },
+            {
+              "id": "r2",
+              "level": "B2",
+              "text": "DevOps practices ___ automation and collaboration.",
+              "options": [
+                "emphasize",
+                "emphasizes",
+                "emphasized",
+                "emphasizing"
+              ],
+              "correctAnswer": "emphasize",
+              "explanation": "Use present simple plural form with 'practices' (plural subject).",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 3,
+          "timeLimit": 25,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "l1",
+              "level": "B2",
+              "text": "What does the speaker say about CI/CD pipelines?",
+              "audioText": "CI/CD pipelines automate testing and deployment, reducing time to production.",
+              "options": [
+                "They require manual steps",
+                "They automate processes and reduce time",
+                "They only work for large teams",
+                "They increase deployment time"
+              ],
+              "correctAnswer": "They automate processes and reduce time",
+              "explanation": "The audio states that CI/CD automates processes and reduces time.",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 25,
+          "timeLimit": 25,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "B2",
+              "text": "Explain the concept of DevOps and its benefits. Write 150-200 words using appropriate technical vocabulary.",
+              "type": "essay",
+              "points": 25,
+              "minWords": 150,
+              "maxWords": 200,
+              "rubric": {
+                "content": 10,
+                "organization": 7,
+                "language": 5,
+                "vocabulary": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 25,
+          "timeLimit": 15,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "B2",
+              "text": "Describe how your team manages software deployments. Speak for 2-3 minutes.",
+              "type": "speaking",
+              "points": 25,
+              "duration": 180,
+              "rubric": {
+                "fluency": 7,
+                "pronunciation": 6,
+                "vocabulary": 6,
+                "grammar": 5
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efset_c1",
+      "type": "efset",
+      "level": "C1",
+      "title": "EF SET - Test d'anglais complet - Niveau C1",
+      "description": "Testez vos 4 compétences en anglais au niveau C1 : Reading, Listening, Writing, Speaking",
+      "duration": 70,
+      "totalPoints": 72,
+      "adaptive": true,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 8,
+          "timeLimit": 30,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "r1",
+              "level": "C1",
+              "text": "Had the team ___ best practices, the security breach would not have occurred.",
+              "options": [
+                "follow",
+                "followed",
+                "following",
+                "follows"
+              ],
+              "correctAnswer": "followed",
+              "explanation": "Use past perfect in third conditional (if-clause).",
+              "points": 4
+            },
+            {
+              "id": "r2",
+              "level": "C1",
+              "text": "Not only ___ the system more secure, but it also improved performance.",
+              "options": [
+                "it made",
+                "made it",
+                "did it make",
+                "it did make"
+              ],
+              "correctAnswer": "did it make",
+              "explanation": "Inversion after 'Not only' at the beginning of a sentence.",
+              "points": 4
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 4,
+          "timeLimit": 30,
+          "adaptive": false,
+          "questions": [
+            {
+              "id": "l1",
+              "level": "C1",
+              "text": "What does the speaker mention about microservices?",
+              "audioText": "Microservices architecture enables independent deployment and scaling of services, improving system resilience through fault isolation.",
+              "options": [
+                "Services must be deployed together",
+                "Services can be deployed independently",
+                "Microservices reduce reliability",
+                "Services cannot be scaled separately"
+              ],
+              "correctAnswer": "Services can be deployed independently",
+              "explanation": "The audio emphasizes independent deployment and scaling.",
+              "points": 4
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 30,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "C1",
+              "text": "Discuss the challenges and benefits of microservices architecture. Write 200-250 words demonstrating advanced vocabulary and complex sentence structures.",
+              "type": "essay",
+              "points": 30,
+              "minWords": 200,
+              "maxWords": 250,
+              "rubric": {
+                "content": 12,
+                "organization": 9,
+                "language": 6,
+                "vocabulary": 3
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 30,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "C1",
+              "text": "Explain technical debt and discuss strategies for managing it. Speak for 3-4 minutes.",
+              "type": "speaking",
+              "points": 30,
+              "duration": 240,
+              "rubric": {
+                "fluency": 9,
+                "pronunciation": 7,
+                "vocabulary": 7,
+                "grammar": 6
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

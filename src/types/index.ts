@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-export type LanguageLevel = "A2" | "B1" | "B2" | "C1";
+export type LanguageLevel = "A1" | "A2" | "B1" | "B2" | "C1";
 
 export type ExerciseType = "qcm" | "cloze" | "writing" | "listening" | "reading" | "speaking";
 
