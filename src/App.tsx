@@ -190,7 +190,7 @@ const AppContent: React.FC = () => {
           />
         );
       case "learning":
-        return <AdaptiveLearningPlan />;
+        return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
       case "progress":
         return <ProgressTracker />;
       case "exercises":

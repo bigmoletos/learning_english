@@ -44,7 +44,9 @@ interface TOEICQuestion {
   correctAnswer: string;
   explanation: string;
   grammarFocus?: string[];
+  vocabularyFocus?: string[];
   points: number;
+  level?: LanguageLevel;
 }
 
 interface TOEICTestProps {

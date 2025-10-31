@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Chip, LinearProgress,
   Alert, Grid, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -38,7 +38,11 @@ interface WeaknessArea {
   recommendedExercises: number;
 }
 
-export const AdaptiveLearningPlan: React.FC = () => {
+interface AdaptiveLearningPlanProps {
+  onNavigate?: (view: string) => void;
+}
+
+export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNavigate }) => {
   const { user, responses } = useUser();
   const [learningGoals, setLearningGoals] = useState<LearningGoal[]>([]);
   const [weaknesses, setWeaknesses] = useState<WeaknessArea[]>([]);
@@ -177,6 +181,39 @@ export const AdaptiveLearningPlan: React.FC = () => {
   const handleRefreshPlan = () => {
     generateAdaptivePlan();
   };
+
+  const handleStartGoal = useCallback((goal: LearningGoal) => {
+    console.log("🔄 Clic sur 'Commencer' pour l'objectif:", goal.id, goal.title);
+    console.log("📋 Objectif complet:", goal);
+    
+    if (goal.completed) {
+      console.warn("⚠️ Objectif déjà complété");
+      return;
+    }
+
+    // Rediriger vers la vue des exercices avec filtres basés sur l'objectif
+    if (onNavigate) {
+      console.log("✅ Navigation vers la vue exercices avec filtres:", {
+        level: goal.targetLevel,
+        types: goal.exerciseTypes,
+        domains: goal.domains
+      });
+      
+      // Sauvegarder les filtres dans localStorage pour les appliquer dans ExerciseList
+      localStorage.setItem('goalFilters', JSON.stringify({
+        level: goal.targetLevel,
+        types: goal.exerciseTypes,
+        domains: goal.domains,
+        goalId: goal.id
+      }));
+      
+      onNavigate("exercises");
+    } else {
+      console.error("❌ Erreur: onNavigate non défini");
+      // Fallback: redirection par hash ou window.location
+      window.location.hash = "#exercises";
+    }
+  }, [onNavigate]);
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -358,6 +395,23 @@ export const AdaptiveLearningPlan: React.FC = () => {
                   fullWidth
                   startIcon={<PlayArrow />}
                   disabled={goal.completed}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log("🖱️ ÉVÉNEMENT CLIC DÉTECTÉ pour l'objectif:", goal.id, goal.title);
+                    handleStartGoal(goal);
+                  }}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    console.log("🖱️ MouseDown détecté pour l'objectif:", goal.id);
+                  }}
+                  sx={{
+                    cursor: goal.completed ? "not-allowed" : "pointer",
+                    "&:hover": {
+                      backgroundColor: goal.completed ? "action.disabled" : "primary.dark"
+                    }
+                  }}
                 >
                   {goal.completed ? "Complété" : "Commencer"}
                 </Button>

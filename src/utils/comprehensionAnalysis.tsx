@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Chip, Divider } from "@mui/material";
+import { Box, Typography, Chip } from "@mui/material";
 import { CheckCircle, Error, Info, School } from "@mui/icons-material";
 import { LanguageLevel } from "../types";
 
@@ -36,7 +36,7 @@ interface ComprehensionAnalysisProps {
  * Génère une analyse de compréhension adaptée au niveau
  */
 export const generateComprehensionAnalysis = (props: ComprehensionAnalysisProps): React.ReactElement => {
-  const { level, isCorrect, questionText, correctAnswer, grammarFocus, vocabularyFocus, customExplanation } = props;
+  const { level, isCorrect, correctAnswer, grammarFocus, customExplanation, userAnswer } = props;
 
   // Analyses spécifiques par niveau
   const analyses: Record<LanguageLevel, Record<string, AnalysisContent>> = {

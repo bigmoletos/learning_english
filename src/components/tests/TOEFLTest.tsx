@@ -353,11 +353,9 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
 
                 {section.questions.map((question, qIdx) => {
                   const userAnswer = answers[question.id];
-                  const isCorrect = question.type === "essay"
-                    ? userAnswer && userAnswer.length > 50
-                    : userAnswer && question.correctAnswer
-                    ? userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
-                    : false;
+                  const isCorrect: boolean = question.type === "essay"
+                    ? !!(userAnswer && userAnswer.length > 50)
+                    : !!(userAnswer && question.correctAnswer && userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim());
 
                   return (
                     <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>
