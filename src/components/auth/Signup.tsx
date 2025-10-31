@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Email, Lock, Person, Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
+import { VerifyEmail } from "./VerifyEmail";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
@@ -28,6 +29,8 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showVerifyEmail, setShowVerifyEmail] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   // Debug: Log quand l'erreur change
   React.useEffect(() => {
@@ -86,10 +89,25 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       });
 
       if (response.data.success) {
+        // L'inscription a réussi, mais l'email doit être vérifié
+        // Ne pas connecter automatiquement
+        const { email: registeredEmailAddress, requiresVerification } = response.data;
+        
+        if (requiresVerification || !response.data.token) {
+          // Afficher le composant de vérification d'email
+          setRegisteredEmail(registeredEmailAddress || email);
+          setShowVerifyEmail(true);
+          setError(""); // Pas d'erreur
+          return; // Ne pas appeler onSuccess
+        }
+        
+        // Fallback si pas de requiresVerification (ancien comportement)
         const { token, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        onSuccess(token, user);
+        if (token && user) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
+          onSuccess(token, user);
+        }
       } else {
         setError(response.data.message || "Erreur d'inscription");
       }
@@ -143,6 +161,20 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       setLoading(false);
     }
   };
+
+  // Afficher le composant de vérification d'email si nécessaire
+  if (showVerifyEmail) {
+    return (
+      <VerifyEmail
+        email={registeredEmail || email}
+        onSwitchToLogin={onSwitchToLogin}
+        onResendEmail={async () => {
+          // TODO: Implémenter le renvoi d'email
+          console.log("Renvoyer l'email de vérification à:", registeredEmail || email);
+        }}
+      />
+    );
+  }
 
   return (
     <Box

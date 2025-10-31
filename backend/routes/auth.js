@@ -5,6 +5,7 @@
 
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -12,6 +13,17 @@ const { Op } = require('sequelize');
 const sequelize = require('../database/connection');
 const User = require('../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../utils/emailService');
+
+// Rate limiting plus permissif pour la vérification d'email
+const emailVerificationLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 10, // 10 tentatives max (pour gérer les clics multiples)
+  message: 'Trop de tentatives de verification. Veuillez attendre quelques minutes.',
+  skip: (req) => {
+    // Skip rate limiting si c'est une requête GET (redirection depuis email)
+    return req.method === 'GET';
+  }
+});
 
 // ==================================
 // INSCRIPTION
@@ -87,18 +99,14 @@ router.post('/register',
         // Ne pas bloquer l'inscription si l'email echoue
       }
 
-      // Generer le JWT
-      const token = jwt.sign(
-        { userId: user.id, email: user.email, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
-      );
+      // NE PAS générer de token - l'utilisateur doit vérifier son email d'abord
+      // Le token sera généré lors de la vérification de l'email
 
       res.status(201).json({
         success: true,
-        message: 'Inscription reussie. Veuillez verifier votre email.',
-        token,
-        user: user.toJSON()
+        message: 'Inscription reussie. Un email de verification a ete envoye. Veuillez verifier votre boite de reception.',
+        email: user.email,
+        requiresVerification: true
       });
 
     } catch (error) {
@@ -207,6 +215,7 @@ router.post('/login',
 // VERIFICATION EMAIL
 // ==================================
 
+// Route GET pour la vérification via navigateur (lien email)
 router.get('/verify-email/:token', async (req, res) => {
   try {
     const { token } = req.params;
@@ -214,10 +223,49 @@ router.get('/verify-email/:token', async (req, res) => {
     const user = await User.findOne({
       where: {
         emailVerificationToken: token,
-        emailVerificationExpires: { [require('sequelize').Op.gt]: new Date() }
+        emailVerificationExpires: { [Op.gt]: new Date() }
       }
     });
 
+    if (!user) {
+      // Rediriger vers la page d'erreur dans le frontend
+      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error?token=${token}`);
+    }
+
+    // Marquer l'email comme vérifié
+    user.isEmailVerified = true;
+    user.emailVerificationToken = null;
+    user.emailVerificationExpires = null;
+    await user.save();
+
+    // Générer le JWT après vérification réussie
+    const jwtToken = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+
+    // Rediriger vers la page de succès avec le token
+    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/success?token=${jwtToken}`);
+  } catch (error) {
+    console.error('Erreur verification email:', error);
+    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error`);
+  }
+});
+
+// Route POST pour la vérification via API (alternative)
+router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    // Chercher l'utilisateur avec ce token (peut être déjà utilisé)
+    const user = await User.findOne({
+      where: {
+        emailVerificationToken: token
+      }
+    });
+
+    // Si l'utilisateur n'existe pas avec ce token
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -225,14 +273,50 @@ router.get('/verify-email/:token', async (req, res) => {
       });
     }
 
+    // Si l'email est déjà vérifié
+    if (user.isEmailVerified) {
+      // Générer un nouveau token JWT pour cet utilisateur
+      const jwtToken = jwt.sign(
+        { userId: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: 'Votre email a deja ete verifie. Vous etes maintenant connecte.',
+        token: jwtToken,
+        user: user.toJSON(),
+        alreadyVerified: true
+      });
+    }
+
+    // Vérifier si le token a expiré
+    if (user.emailVerificationExpires && user.emailVerificationExpires < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Le lien de verification a expire. Veuillez demander un nouveau lien.'
+      });
+    }
+
+    // Marquer l'email comme vérifié
     user.isEmailVerified = true;
     user.emailVerificationToken = null;
     user.emailVerificationExpires = null;
     await user.save();
 
+    // Générer le JWT après vérification réussie
+    const jwtToken = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+
     res.status(200).json({
       success: true,
-      message: 'Email verifie avec succes'
+      message: 'Email verifie avec succes. Vous pouvez maintenant vous connecter.',
+      token: jwtToken,
+      user: user.toJSON()
     });
 
   } catch (error) {

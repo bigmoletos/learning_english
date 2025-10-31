@@ -23,6 +23,7 @@ import { AdaptiveLearningPlan } from "./components/learning/AdaptiveLearningPlan
 import { Login } from "./components/auth/Login";
 import { Signup } from "./components/auth/Signup";
 import { ForgotPassword } from "./components/auth/ForgotPassword";
+import { EmailVerification } from "./components/auth/EmailVerification";
 
 const theme = createTheme({
   palette: {
@@ -61,6 +62,24 @@ const AppContent: React.FC = () => {
   const [showAssessment, setShowAssessment] = useState(() => {
     return !localStorage.getItem("levelAssessed");
   });
+
+  // Vérifier si on est sur une route de vérification d'email
+  const path = window.location.pathname;
+  const isEmailVerificationRoute = path.includes("/verify-email/");
+
+  // Afficher EmailVerification si on est sur la route de vérification
+  if (isEmailVerificationRoute) {
+    return (
+      <EmailVerification
+        onSuccess={(token, user) => {
+          login(token, user);
+        }}
+        onSwitchToLogin={() => {
+          window.location.href = "/";
+        }}
+      />
+    );
+  }
 
   // Afficher Login/Signup/ForgotPassword si non authentifié
   if (!isAuthenticated) {

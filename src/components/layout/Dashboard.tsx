@@ -134,7 +134,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
         </Grid>
 
         {/* Actions rapides */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <School sx={{ mr: 1, color: "primary.main" }} />
+                <Typography variant="h6">Exercices</Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" paragraph>
+                Accédez à plus de 400 exercices (QCM et textes à trous) pour pratiquer 
+                votre anglais technique dans les domaines IT, IA, DevOps et Cybersécurité.
+              </Typography>
+              <Button
+                variant="contained"
+                fullWidth
+                color="primary"
+                startIcon={<School />}
+                onClick={() => onNavigate?.("exercises")}
+                sx={{ mt: 2 }}
+              >
+                Lancer les exercices
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
           <Card elevation={3} sx={{ height: "100%" }}>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -158,7 +183,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card elevation={3} sx={{ height: "100%" }}>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -172,6 +197,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
               <Button
                 variant="contained"
                 fullWidth
+                color="success"
                 onClick={() => onNavigate?.("learning")}
                 sx={{ mt: 2 }}
               >

@@ -78,6 +78,17 @@ const authLimiter = rateLimit({
   message: 'Trop de tentatives de connexion, veuillez réessayer dans 15 minutes.'
 });
 
+// Rate limiting plus permissif pour la vérification d'email
+const emailVerificationLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 10, // 10 tentatives max (pour gérer les clics multiples)
+  message: 'Trop de tentatives de verification. Veuillez attendre quelques minutes.',
+  skip: (req) => {
+    // Skip rate limiting si c'est une requête GET (redirection depuis email)
+    return req.method === 'GET';
+  }
+});
+
 // ==================================
 // MIDDLEWARES GÉNÉRAUX
 // ==================================
