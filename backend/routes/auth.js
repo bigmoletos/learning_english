@@ -8,6 +8,8 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { Op } = require('sequelize');
+const sequelize = require('../database/connection');
 const User = require('../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../utils/emailService');
 
@@ -28,12 +30,27 @@ router.post('/register',
   ],
   async (req, res) => {
     try {
+      // Log pour debug (ne pas logger le mot de passe)
+      console.log('Inscription - Données reçues:', {
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        passwordLength: req.body.password?.length
+      });
+
       // Validation
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        // Extraire le premier message d'erreur
+        const firstError = errors.array()[0];
+        const errorMessage = firstError.msg || firstError.message || 'Données invalides';
+        
+        console.log('Erreurs de validation:', errors.array());
+        
         return res.status(400).json({ 
-          success: false, 
-          errors: errors.array() 
+          success: false,
+          message: errorMessage,
+          errors: errors.array()
         });
       }
 
@@ -100,23 +117,40 @@ router.post('/register',
 
 router.post('/login',
   [
-    body('email').isEmail().normalizeEmail(),
-    body('password').exists()
+    body('email')
+      .isEmail()
+      .withMessage('L\'adresse email doit être au format valide (ex: nom@domaine.com)')
+      .normalizeEmail(),
+    body('password')
+      .exists()
+      .withMessage('Le mot de passe est requis')
   ],
   async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        // Extraire le premier message d'erreur
+        const firstError = errors.array()[0];
+        const errorMessage = firstError.msg || firstError.message || 'Données invalides';
+        
         return res.status(400).json({ 
-          success: false, 
-          errors: errors.array() 
+          success: false,
+          message: errorMessage,
+          errors: errors.array()
         });
       }
 
-      const { email, password } = req.body;
+      // Normaliser l'email (lowercase + trim)
+      const email = req.body.email?.toLowerCase().trim() || req.body.email;
+      const password = req.body.password;
 
-      // Trouver l'utilisateur
-      const user = await User.findOne({ where: { email } });
+      // Trouver l'utilisateur (recherche case-insensitive avec Sequelize)
+      const user = await User.findOne({ 
+        where: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col('email')),
+          email.toLowerCase()
+        )
+      });
       if (!user) {
         return res.status(401).json({
           success: false,

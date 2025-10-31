@@ -78,8 +78,14 @@ const User = sequelize.define('User', {
   timestamps: true
 });
 
-// Hook avant sauvegarde : hasher le mot de passe
+// Hook avant sauvegarde : hasher le mot de passe et normaliser l'email
 User.beforeSave(async (user) => {
+  // Normaliser l'email en minuscules
+  if (user.email) {
+    user.email = user.email.toLowerCase().trim();
+  }
+  
+  // Hasher le mot de passe si modifié
   if (user.changed('password')) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);

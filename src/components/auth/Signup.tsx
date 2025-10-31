@@ -29,6 +29,13 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Debug: Log quand l'erreur change
+  React.useEffect(() => {
+    if (error) {
+      console.log('✅ Erreur dans le state:', error);
+    }
+  }, [error]);
+
   const validatePassword = () => {
     if (password.length < 8) {
       return "Le mot de passe doit contenir au moins 8 caractères";
@@ -53,6 +60,13 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation(); // Empêcher la propagation
+    
+    // Empêcher les soumissions multiples
+    if (loading) {
+      return;
+    }
+    
     setError("");
 
     const passwordError = validatePassword();
@@ -80,6 +94,9 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
         setError(response.data.message || "Erreur d'inscription");
       }
     } catch (err: any) {
+      // Log pour debug
+      console.error('Erreur inscription:', err.response?.data || err);
+      
       // Gérer les différents types d'erreurs
       let errorMessage = "Erreur d'inscription. Veuillez réessayer.";
       
@@ -96,6 +113,9 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
             errorMessage = firstError.msg;
           } else if (firstError.message) {
             errorMessage = firstError.message;
+          } else if (firstError.param && firstError.location) {
+            // Format express-validator standard
+            errorMessage = `${firstError.param}: ${firstError.msg || firstError.message || 'Erreur de validation'}`;
           }
         } else if (typeof err.response.data === 'string') {
           errorMessage = err.response.data;
@@ -105,13 +125,18 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       }
       
       // Messages d'erreur spécifiques
-      if (errorMessage.includes("existe déjà") || errorMessage.includes("already exists")) {
+      if (errorMessage.toLowerCase().includes("existe") && 
+          (errorMessage.toLowerCase().includes("déjà") || errorMessage.toLowerCase().includes("deja") || 
+           errorMessage.toLowerCase().includes("already exists"))) {
         errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter ou utilisez un autre email.";
-      } else if (errorMessage.includes("email")) {
+      } else if (errorMessage.toLowerCase().includes("email") || errorMessage.toLowerCase().includes("invalide")) {
         errorMessage = "Email invalide. Veuillez vérifier votre adresse email.";
-      } else if (errorMessage.includes("password")) {
+      } else if (errorMessage.toLowerCase().includes("password") || errorMessage.toLowerCase().includes("mot de passe")) {
         errorMessage = "Le mot de passe ne respecte pas les critères requis (min. 8 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial).";
       }
+      
+      // Log pour debug
+      console.log('Message d\'erreur final:', errorMessage);
       
       setError(errorMessage);
     } finally {
@@ -140,9 +165,20 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
           </Typography>
 
           {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
+            <Box>
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mb: 2,
+                  width: "100%",
+                  visibility: "visible",
+                  opacity: 1
+                }}
+                onClose={() => setError("")}
+              >
+                <strong>Erreur :</strong> {error}
+              </Alert>
+            </Box>
           )}
 
           <Box component="form" onSubmit={handleSubmit}>

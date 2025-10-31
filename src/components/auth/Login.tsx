@@ -46,11 +46,42 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
         setError(response.data.message || "Erreur de connexion");
       }
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-        err.message ||
-        "Erreur de connexion. Vérifiez vos identifiants."
-      );
+      // Gérer les différents types d'erreurs
+      let errorMessage = "Erreur de connexion. Vérifiez vos identifiants.";
+      
+      if (err.response?.data) {
+        // Erreur du backend avec structure détaillée
+        if (err.response.data.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.response.data.errors && Array.isArray(err.response.data.errors)) {
+          // Erreurs de validation (array)
+          const firstError = err.response.data.errors[0];
+          if (typeof firstError === 'string') {
+            errorMessage = firstError;
+          } else if (firstError.msg) {
+            errorMessage = firstError.msg;
+          } else if (firstError.message) {
+            errorMessage = firstError.message;
+          }
+        } else if (typeof err.response.data === 'string') {
+          errorMessage = err.response.data;
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      // Messages d'erreur spécifiques
+      if (errorMessage.includes("Email ou mot de passe incorrect")) {
+        errorMessage = "Email ou mot de passe incorrect. Veuillez vérifier vos identifiants.";
+      } else if (errorMessage.includes("Email invalide") || errorMessage.includes("invalid email")) {
+        // Vérifier si c'est vraiment un problème d'email ou de validation
+        // Si l'email est bien formaté côté frontend, c'est probablement un problème de validation backend
+        errorMessage = "L'adresse email n'est pas valide. Veuillez vérifier le format de votre email.";
+      } else if (errorMessage.includes("Ce compte a ete desactive")) {
+        errorMessage = "Ce compte a été désactivé. Contactez l'administrateur.";
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

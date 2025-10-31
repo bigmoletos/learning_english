@@ -14,7 +14,34 @@ const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 
 // Charger les variables d'environnement
-dotenv.config();
+// Chercher le fichier .env dans le répertoire parent (racine du projet)
+const path = require('path');
+const fs = require('fs');
+
+let envPath = path.resolve(__dirname, '../.env');
+if (!fs.existsSync(envPath)) {
+  // Fallback : chercher dans le répertoire courant
+  envPath = path.resolve(__dirname, '.env');
+}
+
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+  console.log(`✅ Variables d'environnement chargées depuis: ${envPath}`);
+} else {
+  console.warn('⚠️  Fichier .env non trouvé. Variables d\'environnement par défaut utilisées.');
+  dotenv.config(); // Tentative de chargement depuis le répertoire courant
+}
+
+// Vérifier les variables critiques
+if (!process.env.JWT_SECRET) {
+  console.error('❌ ERREUR: JWT_SECRET non défini dans .env');
+  console.error('   Le serveur ne pourra pas générer de tokens JWT.');
+  console.error('   Ajoutez JWT_SECRET dans votre fichier .env');
+}
+
+if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
+  console.warn('⚠️  SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
