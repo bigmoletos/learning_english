@@ -411,13 +411,14 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                           </Box>
                         )}
 
-                        {userAnswer && question.type !== "essay" && (
+                        {/* Toujours afficher les corrections détaillées pour les questions non-essay */}
+                        {question.type !== "essay" && (
                           generateComprehensionAnalysis({
                             questionId: question.id,
                             level: question.level || testData.level || "C1",
-                            isCorrect: isCorrect,
+                            isCorrect: userAnswer ? isCorrect : false,
                             questionText: question.text,
-                            userAnswer: userAnswer,
+                            userAnswer: userAnswer || "",
                             correctAnswer: question.correctAnswer || "",
                             grammarFocus: question.grammarFocus,
                             vocabularyFocus: question.vocabularyFocus,

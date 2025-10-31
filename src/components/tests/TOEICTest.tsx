@@ -387,19 +387,18 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                           </Box>
                         )}
 
-                        {userAnswer && (
-                          generateComprehensionAnalysis({
-                            questionId: question.id,
-                            level: question.level || testData.level || "B2",
-                            isCorrect: isCorrect,
-                            questionText: question.text,
-                            userAnswer: userAnswer,
-                            correctAnswer: question.correctAnswer,
-                            grammarFocus: question.grammarFocus,
-                            vocabularyFocus: question.vocabularyFocus,
-                            customExplanation: question.explanation
-                          })
-                        )}
+                        {/* Toujours afficher les corrections détaillées */}
+                        {generateComprehensionAnalysis({
+                          questionId: question.id,
+                          level: question.level || testData.level || "B2",
+                          isCorrect: userAnswer ? isCorrect : false,
+                          questionText: question.text,
+                          userAnswer: userAnswer || "",
+                          correctAnswer: question.correctAnswer,
+                          grammarFocus: question.grammarFocus,
+                          vocabularyFocus: question.vocabularyFocus,
+                          customExplanation: question.explanation
+                        })}
                       </CardContent>
                     </Card>
                   );
