@@ -8,12 +8,13 @@ import React, { useState, useEffect } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
   FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid, TextField
+  Step, StepLabel, Chip, Grid, TextField, Divider
 } from "@mui/material";
 import { Headphones, MenuBook, Edit, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
+import { generateComprehensionAnalysis } from "../../utils/comprehensionAnalysis";
 
 interface TOEFLTestData {
   id: string;
@@ -44,6 +45,9 @@ interface TOEFLQuestion {
   correctAnswer?: string;
   explanation: string;
   points: number;
+  grammarFocus?: string[];
+  vocabularyFocus?: string[];
+  level?: LanguageLevel;
   rubric?: {
     content: number;
     organization: number;
@@ -70,6 +74,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
     total: 0
   });
   const [completed, setCompleted] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
   const [startTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
@@ -302,6 +307,145 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                 />
               </CardContent>
             </Card>
+
+            <Box sx={{ textAlign: "center" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowAnalysis(true)}
+                sx={{ mt: 2 }}
+              >
+                Voir les analyses détaillées
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
+
+  // Écran d'analyse détaillée
+  if (showAnalysis && testData) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Button
+          variant="text"
+          onClick={() => setShowAnalysis(false)}
+          sx={{ mb: 2 }}
+        >
+          ← Retour aux résultats
+        </Button>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" gutterBottom align="center" sx={{ mb: 3 }}>
+              📊 Analyses de Compréhension Détaillées
+            </Typography>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+              Test : {testData.title}
+            </Typography>
+
+            {testData.sections.map((section, sectionIdx) => (
+              <Box key={section.id} sx={{ mb: 4 }}>
+                <Divider sx={{ mb: 2 }} />
+                <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
+                  {section.name}
+                </Typography>
+
+                {section.questions.map((question, qIdx) => {
+                  const userAnswer = answers[question.id];
+                  const isCorrect = question.type === "essay"
+                    ? userAnswer && userAnswer.length > 50
+                    : userAnswer && question.correctAnswer
+                    ? userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
+                    : false;
+
+                  return (
+                    <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>
+                      <CardContent>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                          <Chip
+                            label={`Question ${qIdx + 1}`}
+                            color={isCorrect ? "success" : "error"}
+                            variant={isCorrect ? "filled" : "outlined"}
+                          />
+                          <Chip
+                            label={`${question.points} points`}
+                            variant="outlined"
+                          />
+                        </Box>
+
+                        <Typography variant="h6" gutterBottom>
+                          {question.text}
+                        </Typography>
+
+                        {section.type === "listening" && question.audioText && (
+                          <Alert severity="info" sx={{ mb: 2 }}>
+                            <Typography variant="body2">
+                              <strong>Audio :</strong> {question.audioText}
+                            </Typography>
+                          </Alert>
+                        )}
+
+                        {question.options && (
+                          <Box sx={{ mb: 2 }}>
+                            <Typography variant="subtitle2" gutterBottom>
+                              Options :
+                            </Typography>
+                            {question.options.map((option, optIdx) => (
+                              <Typography
+                                key={optIdx}
+                                variant="body2"
+                                sx={{
+                                  p: 1,
+                                  mb: 0.5,
+                                  bgcolor: option === question.correctAnswer ? "success.light" : 
+                                          option === userAnswer && !isCorrect ? "error.light" : "grey.50",
+                                  borderRadius: 1
+                                }}
+                              >
+                                {option === question.correctAnswer && "✅ "}
+                                {option === userAnswer && !isCorrect && "❌ "}
+                                {option}
+                              </Typography>
+                            ))}
+                          </Box>
+                        )}
+
+                        {userAnswer && question.type !== "essay" && (
+                          generateComprehensionAnalysis({
+                            questionId: question.id,
+                            level: question.level || testData.level || "C1",
+                            isCorrect: isCorrect,
+                            questionText: question.text,
+                            userAnswer: userAnswer,
+                            correctAnswer: question.correctAnswer || "",
+                            grammarFocus: question.grammarFocus,
+                            vocabularyFocus: question.vocabularyFocus,
+                            customExplanation: question.explanation
+                          })
+                        )}
+
+                        {question.type === "essay" && userAnswer && (
+                          <Box sx={{ mt: 2 }}>
+                            <Typography variant="subtitle2" gutterBottom>
+                              <strong>Votre réponse :</strong>
+                            </Typography>
+                            <Typography variant="body2" sx={{ mb: 2, p: 2, bgcolor: "grey.50", borderRadius: 1 }}>
+                              {userAnswer}
+                            </Typography>
+                            <Alert severity="info">
+                              <Typography variant="body2">
+                                <strong>Explication :</strong> {question.explanation}
+                              </Typography>
+                            </Alert>
+                          </Box>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </Box>
+            ))}
           </CardContent>
         </Card>
       </Box>

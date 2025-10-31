@@ -8,12 +8,13 @@ import React, { useState, useEffect } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
   FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid
+  Step, StepLabel, Chip, Grid, Divider
 } from "@mui/material";
 import { Headphones, MenuBook, CheckCircle, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
+import { generateComprehensionAnalysis } from "../../utils/comprehensionAnalysis";
 
 interface TOEICTestData {
   id: string;
@@ -59,6 +60,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [scores, setScores] = useState<{ grammar: number; listening: number; total: number }>({ grammar: 0, listening: 0, total: 0 });
   const [completed, setCompleted] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
   const [startTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
@@ -285,7 +287,125 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
               <Typography variant="body2" color="text.secondary" paragraph>
                 Temps total: {Math.floor(elapsedTime / 60)} min {elapsedTime % 60} sec
               </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowAnalysis(true)}
+                sx={{ mt: 2 }}
+              >
+                Voir les analyses détaillées
+              </Button>
             </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
+
+  // Écran d'analyse détaillée
+  if (showAnalysis && testData) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Button
+          variant="text"
+          onClick={() => setShowAnalysis(false)}
+          sx={{ mb: 2 }}
+        >
+          ← Retour aux résultats
+        </Button>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" gutterBottom align="center" sx={{ mb: 3 }}>
+              📊 Analyses de Compréhension Détaillées
+            </Typography>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+              Test : {testData.title}
+            </Typography>
+
+            {testData.sections.map((section, sectionIdx) => (
+              <Box key={section.id} sx={{ mb: 4 }}>
+                <Divider sx={{ mb: 2 }} />
+                <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
+                  {section.name}
+                </Typography>
+
+                {section.questions.map((question, qIdx) => {
+                  const userAnswer = answers[question.id];
+                  const isCorrect = userAnswer && question.correctAnswer 
+                    ? userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
+                    : false;
+
+                  return (
+                    <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>
+                      <CardContent>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                          <Chip
+                            label={`Question ${qIdx + 1}`}
+                            color={isCorrect ? "success" : "error"}
+                            variant={isCorrect ? "filled" : "outlined"}
+                          />
+                          <Chip
+                            label={`${question.points} points`}
+                            variant="outlined"
+                          />
+                        </Box>
+
+                        <Typography variant="h6" gutterBottom>
+                          {question.text}
+                        </Typography>
+
+                        {section.type === "listening" && question.audioText && (
+                          <Alert severity="info" sx={{ mb: 2 }}>
+                            <Typography variant="body2">
+                              <strong>Audio :</strong> {question.audioText}
+                            </Typography>
+                          </Alert>
+                        )}
+
+                        {question.options && (
+                          <Box sx={{ mb: 2 }}>
+                            <Typography variant="subtitle2" gutterBottom>
+                              Options :
+                            </Typography>
+                            {question.options.map((option, optIdx) => (
+                              <Typography
+                                key={optIdx}
+                                variant="body2"
+                                sx={{
+                                  p: 1,
+                                  mb: 0.5,
+                                  bgcolor: option === question.correctAnswer ? "success.light" : 
+                                          option === userAnswer && !isCorrect ? "error.light" : "grey.50",
+                                  borderRadius: 1
+                                }}
+                              >
+                                {option === question.correctAnswer && "✅ "}
+                                {option === userAnswer && !isCorrect && "❌ "}
+                                {option}
+                              </Typography>
+                            ))}
+                          </Box>
+                        )}
+
+                        {userAnswer && (
+                          generateComprehensionAnalysis({
+                            questionId: question.id,
+                            level: question.level || testData.level || "B2",
+                            isCorrect: isCorrect,
+                            questionText: question.text,
+                            userAnswer: userAnswer,
+                            correctAnswer: question.correctAnswer,
+                            grammarFocus: question.grammarFocus,
+                            vocabularyFocus: question.vocabularyFocus,
+                            customExplanation: question.explanation
+                          })
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </Box>
+            ))}
           </CardContent>
         </Card>
       </Box>
