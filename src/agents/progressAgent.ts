@@ -12,8 +12,12 @@
  */
 
 import { UserResponse, ProgressAnalysis, Exercise, LanguageLevel, UserProfile } from "../types";
-import { tokenize, SentimentAnalyzer, PorterStemmer } from "natural";
 import * as _ from "lodash";
+
+// Simple tokenizer for browser (replaces natural.js tokenize)
+const tokenize = (text: string): string[] => {
+  return text.toLowerCase().match(/\b\w+\b/g) || [];
+};
 
 interface WeaknessPattern {
   type: "grammar" | "vocabulary" | "pronunciation";
@@ -266,4 +270,56 @@ export class ProgressAgent {
 }
 
 export const progressAgent = new ProgressAgent();
+
+/**
+ * Fonction utilitaire pour analyser la progression utilisateur
+ * (wrapper simplifié autour de ProgressAgent)
+ */
+export const analyzeUserProgress = (responses: UserResponse[]): ProgressAnalysis => {
+  if (responses.length === 0) {
+    return {
+      overallScore: 0,
+      grammarScore: 0,
+      vocabularyScore: 0,
+      weakAreas: [],
+      strongAreas: [],
+      recommendedExercises: []
+    };
+  }
+
+  const correctAnswers = responses.filter(r => r.isCorrect).length;
+  const overallScore = Math.round((correctAnswers / responses.length) * 100);
+
+  // Analyser les patterns d'erreurs
+  const incorrectResponses = responses.filter(r => !r.isCorrect);
+  const weakAreas: string[] = [];
+
+  // Détecter les domaines faibles
+  if (incorrectResponses.length > responses.length * 0.3) {
+    weakAreas.push("Grammaire générale");
+  }
+  if (incorrectResponses.length > responses.length * 0.4) {
+    weakAreas.push("Vocabulaire technique");
+  }
+  if (incorrectResponses.length > responses.length * 0.5) {
+    weakAreas.push("Compréhension globale");
+  }
+
+  const strongAreas: string[] = [];
+  if (overallScore >= 80) {
+    strongAreas.push("Compréhension globale");
+  }
+  if (overallScore >= 90) {
+    strongAreas.push("Maîtrise technique");
+  }
+
+  return {
+    overallScore,
+    grammarScore: overallScore,
+    vocabularyScore: overallScore,
+    weakAreas,
+    strongAreas,
+    recommendedExercises: ["qcm_001", "cloze_001"]
+  };
+};
 

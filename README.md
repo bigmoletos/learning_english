@@ -51,7 +51,7 @@
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/ton-utilisateur/learning_english.git
+git clone https://github.com/bigmoletos/learning_english.git
 cd learning_english
 
 # 2. Installer les dépendances

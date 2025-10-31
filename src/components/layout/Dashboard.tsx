@@ -1,19 +1,24 @@
 /**
  * Composant Dashboard - Vue principale de l'application
- * @version 1.0.0
+ * @version 1.1.0
  * @date 31-10-2025
  */
 
 import React from "react";
 import {
-  Box, Grid, Card, CardContent, Typography, LinearProgress, Chip
+  Box, Grid, Card, CardContent, Typography, LinearProgress, Chip, Button, Alert
 } from "@mui/material";
 import {
-  TrendingUp, School, Timer, EmojiEvents, MenuBook, Psychology
+  TrendingUp, School, Timer, EmojiEvents, MenuBook, Psychology, Refresh, Assessment
 } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onStartAssessment?: () => void;
+  onNavigate?: (view: string) => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavigate }) => {
   const { user, stats } = useUser();
 
   if (!user) return null;
@@ -22,9 +27,37 @@ export const Dashboard: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 3, fontWeight: "bold" }}>
-        Tableau de bord
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          Tableau de bord
+        </Typography>
+        <Chip
+          label={`Niveau ${user.currentLevel} → Objectif ${user.targetLevel}`}
+          color="primary"
+          sx={{ fontSize: "0.9rem", py: 2 }}
+        />
+      </Box>
+
+      {/* Alerte pour refaire l'évaluation */}
+      <Alert
+        severity="info"
+        action={
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={<Refresh />}
+            onClick={onStartAssessment}
+          >
+            Refaire
+          </Button>
+        }
+        sx={{ mb: 3 }}
+      >
+        <Typography variant="body2">
+          <strong>Conseil :</strong> Vous pouvez refaire l'évaluation de niveau à tout moment 
+          pour ajuster votre programme d'apprentissage en fonction de vos progrès.
+        </Typography>
+      </Alert>
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={3}>
@@ -100,6 +133,54 @@ export const Dashboard: React.FC = () => {
           </Card>
         </Grid>
 
+        {/* Actions rapides */}
+        <Grid item xs={12} md={6}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <Assessment sx={{ mr: 1, color: "primary.main" }} />
+                <Typography variant="h6">Évaluation de niveau</Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" paragraph>
+                Refaites l'évaluation complète (18 questions - Listening, Reading, Writing) 
+                pour mettre à jour votre niveau et adapter votre programme.
+              </Typography>
+              <Button
+                variant="outlined"
+                fullWidth
+                startIcon={<Refresh />}
+                onClick={onStartAssessment}
+                sx={{ mt: 2 }}
+              >
+                Refaire l'évaluation
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <TrendingUp sx={{ mr: 1, color: "success.main" }} />
+                <Typography variant="h6">Programme adaptatif</Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" paragraph>
+                Consultez votre programme d'apprentissage personnalisé qui s'adapte 
+                automatiquement en fonction de vos performances et points faibles.
+              </Typography>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => onNavigate?.("learning")}
+                sx={{ mt: 2 }}
+              >
+                Voir mon programme
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+
         <Grid item xs={12} md={6}>
           <Card elevation={3}>
             <CardContent>
@@ -159,4 +240,3 @@ export const Dashboard: React.FC = () => {
     </Box>
   );
 };
-

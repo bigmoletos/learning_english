@@ -1,0 +1,103 @@
+{
+  "project": {
+    "name": "AI English Trainer for IT Professionals (B2→C1)",
+    "description": "Outil d'entraînement en anglais technique (IA, DevOps, Cybersécurité) avec agent IA, reconnaissance vocale, et préparation TOEIC/TOEFL. Adaptatif et orienté métiers : dette technique, Vibe Coding, RAG, MLOps, RGPD, IA Act.",
+    "language": "TypeScript/React",
+    "domain": "Computer Science & AI",
+    "goals": [
+      "Atteindre le niveau C1 en anglais technique (IA/DevOps) en 6-12 mois",
+      "Préparation intensive TOEIC/TOEFL (B2→C1)",
+      "Analyse des réponses par agent IA pour progression personnalisée",
+      "Intégration de la reconnaissance vocale et synthèse text-to-speech",
+      "Respect des normes RGPD/IA Act dans les contenus"
+    ]
+  },
+  "coding_rules": {
+    "general": {
+      "indentation": 2,
+      "quotes": "double",
+      "semicolons": true,
+      "file_size_limit": 300,
+      "ai_assistance": {
+        "context_window": 12000,
+        "temperature": 0.2,
+        "top_p": 0.95,
+        "stop_sequences": ["\n\n", "---"]
+      }
+    },
+    "react": {
+      "functional_components": true,
+      "hooks": ["useState", "useEffect", "useContext", "useReducer"],
+      "folders": {
+        "agents": "Logique des agents IA (analyse, scoring)",
+        "corpus": "Documents techniques et ressources linguistiques"
+      }
+    },
+    "ai_features": {
+      "response_analysis": {
+        "grammar_check": true,
+        "technical_accuracy": true,
+        "vocabulary_suggestions": true,
+        "weakness_detection": ["grammar", "technical_terms", "pronunciation"]
+      },
+      "progression_system": {
+        "adaptive_difficulty": true,
+        "spaced_repetition": true,
+        "focus_areas": [
+          "Angular memory leaks",
+          "Vibe Coding with Cursor",
+          "RAG systems & GDPR",
+          "MLOps/CI-CD pipelines",
+          "IA Act compliance"
+        ]
+      },
+      "corpus_generation": {
+        "technical_docs": 100,
+        "grammar_rules": {
+          "levels": ["B1", "B2", "C1"],
+          "topics": ["tenses", "prepositions", "technical_writing"]
+        },
+        "dictionaries": {
+          "fr_en": 4000,
+          "en_fr": 4000,
+          "focus": "IT, AI, Cybersecurity, DevOps"
+        },
+        "exercises": {
+          "toeic_toefl": {
+            "levels": ["A2", "B1", "B2", "C1"],
+            "types": ["listening", "reading", "writing", "speaking"]
+          },
+          "qcm": 200,
+          "cloze_tests": 200,
+          "sample_answers": true
+        }
+      }
+    },
+  "security": {
+    "data_protection": {
+      "encrypt_localStorage": true,
+      "anonymous_metrics": true,
+      "compliance": ["GDPR", "IA Act"]
+    }
+  },
+  "prompts": {
+    "examples": [
+      {
+        "request": "Génère un exercice de type 'writing' niveau B2 sur le thème 'Debugging Angular memory leaks with AI tools', avec une analyse modèle des réponses possibles et des feedbacks détaillés pour chaque erreur type.",
+        "context": "Utilise le corpus technique et les règles grammaticales niveau B2."
+      },
+      {
+        "request": "Crée un agent IA dans src/agents/progressAgent.ts qui analyse les réponses écrites/orales de l'utilisateur, détecte les faiblesses (grammaire, vocabulaire technique, précision), et propose un plan de progression avec 3 exercices ciblés.",
+        "output": "Code TypeScript avec logique de scoring et suggestions."
+      },
+      {
+        "request": "Génère 10 documents techniques (200-300 mots) sur les thèmes : RAG systems, MLOps pipelines, GDPR for AI, Vibe Coding, et CI-CD for AI models. Format Markdown, niveau B2/C1.",
+        "output": "Fichiers MD dans public/corpus/technical/."
+      },
+      {
+        "request": "Propose 5 questions TOEFL niveau C1 sur le thème 'Ethics in AI and IA Act compliance', avec explications des réponses et pièges courants.",
+        "output": "JSON pour src/data/toeflQuestions.js."
+      }
+    ]
+  }
+}

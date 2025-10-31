@@ -17,6 +17,9 @@ import {
 import { UserProvider } from "./contexts/UserContext";
 import { Dashboard } from "./components/layout/Dashboard";
 import { ProgressTracker } from "./components/progress/ProgressTracker";
+import { ExerciseList } from "./components/exercises/ExerciseList";
+import { ComprehensiveAssessment } from "./components/tests/ComprehensiveAssessment";
+import { AdaptiveLearningPlan } from "./components/learning/AdaptiveLearningPlan";
 
 const theme = createTheme({
   palette: {
@@ -44,36 +47,57 @@ const theme = createTheme({
   }
 });
 
-type ViewType = "dashboard" | "exercises" | "progress" | "tests";
+type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning";
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>("dashboard");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showAssessment, setShowAssessment] = useState(() => {
+    return !localStorage.getItem("levelAssessed");
+  });
 
   const menuItems = [
     { id: "dashboard" as ViewType, label: "Tableau de bord", icon: <DashboardIcon /> },
+    { id: "learning" as ViewType, label: "Mon Programme", icon: <Assessment /> },
     { id: "exercises" as ViewType, label: "Exercices", icon: <School /> },
     { id: "progress" as ViewType, label: "Progression", icon: <Assessment /> },
     { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> }
   ];
 
+  const handleAssessmentComplete = () => {
+    localStorage.setItem("levelAssessed", "true");
+    setShowAssessment(false);
+    setCurrentView("learning");
+  };
+
+  const handleStartAssessment = () => {
+    localStorage.removeItem("levelAssessed");
+    setShowAssessment(true);
+  };
+
+  const handleNavigate = (view: string) => {
+    setCurrentView(view as ViewType);
+  };
+
   const renderView = () => {
+    if (showAssessment) {
+      return <ComprehensiveAssessment onComplete={handleAssessmentComplete} />;
+    }
+
     switch (currentView) {
       case "dashboard":
-        return <Dashboard />;
+        return (
+          <Dashboard
+            onStartAssessment={handleStartAssessment}
+            onNavigate={handleNavigate}
+          />
+        );
+      case "learning":
+        return <AdaptiveLearningPlan />;
       case "progress":
         return <ProgressTracker />;
       case "exercises":
-        return (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom>
-              Exercices
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Section des exercices en construction. Bientôt disponible !
-            </Typography>
-          </Box>
-        );
+        return <ExerciseList />;
       case "tests":
         return (
           <Box sx={{ p: 3 }}>
@@ -86,7 +110,12 @@ const App: React.FC = () => {
           </Box>
         );
       default:
-        return <Dashboard />;
+        return (
+          <Dashboard
+            onStartAssessment={handleStartAssessment}
+            onNavigate={handleNavigate}
+          />
+        );
     }
   };
 

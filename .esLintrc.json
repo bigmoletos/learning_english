@@ -1,0 +1,221 @@
+{
+    /*
+     * ENVIRONNEMENTS
+     * Déclare les environnements dans lesquels le code s'exécute.
+     * Cela permet à ESLint de connaître les variables globales disponibles.
+     */
+    "env": {
+      "browser": true,   // Active les variables globales du navigateur (window, document, etc.)
+      "es2021": true,    // Active les fonctionnalités ES2021 (ex: Promise.any, replaceAll)
+      "node": true       // Active les variables globales Node.js (require, module, etc.)
+    },
+  
+    /*
+     * EXTENSIONS
+     * Étend les configurations ESLint existantes pour hériter de leurs règles.
+     * Ordre important : les règles des extensions ultérieures écrasent les précédentes.
+     */
+    "extends": [
+      "eslint:recommended",                // Règles de base recommandées par ESLint
+      "plugin:react/recommended",          // Règles spécifiques à React
+      "plugin:react-hooks/recommended",    // Règles pour les React Hooks (useState, useEffect, etc.)
+      "plugin:@typescript-eslint/recommended", // Règles TypeScript (remplace certaines règles JS)
+      "plugin:jsx-a11y/recommended",       // Règles d'accessibilité pour JSX
+      "plugin:prettier/recommended",       // Désactive les règles ESLint en conflit avec Prettier
+      "plugin:import/recommended",         // Règles pour la gestion des imports/exports
+      "plugin:import/typescript"           // Support TypeScript pour les règles d'import
+    ],
+  
+    /*
+     * PARSEUR
+     * Spécifie le parseur à utiliser pour analyser le code.
+     * @typescript-eslint/parser permet à ESLint de comprendre la syntaxe TypeScript.
+     */
+    "parser": "@typescript-eslint/parser",
+  
+    /*
+     * OPTIONS DU PARSEUR
+     * Configure le comportement du parseur.
+     */
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true  // Active le support JSX
+      },
+      "ecmaVersion": "latest",  // Utilise la dernière version d'ECMAScript
+      "sourceType": "module"    // Active le support des modules ES (import/export)
+    },
+  
+    /*
+     * PLUGINS
+     * Liste des plugins ESLint à utiliser.
+     * Chaque plugin ajoute des règles spécifiques.
+     */
+    "plugins": [
+      "react",                // Plugin pour React
+      "@typescript-eslint",   // Plugin pour TypeScript
+      "jsx-a11y",             // Plugin pour l'accessibilité JSX
+      "prettier",             // Plugin pour intégrer Prettier
+      "import"                // Plugin pour gérer les imports/exports
+    ],
+  
+    /*
+     * RÈGLES
+     * Configuration personnalisée des règles ESLint.
+     * Format: "nom-de-la-règle": ["niveau", "options"]
+     * Niveaux: "off" (0), "warn" (1), "error" (2)
+     */
+    "rules": {
+      /* ========== RÈGLES DE BASE ========== */
+      "indent": ["error", 2],  // Force une indentation de 2 espaces (standard React/JS)
+      "quotes": ["error", "double"],  // Utilise des guillemets doubles ("") pour les chaînes
+      "semi": ["error", "always"],  // Oblige à mettre un point-virgule à la fin des instructions
+      "no-console": "warn",  // Avertit si console.log() est utilisé (utile en production)
+  
+      /* ========== RÈGLES REACT ========== */
+      "react/prop-types": "off",  // Désactive la vérification des propTypes (TypeScript les remplace)
+      "react/react-in-jsx-scope": "off",  // Pas besoin d'importer React dans chaque fichier (React 17+)
+      "react/self-closing-comp": ["error", {
+        "component": true,  // Force les composants sans enfants à être auto-fermants (<Comp />)
+        "html": true         // Force les balises HTML sans enfants à être auto-fermantes (<img />)
+      }],
+      "react/jsx-uses-react": "off",  // Pas besoin d'importer React avec la nouvelle JSX transform
+      "react/jsx-uses-vars": "error",  // Vérifie que les variables JSX sont utilisées
+  
+      /* ========== RÈGLES TYPESCRIPT ========== */
+      "@typescript-eslint/explicit-function-return-type": "off",  // Pas obligatoire de typer le retour des fonctions
+      "@typescript-eslint/no-explicit-any": "warn",  // Avertit si 'any' est utilisé (mauvais pour le typage fort)
+      "@typescript-eslint/explicit-module-boundary-types": "off",  // Pas obligatoire de typer les exports
+  
+      /* ========== RÈGLES D'IMPORT ========== */
+      // Détecte les imports qui ne résolvent pas (fichiers ou modules introuvables)
+      "import/no-unresolved": "error",
+  
+      // Vérifie que les imports nommés existent dans le module
+      "import/named": "error",
+  
+      // Vérifie les imports de namespace (ex: import * as ns from "mod")
+      "import/namespace": "error",
+  
+      // Vérifie les imports par défaut (ex: import React from "react")
+      "import/default": "error",
+  
+      // Vérifie les exports
+      "import/export": "error",
+  
+      // Évite les imports dupliqués (ex: deux imports de @mui/material)
+      "import/no-duplicates": "error",
+  
+      // Force une ligne vide après les imports pour une meilleure lisibilité
+      "import/newline-after-import": "error",
+  
+      // Définit un ordre logique pour les imports
+      "import/order": ["error", {
+        "groups": [
+          "builtin",   // Modules natifs (ex: react, fs)
+          "external",  // Bibliothèques externes (ex: @mui/material)
+          "internal",  // Imports internes (ex: @/components)
+          "parent",    // Imports depuis le dossier parent (ex: ../)
+          "sibling",   // Imports depuis le même dossier (ex: ./)
+          "index"      // Imports depuis index.js
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react*",  // Tous les imports commençant par "react"
+            "group": "builtin",   // Les place dans le groupe "builtin"
+            "position": "before"  // Les place avant les autres groupes
+          },
+          {
+            "pattern": "@mui/**",  // Tous les imports de @mui
+            "group": "external",  // Les place dans le groupe "external"
+            "position": "after"   // Les place après les autres externes
+          }
+        ],
+        "alphabetize": {
+          "order": "asc",         // Trie les imports par ordre alphabétique
+          "caseInsensitive": true // Ignore la casse pour le tri
+        }
+      }],
+  
+      /* ========== RÈGLES D'ACCESSIBILITÉ (a11y) ========== */
+      // Oblige à ajouter un texte alternatif aux images
+      "jsx-a11y/alt-text": ["error", {
+        "elements": ["img", "object", "area"],  // Balises concernées
+        "img": ["Image"]  // Composants personnalisés à vérifier (ex: <Image src="..." />)
+      }],
+  
+      // Vérifie que les ancres (<a>) sont valides
+      "jsx-a11y/anchor-is-valid": ["error", {
+        "components": ["Link"],       // Composants personnalisés à vérifier (ex: <Link to="..." />)
+        "specialLink": ["to"]         // Propriétés spéciales à vérifier (ex: to pour react-router)
+      }],
+  
+      // Vérifie les props ARIA valides
+      "jsx-a11y/aria-props": "error",
+  
+      // Vérifie les types des props ARIA
+      "jsx-a11y/aria-proptypes": "error",
+  
+      // Vérifie les rôles ARIA valides
+      "jsx-a11y/aria-role": ["error", {
+        "ignoreNonDOM": true  // Ignore les rôles sur les éléments non-DOM (ex: SVG)
+      }],
+  
+      // Vérifie que les titres (<h1>, <h2>, etc.) ont un contenu
+      "jsx-a11y/heading-has-content": "error",
+  
+      // Vérifie que les labels sont associés à un contrôle de formulaire
+      "jsx-a11y/label-has-associated-control": ["error", {
+        "controlComponents": ["Input"]  // Composants personnalisés à vérifier (ex: <Input />)
+      }],
+  
+      /* ========== RÈGLES PRETTIER (FORMATAGE) ========== */
+      "prettier/prettier": ["error", {
+        "endOfLine": "auto",          // Fin de ligne automatique (CRLF/LF selon l'OS)
+        "printWidth": 100,            // Largeur maximale d'une ligne (100 caractères)
+        "tabWidth": 2,                // Largeur d'une tabulation (2 espaces)
+        "useTabs": false,             // Utilise des espaces au lieu de tabulations
+        "semi": true,                 // Ajoute un point-virgule à la fin des instructions
+        "singleQuote": false,         // Utilise des guillemets doubles
+        "trailingComma": "es5",       // Ajoute une virgule finale dans les objets/tableaux (style ES5)
+        "bracketSpacing": true,       // Ajoute un espace dans les objets (ex: { foo: bar })
+        "jsxSingleQuote": false,      // Utilise des guillemets doubles en JSX
+        "arrowParens": "always"       // Ajoute toujours des parenthèses autour des params des fonctions fléchées
+      }]
+    },
+  
+    /*
+     * PARAMÈTRES
+     * Configuration supplémentaire pour les plugins.
+     */
+    "settings": {
+      "react": {
+        "version": "detect"  // Détecte automatiquement la version de React utilisée
+      },
+      "import/resolver": {
+        // Configure le resolver pour qu'il utilise TypeScript
+        "typescript": {
+          "alwaysTryTypes": true  // Résout aussi les fichiers .d.ts (déclarations TypeScript)
+        },
+        // Configure le resolver Node.js
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]  // Extensions de fichiers à résoudre
+        }
+      }
+    },
+  
+    /*
+     * SURCHARGES
+     * Règles spécifiques pour certains fichiers.
+     */
+    "overrides": [
+      {
+        // Applique ces règles uniquement aux fichiers de test
+        "files": ["**/*.test.ts", "**/*.test.tsx"],
+        "rules": {
+          // Autorise l'opérateur non-null (!) dans les tests (ex: expect(element!).toBeInTheDOM())
+          "@typescript-eslint/no-non-null-assertion": "off"
+        }
+      }
+    ]
+  }
+  
