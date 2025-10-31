@@ -1,0 +1,4505 @@
+{
+  "texts": [
+    {
+      "id": "listening_001",
+      "level": "A2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 1",
+      "duration": 122,
+      "transcript": "Transcript for listening exercise 1 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_001.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_002",
+      "level": "A2",
+      "topic": "Agile",
+      "title": "Agile - Listening 2",
+      "duration": 124,
+      "transcript": "Transcript for listening exercise 2 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_002.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_003",
+      "level": "A2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 3",
+      "duration": 126,
+      "transcript": "Transcript for listening exercise 3 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_003.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_004",
+      "level": "A2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 4",
+      "duration": 128,
+      "transcript": "Transcript for listening exercise 4 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_004.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_005",
+      "level": "A2",
+      "topic": "IoT",
+      "title": "IoT - Listening 5",
+      "duration": 130,
+      "transcript": "Transcript for listening exercise 5 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_005.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_006",
+      "level": "A2",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 6",
+      "duration": 132,
+      "transcript": "Transcript for listening exercise 6 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_006.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_007",
+      "level": "A2",
+      "topic": "5G",
+      "title": "5G - Listening 7",
+      "duration": 134,
+      "transcript": "Transcript for listening exercise 7 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_007.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_008",
+      "level": "A2",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 8",
+      "duration": 136,
+      "transcript": "Transcript for listening exercise 8 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_008.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_009",
+      "level": "A2",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 9",
+      "duration": 138,
+      "transcript": "Transcript for listening exercise 9 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_009.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_010",
+      "level": "A2",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 10",
+      "duration": 140,
+      "transcript": "Transcript for listening exercise 10 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_010.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_011",
+      "level": "A2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 11",
+      "duration": 142,
+      "transcript": "Transcript for listening exercise 11 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_011.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_012",
+      "level": "A2",
+      "topic": "Agile",
+      "title": "Agile - Listening 12",
+      "duration": 144,
+      "transcript": "Transcript for listening exercise 12 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_012.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_013",
+      "level": "A2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 13",
+      "duration": 146,
+      "transcript": "Transcript for listening exercise 13 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_013.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_014",
+      "level": "A2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 14",
+      "duration": 148,
+      "transcript": "Transcript for listening exercise 14 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_014.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_015",
+      "level": "A2",
+      "topic": "IoT",
+      "title": "IoT - Listening 15",
+      "duration": 150,
+      "transcript": "Transcript for listening exercise 15 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_015.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_016",
+      "level": "A2",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 16",
+      "duration": 152,
+      "transcript": "Transcript for listening exercise 16 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_016.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_017",
+      "level": "A2",
+      "topic": "5G",
+      "title": "5G - Listening 17",
+      "duration": 154,
+      "transcript": "Transcript for listening exercise 17 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_017.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_018",
+      "level": "A2",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 18",
+      "duration": 156,
+      "transcript": "Transcript for listening exercise 18 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_018.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_019",
+      "level": "A2",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 19",
+      "duration": 158,
+      "transcript": "Transcript for listening exercise 19 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_019.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_020",
+      "level": "A2",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 20",
+      "duration": 160,
+      "transcript": "Transcript for listening exercise 20 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_020.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_021",
+      "level": "A2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 21",
+      "duration": 162,
+      "transcript": "Transcript for listening exercise 21 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_021.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_022",
+      "level": "A2",
+      "topic": "Agile",
+      "title": "Agile - Listening 22",
+      "duration": 164,
+      "transcript": "Transcript for listening exercise 22 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_022.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_023",
+      "level": "A2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 23",
+      "duration": 166,
+      "transcript": "Transcript for listening exercise 23 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_023.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_024",
+      "level": "A2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 24",
+      "duration": 168,
+      "transcript": "Transcript for listening exercise 24 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_024.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_025",
+      "level": "A2",
+      "topic": "IoT",
+      "title": "IoT - Listening 25",
+      "duration": 170,
+      "transcript": "Transcript for listening exercise 25 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_025.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_026",
+      "level": "B1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 26",
+      "duration": 172,
+      "transcript": "Transcript for listening exercise 26 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_026.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_027",
+      "level": "B1",
+      "topic": "5G",
+      "title": "5G - Listening 27",
+      "duration": 174,
+      "transcript": "Transcript for listening exercise 27 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_027.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_028",
+      "level": "B1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 28",
+      "duration": 176,
+      "transcript": "Transcript for listening exercise 28 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_028.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_029",
+      "level": "B1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 29",
+      "duration": 178,
+      "transcript": "Transcript for listening exercise 29 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_029.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_030",
+      "level": "B1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 30",
+      "duration": 180,
+      "transcript": "Transcript for listening exercise 30 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_030.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_031",
+      "level": "B1",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 31",
+      "duration": 182,
+      "transcript": "Transcript for listening exercise 31 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_031.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_032",
+      "level": "B1",
+      "topic": "Agile",
+      "title": "Agile - Listening 32",
+      "duration": 184,
+      "transcript": "Transcript for listening exercise 32 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_032.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_033",
+      "level": "B1",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 33",
+      "duration": 186,
+      "transcript": "Transcript for listening exercise 33 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_033.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_034",
+      "level": "B1",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 34",
+      "duration": 188,
+      "transcript": "Transcript for listening exercise 34 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_034.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_035",
+      "level": "B1",
+      "topic": "IoT",
+      "title": "IoT - Listening 35",
+      "duration": 190,
+      "transcript": "Transcript for listening exercise 35 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_035.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_036",
+      "level": "B1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 36",
+      "duration": 192,
+      "transcript": "Transcript for listening exercise 36 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_036.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_037",
+      "level": "B1",
+      "topic": "5G",
+      "title": "5G - Listening 37",
+      "duration": 194,
+      "transcript": "Transcript for listening exercise 37 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_037.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_038",
+      "level": "B1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 38",
+      "duration": 196,
+      "transcript": "Transcript for listening exercise 38 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_038.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_039",
+      "level": "B1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 39",
+      "duration": 198,
+      "transcript": "Transcript for listening exercise 39 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_039.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_040",
+      "level": "B1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 40",
+      "duration": 200,
+      "transcript": "Transcript for listening exercise 40 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_040.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_041",
+      "level": "B1",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 41",
+      "duration": 202,
+      "transcript": "Transcript for listening exercise 41 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_041.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_042",
+      "level": "B1",
+      "topic": "Agile",
+      "title": "Agile - Listening 42",
+      "duration": 204,
+      "transcript": "Transcript for listening exercise 42 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_042.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_043",
+      "level": "B1",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 43",
+      "duration": 206,
+      "transcript": "Transcript for listening exercise 43 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_043.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_044",
+      "level": "B1",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 44",
+      "duration": 208,
+      "transcript": "Transcript for listening exercise 44 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_044.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_045",
+      "level": "B1",
+      "topic": "IoT",
+      "title": "IoT - Listening 45",
+      "duration": 210,
+      "transcript": "Transcript for listening exercise 45 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_045.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_046",
+      "level": "B1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 46",
+      "duration": 212,
+      "transcript": "Transcript for listening exercise 46 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_046.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_047",
+      "level": "B1",
+      "topic": "5G",
+      "title": "5G - Listening 47",
+      "duration": 214,
+      "transcript": "Transcript for listening exercise 47 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_047.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_048",
+      "level": "B1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 48",
+      "duration": 216,
+      "transcript": "Transcript for listening exercise 48 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_048.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_049",
+      "level": "B1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 49",
+      "duration": 218,
+      "transcript": "Transcript for listening exercise 49 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_049.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_050",
+      "level": "B1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 50",
+      "duration": 220,
+      "transcript": "Transcript for listening exercise 50 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_050.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_051",
+      "level": "B2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 51",
+      "duration": 222,
+      "transcript": "Transcript for listening exercise 51 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_051.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_052",
+      "level": "B2",
+      "topic": "Agile",
+      "title": "Agile - Listening 52",
+      "duration": 224,
+      "transcript": "Transcript for listening exercise 52 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_052.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_053",
+      "level": "B2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 53",
+      "duration": 226,
+      "transcript": "Transcript for listening exercise 53 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_053.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_054",
+      "level": "B2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 54",
+      "duration": 228,
+      "transcript": "Transcript for listening exercise 54 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_054.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_055",
+      "level": "B2",
+      "topic": "IoT",
+      "title": "IoT - Listening 55",
+      "duration": 230,
+      "transcript": "Transcript for listening exercise 55 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_055.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_056",
+      "level": "B2",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 56",
+      "duration": 232,
+      "transcript": "Transcript for listening exercise 56 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_056.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_057",
+      "level": "B2",
+      "topic": "5G",
+      "title": "5G - Listening 57",
+      "duration": 234,
+      "transcript": "Transcript for listening exercise 57 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_057.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_058",
+      "level": "B2",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 58",
+      "duration": 236,
+      "transcript": "Transcript for listening exercise 58 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_058.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_059",
+      "level": "B2",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 59",
+      "duration": 238,
+      "transcript": "Transcript for listening exercise 59 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_059.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_060",
+      "level": "B2",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 60",
+      "duration": 240,
+      "transcript": "Transcript for listening exercise 60 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_060.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_061",
+      "level": "B2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 61",
+      "duration": 242,
+      "transcript": "Transcript for listening exercise 61 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_061.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_062",
+      "level": "B2",
+      "topic": "Agile",
+      "title": "Agile - Listening 62",
+      "duration": 244,
+      "transcript": "Transcript for listening exercise 62 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_062.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_063",
+      "level": "B2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 63",
+      "duration": 246,
+      "transcript": "Transcript for listening exercise 63 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_063.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_064",
+      "level": "B2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 64",
+      "duration": 248,
+      "transcript": "Transcript for listening exercise 64 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_064.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_065",
+      "level": "B2",
+      "topic": "IoT",
+      "title": "IoT - Listening 65",
+      "duration": 250,
+      "transcript": "Transcript for listening exercise 65 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_065.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_066",
+      "level": "B2",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 66",
+      "duration": 252,
+      "transcript": "Transcript for listening exercise 66 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_066.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_067",
+      "level": "B2",
+      "topic": "5G",
+      "title": "5G - Listening 67",
+      "duration": 254,
+      "transcript": "Transcript for listening exercise 67 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_067.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_068",
+      "level": "B2",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 68",
+      "duration": 256,
+      "transcript": "Transcript for listening exercise 68 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_068.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_069",
+      "level": "B2",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 69",
+      "duration": 258,
+      "transcript": "Transcript for listening exercise 69 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_069.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_070",
+      "level": "B2",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 70",
+      "duration": 260,
+      "transcript": "Transcript for listening exercise 70 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_070.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_071",
+      "level": "B2",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 71",
+      "duration": 262,
+      "transcript": "Transcript for listening exercise 71 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_071.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_072",
+      "level": "B2",
+      "topic": "Agile",
+      "title": "Agile - Listening 72",
+      "duration": 264,
+      "transcript": "Transcript for listening exercise 72 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_072.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_073",
+      "level": "B2",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 73",
+      "duration": 266,
+      "transcript": "Transcript for listening exercise 73 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_073.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_074",
+      "level": "B2",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 74",
+      "duration": 268,
+      "transcript": "Transcript for listening exercise 74 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_074.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_075",
+      "level": "B2",
+      "topic": "IoT",
+      "title": "IoT - Listening 75",
+      "duration": 270,
+      "transcript": "Transcript for listening exercise 75 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_075.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_076",
+      "level": "C1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 76",
+      "duration": 272,
+      "transcript": "Transcript for listening exercise 76 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_076.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_077",
+      "level": "C1",
+      "topic": "5G",
+      "title": "5G - Listening 77",
+      "duration": 274,
+      "transcript": "Transcript for listening exercise 77 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_077.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_078",
+      "level": "C1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 78",
+      "duration": 276,
+      "transcript": "Transcript for listening exercise 78 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_078.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_079",
+      "level": "C1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 79",
+      "duration": 278,
+      "transcript": "Transcript for listening exercise 79 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_079.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_080",
+      "level": "C1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 80",
+      "duration": 280,
+      "transcript": "Transcript for listening exercise 80 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_080.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_081",
+      "level": "C1",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 81",
+      "duration": 282,
+      "transcript": "Transcript for listening exercise 81 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_081.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_082",
+      "level": "C1",
+      "topic": "Agile",
+      "title": "Agile - Listening 82",
+      "duration": 284,
+      "transcript": "Transcript for listening exercise 82 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_082.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_083",
+      "level": "C1",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 83",
+      "duration": 286,
+      "transcript": "Transcript for listening exercise 83 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_083.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_084",
+      "level": "C1",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 84",
+      "duration": 288,
+      "transcript": "Transcript for listening exercise 84 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_084.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_085",
+      "level": "C1",
+      "topic": "IoT",
+      "title": "IoT - Listening 85",
+      "duration": 290,
+      "transcript": "Transcript for listening exercise 85 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_085.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_086",
+      "level": "C1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 86",
+      "duration": 292,
+      "transcript": "Transcript for listening exercise 86 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_086.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_087",
+      "level": "C1",
+      "topic": "5G",
+      "title": "5G - Listening 87",
+      "duration": 294,
+      "transcript": "Transcript for listening exercise 87 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_087.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_088",
+      "level": "C1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 88",
+      "duration": 296,
+      "transcript": "Transcript for listening exercise 88 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_088.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_089",
+      "level": "C1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 89",
+      "duration": 298,
+      "transcript": "Transcript for listening exercise 89 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_089.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_090",
+      "level": "C1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 90",
+      "duration": 300,
+      "transcript": "Transcript for listening exercise 90 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_090.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_091",
+      "level": "C1",
+      "topic": "Cloud Migration",
+      "title": "Cloud Migration - Listening 91",
+      "duration": 302,
+      "transcript": "Transcript for listening exercise 91 about Cloud Migration. In modern IT, Cloud Migration represents...",
+      "audioFile": "listening_091.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Cloud Migration",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Cloud Migration"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_092",
+      "level": "C1",
+      "topic": "Agile",
+      "title": "Agile - Listening 92",
+      "duration": 304,
+      "transcript": "Transcript for listening exercise 92 about Agile. In modern IT, Agile represents...",
+      "audioFile": "listening_092.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Agile",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Agile"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_093",
+      "level": "C1",
+      "topic": "Microservices",
+      "title": "Microservices - Listening 93",
+      "duration": 306,
+      "transcript": "Transcript for listening exercise 93 about Microservices. In modern IT, Microservices represents...",
+      "audioFile": "listening_093.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Microservices",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Microservices"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_094",
+      "level": "C1",
+      "topic": "Blockchain",
+      "title": "Blockchain - Listening 94",
+      "duration": 308,
+      "transcript": "Transcript for listening exercise 94 about Blockchain. In modern IT, Blockchain represents...",
+      "audioFile": "listening_094.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Blockchain",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Blockchain"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_095",
+      "level": "C1",
+      "topic": "IoT",
+      "title": "IoT - Listening 95",
+      "duration": 310,
+      "transcript": "Transcript for listening exercise 95 about IoT. In modern IT, IoT represents...",
+      "audioFile": "listening_095.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "IoT",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "IoT"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_096",
+      "level": "C1",
+      "topic": "DevSecOps",
+      "title": "DevSecOps - Listening 96",
+      "duration": 312,
+      "transcript": "Transcript for listening exercise 96 about DevSecOps. In modern IT, DevSecOps represents...",
+      "audioFile": "listening_096.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "DevSecOps",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "DevSecOps"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_097",
+      "level": "C1",
+      "topic": "5G",
+      "title": "5G - Listening 97",
+      "duration": 314,
+      "transcript": "Transcript for listening exercise 97 about 5G. In modern IT, 5G represents...",
+      "audioFile": "listening_097.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "5G",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "5G"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_098",
+      "level": "C1",
+      "topic": "Quantum Computing",
+      "title": "Quantum Computing - Listening 98",
+      "duration": 316,
+      "transcript": "Transcript for listening exercise 98 about Quantum Computing. In modern IT, Quantum Computing represents...",
+      "audioFile": "listening_098.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Quantum Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Quantum Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_099",
+      "level": "C1",
+      "topic": "Edge Computing",
+      "title": "Edge Computing - Listening 99",
+      "duration": 318,
+      "transcript": "Transcript for listening exercise 99 about Edge Computing. In modern IT, Edge Computing represents...",
+      "audioFile": "listening_099.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "Edge Computing",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "Edge Computing"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    },
+    {
+      "id": "listening_100",
+      "level": "C1",
+      "topic": "AI Ethics",
+      "title": "AI Ethics - Listening 100",
+      "duration": 320,
+      "transcript": "Transcript for listening exercise 100 about AI Ethics. In modern IT, AI Ethics represents...",
+      "audioFile": "listening_100.mp3",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the main topic?",
+          "type": "multiple_choice",
+          "options": [
+            "AI Ethics",
+            "Other 1",
+            "Other 2",
+            "Other 3"
+          ],
+          "correctAnswer": "AI Ethics"
+        },
+        {
+          "id": "q2",
+          "text": "What is emphasized?",
+          "type": "multiple_choice",
+          "options": [
+            "Planning",
+            "Speed",
+            "Cost",
+            "Design"
+          ],
+          "correctAnswer": "Planning"
+        }
+      ],
+      "vocabulary": [
+        {
+          "word": "efficiency",
+          "definition": "Ability to accomplish with least waste"
+        },
+        {
+          "word": "implementation",
+          "definition": "Process of putting into effect"
+        }
+      ]
+    }
+  ],
+  "total": 100
+}

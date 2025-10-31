@@ -1,0 +1,190 @@
+{
+  "exercises": [
+    {
+      "id": "cloze_001",
+      "type": "cloze",
+      "level": "B2",
+      "domain": "technical_debt",
+      "title": "Technical Debt Management",
+      "description": "Complete the text about technical debt",
+      "estimatedTime": 5,
+      "difficulty": 2,
+      "content": "Understanding and managing technical debt is crucial for long-term software sustainability.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Technical debt occurs when development teams choose a quick solution now instead of ___ a better approach that would take longer.",
+          "correctAnswer": ["using", "implementing", "adopting"],
+          "explanation": "The preposition 'instead of' is followed by a gerund (verb + -ing). Common verbs here include 'using', 'implementing', or 'adopting'.",
+          "grammarFocus": ["gerunds", "prepositions"],
+          "vocabularyFocus": ["technical_debt"]
+        },
+        {
+          "id": "q2",
+          "text": "When debt accumulates, developers spend more time fixing bugs ___ building new features.",
+          "correctAnswer": ["than"],
+          "explanation": "'More...than' is used for comparisons. The sentence structure is 'spend more time doing X than doing Y'.",
+          "grammarFocus": ["comparatives", "parallel_structure"],
+          "vocabularyFocus": ["development_practices"]
+        },
+        {
+          "id": "q3",
+          "text": "Regular refactoring ___ debt from becoming overwhelming.",
+          "correctAnswer": ["prevents", "stops", "keeps"],
+          "explanation": "The verb must agree with the singular subject 'refactoring' and fit the meaning of stopping something negative. 'Prevents' is most common, but 'stops' or 'keeps' (with 'from') also work.",
+          "grammarFocus": ["present_simple", "subject_verb_agreement"],
+          "vocabularyFocus": ["refactoring"]
+        }
+      ]
+    },
+    {
+      "id": "cloze_002",
+      "type": "cloze",
+      "level": "B2",
+      "domain": "angular",
+      "title": "Angular Memory Leaks",
+      "description": "Complete the text about preventing memory leaks in Angular",
+      "estimatedTime": 6,
+      "difficulty": 3,
+      "content": "Memory leaks in Angular can severely degrade application performance.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "The most frequent cause of memory leaks in Angular ___ failing to unsubscribe from Observables.",
+          "correctAnswer": ["is"],
+          "explanation": "The subject 'cause' is singular, so we use 'is'. This is present simple tense for a general fact.",
+          "grammarFocus": ["present_simple", "subject_verb_agreement"],
+          "vocabularyFocus": ["memory_leaks", "angular"]
+        },
+        {
+          "id": "q2",
+          "text": "Event listeners attached to DOM elements must ___ when components are destroyed.",
+          "correctAnswer": ["be removed", "be detached", "be cleaned up"],
+          "explanation": "This requires passive voice (must + be + past participle) because the focus is on the action, not who performs it.",
+          "grammarFocus": ["passive_voice", "modals"],
+          "vocabularyFocus": ["event_handling"]
+        },
+        {
+          "id": "q3",
+          "text": "Angular's async pipe ___ handles subscriptions and unsubscriptions, eliminating many potential memory leaks.",
+          "correctAnswer": ["automatically"],
+          "explanation": "An adverb is needed to modify the verb 'handles'. 'Automatically' means it happens without manual intervention.",
+          "grammarFocus": ["adverbs"],
+          "vocabularyFocus": ["angular_features"]
+        }
+      ]
+    },
+    {
+      "id": "cloze_003",
+      "type": "cloze",
+      "level": "C1",
+      "domain": "ai_act",
+      "title": "EU AI Act Compliance",
+      "description": "Complete the text about AI Act requirements",
+      "estimatedTime": 7,
+      "difficulty": 4,
+      "content": "The EU AI Act establishes comprehensive regulation for artificial intelligence systems.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "The AI Act follows a risk-based approach, ___ regulatory attention is focused on high-risk applications.",
+          "correctAnswer": ["whereby", "where", "wherein"],
+          "explanation": "These formal connectors introduce a clause explaining how the risk-based approach works. 'Whereby' is most formal and common in legal/regulatory contexts.",
+          "grammarFocus": ["relative_clauses", "formal_connectors"],
+          "vocabularyFocus": ["ai_regulation"]
+        },
+        {
+          "id": "q2",
+          "text": "High-risk AI systems must ___ with stringent requirements including risk management and detailed documentation.",
+          "correctAnswer": ["comply"],
+          "explanation": "'Comply with' means to obey or follow rules/regulations. Modal 'must' is followed by the base form of the verb.",
+          "grammarFocus": ["modals", "verb_collocations"],
+          "vocabularyFocus": ["compliance", "regulation"]
+        },
+        {
+          "id": "q3",
+          "text": "Non-compliance can result ___ administrative fines up to €35 million or 7% of worldwide annual turnover.",
+          "correctAnswer": ["in"],
+          "explanation": "'Result in' is a phrasal verb meaning to cause or lead to a particular outcome. The preposition 'in' is fixed.",
+          "grammarFocus": ["phrasal_verbs", "prepositions"],
+          "vocabularyFocus": ["legal_consequences"]
+        }
+      ]
+    },
+    {
+      "id": "cloze_004",
+      "type": "cloze",
+      "level": "B2",
+      "domain": "devops",
+      "title": "DevOps Culture and Practices",
+      "description": "Complete the text about DevOps principles",
+      "estimatedTime": 5,
+      "difficulty": 2,
+      "content": "DevOps transforms how organizations develop and deploy software.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "DevOps eliminates the traditional wall between development and operations, ___ teams to work together throughout the software lifecycle.",
+          "correctAnswer": ["enabling", "allowing", "permitting"],
+          "explanation": "These verbs + object + to-infinitive show that DevOps makes it possible for teams to collaborate. 'Enabling' is most common in this context.",
+          "grammarFocus": ["gerunds", "causative_verbs"],
+          "vocabularyFocus": ["devops_culture"]
+        },
+        {
+          "id": "q2",
+          "text": "CI/CD pipelines ___ build, test, and deploy code changes without manual intervention.",
+          "correctAnswer": ["automatically"],
+          "explanation": "An adverb is needed to describe how the pipelines work. 'Automatically' emphasizes the automation aspect central to CI/CD.",
+          "grammarFocus": ["adverbs", "present_simple"],
+          "vocabularyFocus": ["automation", "cicd"]
+        },
+        {
+          "id": "q3",
+          "text": "Infrastructure as Code treats infrastructure configuration as software, ___ in version control.",
+          "correctAnswer": ["stored", "kept", "maintained"],
+          "explanation": "Past participle functioning as a reduced relative clause ('which is stored'). This describes the state of the configuration.",
+          "grammarFocus": ["past_participles", "reduced_clauses"],
+          "vocabularyFocus": ["infrastructure_as_code"]
+        }
+      ]
+    },
+    {
+      "id": "cloze_005",
+      "type": "cloze",
+      "level": "C1",
+      "domain": "cybersecurity",
+      "title": "Zero Trust Security",
+      "description": "Complete the text about Zero Trust architecture",
+      "estimatedTime": 7,
+      "difficulty": 4,
+      "content": "Zero Trust security represents a paradigm shift in cybersecurity.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Zero Trust architecture operates on the principle ___ no user or device should be trusted by default.",
+          "correctAnswer": ["that"],
+          "explanation": "The conjunction 'that' introduces a noun clause explaining what the principle states. This is common after abstract nouns like 'principle', 'fact', 'idea'.",
+          "grammarFocus": ["noun_clauses", "that_clauses"],
+          "vocabularyFocus": ["security_principles"]
+        },
+        {
+          "id": "q2",
+          "text": "Unlike traditional security models ___ trust internal network traffic, Zero Trust verifies everything.",
+          "correctAnswer": ["which", "that"],
+          "explanation": "A relative pronoun is needed to connect the clause describing traditional models. 'Which' (more formal) or 'that' both work here.",
+          "grammarFocus": ["relative_clauses"],
+          "vocabularyFocus": ["security_models"]
+        },
+        {
+          "id": "q3",
+          "text": "Access decisions are made in real-time based on contextual factors such as user behavior, device health, and location, ___ than relying solely on network perimeter.",
+          "correctAnswer": ["rather"],
+          "explanation": "'Rather than' introduces a preferred alternative. It's more formal than 'instead of' and common in technical writing.",
+          "grammarFocus": ["comparatives", "formal_alternatives"],
+          "vocabularyFocus": ["access_control"]
+        }
+      ]
+    }
+  ]
+}
+

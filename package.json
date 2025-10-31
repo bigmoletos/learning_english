@@ -1,0 +1,61 @@
+{
+  "name": "ai-english-trainer-it",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Outil d'entraînement en anglais technique (IA/DevOps) avec agent IA, reconnaissance vocale, et préparation TOEIC/TOEFL (B2→C1).",
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.10",
+    "@mui/icons-material": "^5.14.10",
+    "@mui/x-charts": "^6.0.0",
+    "i18next": "^23.7.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.18.0",
+    "react-i18next": "^13.2.2",
+    "react-speech-recognition": "^3.10.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "axios": "^1.6.2",
+    "natural": "^6.1.1",
+    "lodash": "^4.17.21",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/lodash": "^4.14.200",
+    "@types/natural": "^6.1.1",
+    "@types/react-syntax-highlighter": "^15.5.0",
+    "typescript": "^5.2.2",
+    "webpack-bundle-analyzer": "^4.9.1",
+    "source-map-explorer": "^2.5.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer build/static/js/*.js",
+    "generate:corpus": "node scripts/generateCorpus.js",
+    "train:agent": "ts-node src/agents/trainAgent.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

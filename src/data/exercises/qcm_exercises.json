@@ -1,0 +1,251 @@
+{
+  "exercises": [
+    {
+      "id": "qcm_001",
+      "type": "qcm",
+      "level": "B2",
+      "domain": "ai",
+      "title": "Machine Learning Fundamentals",
+      "description": "Test your knowledge of basic machine learning concepts",
+      "estimatedTime": 5,
+      "difficulty": 2,
+      "content": "Machine learning is a subset of artificial intelligence that enables systems to learn from data.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the primary difference between supervised and unsupervised learning?",
+          "options": [
+            "Supervised learning uses labeled data, unsupervised does not",
+            "Unsupervised learning is faster than supervised learning",
+            "Supervised learning only works with numerical data",
+            "There is no significant difference"
+          ],
+          "correctAnswer": "Supervised learning uses labeled data, unsupervised does not",
+          "explanation": "Supervised learning algorithms learn from labeled training data (input-output pairs), while unsupervised learning finds patterns in unlabeled data without predefined categories.",
+          "grammarFocus": ["present_simple", "comparatives"],
+          "vocabularyFocus": ["machine_learning", "data_science"]
+        },
+        {
+          "id": "q2",
+          "text": "Which statement about neural networks is correct?",
+          "options": [
+            "Neural networks can only process numerical data",
+            "Neural networks are inspired by biological neurons",
+            "Neural networks never require training",
+            "Neural networks only work for image recognition"
+          ],
+          "correctAnswer": "Neural networks are inspired by biological neurons",
+          "explanation": "Neural networks are computational models inspired by the structure and function of biological neural networks in animal brains.",
+          "grammarFocus": ["passive_voice", "present_simple"],
+          "vocabularyFocus": ["neural_networks", "ai_concepts"]
+        }
+      ]
+    },
+    {
+      "id": "qcm_002",
+      "type": "qcm",
+      "level": "B2",
+      "domain": "angular",
+      "title": "Angular Memory Management",
+      "description": "Understanding memory leaks in Angular applications",
+      "estimatedTime": 7,
+      "difficulty": 3,
+      "content": "Memory leaks in Angular occur when subscriptions are not properly cleaned up.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the recommended way to unsubscribe from Observables in Angular?",
+          "options": [
+            "Never unsubscribe, Angular handles it automatically",
+            "Use the takeUntil operator with a Subject in ngOnDestroy",
+            "Only unsubscribe in production environments",
+            "Unsubscribe after the first emission"
+          ],
+          "correctAnswer": "Use the takeUntil operator with a Subject in ngOnDestroy",
+          "explanation": "The takeUntil pattern with a Subject that completes in ngOnDestroy is a clean, maintainable way to manage multiple subscriptions. It ensures all subscriptions are properly cleaned up when the component is destroyed.",
+          "grammarFocus": ["present_simple", "imperative"],
+          "vocabularyFocus": ["angular", "memory_management", "observables"]
+        },
+        {
+          "id": "q2",
+          "text": "Which Angular feature automatically handles subscription cleanup?",
+          "options": [
+            "ngOnInit lifecycle hook",
+            "The async pipe",
+            "HttpClient service",
+            "ChangeDetectorRef"
+          ],
+          "correctAnswer": "The async pipe",
+          "explanation": "The async pipe automatically subscribes to Observables and unsubscribes when the component is destroyed, eliminating the need for manual subscription management.",
+          "grammarFocus": ["present_simple", "adverbs"],
+          "vocabularyFocus": ["angular", "pipes", "subscriptions"]
+        }
+      ]
+    },
+    {
+      "id": "qcm_003",
+      "type": "qcm",
+      "level": "C1",
+      "domain": "rag",
+      "title": "RAG Systems Architecture",
+      "description": "Advanced concepts in Retrieval-Augmented Generation",
+      "estimatedTime": 8,
+      "difficulty": 4,
+      "content": "RAG systems combine retrieval mechanisms with generative AI models.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the primary advantage of RAG over pure generative models?",
+          "options": [
+            "RAG models are always faster",
+            "RAG reduces hallucinations by grounding responses in retrieved documents",
+            "RAG requires no training data",
+            "RAG works without internet connection"
+          ],
+          "correctAnswer": "RAG reduces hallucinations by grounding responses in retrieved documents",
+          "explanation": "RAG significantly reduces hallucinations (generation of plausible but incorrect information) by providing the model with relevant, factual context from a knowledge base before generating responses.",
+          "grammarFocus": ["comparatives", "passive_voice", "gerunds"],
+          "vocabularyFocus": ["rag_systems", "ai_architecture", "nlp"]
+        },
+        {
+          "id": "q2",
+          "text": "Which technology is commonly used for similarity search in RAG systems?",
+          "options": [
+            "Traditional SQL databases",
+            "Vector databases with embedding similarity search",
+            "NoSQL document stores",
+            "File system search"
+          ],
+          "correctAnswer": "Vector databases with embedding similarity search",
+          "explanation": "Vector databases (like FAISS, Pinecone, or Weaviate) enable efficient similarity search by comparing vector embeddings, which is essential for retrieving semantically relevant documents in RAG systems.",
+          "grammarFocus": ["passive_voice", "present_simple"],
+          "vocabularyFocus": ["vector_embeddings", "databases", "semantic_search"]
+        }
+      ]
+    },
+    {
+      "id": "qcm_004",
+      "type": "qcm",
+      "level": "B2",
+      "domain": "mlops",
+      "title": "MLOps and CI/CD Pipelines",
+      "description": "Understanding MLOps practices",
+      "estimatedTime": 6,
+      "difficulty": 3,
+      "content": "MLOps applies DevOps principles to machine learning workflows.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What additional challenge does ML CI/CD face compared to traditional software CI/CD?",
+          "options": [
+            "Code versioning",
+            "Data versioning and model performance tracking",
+            "Test automation",
+            "Deployment automation"
+          ],
+          "correctAnswer": "Data versioning and model performance tracking",
+          "explanation": "Unlike traditional software, ML systems depend heavily on data and model performance. MLOps requires tracking data versions, model metrics, and detecting data/concept drift, which are unique challenges not present in traditional software CI/CD.",
+          "grammarFocus": ["comparatives", "present_simple"],
+          "vocabularyFocus": ["mlops", "versioning", "model_tracking"]
+        },
+        {
+          "id": "q2",
+          "text": "What is the purpose of a model registry in MLOps?",
+          "options": [
+            "To store source code",
+            "To centrally manage and version trained models with metadata",
+            "To compile machine learning code",
+            "To execute model training"
+          ],
+          "correctAnswer": "To centrally manage and version trained models with metadata",
+          "explanation": "A model registry serves as a central repository for trained models, storing versions along with metadata like training parameters, performance metrics, and deployment history, enabling traceability and governance.",
+          "grammarFocus": ["infinitives", "present_simple"],
+          "vocabularyFocus": ["model_registry", "metadata", "versioning"]
+        }
+      ]
+    },
+    {
+      "id": "qcm_005",
+      "type": "qcm",
+      "level": "B2",
+      "domain": "gdpr",
+      "title": "GDPR and Data Protection",
+      "description": "Understanding GDPR principles",
+      "estimatedTime": 7,
+      "difficulty": 3,
+      "content": "GDPR regulates how organizations process personal data in the EU.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Which GDPR principle requires collecting only necessary data?",
+          "options": [
+            "Lawfulness",
+            "Data minimization",
+            "Storage limitation",
+            "Transparency"
+          ],
+          "correctAnswer": "Data minimization",
+          "explanation": "The data minimization principle requires that personal data be adequate, relevant, and limited to what is necessary for the purposes for which it is processed.",
+          "grammarFocus": ["present_simple", "relative_clauses"],
+          "vocabularyFocus": ["gdpr", "data_protection", "privacy"]
+        },
+        {
+          "id": "q2",
+          "text": "What is the 'right to be forgotten' under GDPR?",
+          "options": [
+            "The right to change your password",
+            "The right to request deletion of personal data",
+            "The right to encrypt your data",
+            "The right to access public databases"
+          ],
+          "correctAnswer": "The right to request deletion of personal data",
+          "explanation": "The right to erasure (or 'right to be forgotten') allows individuals to request that organizations delete their personal data under certain conditions, such as when the data is no longer necessary for its original purpose.",
+          "grammarFocus": ["infinitives", "passive_voice"],
+          "vocabularyFocus": ["data_rights", "erasure", "gdpr"]
+        }
+      ]
+    },
+    {
+      "id": "qcm_006",
+      "type": "qcm",
+      "level": "C1",
+      "domain": "cybersecurity",
+      "title": "Advanced Cybersecurity Concepts",
+      "description": "Test your understanding of modern cybersecurity threats",
+      "estimatedTime": 8,
+      "difficulty": 4,
+      "content": "Cybersecurity in the AI era requires understanding both defensive and offensive AI capabilities.",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is an adversarial attack in the context of machine learning?",
+          "options": [
+            "A DDoS attack on ML servers",
+            "Crafting inputs designed to cause ML models to make incorrect predictions",
+            "Stealing training data from databases",
+            "Phishing attacks targeting data scientists"
+          ],
+          "correctAnswer": "Crafting inputs designed to cause ML models to make incorrect predictions",
+          "explanation": "Adversarial attacks involve creating specially crafted inputs (adversarial examples) that cause machine learning models to make mistakes, often with imperceptible modifications to legitimate inputs.",
+          "grammarFocus": ["gerunds", "passive_voice", "infinitives"],
+          "vocabularyFocus": ["adversarial_attacks", "ml_security", "cybersecurity"]
+        },
+        {
+          "id": "q2",
+          "text": "What does Zero Trust security architecture assume?",
+          "options": [
+            "All internal network traffic is trustworthy",
+            "Never trust, always verify - no implicit trust for any entity",
+            "Only external threats need verification",
+            "Trust is granted after initial authentication"
+          ],
+          "correctAnswer": "Never trust, always verify - no implicit trust for any entity",
+          "explanation": "Zero Trust architecture operates on the principle that no user, device, or network should be trusted by default. Every access request must be verified regardless of whether it originates inside or outside the network perimeter.",
+          "grammarFocus": ["present_simple", "imperatives", "negation"],
+          "vocabularyFocus": ["zero_trust", "authentication", "security_architecture"]
+        }
+      ]
+    }
+  ]
+}
+
