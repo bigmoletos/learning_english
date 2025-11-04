@@ -55,7 +55,9 @@ app.use(helmet());
 
 // CORS - Configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'development'
+    ? true // Accepte toutes les origines en développement
+    : (process.env.CORS_ORIGIN || 'http://localhost:3000'),
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -208,11 +210,13 @@ app.use((err, req, res, next) => {
 // DÉMARRAGE DU SERVEUR
 // ==================================
 
-const server = app.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+const server = app.listen(PORT, HOST, () => {
   console.log('');
   console.log('═══════════════════════════════════════════════════════════');
   console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
-  console.log(`📍 URL: http://localhost:${PORT}`);
+  console.log(`📍 URL locale: http://localhost:${PORT}`);
+  console.log(`🌐 URL réseau: http://${HOST}:${PORT}`);
   console.log(`🌍 Environnement: ${process.env.NODE_ENV}`);
   console.log(`🔒 CORS autorisé depuis: ${process.env.CORS_ORIGIN}`);
   console.log('═══════════════════════════════════════════════════════════');
@@ -223,6 +227,8 @@ const server = app.listen(PORT, () => {
   console.log('  POST /api/auth/login    - Connexion');
   console.log('  POST /api/auth/verify   - Vérification email');
   console.log('  GET  /api/users/me      - Profil utilisateur');
+  console.log('');
+  console.log('💡 Accès smartphone: http://21.0.0.112:5000');
   console.log('');
 });
 
