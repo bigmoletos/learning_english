@@ -4,6 +4,9 @@
   "private": true,
   "description": "Outil d'entraînement en anglais technique (IA/DevOps) avec agent IA, reconnaissance vocale, et préparation TOEIC/TOEFL (B2→C1).",
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.10",

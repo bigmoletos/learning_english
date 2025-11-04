@@ -34,3 +34,27 @@ lerna-debug.log*
 # OS
 Thumbs.db
 
+# Capacitor
+.capacitor/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/gradlew
+android/gradlew.bat
+android/gradle/wrapper/
+
+# iOS (si ajouté plus tard)
+ios/App/Pods/
+ios/App/build/
+ios/App/*.xcworkspace
+ios/App/*.xcodeproj/xcuserdata/
+ios/App/*.xcodeproj/project.xcworkspace/
+
+# Database (si applicable)
+*.db
+*.sqlite
