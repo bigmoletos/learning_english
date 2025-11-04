@@ -23,6 +23,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+*.log
+backend.log
+frontend.log
+backend/*.log
 
 # IDE
 .vscode/
