@@ -1,7 +1,8 @@
 /**
  * Hook personnalisé pour la reconnaissance vocale native Web Speech API
- * @version 1.0.0
- * @date 31-10-2025
+ * Optimisé pour Android mobile
+ * @version 2.0.0
+ * @date 04-11-2025
  */
 
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -9,11 +10,13 @@ import { useEffect, useState, useCallback, useRef } from "react";
 export interface UseSpeechRecognitionReturn {
   transcript: string;
   listening: boolean;
-  startListening: () => void;
+  startListening: () => Promise<void>;
   stopListening: () => void;
   resetTranscript: () => void;
   browserSupportsSpeechRecognition: boolean;
   confidence: number;
+  error: string | null;
+  permissionGranted: boolean;
 }
 
 // Types pour Web Speech API
@@ -24,25 +27,78 @@ declare global {
   }
 }
 
+// Détection Android
+const isAndroid = (): boolean => {
+  return /Android/i.test(navigator.userAgent);
+};
+
+// Vérification HTTPS (requis pour Web Speech API)
+const isSecureContext = (): boolean => {
+  return window.isSecureContext || window.location.protocol === 'https:' ||
+         window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+};
+
 export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   const [transcript, setTranscript] = useState<string>("");
   const [listening, setListening] = useState<boolean>(false);
   const [confidence, setConfidence] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
+  const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
   const recognitionRef = useRef<any>(null);
+  const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const browserSupportsSpeechRecognition = 
-    typeof window !== 'undefined' && 
-    ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+  const browserSupportsSpeechRecognition =
+    typeof window !== 'undefined' &&
+    ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) &&
+    isSecureContext();
+
+  // Vérifier les permissions microphone
+  const checkMicrophonePermission = useCallback(async (): Promise<boolean> => {
+    try {
+      // Pour Android, on doit demander explicitement la permission via getUserMedia
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Arrêter le stream immédiatement
+      stream.getTracks().forEach(track => track.stop());
+      setPermissionGranted(true);
+      setError(null);
+      return true;
+    } catch (err: any) {
+      console.error('Microphone permission error:', err);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setError('Permission microphone refusée. Veuillez autoriser l\'accès au microphone.');
+      } else if (err.name === 'NotFoundError') {
+        setError('Aucun microphone détecté sur votre appareil.');
+      } else {
+        setError('Erreur d\'accès au microphone.');
+      }
+      setPermissionGranted(false);
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
-    if (!browserSupportsSpeechRecognition) return;
+    if (!browserSupportsSpeechRecognition) {
+      if (!isSecureContext()) {
+        setError('HTTPS requis pour la reconnaissance vocale. Veuillez utiliser une connexion sécurisée.');
+      } else {
+        setError('Votre navigateur ne supporte pas la reconnaissance vocale.');
+      }
+      return;
+    }
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    
+
+    // Configuration optimisée pour Android
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
+    recognition.maxAlternatives = 1;
+
+    // Pour Android, on limite la reconnaissance pour éviter les timeouts
+    if (isAndroid()) {
+      recognition.continuous = false; // Mode non-continu pour Android
+    }
 
     recognition.onresult = (event: any) => {
       let interimTranscript = '';
@@ -52,7 +108,9 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
         const transcriptPart = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
           finalTranscript += transcriptPart + ' ';
-          setConfidence(event.results[i][0].confidence * 100);
+          const conf = event.results[i][0].confidence;
+          // Android peut ne pas fournir de confidence, on met 80 par défaut
+          setConfidence(conf ? Math.round(conf * 100) : 80);
         } else {
           interimTranscript += transcriptPart;
         }
@@ -62,47 +120,138 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
         const updated = prev + finalTranscript;
         return interimTranscript ? updated + interimTranscript : updated;
       });
+
+      // Sur Android, redémarrer automatiquement si en mode continu simulé
+      if (isAndroid() && finalTranscript && listening) {
+        // Redémarrer après un court délai
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
+        }
+        restartTimeoutRef.current = setTimeout(() => {
+          try {
+            recognition.start();
+          } catch (e) {
+            // Ignore si déjà démarré
+          }
+        }, 300);
+      }
     };
 
     recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error);
+
+      // Gestion des erreurs spécifiques Android
+      switch (event.error) {
+        case 'network':
+          setError('Erreur réseau. Vérifiez votre connexion Internet.');
+          break;
+        case 'not-allowed':
+          setError('Permission microphone refusée.');
+          setPermissionGranted(false);
+          break;
+        case 'no-speech':
+          setError('Aucune parole détectée. Réessayez.');
+          break;
+        case 'audio-capture':
+          setError('Impossible d\'accéder au microphone.');
+          break;
+        case 'aborted':
+          // Ignore, c'est souvent un arrêt volontaire
+          break;
+        default:
+          setError(`Erreur de reconnaissance: ${event.error}`);
+      }
+
       setListening(false);
+    };
+
+    recognition.onstart = () => {
+      setError(null);
+      setListening(true);
     };
 
     recognition.onend = () => {
       setListening(false);
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
     };
 
     recognitionRef.current = recognition;
 
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // Ignore
+        }
+      }
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
       }
     };
-  }, [browserSupportsSpeechRecognition]);
+  }, [browserSupportsSpeechRecognition, listening]);
 
-  const startListening = useCallback(() => {
-    if (recognitionRef.current && !listening) {
+  const startListening = useCallback(async () => {
+    if (!recognitionRef.current || listening) return;
+
+    // Vérifier la permission avant de commencer
+    const hasPermission = await checkMicrophonePermission();
+    if (!hasPermission) return;
+
+    try {
+      // S'assurer que la reconnaissance est arrêtée avant de recommencer
       try {
-        recognitionRef.current.start();
-        setListening(true);
-      } catch (error) {
-        console.error('Error starting recognition:', error);
+        recognitionRef.current.stop();
+      } catch (e) {
+        // Ignore
       }
+
+      // Petit délai pour Android
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      recognitionRef.current.start();
+      setListening(true);
+      setError(null);
+    } catch (error: any) {
+      console.error('Error starting recognition:', error);
+      if (error.name === 'InvalidStateError') {
+        // Déjà en cours, on réessaie après un arrêt
+        try {
+          recognitionRef.current.stop();
+          setTimeout(() => {
+            recognitionRef.current.start();
+          }, 200);
+        } catch (e) {
+          setError('Impossible de démarrer la reconnaissance vocale.');
+        }
+      } else {
+        setError('Erreur lors du démarrage de la reconnaissance vocale.');
+      }
+      setListening(false);
     }
-  }, [listening]);
+  }, [listening, checkMicrophonePermission]);
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current && listening) {
-      recognitionRef.current.stop();
-      setListening(false);
+      try {
+        recognitionRef.current.stop();
+        setListening(false);
+      } catch (error) {
+        console.error('Error stopping recognition:', error);
+      }
+    }
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
     }
   }, [listening]);
 
   const resetTranscript = useCallback(() => {
     setTranscript("");
     setConfidence(0);
+    setError(null);
   }, []);
 
   return {
@@ -112,6 +261,8 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     stopListening,
     resetTranscript,
     browserSupportsSpeechRecognition,
-    confidence
+    confidence,
+    error,
+    permissionGranted
   };
 };

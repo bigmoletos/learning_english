@@ -45,13 +45,111 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
-      fontWeight: 600
+      fontWeight: 600,
+      fontSize: "clamp(1.5rem, 5vw, 2.125rem)" // Responsive
     },
     h5: {
-      fontWeight: 600
+      fontWeight: 600,
+      fontSize: "clamp(1.25rem, 4vw, 1.5rem)" // Responsive
     },
     h6: {
-      fontWeight: 500
+      fontWeight: 500,
+      fontSize: "clamp(1rem, 3vw, 1.25rem)" // Responsive
+    },
+    body1: {
+      fontSize: "clamp(0.875rem, 2vw, 1rem)" // Responsive
+    },
+    button: {
+      textTransform: "none", // Pas de majuscules automatiques
+      fontSize: "clamp(0.875rem, 2.5vw, 1rem)" // Responsive
+    }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // Taille minimale pour zones tactiles (44x44px recommandé)
+          minHeight: 44,
+          minWidth: 44,
+          borderRadius: 8,
+          padding: '10px 20px',
+          // Amélioration du feedback tactile
+          '@media (hover: none)': {
+            '&:active': {
+              transform: 'scale(0.98)',
+              transition: 'transform 0.1s'
+            }
+          }
+        },
+        sizeLarge: {
+          minHeight: 56,
+          padding: '14px 28px',
+          fontSize: '1.1rem'
+        }
+      }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          // Taille minimale pour zones tactiles
+          minHeight: 44,
+          minWidth: 44,
+          padding: 12
+        }
+      }
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined"
+      },
+      styleOverrides: {
+        root: {
+          // Zones de saisie plus grandes sur mobile
+          '& .MuiInputBase-input': {
+            fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+            padding: '14px'
+          }
+        }
+      }
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          // Pas d'ombre excessive sur mobile
+          '@media (max-width: 600px)': {
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }
+        }
+      }
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          minHeight: 32,
+          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+        }
+      }
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          // Meilleure gestion sur mobile
+          '@media (max-width: 600px)': {
+            width: '75vw',
+            maxWidth: 280
+          }
+        }
+      }
+    }
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920
     }
   }
 });
