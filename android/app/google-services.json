@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "764765123671",
+    "project_id": "ia-project-91c03",
+    "storage_bucket": "ia-project-91c03.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764765123671:android:8f10e1ffa4ce4ddafe1f12",
+        "android_client_info": {
+          "package_name": "fr.iaproject.learning_english"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4VxXsU3yI3GedYREVkUIOgHo8NU1DUsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
