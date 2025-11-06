@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.aienglishtrainer.app',
+  appId: 'fr.iaproject.learning_english',
   appName: 'AI English Trainer',
   webDir: 'build',
   server: {
