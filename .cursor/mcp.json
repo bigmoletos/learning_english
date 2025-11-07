@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "sqlite-learning-english": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "database/learning_english.db"
+      ],
+      "env": {
+        "WORKING_DIR": "C:\\programmation\\learning_english"
+      }
+    },
+    "postgres-learning-english": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": ""
+      }
+    },
+    "python-learning-english": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-python"
+      ],
+      "env": {
+        "PYTHONPATH": "C:\\programmation\\learning_english\\scripts"
+      }
+    },
+    "filesystem-learning-english": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\programmation\\learning_english"
+      ]
+    }
+  }
+}
+

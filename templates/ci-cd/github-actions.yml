@@ -1,0 +1,98 @@
+name: CI/CD avec Infisical
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Infisical CLI
+        run: |
+          curl -fsSL https://github.com/Infisical/infisical/releases/download/v0.14.0/infisical_0.14.0_linux_amd64.tar.gz -o /tmp/infisical.tar.gz
+          tar -xzf /tmp/infisical.tar.gz -C /tmp
+          sudo mv /tmp/infisical /usr/local/bin/infisical
+          sudo chmod +x /usr/local/bin/infisical
+
+      - name: Authenticate Infisical
+        env:
+          INFISICAL_SERVER_URL: ${{ secrets.INFISICAL_SERVER_URL }}
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
+        run: |
+          infisical login --service-token $INFISICAL_SERVICE_TOKEN --server-url $INFISICAL_SERVER_URL
+
+      - name: Pull secrets from Infisical
+        env:
+          INFISICAL_PROJECT_ID: ${{ secrets.INFISICAL_PROJECT_ID }}
+          INFISICAL_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+        run: |
+          # Récupérer les secrets et les exporter comme variables d'environnement
+          infisical secrets pull --project=$INFISICAL_PROJECT_ID --env=$INFISICAL_ENVIRONMENT --format=dotenv > .env
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          # Les secrets sont maintenant disponibles dans .env
+          NODE_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+
+      - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker build -t your-registry/your-app:${{ github.sha }} .
+          docker push your-registry/your-app:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Infisical CLI
+        run: |
+          curl -fsSL https://github.com/Infisical/infisical/releases/download/v0.14.0/infisical_0.14.0_linux_amd64.tar.gz -o /tmp/infisical.tar.gz
+          tar -xzf /tmp/infisical.tar.gz -C /tmp
+          sudo mv /tmp/infisical /usr/local/bin/infisical
+          sudo chmod +x /usr/local/bin/infisical
+
+      - name: Authenticate Infisical
+        env:
+          INFISICAL_SERVER_URL: ${{ secrets.INFISICAL_SERVER_URL }}
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
+        run: |
+          infisical login --service-token $INFISICAL_SERVICE_TOKEN --server-url $INFISICAL_SERVER_URL
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Récupérer les secrets Kubernetes depuis Infisical
+          infisical secrets pull --project=${{ secrets.INFISICAL_PROJECT_ID }} --env=production --format=dotenv > .env.k8s
+
+          # Appliquer les secrets Kubernetes
+          kubectl create secret generic app-secrets --from-env-file=.env.k8s --dry-run=client -o yaml | kubectl apply -f -
+
+          # Déployer l'application
+          kubectl set image deployment/your-app app=your-registry/your-app:${{ github.sha }}
+          kubectl rollout status deployment/your-app
+

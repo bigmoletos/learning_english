@@ -1,0 +1,133 @@
+# Configuration Alertmanager pour AI English Trainer
+# @version 1.0.0
+# @date 2025-11-05
+
+global:
+  resolve_timeout: 5m
+  # Remplacez par vos propres valeurs depuis .env
+  # SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD doivent être définis
+
+# Templates pour les emails
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Route pour les alertes
+route:
+  receiver: 'default-receiver'
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 12h
+  routes:
+    # Alertes critiques
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      continue: true
+
+    # Alertes de base de données
+    - match:
+        alertname: DatabaseConnectionFailure
+      receiver: 'critical-alerts'
+      continue: true
+
+    # Alertes système
+    - match:
+        alertname: HighCPUUsage
+      receiver: 'system-alerts'
+      continue: true
+
+    - match:
+        alertname: HighMemoryUsage
+      receiver: 'system-alerts'
+      continue: true
+
+# Récepteurs (destinations des alertes)
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: '${ALERT_EMAIL_TO:-admin@example.com}'
+        from: '${ALERT_EMAIL_FROM:-alerts@learning-english.local}'
+        smarthost: '${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}'
+        auth_username: '${SMTP_USER}'
+        auth_password: '${SMTP_PASSWORD}'
+        headers:
+          Subject: '[AI English Trainer] Alerte: {{ .GroupLabels.alertname }}'
+        html: |
+          <h2>Alerte détectée</h2>
+          <p><strong>Service:</strong> {{ .GroupLabels.service }}</p>
+          <p><strong>Alert:</strong> {{ .GroupLabels.alertname }}</p>
+          <p><strong>Description:</strong> {{ .CommonAnnotations.description }}</p>
+          <p><strong>Timestamp:</strong> {{ .StartsAt }}</p>
+          {{ range .Alerts }}
+          <hr>
+          <p><strong>Labels:</strong></p>
+          <ul>
+          {{ range .Labels.SortedPairs }}
+            <li><strong>{{ .Name }}:</strong> {{ .Value }}</li>
+          {{ end }}
+          </ul>
+          {{ end }}
+
+  - name: 'critical-alerts'
+    email_configs:
+      - to: '${ALERT_EMAIL_TO:-admin@example.com}'
+        from: '${ALERT_EMAIL_FROM:-alerts@learning-english.local}'
+        smarthost: '${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}'
+        auth_username: '${SMTP_USER}'
+        auth_password: '${SMTP_PASSWORD}'
+        headers:
+          Subject: '[CRITIQUE] AI English Trainer - {{ .GroupLabels.alertname }}'
+        html: |
+          <h2 style="color: red;">⚠️ ALERTE CRITIQUE</h2>
+          <p><strong>Service:</strong> {{ .GroupLabels.service }}</p>
+          <p><strong>Alert:</strong> {{ .GroupLabels.alertname }}</p>
+          <p><strong>Description:</strong> {{ .CommonAnnotations.description }}</p>
+          <p><strong>Timestamp:</strong> {{ .StartsAt }}</p>
+          {{ range .Alerts }}
+          <hr>
+          <p><strong>Labels:</strong></p>
+          <ul>
+          {{ range .Labels.SortedPairs }}
+            <li><strong>{{ .Name }}:</strong> {{ .Value }}</li>
+          {{ end }}
+          </ul>
+          {{ end }}
+          <p style="color: red; font-weight: bold;">Action requise immédiatement!</p>
+
+  - name: 'system-alerts'
+    email_configs:
+      - to: '${ALERT_EMAIL_TO:-admin@example.com}'
+        from: '${ALERT_EMAIL_FROM:-alerts@learning-english.local}'
+        smarthost: '${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}'
+        auth_username: '${SMTP_USER}'
+        auth_password: '${SMTP_PASSWORD}'
+        headers:
+          Subject: '[SYSTÈME] AI English Trainer - {{ .GroupLabels.alertname }}'
+        html: |
+          <h2>Alerte Système</h2>
+          <p><strong>Service:</strong> {{ .GroupLabels.service }}</p>
+          <p><strong>Alert:</strong> {{ .GroupLabels.alertname }}</p>
+          <p><strong>Description:</strong> {{ .CommonAnnotations.description }}</p>
+          <p><strong>Timestamp:</strong> {{ .StartsAt }}</p>
+          {{ range .Alerts }}
+          <hr>
+          <p><strong>Labels:</strong></p>
+          <ul>
+          {{ range .Labels.SortedPairs }}
+            <li><strong>{{ .Name }}:</strong> {{ .Value }}</li>
+          {{ end }}
+          </ul>
+          {{ end }}
+
+# Gestion des alertes en attente
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'instance']
+
+
+
+

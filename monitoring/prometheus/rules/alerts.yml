@@ -1,0 +1,155 @@
+# Règles d'alertes Prometheus pour AI English Trainer
+# @version 1.0.0
+# @date 2025-11-05
+
+groups:
+  - name: application_alerts
+    interval: 30s
+    rules:
+      # Erreurs applicatives critiques
+      - alert: HighErrorRate
+        expr: rate(application_errors_total{severity="critical"}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+          service: backend
+        annotations:
+          summary: "Taux d'erreurs critiques élevé"
+          description: "Le taux d'erreurs critiques est de {{ $value }} erreurs/seconde pendant plus de 5 minutes."
+
+      # Durée des requêtes HTTP élevée
+      - alert: HighHTTPLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: backend
+        annotations:
+          summary: "Latence HTTP élevée (p95)"
+          description: "Le percentile 95 de la latence HTTP est de {{ $value }}s pendant plus de 5 minutes."
+
+      # Taux de requêtes HTTP élevé
+      - alert: HighHTTPRequestRate
+        expr: rate(http_requests_total[5m]) > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: backend
+        annotations:
+          summary: "Taux de requêtes HTTP élevé"
+          description: "Le taux de requêtes est de {{ $value }} requêtes/seconde pendant plus de 5 minutes."
+
+  - name: database_alerts
+    interval: 30s
+    rules:
+      # Échec de connexion à la base de données
+      - alert: DatabaseConnectionFailure
+        expr: db_connections_active == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "Échec de connexion à la base de données"
+          description: "Aucune connexion active à la base de données depuis plus d'une minute."
+
+      # Durée des requêtes SQL élevée
+      - alert: SlowDatabaseQueries
+        expr: histogram_quantile(0.95, rate(db_query_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Requêtes SQL lentes (p95)"
+          description: "Le percentile 95 de la durée des requêtes SQL est de {{ $value }}s pendant plus de 5 minutes."
+
+      # Taux d'erreurs SQL élevé
+      - alert: HighDatabaseErrorRate
+        expr: rate(db_queries_total{status="error"}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Taux d'erreurs SQL élevé"
+          description: "Le taux d'erreurs SQL est de {{ $value }} erreurs/seconde pendant plus de 5 minutes."
+
+  - name: system_alerts
+    interval: 30s
+    rules:
+      # Utilisation CPU élevée
+      - alert: HighCPUUsage
+        expr: system_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Utilisation CPU élevée"
+          description: "L'utilisation CPU est de {{ $value }}% pendant plus de 5 minutes."
+
+      # Utilisation mémoire élevée
+      - alert: HighMemoryUsage
+        expr: (system_memory_usage_bytes{type="heapUsed"} / system_memory_usage_bytes{type="heapTotal"}) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Utilisation mémoire élevée"
+          description: "L'utilisation mémoire est de {{ $value }}% pendant plus de 5 minutes."
+
+      # Utilisation disque élevée
+      - alert: HighDiskUsage
+        expr: (system_disk_usage_bytes / 1024 / 1024 / 1024) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Utilisation disque élevée"
+          description: "L'utilisation disque est de {{ $value }} GB pendant plus de 5 minutes."
+
+  - name: authentication_alerts
+    interval: 30s
+    rules:
+      # Tentatives d'authentification suspectes
+      - alert: SuspiciousAuthAttempts
+        expr: rate(auth_attempts_total{status="failed"}[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+          service: auth
+        annotations:
+          summary: "Tentatives d'authentification suspectes"
+          description: "Taux de tentatives d'authentification échouées de {{ $value }} tentatives/seconde pendant plus de 5 minutes."
+
+  - name: firebase_alerts
+    interval: 30s
+    rules:
+      # Taux d'erreurs Firebase élevé
+      - alert: HighFirebaseErrorRate
+        expr: rate(firebase_api_calls_total{status="error"}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: firebase
+        annotations:
+          summary: "Taux d'erreurs Firebase élevé"
+          description: "Le taux d'erreurs Firebase est de {{ $value }} erreurs/seconde pendant plus de 5 minutes."
+
+      # Latence Firebase élevée
+      - alert: HighFirebaseLatency
+        expr: histogram_quantile(0.95, rate(firebase_api_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: firebase
+        annotations:
+          summary: "Latence Firebase élevée (p95)"
+          description: "Le percentile 95 de la latence Firebase est de {{ $value }}s pendant plus de 5 minutes."
+
+
+
+

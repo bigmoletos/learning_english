@@ -12,7 +12,7 @@ import { Email, Lock, Person, Visibility, VisibilityOff } from "@mui/icons-mater
 import axios from "axios";
 import { VerifyEmail } from "./VerifyEmail";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 interface SignupProps {
   onSuccess: (token: string, user: any) => void;
@@ -64,12 +64,12 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Empêcher la propagation
-    
+
     // Empêcher les soumissions multiples
     if (loading) {
       return;
     }
-    
+
     setError("");
 
     const passwordError = validatePassword();
@@ -92,7 +92,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
         // L'inscription a réussi, mais l'email doit être vérifié
         // Ne pas connecter automatiquement
         const { email: registeredEmailAddress, requiresVerification } = response.data;
-        
+
         if (requiresVerification || !response.data.token) {
           // Afficher le composant de vérification d'email
           setRegisteredEmail(registeredEmailAddress || email);
@@ -100,7 +100,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
           setError(""); // Pas d'erreur
           return; // Ne pas appeler onSuccess
         }
-        
+
         // Fallback si pas de requiresVerification (ancien comportement)
         const { token, user } = response.data;
         if (token && user) {
@@ -114,10 +114,10 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
     } catch (err: any) {
       // Log pour debug
       console.error('Erreur inscription:', err.response?.data || err);
-      
+
       // Gérer les différents types d'erreurs
       let errorMessage = "Erreur d'inscription. Veuillez réessayer.";
-      
+
       if (err.response?.data) {
         // Erreur du backend avec structure détaillée
         if (err.response.data.message) {
@@ -141,10 +141,10 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       } else if (err.message) {
         errorMessage = err.message;
       }
-      
+
       // Messages d'erreur spécifiques
-      if (errorMessage.toLowerCase().includes("existe") && 
-          (errorMessage.toLowerCase().includes("déjà") || errorMessage.toLowerCase().includes("deja") || 
+      if (errorMessage.toLowerCase().includes("existe") &&
+          (errorMessage.toLowerCase().includes("déjà") || errorMessage.toLowerCase().includes("deja") ||
            errorMessage.toLowerCase().includes("already exists"))) {
         errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter ou utilisez un autre email.";
       } else if (errorMessage.toLowerCase().includes("email") || errorMessage.toLowerCase().includes("invalide")) {
@@ -152,10 +152,10 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       } else if (errorMessage.toLowerCase().includes("password") || errorMessage.toLowerCase().includes("mot de passe")) {
         errorMessage = "Le mot de passe ne respecte pas les critères requis (min. 8 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial).";
       }
-      
+
       // Log pour debug
       console.log('Message d\'erreur final:', errorMessage);
-      
+
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -198,9 +198,9 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
 
           {error && (
             <Box>
-              <Alert 
-                severity="error" 
-                sx={{ 
+              <Alert
+                severity="error"
+                sx={{
                   mb: 2,
                   width: "100%",
                   visibility: "visible",

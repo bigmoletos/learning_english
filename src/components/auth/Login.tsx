@@ -11,7 +11,7 @@ import {
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 interface LoginProps {
   onSuccess: (token: string, user: any) => void;
@@ -48,8 +48,12 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
     } catch (err: any) {
       // Gérer les différents types d'erreurs
       let errorMessage = "Erreur de connexion. Vérifiez vos identifiants.";
-      
-      if (err.response?.data) {
+
+      // Erreur réseau (backend non accessible)
+      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK' || err.message?.includes('Network Error') || !err.response) {
+        errorMessage = "Erreur réseau : Impossible de se connecter au serveur. Vérifiez que le backend est démarré sur le port 5001.";
+        console.error("Erreur réseau:", err);
+      } else if (err.response?.data) {
         // Erreur du backend avec structure détaillée
         if (err.response.data.message) {
           errorMessage = err.response.data.message;
@@ -69,7 +73,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
       } else if (err.message) {
         errorMessage = err.message;
       }
-      
+
       // Messages d'erreur spécifiques
       if (errorMessage.includes("Email ou mot de passe incorrect")) {
         errorMessage = "Email ou mot de passe incorrect. Veuillez vérifier vos identifiants.";
@@ -80,7 +84,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
       } else if (errorMessage.includes("Ce compte a ete desactive")) {
         errorMessage = "Ce compte a été désactivé. Contactez l'administrateur.";
       }
-      
+
       setError(errorMessage);
     } finally {
       setLoading(false);

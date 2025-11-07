@@ -29,6 +29,7 @@ import { TOEFLTest } from "./components/tests/TOEFLTest";
 import { EFSETTest } from "./components/tests/EFSETTest";
 import { TestLevelSelector } from "./components/tests/TestLevelSelector";
 import { LanguageLevel } from "./types";
+import { runInitializationChecks } from "./utils/initializationCheck";
 
 const theme = createTheme({
   palette: {
@@ -168,6 +169,11 @@ const AppContent: React.FC = () => {
     return !localStorage.getItem("levelAssessed");
   });
 
+  // Vérification de l'initialisation au démarrage
+  React.useEffect(() => {
+    runInitializationChecks();
+  }, []);
+
   // Vérifier si on est sur une route de vérification d'email
   const path = window.location.pathname;
   const isEmailVerificationRoute = path.includes("/verify-email/");
@@ -245,11 +251,11 @@ const AppContent: React.FC = () => {
 
   const handleTestLevelSelected = (level: LanguageLevel) => {
     setSelectedTestLevel(level);
-    
+
     // Déterminer quelle vue afficher selon le type de test (avant de réinitialiser)
     const testType = selectedTestType;
     setSelectedTestType(null); // Fermer le sélecteur
-    
+
     // Déterminer quelle vue afficher selon le type de test
     if (testType === "efset") {
       setCurrentView("efset");

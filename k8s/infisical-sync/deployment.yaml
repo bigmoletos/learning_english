@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: infisical-sync
+  namespace: default
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: infisical-service-account-token
+  namespace: default
+type: Opaque
+stringData:
+  token: "your-infisical-service-account-token-here"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infisical-sync
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: infisical-sync
+  template:
+    metadata:
+      labels:
+        app: infisical-sync
+    spec:
+      serviceAccountName: infisical-sync
+      containers:
+        - name: infisical-sync
+          image: infisical/infisical:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Configurer Infisical
+              export INFISICAL_SERVER_URL="https://infisical.example.com"
+              export INFISICAL_TOKEN=$(cat /var/secrets/infisical/token)
+
+              # Synchroniser les secrets vers ConfigMap
+              while true; do
+                echo "Synchronisation des secrets..."
+
+                # Récupérer les secrets depuis Infisical
+                infisical secrets list --project=your-project --env=production --format=json > /tmp/secrets.json
+
+                # Créer/ mettre à jour le ConfigMap
+                kubectl create configmap app-config --from-env-file=/tmp/secrets.json --dry-run=client -o yaml | kubectl apply -f -
+
+                echo "Secrets synchronisés. Attente 1h..."
+                sleep 3600
+              done
+          env:
+            - name: INFISICAL_SERVER_URL
+              value: "https://infisical.example.com"
+            - name: INFISICAL_PROJECT_ID
+              value: "your-project-id"
+            - name: INFISICAL_ENVIRONMENT
+              value: "production"
+          volumeMounts:
+            - name: infisical-token
+              mountPath: /var/secrets/infisical
+              readOnly: true
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+      volumes:
+        - name: infisical-token
+          secret:
+            secretName: infisical-service-account-token
+

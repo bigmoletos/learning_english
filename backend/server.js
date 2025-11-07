@@ -12,6 +12,9 @@ const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const logger = require('./utils/logger');
+const metrics = require('./utils/metrics');
+const setupSequelizeMetrics = require('./utils/dbMonitoring');
 
 // Charger les variables d'environnement
 // Chercher le fichier .env dans le répertoire parent (racine du projet)
@@ -26,25 +29,25 @@ if (!fs.existsSync(envPath)) {
 
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
-  console.log(`✅ Variables d'environnement chargées depuis: ${envPath}`);
+  logger.info(`Variables d'environnement chargées depuis: ${envPath}`);
 } else {
-  console.warn('⚠️  Fichier .env non trouvé. Variables d\'environnement par défaut utilisées.');
+  logger.warn('Fichier .env non trouvé. Variables d\'environnement par défaut utilisées.');
   dotenv.config(); // Tentative de chargement depuis le répertoire courant
 }
 
 // Vérifier les variables critiques
 if (!process.env.JWT_SECRET) {
-  console.error('❌ ERREUR: JWT_SECRET non défini dans .env');
-  console.error('   Le serveur ne pourra pas générer de tokens JWT.');
-  console.error('   Ajoutez JWT_SECRET dans votre fichier .env');
+  logger.error('ERREUR: JWT_SECRET non défini dans .env');
+  logger.error('Le serveur ne pourra pas générer de tokens JWT.');
+  logger.error('Ajoutez JWT_SECRET dans votre fichier .env');
 }
 
 if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-  console.warn('⚠️  SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
+  logger.warn('SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
 }
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // ==================================
 // MIDDLEWARES DE SÉCURITÉ
@@ -105,11 +108,22 @@ app.use(cookieParser());
 // Compression des réponses
 app.use(compression());
 
-// Logging
+// Middleware de métriques Prometheus (avant les routes)
+app.use(metrics.middleware);
+
+// Logging HTTP avec Winston
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan('dev', {
+    stream: {
+      write: (message) => logger.http(message.trim())
+    }
+  }));
 } else {
-  app.use(morgan('combined'));
+  app.use(morgan('combined', {
+    stream: {
+      write: (message) => logger.http(message.trim())
+    }
+  }));
 }
 
 // ==================================
@@ -118,18 +132,35 @@ if (process.env.NODE_ENV === 'development') {
 
 const db = require('./database/connection');
 
+// Configurer le monitoring de la base de données
+setupSequelizeMetrics(db);
+
 // Initialiser la base de données
 db.sync()
   .then(() => {
-    console.log('✅ Base de données connectée et synchronisée');
+    logger.info('Base de données connectée et synchronisée');
+    metrics.metrics.db.connectionsActive.set(1);
   })
   .catch((err) => {
-    console.error('❌ Erreur de connexion à la base de données:', err);
+    logger.error('Erreur de connexion à la base de données', { error: err.message, stack: err.stack });
+    metrics.metrics.app.errorsTotal.inc({ type: 'database', severity: 'critical' });
   });
 
 // ==================================
 // ROUTES
 // ==================================
+
+// Route de métriques Prometheus
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', metrics.register.contentType);
+    const metricsData = await metrics.getMetrics();
+    res.end(metricsData);
+  } catch (err) {
+    logger.error('Erreur lors de la récupération des métriques', { error: err.message });
+    res.status(500).end();
+  }
+});
 
 // Route de santé
 app.get('/health', (req, res) => {
@@ -194,10 +225,23 @@ app.use((req, res) => {
 // ==================================
 
 app.use((err, req, res, next) => {
-  console.error('Erreur serveur:', err);
-
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Erreur interne du serveur';
+
+  // Logger l'erreur
+  logger.error('Erreur serveur', {
+    error: message,
+    stack: err.stack,
+    statusCode,
+    path: req.path,
+    method: req.method
+  });
+
+  // Incrémenter les métriques d'erreur
+  metrics.metrics.app.errorsTotal.inc({
+    type: err.name || 'UnknownError',
+    severity: statusCode >= 500 ? 'critical' : 'warning'
+  });
 
   res.status(statusCode).json({
     success: false,
@@ -212,41 +256,64 @@ app.use((err, req, res, next) => {
 
 const HOST = process.env.HOST || '0.0.0.0';
 const server = app.listen(PORT, HOST, () => {
-  console.log('');
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
-  console.log(`📍 URL locale: http://localhost:${PORT}`);
-  console.log(`🌐 URL réseau: http://${HOST}:${PORT}`);
-  console.log(`🌍 Environnement: ${process.env.NODE_ENV}`);
-  console.log(`🔒 CORS autorisé depuis: ${process.env.CORS_ORIGIN}`);
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('');
-  console.log('Routes disponibles:');
-  console.log('  GET  /health           - Vérifier l\'état du serveur');
-  console.log('  POST /api/auth/register - Inscription');
-  console.log('  POST /api/auth/login    - Connexion');
-  console.log('  POST /api/auth/verify   - Vérification email');
-  console.log('  GET  /api/users/me      - Profil utilisateur');
-  console.log('');
-  console.log('💡 Accès smartphone: http://21.0.0.112:5000');
-  console.log('');
+  logger.info('Serveur backend démarré', {
+    port: PORT,
+    host: HOST,
+    url: `http://localhost:${PORT}`,
+    networkUrl: `http://${HOST}:${PORT}`,
+    environment: process.env.NODE_ENV,
+    corsOrigin: process.env.CORS_ORIGIN
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('');
+    console.log('═══════════════════════════════════════════════════════════');
+    console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
+    console.log(`📍 URL locale: http://localhost:${PORT}`);
+    console.log(`🌐 URL réseau: http://${HOST}:${PORT}`);
+    console.log(`🌍 Environnement: ${process.env.NODE_ENV}`);
+    console.log(`🔒 CORS autorisé depuis: ${process.env.CORS_ORIGIN}`);
+    console.log(`📊 Métriques disponibles sur: http://localhost:${PORT}/metrics`);
+    console.log('═══════════════════════════════════════════════════════════');
+    console.log('');
+    console.log('Routes disponibles:');
+    console.log('  GET  /health            - Vérifier l\'état du serveur');
+    console.log('  GET  /metrics           - Métriques Prometheus');
+    console.log('  POST /api/auth/register - Inscription');
+    console.log('  POST /api/auth/login    - Connexion');
+    console.log('  POST /api/auth/verify   - Vérification email');
+    console.log('  GET  /api/users/me      - Profil utilisateur');
+    console.log('');
+  }
 });
 
 // Gestion de l'arrêt gracieux
 process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM reçu, arrêt gracieux du serveur...');
+  logger.info('SIGTERM reçu, arrêt gracieux du serveur...');
   server.close(() => {
-    console.log('✅ Serveur arrêté proprement');
+    logger.info('Serveur arrêté proprement');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('\n🛑 SIGINT reçu (Ctrl+C), arrêt gracieux du serveur...');
+  logger.info('SIGINT reçu (Ctrl+C), arrêt gracieux du serveur...');
   server.close(() => {
-    console.log('✅ Serveur arrêté proprement');
+    logger.info('Serveur arrêté proprement');
     process.exit(0);
   });
+});
+
+// Gestion des erreurs non capturées
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection', { reason, promise });
+  metrics.metrics.app.errorsTotal.inc({ type: 'unhandledRejection', severity: 'critical' });
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception', { error: error.message, stack: error.stack });
+  metrics.metrics.app.errorsTotal.inc({ type: 'uncaughtException', severity: 'critical' });
+  process.exit(1);
 });
 
 module.exports = app;

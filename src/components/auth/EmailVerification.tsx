@@ -12,7 +12,7 @@ import { CheckCircle, Error as ErrorIcon } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 interface EmailVerificationProps {
   onSuccess?: (token: string, user: any) => void;
@@ -43,7 +43,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
         const searchParams = new URLSearchParams(window.location.search);
         const tokenFromPath = path.split("/verify-email/")[1]?.split("/")[0];
         const token = tokenFromPath || searchParams.get("token");
-        
+
         if (!token) {
           setStatus("error");
           setError("Token de vérification manquant");
@@ -60,7 +60,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
               const response = await axios.get(`${API_URL}/users/me`, {
                 headers: { Authorization: `Bearer ${tokenParam}` }
               });
-              
+
               if (response.data.success) {
                 const user = response.data.user;
                 localStorage.setItem("token", tokenParam);
@@ -97,7 +97,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
 
         // Vérification normale via POST
         const response = await axios.post(`${API_URL}/auth/verify-email/${token}`);
-        
+
         if (response.data.success) {
           const { token: jwtToken, user, alreadyVerified } = response.data;
           localStorage.setItem("token", jwtToken);
@@ -106,8 +106,8 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
           if (onSuccess) onSuccess(jwtToken, user);
           setStatus("success");
           setMessage(
-            alreadyVerified 
-              ? "Votre email a déjà été vérifié. Vous êtes maintenant connecté." 
+            alreadyVerified
+              ? "Votre email a déjà été vérifié. Vous êtes maintenant connecté."
               : "Email vérifié avec succès ! Vous êtes maintenant connecté."
           );
         } else {

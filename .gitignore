@@ -1,24 +1,29 @@
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
-
-# Testing
-/coverage
-
-# Production
-/build
-/dist
-
-# Misc
-.DS_Store
+# Secrets et fichiers sensibles
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env_*
+.env.*.local
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
 
-# Logs
+# Docker
+docker-compose.override.yml
+*.log
+
+# Infisical
+infisical/.env
+infisical/data/
+infisical/logs/
+
+# Bastion
+bastion/.htpasswd
+bastion/ssl/
+
+# Node modules
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -28,15 +33,18 @@ backend.log
 frontend.log
 backend/*.log
 
-# IDE
-.vscode/
-.idea/
+# OS
+.DS_Store
+Thumbs.db
 *.swp
 *.swo
 *~
 
-# OS
-Thumbs.db
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 
 # Capacitor
 .capacitor/
@@ -63,4 +71,15 @@ ios/App/*.xcodeproj/project.xcworkspace/
 *.db
 *.sqlite
 *.pid
-*.log
+
+# Backup
+*.backup
+*.bak
+*.old
+
+# Kubernetes
+k8s/secrets.yaml
+k8s/*-secret.yaml
+
+# Logs
+logs/

@@ -11,7 +11,7 @@ import {
 import { Email, Lock, CheckCircle } from "@mui/icons-material";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 interface ForgotPasswordProps {
   onSwitchToLogin: () => void;
@@ -32,7 +32,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tokenParam = urlParams.get("token") || window.location.pathname.split("/reset-password/")[1];
-    
+
     if (tokenParam) {
       setToken(tokenParam);
       setStep(2); // Passer directement à l'étape de réinitialisation
@@ -109,7 +109,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
       if (response.data.success) {
         setMessage("Mot de passe réinitialisé avec succès !");
         setStep(2);
-        
+
         // Rediriger vers la connexion après 2 secondes
         setTimeout(() => {
           if (onSuccess) {

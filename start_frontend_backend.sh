@@ -7,7 +7,7 @@
 #
 # DESCRIPTION
 # -----------
-# Script pour démarrer, arrêter et gérer les serveurs frontend (React) 
+# Script pour démarrer, arrêter et gérer les serveurs frontend (React)
 # et backend (Express) de l'application AI English Trainer.
 #
 # USAGE
@@ -16,7 +16,7 @@
 #
 # COMMANDES DISPONIBLES
 # ---------------------
-#   start           - Démarrer frontend (port 3000) + backend (port 5000)
+#   start           - Démarrer frontend (port 3000) + backend (port 5001)
 #   stop            - Arrêter tous les serveurs
 #   restart         - Redémarrer tous les serveurs
 #   status          - Voir l'état des serveurs (démarrés/arrêtés)
@@ -60,19 +60,21 @@
 # URLS
 # ----
 #   Frontend: http://localhost:3000
-#   Backend : http://localhost:5000
-#   Health  : http://localhost:5000/health
+#   Backend : http://localhost:5001
+#   Health  : http://localhost:5001/health
 #
 # NOTES
 # -----
 #   • Le script vérifie automatiquement si les serveurs sont déjà en cours
 #   • Les logs sont accessibles en temps réel avec tail -f
 #   • Utilisez Ctrl+C pour quitter la visualisation des logs
-#   • Le script gère automatiquement les ports (3000 pour frontend, 5000 pour backend)
+#   • Le script gère automatiquement les ports (3000 pour frontend, 5001 pour backend)
 #
 # ============================================================================
 
-PROJECT_DIR="/media/franck/M2_2To_990_windows/programmation/learning_english"
+# Détecter automatiquement le répertoire du projet (depuis le script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$SCRIPT_DIR"
 FRONTEND_LOG="/tmp/frontend_react.log"
 BACKEND_LOG="/tmp/backend_api.log"
 FRONTEND_PID_FILE="/tmp/frontend.pid"
@@ -113,7 +115,7 @@ is_running() {
 stop_server() {
     local name=$1
     local pid_file=$2
-    
+
     log_info "Arrêt de $name..."
     if is_running "$pid_file"; then
         PID=$(cat "$pid_file")
@@ -133,31 +135,31 @@ stop_server() {
 start_backend() {
     log_info "Démarrage du backend..."
     cd "$PROJECT_DIR/backend" || { log_error "Dossier backend introuvable"; exit 1; }
-    
+
     # Vérifier si .env existe
     if [ ! -f "$PROJECT_DIR/.env" ]; then
         log_error "Fichier .env manquant !"
         log_info "Créez-le à partir de ENV_TEMPLATE.txt"
         exit 1
     fi
-    
+
     # Vérifier si node_modules existe
     if [ ! -d "node_modules" ]; then
         log_info "Installation des dépendances backend..."
         npm install
     fi
-    
+
     # Démarrer le serveur
     npm start > "$BACKEND_LOG" 2>&1 &
     echo $! > "$BACKEND_PID_FILE"
-    
+
     # Attendre que le backend soit prêt
     local timeout=30
     local elapsed=0
     while [ $elapsed -lt $timeout ]; do
-        if curl -s http://localhost:5000/health > /dev/null 2>&1; then
+        if curl -s http://localhost:5001/health > /dev/null 2>&1; then
             log_success "Backend démarré (PID: $(cat $BACKEND_PID_FILE))"
-            log_info "API disponible sur http://localhost:5000"
+            log_info "API disponible sur http://localhost:5001"
             return 0
         fi
         sleep 2
@@ -173,17 +175,17 @@ start_backend() {
 start_frontend() {
     log_info "Démarrage du frontend..."
     cd "$PROJECT_DIR" || { log_error "Dossier projet introuvable"; exit 1; }
-    
+
     # Vérifier si node_modules existe
     if [ ! -d "node_modules" ]; then
         log_info "Installation des dépendances frontend..."
         npm install
     fi
-    
+
     # Démarrer le serveur React (forcer PORT=3000)
     PORT=3000 BROWSER=none npm start > "$FRONTEND_LOG" 2>&1 &
     echo $! > "$FRONTEND_PID_FILE"
-    
+
     # Attendre la compilation
     local timeout=90
     local elapsed=0
@@ -194,7 +196,7 @@ start_frontend() {
             log_info "Voir les logs: tail -f $FRONTEND_LOG"
             return 1
         fi
-        
+
         # Vérifier plusieurs indicateurs de succès
         if grep -q "Compiled successfully" "$FRONTEND_LOG" 2>/dev/null || \
            grep -q "webpack compiled" "$FRONTEND_LOG" 2>/dev/null || \
@@ -203,14 +205,14 @@ start_frontend() {
             log_info "Application disponible sur http://localhost:3000"
             return 0
         fi
-        
+
         # Vérifier les erreurs
         if grep -q "error\|Error\|ERROR\|failed\|Failed" "$FRONTEND_LOG" 2>/dev/null; then
             log_warning "Erreurs détectées dans les logs frontend"
             log_info "Voir les détails: tail -f $FRONTEND_LOG"
             # Ne pas arrêter, continuer à attendre
         fi
-        
+
         sleep 3
         elapsed=$((elapsed + 3))
         echo -n "."
@@ -228,15 +230,15 @@ status() {
     echo "═══════════════════════════════════════"
     echo "  STATUT DES SERVEURS"
     echo "═══════════════════════════════════════"
-    
+
     # Backend
     if is_running "$BACKEND_PID_FILE"; then
         echo -e "Backend:  ${GREEN}✓ En cours${NC} (PID: $(cat $BACKEND_PID_FILE))"
-        echo "          http://localhost:5000"
+        echo "          http://localhost:5001"
     else
         echo -e "Backend:  ${RED}✗ Arrêté${NC}"
     fi
-    
+
     # Frontend
     if is_running "$FRONTEND_PID_FILE"; then
         echo -e "Frontend: ${GREEN}✓ En cours${NC} (PID: $(cat $FRONTEND_PID_FILE))"
@@ -244,7 +246,7 @@ status() {
     else
         echo -e "Frontend: ${RED}✗ Arrêté${NC}"
     fi
-    
+
     echo "═══════════════════════════════════════"
     echo ""
 }
@@ -259,28 +261,28 @@ main() {
             echo "  Frontend (React) + Backend (Express)"
             echo "═══════════════════════════════════════"
             echo ""
-            
+
             # Vérifier si déjà en cours
             if is_running "$BACKEND_PID_FILE" && is_running "$FRONTEND_PID_FILE"; then
                 log_info "Les serveurs sont déjà en cours d'exécution"
                 status
                 exit 0
             fi
-            
+
             # Démarrer backend
             if ! is_running "$BACKEND_PID_FILE"; then
                 start_backend
             else
                 log_info "Backend déjà en cours"
             fi
-            
+
             # Démarrer frontend
             if ! is_running "$FRONTEND_PID_FILE"; then
                 start_frontend
             else
                 log_info "Frontend déjà en cours"
             fi
-            
+
             echo ""
             echo "═══════════════════════════════════════"
             echo -e "  ${GREEN}✅ TOUT EST DÉMARRÉ !${NC}"
@@ -296,31 +298,31 @@ main() {
             echo "🛑 Pour arrêter : ./start_frontend_backend.sh stop"
             echo ""
             ;;
-            
+
         stop)
             echo ""
             log_info "Arrêt de tous les serveurs..."
             stop_server "Frontend" "$FRONTEND_PID_FILE"
             stop_server "Backend" "$BACKEND_PID_FILE"
-            
+
             # Nettoyage processus résiduels
             pkill -f "react-scripts" 2>/dev/null
             pkill -f "node.*server.js" 2>/dev/null
-            
+
             log_success "Tous les serveurs sont arrêtés"
             echo ""
             ;;
-            
+
         restart)
             $0 stop
             sleep 2
             $0 start
             ;;
-            
+
         status)
             status
             ;;
-            
+
         logs-backend)
             if [ ! -f "$BACKEND_LOG" ]; then
                 log_error "Fichier de log backend introuvable: $BACKEND_LOG"
@@ -330,7 +332,7 @@ main() {
             echo ""
             tail -f "$BACKEND_LOG"
             ;;
-            
+
         logs-frontend)
             if [ ! -f "$FRONTEND_LOG" ]; then
                 log_error "Fichier de log frontend introuvable: $FRONTEND_LOG"
@@ -340,7 +342,7 @@ main() {
             echo ""
             tail -f "$FRONTEND_LOG"
             ;;
-            
+
         logs)
             # Afficher les logs des deux serveurs dans des terminaux séparés ou en mode split
             log_info "Affichage des logs combinés..."
@@ -362,7 +364,7 @@ main() {
                 exit 1
             fi
             ;;
-            
+
         help|--help|-h)
             echo ""
             echo "═══════════════════════════════════════════════════════════"
@@ -376,7 +378,7 @@ main() {
             echo "  COMMANDES DISPONIBLES"
             echo "═══════════════════════════════════════════════════════════"
             echo ""
-            echo "  start           Démarrer frontend (port 3000) + backend (port 5000)"
+            echo "  start           Démarrer frontend (port 3000) + backend (port 5001)"
             echo "                  Exemple: $0 start"
             echo "                  • Vérifie automatiquement si les serveurs sont déjà en cours"
             echo "                  • Crée les logs dans /tmp/"
@@ -452,8 +454,8 @@ main() {
             echo "═══════════════════════════════════════════════════════════"
             echo ""
             echo "  Frontend: http://localhost:3000"
-            echo "  Backend : http://localhost:5000"
-            echo "  Health  : http://localhost:5000/health"
+            echo "  Backend : http://localhost:5001"
+            echo "  Health  : http://localhost:5001/health"
             echo ""
             echo "═══════════════════════════════════════════════════════════"
             echo "  NOTES IMPORTANTES"
@@ -462,7 +464,7 @@ main() {
             echo "  • Le script vérifie automatiquement si les serveurs sont déjà en cours"
             echo "  • Les logs sont accessibles en temps réel avec tail -f"
             echo "  • Utilisez Ctrl+C pour quitter la visualisation des logs"
-            echo "  • Le script gère automatiquement les ports (3000/5000)"
+            echo "  • Le script gère automatiquement les ports (3000/5001)"
             echo "  • Le fichier .env doit être configuré pour le backend"
             echo ""
             echo "═══════════════════════════════════════════════════════════"

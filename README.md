@@ -1,255 +1,174 @@
-# AI English Trainer pour Professionnels IT
+# Infrastructure de Gestion de Secrets - Infisical
 
-**Entraînement en anglais technique (IA/DevOps/Cybersécurité) avec agent IA adaptatif, synthèse vocale, et préparation TOEIC/TOEFL (B2→C1)**
-
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
-[![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)]()
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)]()
-[![TypeScript](https://img.shields.io/badge/TypeScript-4.9-3178C6?logo=typescript)]()
+**Version** : 1.0.0 | **Date** : Novembre 2025
 
 ---
 
-## 🎯 Objectif
+## 🎯 Vue d'ensemble
 
-Atteindre le **niveau C1 en anglais technique** (IA, DevOps, Cybersécurité) en 6-12 mois, avec préparation intensive TOEIC/TOEFL.
+Ce projet fournit une infrastructure complète et sécurisée pour la gestion centralisée de secrets applicatifs via **Infisical** (auto-hébergé).
 
----
+### Fonctionnalités
 
-## ✨ Fonctionnalités Principales
-
-### 🧪 Évaluation de Niveau Complète
-- Test de 18 questions (Listening, Reading, Writing)
-- Correction détaillée avec explications grammaticales
-- Évaluation du niveau (A2 → B1 → B2 → C1)
-- Possibilité de refaire le test à tout moment
-
-### 📝 400+ Exercices Interactifs
-- **200 QCM** + **200 Textes à trous**
-- Vocabulaire technique : IA, DevOps, MLOps, RGPD, IA Act
-- Niveaux : A2, B1, B2, C1
-- Filtres par niveau, type, domaine
-
-### 🎓 Programme Adaptatif par IA
-- Génération automatique selon votre niveau et progression
-- Objectifs personnalisés avec progression trackée
-- Mode auto-adaptatif ou modification manuelle
-- Recommandations d'exercices ciblés
-
-### 🔊 Synthèse Vocale
-- Lecture audio des textes avec voix native
-- Contrôle volume et vitesse
-- Exercices d'écoute (Listening)
-- Compatible Chrome, Edge, Safari
-
-### 📊 Tableau de Bord Personnalisé
-- Statistiques détaillées (score, temps, série)
-- Progression par niveau
-- Points faibles identifiés
-- Accès rapide aux exercices recommandés
-
-### 🔐 Authentification Sécurisée
-- Inscription avec validation email
-- Connexion JWT (7 jours)
-- Reset password sécurisé
-- Compte administrateur
-
-### 🗄️ Sauvegarde en Base de Données
-- Backend API Node.js/Express
-- SQLite (évolutif vers PostgreSQL)
-- Historique complet des réponses
-- Progression sauvegardée en temps réel
-
-### 📚 Corpus Pédagogique Riche
-- **100 documents techniques** (IA, DevOps, Cyber)
-- **20 leçons de grammaire** (B1 à C1)
-- **8000 mots** (dictionnaire FR↔EN IT/IA)
-- **100 textes de lecture** + **100 d'écoute**
-- **Matériel TOEIC/TOEFL** (tous niveaux)
+- ✅ **Gestion centralisée** : Un seul point d'accès pour tous vos projets
+- ✅ **Auto-hébergé** : Contrôle total sur vos données
+- ✅ **Sécurisé** : Chiffrement au repos et en transit, RBAC, audit logs
+- ✅ **Multi-projets** : Support web, mobile, Kubernetes, CI/CD
+- ✅ **Bastion** : Reverse proxy sécurisé avec authentification
+- ✅ **Documentation complète** : Guides d'installation et d'utilisation
 
 ---
 
-## 🚀 Installation Rapide (5 min)
+## 📋 Prérequis
+
+- Docker et Docker Compose installés
+- Serveur Linux avec au moins 2GB RAM et 10GB disque
+- Domaine pointant vers le serveur (pour HTTPS)
+- Accès root ou sudo pour configuration réseau
+
+---
+
+## 🚀 Démarrage rapide
+
+### 1. Installation sur le serveur
 
 ```bash
-# 1. Cloner
-git clone https://github.com/bigmoletos/learning_english.git
-cd learning_english
+# Cloner ou copier ce projet sur votre serveur
+cd /opt/gestion_secrets
 
-# 2. Installer dépendances
-npm install
-cd backend && npm install && cd ..
+# Configurer les variables d'environnement
+cp infisical/.env.example infisical/.env
+nano infisical/.env  # Modifier les valeurs
 
-# 3. Configurer
-cp ENV_TEMPLATE.txt .env
-nano .env  # Définir ADMIN_PASSWORD et JWT_SECRET
+# Démarrer Infisical
+cd infisical
+docker-compose up -d
 
-# 4. Créer compte admin
-cd backend && npm run seed && cd ..
-
-# 5. Démarrer
-./start_frontend_backend.sh start
+# Configurer le bastion
+cd ../bastion
+./setup.sh
 ```
 
-**Ouvrir** : http://localhost:3000
+### 2. Installation du client CLI
 
-📖 **Guide détaillé** : [GETTING_STARTED.md](./GETTING_STARTED.md)
-
----
-
-## 📂 Structure du Projet
-
-```
-learning_english/
-├── src/                    # Frontend (React/TypeScript)
-├── backend/                # Backend (Node.js/Express)
-│   ├── models/             # Modèles DB
-│   ├── routes/             # API REST
-│   └── utils/              # Services (email, etc.)
-├── public/
-│   ├── data/exercises/     # 400 exercices JSON
-│   └── corpus/             # Ressources pédagogiques
-├── database/               # SQLite
-├── .env                    # Variables d'environnement
-└── start_frontend_backend.sh  # Script de démarrage
+**Windows (PowerShell) :**
+```powershell
+.\scripts\setup-cli.ps1
 ```
 
----
+**Linux :**
+```bash
+chmod +x scripts/setup-cli.sh
+./scripts/setup-cli.sh
+```
 
-## 🎓 Utilisation
+### 3. Migration des secrets
 
-### 1. Première Connexion
-1. **Inscription** : Créer votre compte
-2. **Évaluation** : Compléter le test de niveau (18 questions)
-3. **Programme** : Consulter le programme généré par l'IA
-4. **Exercices** : Commencer par les exercices recommandés
-
-### 2. Pratique Quotidienne
-- **15-20 minutes/jour** recommandées
-- 2-3 exercices ciblés
-- Consultation des corrections détaillées
-- Suivi de la progression
-
-### 3. Suivi Hebdomadaire
-- Refaire l'évaluation si progression
-- Ajuster le programme si nécessaire
-- Explorer de nouveaux domaines techniques
-
----
-
-## 🛠️ Technologies
-
-| Composant | Technologies |
-|-----------|-------------|
-| **Frontend** | React 18, TypeScript, Material-UI |
-| **Backend** | Node.js, Express, Sequelize |
-| **Base de données** | SQLite (→ PostgreSQL en prod) |
-| **Authentification** | JWT, bcrypt |
-| **Email** | Nodemailer |
-| **Synthèse vocale** | Web Speech API |
-| **IA** | Agent NLP custom |
-
----
-
-## 📊 Statut des Fonctionnalités
-
-| Fonctionnalité | Statut |
-|----------------|--------|
-| Évaluation de niveau complète | ✅ Opérationnelle |
-| 400 exercices (QCM + Cloze) | ✅ Opérationnelle |
-| Programme adaptatif IA | ✅ Opérationnelle |
-| Synthèse vocale (TTS) | ✅ Opérationnelle |
-| Backend API + DB | ✅ Opérationnelle |
-| Authentification JWT | ✅ Opérationnelle |
-| Tableau de bord | ✅ Opérationnel |
-| Corpus pédagogique | ✅ Opérationnel (100 docs + 20 leçons + 8000 mots) |
-| Tests TOEIC/TOEFL complets | 🔄 En développement |
-| Reconnaissance vocale (STT) | 🔄 En développement |
-| ChatBot IA | 🔄 Prévu |
-| Application mobile | 🔄 Prévu |
+```bash
+# Analyser et migrer les secrets depuis .env_old
+node scripts/migrate-secrets.js
+```
 
 ---
 
 ## 📚 Documentation
 
-- **[GETTING_STARTED.md](./GETTING_STARTED.md)** - Installation et démarrage rapide
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Architecture technique détaillée
-- **[BACKEND.md](./BACKEND.md)** - Configuration backend et scripts
-- **[FEATURES.md](./FEATURES.md)** - Documentation complète des fonctionnalités
+- **[INSTALLATION.md](docs/INSTALLATION.md)** : Guide d'installation détaillé
+- **[USAGE.md](docs/USAGE.md)** : Guide d'utilisation pour développeurs
+- **[INTEGRATION_GUIDE.md](docs/INTEGRATION_GUIDE.md)** : Comment intégrer dans un projet
+- **[BASTION_SETUP.md](docs/BASTION_SETUP.md)** : Configuration du bastion
+- **[SECURITY_CHECKLIST.md](docs/SECURITY_CHECKLIST.md)** : Checklist sécurité
 
 ---
 
-## 🤝 Contribution
+## 🏗️ Structure du projet
 
-Contributions bienvenues ! Ouvrez une issue ou soumettez une pull request.
-
-### Développement
-
-```bash
-# Frontend
-npm start
-
-# Backend
-cd backend && npm run dev
-
-# Tests
-npm test
-cd backend && npm test
+```
+gestion_secrets/
+├── .env_old                    # Référence des secrets à migrer
+├── infisical/                  # Configuration Infisical
+│   ├── docker-compose.yml
+│   ├── .env.example
+│   └── nginx.conf
+├── bastion/                    # Configuration bastion/jump host
+│   ├── nginx.conf
+│   ├── setup.sh
+│   └── firewall-rules.sh
+├── scripts/                    # Scripts utilitaires
+│   ├── setup-cli.sh
+│   ├── setup-cli.ps1
+│   ├── migrate-secrets.js
+│   └── rotate-secrets.js
+├── k8s/                        # Intégration Kubernetes
+│   ├── external-secrets/
+│   └── infisical-sync/
+├── templates/                  # Templates réutilisables
+│   └── ci-cd/
+└── docs/                       # Documentation
 ```
 
 ---
 
-## 📧 Support
+## 🔐 Sécurité
 
-- **Issues GitHub** : [github.com/bigmoletos/learning_english/issues](https://github.com/bigmoletos/learning_english/issues)
-- **Email** : support@learning-english.local
-
----
-
-## 📄 Licence
-
-MIT License - Voir [LICENSE](./LICENSE)
+- **Chiffrement au repos** : PostgreSQL avec chiffrement AES-256
+- **Chiffrement en transit** : HTTPS/TLS avec Let's Encrypt
+- **Authentification** : MFA supportée
+- **Audit** : Logs complets de tous les accès
+- **RBAC** : Contrôle d'accès basé sur les rôles
+- **Bastion** : Reverse proxy avec authentification forte
 
 ---
 
-## 👤 Auteur
+## 📖 Utilisation
 
-**Bigmoletos**  
-GitHub : [@bigmoletos](https://github.com/bigmoletos)
-
----
-
-## 🙏 Remerciements
-
-- Corpus technique inspiré des bonnes pratiques IT/DevOps
-- Règles grammaticales issues de références académiques
-- Matériel TOEIC/TOEFL adapté des guides officiels
-
----
-
-## 🎯 Roadmap
-
-### Q4 2025
-- ✅ Évaluation complète avec corrections
-- ✅ Programme adaptatif IA
-- ✅ Synthèse vocale
-- ✅ Backend + Authentification
-
-### Q1 2026
-- 🔄 Tests TOEIC/TOEFL complets
-- 🔄 Reconnaissance vocale (prononciation)
-- 🔄 ChatBot IA conversationnel
-
-### Q2 2026
-- 📅 Application mobile (React Native)
-- 📅 Mode communautaire
-- 📅 Gamification (badges, défis)
-
----
-
-**🚀 Lancez-vous dès maintenant vers l'anglais C1 !**
+### Ajouter un secret
 
 ```bash
-./start_frontend_backend.sh start
-# Ouvrir http://localhost:3000
+infisical secrets set SECRET_NAME "secret_value" --project=mon-projet --env=production
 ```
+
+### Récupérer un secret
+
+```bash
+infisical secrets get SECRET_NAME --project=mon-projet --env=production
+```
+
+### Lister tous les secrets
+
+```bash
+infisical secrets list --project=mon-projet --env=production
+```
+
+---
+
+## 🔗 Intégration dans vos projets
+
+Voir [docs/INTEGRATION_GUIDE.md](docs/INTEGRATION_GUIDE.md) pour :
+
+- Intégration Backend Node.js
+- Intégration Frontend React
+- Intégration Mobile (Android/iOS)
+- Intégration Kubernetes
+- Intégration CI/CD (GitHub Actions, GitLab CI)
+
+---
+
+## 🆘 Support
+
+Pour toute question ou problème :
+
+1. Consulter la documentation dans `docs/`
+2. Vérifier les logs : `docker-compose logs -f` dans `infisical/`
+3. Consulter la [documentation officielle Infisical](https://infisical.com/docs)
+
+---
+
+## 📝 Licence
+
+Ce projet est fourni "tel quel" pour usage interne.
+
+---
+
+**Auteur** : Infrastructure DevOps
+**Date** : Novembre 2025

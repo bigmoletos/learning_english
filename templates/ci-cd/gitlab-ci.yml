@@ -1,0 +1,81 @@
+# Template GitLab CI avec Infisical
+# Usage: Inclure ce fichier dans votre .gitlab-ci.yml ou copier le contenu
+
+variables:
+  INFISICAL_SERVER_URL: "https://infisical.example.com"
+  INFISICAL_PROJECT_ID: "$INFISICAL_PROJECT_ID"  # Définir dans les variables CI/CD GitLab
+  INFISICAL_ENVIRONMENT: "production"
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - |
+    # Installer Infisical CLI
+    curl -fsSL https://github.com/Infisical/infisical/releases/download/v0.14.0/infisical_0.14.0_linux_amd64.tar.gz -o /tmp/infisical.tar.gz
+    tar -xzf /tmp/infisical.tar.gz -C /tmp
+    mv /tmp/infisical /usr/local/bin/infisical
+    chmod +x /usr/local/bin/infisical
+
+    # Authentifier Infisical
+    infisical login --service-token $INFISICAL_SERVICE_TOKEN --server-url $INFISICAL_SERVER_URL
+
+    # Récupérer les secrets
+    infisical secrets pull --project=$INFISICAL_PROJECT_ID --env=$INFISICAL_ENVIRONMENT --format=dotenv > .env
+    export $(cat .env | xargs)
+
+build:
+  stage: build
+  image: node:18
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+
+test:
+  stage: test
+  image: node:18
+  script:
+    - npm ci
+    - npm test
+  coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
+
+deploy_production:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  only:
+    - main
+  script:
+    - |
+      # Build Docker image
+      docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+      docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+      # Déployer sur Kubernetes
+      # Récupérer les secrets Kubernetes depuis Infisical
+      infisical secrets pull --project=$INFISICAL_PROJECT_ID --env=production --format=dotenv > .env.k8s
+
+      # Créer/mettre à jour les secrets Kubernetes
+      kubectl create secret generic app-secrets --from-env-file=.env.k8s --dry-run=client -o yaml | kubectl apply -f -
+
+      # Déployer
+      kubectl set image deployment/your-app app=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+      kubectl rollout status deployment/your-app
+  environment:
+    name: production
+    url: https://your-app.example.com
+
+# Variables CI/CD à configurer dans GitLab:
+# - INFISICAL_SERVER_URL: URL de votre serveur Infisical
+# - INFISICAL_SERVICE_TOKEN: Token de service Infisical
+# - INFISICAL_PROJECT_ID: ID du projet Infisical
+# - KUBECONFIG: Configuration Kubernetes (base64)
+

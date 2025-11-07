@@ -1,32 +1,22 @@
 /**
  * Context pour la gestion du profil utilisateur
- * @version 2.0.0 - Firebase Integration
- * @date 2025-11-06
+ * @version 1.0.0
+ * @date 31-10-2025
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from "react";
 import { UserProfile, UserResponse, ProgressStats } from "../types";
-import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
-import { useProgress, useTestResults } from "../hooks/useFirestore";
-import { createOrUpdateUserProfile } from "../firebase/firestoreService";
+import { syncUser, syncUserUpdate, syncProgress, syncFromFirestore, startAutoSync, needsSync } from "../services/firebase/syncService";
 
 interface UserContextType {
   user: UserProfile | null;
   token: string | null;
   isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
-  // Legacy login for backward compatibility
-  login: (token: string, userData: any) => void;
-  // Firebase authentication methods
-  firebaseLogin: (email: string, password: string) => Promise<any>;
-  firebaseRegister: (email: string, password: string, displayName: string) => Promise<any>;
-  firebaseLogout: () => Promise<any>;
-  googleSignIn: () => Promise<any>;
+  login: (token: string, userData: any) => Promise<void>;
   logout: () => void;
   setUser: (user: UserProfile) => void;
   responses: UserResponse[];
-  addResponse: (response: UserResponse) => void;
+  addResponse: (response: UserResponse) => Promise<void>;
   stats: ProgressStats;
   updateStats: () => void;
 }
@@ -34,9 +24,6 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Firebase authentication hook
-  const firebaseAuth = useFirebaseAuth();
-
   const [user, setUser] = useState<UserProfile | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [responses, setResponses] = useState<UserResponse[]>([]);
@@ -50,54 +37,21 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     domainProgress: {}
   });
 
-  // Firebase data hooks (only active when user is authenticated)
-  const { progress, updateProgress } = useProgress(
-    firebaseAuth.user?.uid || null,
-    true // Enable real-time updates
-  );
-  const { testResults, addTestResult } = useTestResults(
-    firebaseAuth.user?.uid || null,
-    20,
-    true // Enable real-time updates
-  );
+  const autoSyncCleanupRef = useRef<(() => void) | null>(null);
 
-  // Sync Firebase user with local user state
   useEffect(() => {
-    if (firebaseAuth.user) {
-      // User is authenticated with Firebase
-      const userProfile: UserProfile = {
-        id: firebaseAuth.user.uid,
-        name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
-        currentLevel: "B1",
-        targetLevel: "C1",
-        strengths: [],
-        weaknesses: [],
-        completedExercises: progress?.totalTests || 0,
-        totalScore: 0,
-        createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
-        lastActivity: new Date()
-      };
-      setUser(userProfile);
+    // Charger depuis localStorage
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+    const storedResponses = localStorage.getItem("userResponses");
 
-      // Sync user profile to Firestore
-      createOrUpdateUserProfile(firebaseAuth.user.uid, {
-        email: firebaseAuth.user.email,
-        displayName: firebaseAuth.user.displayName,
-        currentLevel: "B1",
-        targetLevel: "C1",
-        emailVerified: firebaseAuth.user.emailVerified
-      }).catch(error => console.error("Error syncing user profile:", error));
-
-    } else {
-      // Fallback to localStorage for backward compatibility
-      const storedToken = localStorage.getItem("token");
-      const storedUser = localStorage.getItem("user");
-
+    const loadUserData = async () => {
       if (storedToken && storedUser) {
         try {
           const userData = JSON.parse(storedUser);
           setToken(storedToken);
 
+          // Convertir les données du backend en UserProfile
           const userProfile: UserProfile = {
             id: userData.id || `user_${Date.now()}`,
             name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
@@ -111,28 +65,69 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date()
           };
           setUser(userProfile);
+
+          // Synchroniser depuis Firestore si nécessaire
+          if (needsSync() && userProfile.id) {
+            try {
+              await syncFromFirestore(userProfile.id);
+              // Recharger les données après synchronisation
+              const syncedUser = localStorage.getItem("user");
+              const syncedResponses = localStorage.getItem("userResponses");
+              if (syncedUser) {
+                const updatedUserData = JSON.parse(syncedUser);
+                setUser({
+                  ...userProfile,
+                  ...updatedUserData,
+                  createdAt: updatedUserData.createdAt ? new Date(updatedUserData.createdAt) : userProfile.createdAt,
+                  lastActivity: updatedUserData.lastActivity ? new Date(updatedUserData.lastActivity) : userProfile.lastActivity
+                });
+              }
+              if (syncedResponses) {
+                setResponses(JSON.parse(syncedResponses));
+              }
+            } catch (error) {
+              console.warn("Erreur lors de la synchronisation depuis Firestore:", error);
+            }
+
+            // Démarrer la synchronisation automatique
+            if (userProfile.id && !autoSyncCleanupRef.current) {
+              autoSyncCleanupRef.current = startAutoSync(userProfile.id);
+            }
+          }
         } catch (error) {
           console.error("Erreur chargement utilisateur:", error);
           localStorage.removeItem("token");
           localStorage.removeItem("user");
         }
       }
-    }
 
-    // Load responses from localStorage (will be migrated to Firestore gradually)
-    const storedResponses = localStorage.getItem("userResponses");
-    if (storedResponses) {
-      try {
-        setResponses(JSON.parse(storedResponses));
-      } catch (error) {
-        console.error("Erreur chargement réponses:", error);
+      if (storedResponses) {
+        try {
+          setResponses(JSON.parse(storedResponses));
+        } catch (error) {
+          console.error("Erreur chargement réponses:", error);
+        }
       }
-    }
-  }, [firebaseAuth.user, progress]);
+    };
+
+    loadUserData();
+
+    // Nettoyage lors du démontage
+    return () => {
+      if (autoSyncCleanupRef.current) {
+        autoSyncCleanupRef.current();
+        autoSyncCleanupRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem("userProfile", JSON.stringify(user));
+      // Synchroniser avec Firestore en arrière-plan
+      syncUser(user).catch(error => {
+        console.warn("Erreur lors de la synchronisation utilisateur:", error);
+      });
     }
   }, [user]);
 
@@ -142,7 +137,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responses]);
 
-  const addResponse = (response: UserResponse) => {
+  const addResponse = async (response: UserResponse) => {
     setResponses(prev => [...prev, response]);
 
     if (user) {
@@ -153,16 +148,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
       setUser(updatedUser);
 
-      // Save to Firebase if authenticated
-      if (firebaseAuth.user) {
-        addTestResult({
-          exerciseId: response.exerciseId,
-          questionId: response.questionId,
-          answer: response.answer,
-          isCorrect: response.isCorrect,
-          timeSpent: response.timeSpent,
-          timestamp: response.timestamp
-        }).catch(error => console.error("Error saving test result to Firebase:", error));
+      // Synchroniser avec Firestore (extraction des infos depuis l'exerciseId si nécessaire)
+      try {
+        const exerciseId = response.exerciseId;
+        const exerciseType = exerciseId.split("_")[0] || "qcm"; // Extrait le type depuis l'ID
+        const level = user.currentLevel;
+
+        await syncProgress(user.id, response, exerciseId, exerciseType, level);
+      } catch (error) {
+        console.warn("Erreur lors de la synchronisation progression:", error);
       }
     }
   };
@@ -173,7 +167,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const averageScore = responses.length > 0 ? (correctResponses / responses.length) * 100 : 0;
     const timeSpent = responses.reduce((acc, r) => acc + r.timeSpent, 0);
 
-    const newStats = {
+    setStats({
       totalExercises: uniqueExercises.size,
       completedExercises: uniqueExercises.size,
       averageScore: Math.round(averageScore * 100) / 100,
@@ -181,21 +175,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       streakDays: calculateStreak(),
       levelProgress: {},
       domainProgress: {}
-    };
-
-    setStats(newStats);
-
-    // Update progress in Firebase if authenticated
-    if (firebaseAuth.user && user) {
-      updateProgress({
-        totalTests: newStats.totalExercises,
-        averageScore: newStats.averageScore,
-        timeSpent: newStats.timeSpent,
-        streakDays: newStats.streakDays,
-        currentLevel: user.currentLevel,
-        targetLevel: user.targetLevel
-      }).catch(error => console.error("Error updating progress in Firebase:", error));
-    }
+    });
   };
 
   const calculateStreak = (): number => {
@@ -225,11 +205,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return streak;
   };
 
-  const login = (newToken: string, userData: any) => {
+  const login = async (newToken: string, userData: any) => {
     setToken(newToken);
     localStorage.setItem("token", newToken);
     localStorage.setItem("user", JSON.stringify(userData));
-    
+
     const userProfile: UserProfile = {
       id: userData.id || `user_${Date.now()}`,
       name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
@@ -243,9 +223,27 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       lastActivity: new Date()
     };
     setUser(userProfile);
+
+    // Synchroniser avec Firestore
+    try {
+      await syncUser(userProfile);
+      // Démarrer la synchronisation automatique
+      if (autoSyncCleanupRef.current) {
+        autoSyncCleanupRef.current();
+      }
+      autoSyncCleanupRef.current = startAutoSync(userProfile.id);
+    } catch (error) {
+      console.warn("Erreur lors de la synchronisation utilisateur:", error);
+    }
   };
 
   const logout = () => {
+    // Arrêter la synchronisation automatique
+    if (autoSyncCleanupRef.current) {
+      autoSyncCleanupRef.current();
+      autoSyncCleanupRef.current = null;
+    }
+
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
@@ -255,44 +253,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem("levelAssessed");
   };
 
-  // Firebase authentication methods
-  const firebaseLogin = async (email: string, password: string) => {
-    const result = await firebaseAuth.login(email, password);
-    return result;
-  };
-
-  const firebaseRegister = async (email: string, password: string, displayName: string) => {
-    const result = await firebaseAuth.register(email, password, displayName);
-    return result;
-  };
-
-  const firebaseLogout = async () => {
-    const result = await firebaseAuth.logout();
-    if (result.success) {
-      logout(); // Clear local state
-    }
-    return result;
-  };
-
-  const googleSignIn = async () => {
-    const result = await firebaseAuth.signInWithGoogle();
-    return result;
-  };
-
-  const isAuthenticated = !!token && !!user || firebaseAuth.isAuthenticated;
+  const isAuthenticated = !!token && !!user;
 
   return (
     <UserContext.Provider value={{
       user,
       token,
       isAuthenticated,
-      loading: firebaseAuth.loading,
-      error: firebaseAuth.error,
       login,
-      firebaseLogin,
-      firebaseRegister,
-      firebaseLogout,
-      googleSignIn,
       logout,
       setUser,
       responses,

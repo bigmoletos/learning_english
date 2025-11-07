@@ -39,7 +39,8 @@
     "compression": "^1.7.4",
     "express-session": "^1.17.3",
     "crypto": "^1.0.1",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "prom-client": "^15.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",

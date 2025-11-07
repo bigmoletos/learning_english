@@ -72,7 +72,15 @@
           "sample_answers": true
         }
       }
-    },
+    }
+  },
+  "commands": {
+    "curl": {
+      "description": "Règle pour l'utilisation de curl dans les commandes terminal",
+      "rule": "Pour faire des curl, tu dois envoyer la sortie vers un fichier, stopper le curl après 1min max et lire le contenu du fichier.",
+      "example": "curl.exe -X GET http://localhost:5001/health --max-time 60 -o response.txt 2>&1; Start-Sleep -Seconds 2; if (Test-Path response.txt) { Get-Content response.txt } else { Write-Host 'Aucune réponse' }; Remove-Item response.txt -ErrorAction SilentlyContinue"
+    }
+  },
   "security": {
     "data_protection": {
       "encrypt_localStorage": true,
