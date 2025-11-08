@@ -103,7 +103,7 @@ async function main() {
   const backendCheck = await checkPort(PORTS.backend, 'Backend');
   if (backendCheck.status === 'running') {
     console.log(`${COLORS.green}✅ Backend: En cours d'exécution sur le port ${PORTS.backend}${COLORS.reset}`);
-    
+
     // Vérifier le health endpoint
     const healthCheck = await checkHealth(PORTS.backend, 'Backend');
     if (healthCheck.status === 'healthy') {

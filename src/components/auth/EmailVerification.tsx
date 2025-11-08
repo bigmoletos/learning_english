@@ -74,7 +74,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
           try {
             // Vérifier que le code est valide
             await checkActionCode(auth, actionCode);
-            
+
             // Appliquer le code pour vérifier l'email
             await applyActionCode(auth, actionCode);
 
@@ -83,11 +83,11 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             if (currentUser) {
               // Recharger l'utilisateur pour obtenir l'état de vérification mis à jour
               await currentUser.reload();
-              
+
               // Récupérer les données utilisateur depuis le storage
               const pendingUser = await storageService.get<any>(StorageKeys.PENDING_USER);
               const firebaseUser = await storageService.get<any>(StorageKeys.FIREBASE_USER);
-              
+
               if (pendingUser || firebaseUser) {
                 const userData = pendingUser || {
                   id: currentUser.uid,
@@ -101,7 +101,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
 
                 // Obtenir le token Firebase
                 const token = await currentUser.getIdToken();
-                
+
                 // Sauvegarder dans le storage
                 await storageService.setMultiple({
                   [StorageKeys.TOKEN]: token,
@@ -133,9 +133,9 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             }
           } catch (error: any) {
             console.error("Erreur vérification email Firebase:", error);
-            
+
             let errorMessage = "Le lien de vérification est invalide ou a expiré.";
-            
+
             if (error.code === "auth/invalid-action-code") {
               errorMessage = "Le lien de vérification est invalide ou a déjà été utilisé.";
             } else if (error.code === "auth/expired-action-code") {
@@ -143,7 +143,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             } else if (error.code === "auth/user-disabled") {
               errorMessage = "Ce compte a été désactivé. Contactez l'administrateur.";
             }
-            
+
             setStatus("error");
             setError(errorMessage);
           }
