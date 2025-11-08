@@ -49,7 +49,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
 
         // Utiliser l'ID token Firebase comme token
         const token = await firebaseUser.getIdToken();
-        
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("firebaseUser", JSON.stringify({
@@ -64,7 +64,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
       }
     } catch (err: any) {
       console.error("Erreur de connexion Firebase:", err);
-      
+
       let errorMessage = "Erreur de connexion. Vérifiez vos identifiants.";
 
       // Gérer les erreurs Firebase spécifiques

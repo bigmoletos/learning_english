@@ -86,12 +86,12 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       if (result.success && result.user) {
         // L'inscription a réussi, Firebase envoie automatiquement un email de vérification
         const firebaseUser = result.user;
-        
+
         // Afficher le composant de vérification d'email
         setRegisteredEmail(email);
         setShowVerifyEmail(true);
         setError(""); // Pas d'erreur
-        
+
         // Stocker temporairement les infos utilisateur
         const userData = {
           id: firebaseUser.uid,
@@ -104,7 +104,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
           targetLevel: "C1",
           createdAt: new Date().toISOString()
         };
-        
+
         localStorage.setItem("pendingUser", JSON.stringify(userData));
         localStorage.setItem("firebaseUser", JSON.stringify({
           uid: firebaseUser.uid,

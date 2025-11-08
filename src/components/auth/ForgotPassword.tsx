@@ -41,7 +41,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
       }
     } catch (err: any) {
       console.error("Erreur réinitialisation Firebase:", err);
-      
+
       let errorMessage = "Erreur lors de la demande de réinitialisation.";
 
       // Gérer les erreurs Firebase spécifiques
