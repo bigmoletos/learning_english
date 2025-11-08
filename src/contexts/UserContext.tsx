@@ -1,12 +1,14 @@
 /**
  * Context pour la gestion du profil utilisateur
- * @version 1.0.0
- * @date 31-10-2025
+ * @version 2.0.0
+ * @date 2025-11-06
+ * Migré vers storageService pour support Web + Android
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from "react";
 import { UserProfile, UserResponse, ProgressStats } from "../types";
 import { syncUser, syncUserUpdate, syncProgress, syncFromFirestore, startAutoSync, needsSync } from "../services/firebase/syncService";
+import { storageService, StorageKeys, migrateFromLocalStorage } from "../utils/storageService";
 
 interface UserContextType {
   user: UserProfile | null;
@@ -38,79 +40,99 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   const autoSyncCleanupRef = useRef<(() => void) | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Charger depuis localStorage
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-    const storedResponses = localStorage.getItem("userResponses");
-
-    const loadUserData = async () => {
-      if (storedToken && storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          setToken(storedToken);
-
-          // Convertir les données du backend en UserProfile
-          const userProfile: UserProfile = {
-            id: userData.id || `user_${Date.now()}`,
-            name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
-            currentLevel: userData.currentLevel || "B1",
-            targetLevel: userData.targetLevel || "C1",
-            strengths: [],
-            weaknesses: userData.weaknesses || [],
-            completedExercises: 0,
-            totalScore: 0,
-            createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
-            lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date()
-          };
-          setUser(userProfile);
-
-          // Synchroniser depuis Firestore si nécessaire
-          if (needsSync() && userProfile.id) {
-            try {
-              await syncFromFirestore(userProfile.id);
-              // Recharger les données après synchronisation
-              const syncedUser = localStorage.getItem("user");
-              const syncedResponses = localStorage.getItem("userResponses");
-              if (syncedUser) {
-                const updatedUserData = JSON.parse(syncedUser);
-                setUser({
-                  ...userProfile,
-                  ...updatedUserData,
-                  createdAt: updatedUserData.createdAt ? new Date(updatedUserData.createdAt) : userProfile.createdAt,
-                  lastActivity: updatedUserData.lastActivity ? new Date(updatedUserData.lastActivity) : userProfile.lastActivity
-                });
-              }
-              if (syncedResponses) {
-                setResponses(JSON.parse(syncedResponses));
-              }
-            } catch (error: any) {
-              // Ignorer silencieusement les erreurs offline ou réseau
-              if (error.code !== "unavailable" && error.code !== "failed-precondition" &&
-                  !error.message?.includes("offline") && !error.message?.includes("network")) {
-                console.warn("Erreur lors de la synchronisation depuis Firestore:", error);
-              }
-            }
-
-            // Démarrer la synchronisation automatique
-            if (userProfile.id && !autoSyncCleanupRef.current) {
-              autoSyncCleanupRef.current = startAutoSync(userProfile.id);
-            }
-          }
-        } catch (error) {
-          console.error("Erreur chargement utilisateur:", error);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-        }
+    // Migration automatique depuis localStorage vers Capacitor Preferences (si nécessaire)
+    const initializeStorage = async () => {
+      try {
+        await migrateFromLocalStorage();
+        setIsInitialized(true);
+      } catch (error) {
+        console.error("Erreur lors de la migration du stockage:", error);
+        setIsInitialized(true); // Continuer même en cas d'erreur
       }
+    };
 
-      if (storedResponses) {
-        try {
-          setResponses(JSON.parse(storedResponses));
-        } catch (error) {
-          console.error("Erreur chargement réponses:", error);
+    initializeStorage();
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialized) return; // Attendre la migration
+
+    // Charger depuis le service de stockage unifié
+    const loadUserData = async () => {
+      try {
+        const [storedToken, storedUser, storedResponses] = await Promise.all([
+          storageService.get<string>(StorageKeys.TOKEN),
+          storageService.get<any>(StorageKeys.USER),
+          storageService.get<UserResponse[]>(StorageKeys.USER_RESPONSES)
+        ]);
+
+        if (storedToken && storedUser) {
+          try {
+            const userData = typeof storedUser === "string" ? JSON.parse(storedUser) : storedUser;
+            setToken(storedToken);
+
+            // Convertir les données du backend en UserProfile
+            const userProfile: UserProfile = {
+              id: userData.id || `user_${Date.now()}`,
+              name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
+              currentLevel: userData.currentLevel || "B1",
+              targetLevel: userData.targetLevel || "C1",
+              strengths: [],
+              weaknesses: userData.weaknesses || [],
+              completedExercises: 0,
+              totalScore: 0,
+              createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
+              lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date()
+            };
+            setUser(userProfile);
+
+            // Synchroniser depuis Firestore si nécessaire
+            if (await needsSync() && userProfile.id) {
+              try {
+                await syncFromFirestore(userProfile.id);
+                // Recharger les données après synchronisation
+                const syncedUser = await storageService.get<any>(StorageKeys.USER);
+                const syncedResponses = await storageService.get<UserResponse[]>(StorageKeys.USER_RESPONSES);
+                if (syncedUser) {
+                  const updatedUserData = typeof syncedUser === "string" ? JSON.parse(syncedUser) : syncedUser;
+                  setUser({
+                    ...userProfile,
+                    ...updatedUserData,
+                    createdAt: updatedUserData.createdAt ? new Date(updatedUserData.createdAt) : userProfile.createdAt,
+                    lastActivity: updatedUserData.lastActivity ? new Date(updatedUserData.lastActivity) : userProfile.lastActivity
+                  });
+                }
+                if (syncedResponses) {
+                  setResponses(Array.isArray(syncedResponses) ? syncedResponses : []);
+                }
+              } catch (error: any) {
+                // Ignorer silencieusement les erreurs offline ou réseau
+                if (error.code !== "unavailable" && error.code !== "failed-precondition" &&
+                    !error.message?.includes("offline") && !error.message?.includes("network")) {
+                  console.warn("Erreur lors de la synchronisation depuis Firestore:", error);
+                }
+              }
+
+              // Démarrer la synchronisation automatique
+              if (userProfile.id && !autoSyncCleanupRef.current) {
+                autoSyncCleanupRef.current = startAutoSync(userProfile.id);
+              }
+            }
+          } catch (error) {
+            console.error("Erreur chargement utilisateur:", error);
+            await storageService.remove(StorageKeys.TOKEN);
+            await storageService.remove(StorageKeys.USER);
+          }
         }
+
+        if (storedResponses && Array.isArray(storedResponses)) {
+          setResponses(storedResponses);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des données:", error);
       }
     };
 
@@ -123,11 +145,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         autoSyncCleanupRef.current = null;
       }
     };
-  }, []);
+  }, [isInitialized]);
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("userProfile", JSON.stringify(user));
+    if (user && isInitialized) {
+      // Sauvegarder dans le service de stockage unifié
+      storageService.set(StorageKeys.USER_PROFILE, user).catch((error) => {
+        console.error("Erreur sauvegarde profil:", error);
+      });
+
       // Synchroniser avec Firestore en arrière-plan
       syncUser(user).catch((error: any) => {
         // Ignorer silencieusement les erreurs offline, réseau ou d'authentification
@@ -139,13 +165,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
       });
     }
-  }, [user]);
+  }, [user, isInitialized]);
 
   useEffect(() => {
-    localStorage.setItem("userResponses", JSON.stringify(responses));
-    updateStats();
+    if (isInitialized) {
+      // Sauvegarder les réponses dans le service de stockage unifié
+      storageService.set(StorageKeys.USER_RESPONSES, responses).catch((error) => {
+        console.error("Erreur sauvegarde réponses:", error);
+      });
+      updateStats();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [responses]);
+  }, [responses, isInitialized]);
 
   const addResponse = async (response: UserResponse) => {
     setResponses(prev => [...prev, response]);
@@ -217,8 +248,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (newToken: string, userData: any) => {
     setToken(newToken);
-    localStorage.setItem("token", newToken);
-    localStorage.setItem("user", JSON.stringify(userData));
+
+    // Sauvegarder dans le service de stockage unifié
+    await storageService.setMultiple({
+      [StorageKeys.TOKEN]: newToken,
+      [StorageKeys.USER]: userData
+    });
 
     const userProfile: UserProfile = {
       id: userData.id || `user_${Date.now()}`,
@@ -265,13 +300,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setToken(null);
     setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userProfile");
-    localStorage.removeItem("userResponses");
-    localStorage.removeItem("levelAssessed");
-    localStorage.removeItem("firebaseUser");
-    localStorage.removeItem("pendingUser");
+
+    // Nettoyer le service de stockage unifié
+    await storageService.removeMultiple([
+      StorageKeys.TOKEN,
+      StorageKeys.USER,
+      StorageKeys.USER_PROFILE,
+      StorageKeys.USER_RESPONSES,
+      StorageKeys.LEVEL_ASSESSED,
+      StorageKeys.FIREBASE_USER,
+      StorageKeys.PENDING_USER
+    ]);
   };
 
   const isAuthenticated = !!token && !!user;

@@ -1,16 +1,16 @@
 /**
- * Service de synchronisation localStorage ↔ Firestore
- * @version 1.0.0
- * @date 01-11-2025
+ * Service de synchronisation Storage ↔ Firestore
+ * @version 2.0.0
+ * @date 2025-11-06
+ * Migré vers storageService pour support Web + Android
  */
 
 import { saveUser, getUserById, updateUser } from "./userService";
 import { saveProgress, getUserProgress, getUserProgressStats } from "./progressService";
 import { saveAssessment, getUserAssessments } from "./assessmentService";
 import { UserProfile, UserResponse } from "../../types";
+import { storageService, StorageKeys } from "../../utils/storageService";
 
-const SYNC_QUEUE_KEY = "syncQueue";
-const LAST_SYNC_KEY = "lastSync";
 const SYNC_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 interface SyncQueueItem {
@@ -23,11 +23,11 @@ interface SyncQueueItem {
 /**
  * Ajoute un élément à la queue de synchronisation
  */
-const addToSyncQueue = (item: SyncQueueItem): void => {
+const addToSyncQueue = async (item: SyncQueueItem): Promise<void> => {
   try {
-    const queue = getSyncQueue();
+    const queue = await getSyncQueue();
     queue.push(item);
-    localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+    await storageService.set(StorageKeys.SYNC_QUEUE, queue);
   } catch (error) {
     console.error("Erreur lors de l'ajout à la queue de synchronisation:", error);
   }
@@ -36,10 +36,10 @@ const addToSyncQueue = (item: SyncQueueItem): void => {
 /**
  * Obtient la queue de synchronisation
  */
-const getSyncQueue = (): SyncQueueItem[] => {
+const getSyncQueue = async (): Promise<SyncQueueItem[]> => {
   try {
-    const queueStr = localStorage.getItem(SYNC_QUEUE_KEY);
-    return queueStr ? JSON.parse(queueStr) : [];
+    const queue = await storageService.get<SyncQueueItem[]>(StorageKeys.SYNC_QUEUE);
+    return Array.isArray(queue) ? queue : [];
   } catch (error) {
     console.error("Erreur lors de la récupération de la queue de synchronisation:", error);
     return [];
@@ -49,8 +49,8 @@ const getSyncQueue = (): SyncQueueItem[] => {
 /**
  * Vide la queue de synchronisation
  */
-const clearSyncQueue = (): void => {
-  localStorage.removeItem(SYNC_QUEUE_KEY);
+const clearSyncQueue = async (): Promise<void> => {
+  await storageService.remove(StorageKeys.SYNC_QUEUE);
 };
 
 /**
@@ -58,12 +58,14 @@ const clearSyncQueue = (): void => {
  */
 export const syncUser = async (user: UserProfile): Promise<void> => {
   try {
-    // Sauvegarder localement d'abord
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("userProfile", JSON.stringify(user));
+    // Sauvegarder localement d'abord dans le service de stockage unifié
+    await storageService.setMultiple({
+      [StorageKeys.USER]: user,
+      [StorageKeys.USER_PROFILE]: user
+    });
 
     // Ajouter à la queue de synchronisation
-    addToSyncQueue({
+    await addToSyncQueue({
       type: "user",
       action: "create",
       data: user,
@@ -93,17 +95,18 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
  */
 export const syncUserUpdate = async (userId: string, updates: Partial<UserProfile>): Promise<void> => {
   try {
-    // Mettre à jour localement
-    const userStr = localStorage.getItem("user");
-    if (userStr) {
-      const user = JSON.parse(userStr);
+    // Mettre à jour localement dans le service de stockage unifié
+    const user = await storageService.get<UserProfile>(StorageKeys.USER);
+    if (user) {
       const updatedUser = { ...user, ...updates };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      localStorage.setItem("userProfile", JSON.stringify(updatedUser));
+      await storageService.setMultiple({
+        [StorageKeys.USER]: updatedUser,
+        [StorageKeys.USER_PROFILE]: updatedUser
+      });
     }
 
     // Ajouter à la queue de synchronisation
-    addToSyncQueue({
+    await addToSyncQueue({
       type: "user",
       action: "update",
       data: { userId, updates },
@@ -139,14 +142,13 @@ export const syncProgress = async (
   domain?: string
 ): Promise<void> => {
   try {
-    // Sauvegarder localement
-    const responsesStr = localStorage.getItem("userResponses");
-    const responses: UserResponse[] = responsesStr ? JSON.parse(responsesStr) : [];
+    // Sauvegarder localement dans le service de stockage unifié
+    const responses = await storageService.get<UserResponse[]>(StorageKeys.USER_RESPONSES) || [];
     responses.push(progress);
-    localStorage.setItem("userResponses", JSON.stringify(responses));
+    await storageService.set(StorageKeys.USER_RESPONSES, responses);
 
     // Ajouter à la queue de synchronisation
-    addToSyncQueue({
+    await addToSyncQueue({
       type: "progress",
       action: "create",
       data: { userId, progress, exerciseId, exerciseType, level, domain },
@@ -182,12 +184,17 @@ export const syncProgress = async (
  */
 export const syncAssessment = async (assessmentData: any): Promise<void> => {
   try {
-    // Sauvegarder localement selon le type
-    const key = `${assessmentData.testType || assessmentData.assessmentType}Results`;
-    localStorage.setItem(key, JSON.stringify(assessmentData));
+    // Sauvegarder localement selon le type dans le service de stockage unifié
+    const testType = assessmentData.testType || assessmentData.assessmentType;
+    const storageKey = testType === "efset" ? StorageKeys.EFSET_RESULTS :
+                      testType === "toeic" ? StorageKeys.TOEIC_RESULTS :
+                      testType === "toefl" ? StorageKeys.TOEFL_RESULTS :
+                      `${testType}Results`;
+
+    await storageService.set(storageKey, assessmentData);
 
     // Ajouter à la queue de synchronisation
-    addToSyncQueue({
+    await addToSyncQueue({
       type: "assessment",
       action: "create",
       data: assessmentData,
@@ -215,7 +222,7 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
  * Traite la queue de synchronisation
  */
 export const processSyncQueue = async (): Promise<void> => {
-  const queue = getSyncQueue();
+  const queue = await getSyncQueue();
   if (queue.length === 0) return;
 
   const processed: number[] = [];
@@ -259,42 +266,53 @@ export const processSyncQueue = async (): Promise<void> => {
   if (processed.length > 0) {
     const remainingQueue = queue.filter(item => !processed.includes(item.timestamp));
     if (remainingQueue.length === 0) {
-      clearSyncQueue();
+      await clearSyncQueue();
     } else {
-      localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(remainingQueue));
+      await storageService.set(StorageKeys.SYNC_QUEUE, remainingQueue);
     }
   }
 
   // Marquer la dernière synchronisation
-  localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
+  await storageService.set(StorageKeys.LAST_SYNC, Date.now());
 };
 
 /**
- * Synchronise toutes les données depuis Firestore vers localStorage
+ * Synchronise toutes les données depuis Firestore vers le service de stockage
  */
 export const syncFromFirestore = async (userId: string): Promise<void> => {
   try {
     // Récupérer l'utilisateur depuis Firestore
     const user = await getUserById(userId);
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("userProfile", JSON.stringify(user));
+      await storageService.setMultiple({
+        [StorageKeys.USER]: user,
+        [StorageKeys.USER_PROFILE]: user
+      });
     }
 
     // Récupérer la progression depuis Firestore
     const progress = await getUserProgress(userId);
     if (progress.length > 0) {
-      localStorage.setItem("userResponses", JSON.stringify(progress));
+      await storageService.set(StorageKeys.USER_RESPONSES, progress);
     }
 
     // Récupérer les évaluations depuis Firestore
     const assessments = await getUserAssessments(userId);
+    const assessmentUpdates: Record<string, any> = {};
     assessments.forEach(assessment => {
-      const key = `${assessment.testType || assessment.assessmentType}Results`;
-      localStorage.setItem(key, JSON.stringify(assessment));
+      const testType = assessment.testType || assessment.assessmentType;
+      const storageKey = testType === "efset" ? StorageKeys.EFSET_RESULTS :
+                         testType === "toeic" ? StorageKeys.TOEIC_RESULTS :
+                         testType === "toefl" ? StorageKeys.TOEFL_RESULTS :
+                         `${testType}Results`;
+      assessmentUpdates[storageKey] = assessment;
     });
 
-    localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
+    if (Object.keys(assessmentUpdates).length > 0) {
+      await storageService.setMultiple(assessmentUpdates);
+    }
+
+    await storageService.set(StorageKeys.LAST_SYNC, Date.now());
   } catch (error: any) {
     // Gérer silencieusement les erreurs offline ou réseau
     if (error.code === "unavailable" || error.code === "failed-precondition" ||
@@ -312,11 +330,10 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
 /**
  * Vérifie si une synchronisation est nécessaire
  */
-export const needsSync = (): boolean => {
-  const lastSyncStr = localStorage.getItem(LAST_SYNC_KEY);
-  if (!lastSyncStr) return true;
+export const needsSync = async (): Promise<boolean> => {
+  const lastSync = await storageService.get<number>(StorageKeys.LAST_SYNC);
+  if (!lastSync) return true;
 
-  const lastSync = parseInt(lastSyncStr, 10);
   const now = Date.now();
   return now - lastSync > SYNC_INTERVAL;
 };
@@ -326,7 +343,7 @@ export const needsSync = (): boolean => {
  */
 export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL): () => void => {
   const syncInterval = setInterval(async () => {
-    if (needsSync()) {
+    if (await needsSync()) {
       await processSyncQueue();
       await syncFromFirestore(userId);
     }
