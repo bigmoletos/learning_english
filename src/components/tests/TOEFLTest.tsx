@@ -75,12 +75,35 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
   });
   const [completed, setCompleted] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
   const { addResponse } = useUser();
 
   useEffect(() => {
+    const loadTestData = async () => {
+      try {
+        const response = await fetch("/data/toeic_toefl/toefl_all_levels.json");
+        const data = await response.json();
+
+        // Chercher le test par niveau si fourni, sinon par testId
+        let test: TOEFLTestData;
+        if (level) {
+          test = data.tests.find((t: TOEFLTestData) => t.level === level);
+        } else {
+          test = data.tests.find((t: TOEFLTestData) => t.id === testId);
+        }
+
+        if (!test) {
+          test = data.tests[0]; // Fallback au premier test
+        }
+
+        setTestData(test);
+      } catch (error) {
+        console.error("Erreur chargement test TOEFL:", error);
+      }
+    };
+
     loadTestData();
   }, [testId, level]);
 
@@ -92,29 +115,6 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
       return () => clearInterval(interval);
     }
   }, [completed, startTime, testData]);
-
-  const loadTestData = async () => {
-    try {
-      const response = await fetch('/data/toeic_toefl/toefl_all_levels.json');
-      const data = await response.json();
-      
-      // Chercher le test par niveau si fourni, sinon par testId
-      let test: TOEFLTestData;
-      if (level) {
-        test = data.tests.find((t: TOEFLTestData) => t.level === level);
-      } else {
-        test = data.tests.find((t: TOEFLTestData) => t.id === testId);
-      }
-      
-      if (!test) {
-        test = data.tests[0]; // Fallback au premier test
-      }
-      
-      setTestData(test);
-    } catch (error) {
-      console.error("Erreur chargement test TOEFL:", error);
-    }
-  };
 
   const currentSection = testData?.sections[currentSectionIndex];
   const currentQuestion = currentSection?.questions[currentQuestionIndex];
@@ -396,8 +396,8 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                                 sx={{
                                   p: 1,
                                   mb: 0.5,
-                                  bgcolor: option === question.correctAnswer ? "success.light" : 
-                                          option === userAnswer && !isCorrect ? "error.light" : "grey.50",
+                                  bgcolor: option === question.correctAnswer ? "success.light" :
+                                    option === userAnswer && !isCorrect ? "error.light" : "grey.50",
                                   borderRadius: 1
                                 }}
                               >
@@ -481,7 +481,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
             </Typography>
             <Chip
               icon={<Timer />}
-              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, '0')}`}
+              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, "0")}`}
               color="primary"
             />
           </Box>
@@ -501,7 +501,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                   <Chip
                     icon={
                       currentSection?.type === "listening" ? <Headphones /> :
-                      currentSection?.type === "writing" ? <Edit /> : <MenuBook />
+                        currentSection?.type === "writing" ? <Edit /> : <MenuBook />
                     }
                     label={`Question ${currentQuestionIndex + 1} / ${currentSection!.questions.length}`}
                     color="primary"

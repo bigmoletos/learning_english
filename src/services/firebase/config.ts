@@ -1,74 +1,42 @@
 /**
  * Configuration Firebase
- * @version 1.0.0
- * @date 01-11-2025
+ * @version 2.0.0
+ * @date 07-11-2025
  */
 
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getAuth, Auth } from "firebase/auth";
 import { getStorage, FirebaseStorage } from "firebase/storage";
+import { firebaseConfigGenerated } from "./firebaseConfig.generated";
 
-// Configuration Firebase depuis les variables d'environnement
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-};
+// Vérifier si on est sur Capacitor/Android
+const isCapacitor = typeof (window as any).Capacitor !== "undefined";
+const platform = isCapacitor ? (window as any).Capacitor?.getPlatform() : "web";
 
-// Vérifier que toutes les variables sont définies
-const requiredEnvVars = [
-  "REACT_APP_FIREBASE_API_KEY",
-  "REACT_APP_FIREBASE_AUTH_DOMAIN",
-  "REACT_APP_FIREBASE_PROJECT_ID",
-  "REACT_APP_FIREBASE_STORAGE_BUCKET",
-  "REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
-  "REACT_APP_FIREBASE_APP_ID"
-];
-
-const missingVars = requiredEnvVars.filter(
-  (varName) => !process.env[varName]
-);
-
-if (missingVars.length > 0 && process.env.NODE_ENV === "development") {
-  console.warn(
-    "⚠️ Variables Firebase manquantes:",
-    missingVars.join(", "),
-    "\nL'application fonctionnera en mode offline uniquement."
-  );
-}
-
-// Initialiser Firebase uniquement si les variables sont présentes
+// Initialiser Firebase
 let app: FirebaseApp | null = null;
 let db: Firestore | null = null;
 let auth: Auth | null = null;
 let storage: FirebaseStorage | null = null;
 
-if (!missingVars.length || process.env.NODE_ENV === "production") {
-  try {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    storage = getStorage(app);
+try {
+  // Utiliser la configuration générée (fonctionne en dev et prod)
+  app = initializeApp(firebaseConfigGenerated);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  storage = getStorage(app);
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("✅ Firebase initialisé avec succès");
-    }
-  } catch (error) {
-    console.error("❌ Erreur lors de l'initialisation de Firebase:", error);
+  console.log(`✅ Firebase initialisé avec succès (${platform})`);
+} catch (error) {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  console.error(`❌ Erreur Firebase (${platform}):`, errorMessage);
+
+  // Sur mobile, ne pas crasher l'app
+  if (isCapacitor) {
+    console.warn("Mode offline activé pour Capacitor");
   }
 }
 
 export { app, db, auth, storage };
 export default { app, db, auth, storage };
-
-
-
-
-
-
-

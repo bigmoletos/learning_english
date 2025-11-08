@@ -57,7 +57,7 @@ export const ExerciseList: React.FC = () => {
       }
 
       // Vérifier si la bonne réponse est un placeholder
-      if (typeof question.correctAnswer === 'string') {
+      if (typeof question.correctAnswer === "string") {
         if (/^primary use of|^correct statement about|^explanation about/i.test(question.correctAnswer)) {
           return false;
         }
@@ -149,14 +149,14 @@ export const ExerciseList: React.FC = () => {
   const loadExercises = async () => {
     try {
       // Charger tous les QCM (200 exercices complets à 100%)
-      const qcmResponse = await fetch('/data/exercises/all_qcm_200.json');
+      const qcmResponse = await fetch("/data/exercises/all_qcm_200.json");
       if (!qcmResponse.ok) {
         throw new Error(`Erreur HTTP ${qcmResponse.status} pour all_qcm_200.json`);
       }
       const qcmData = await qcmResponse.json();
       
       // Charger tous les textes à trous (200 exercices complets à 100%)
-      const clozeResponse = await fetch('/data/exercises/all_cloze_200.json');
+      const clozeResponse = await fetch("/data/exercises/all_cloze_200.json");
       if (!clozeResponse.ok) {
         throw new Error(`Erreur HTTP ${clozeResponse.status} pour all_cloze_200.json`);
       }
@@ -165,7 +165,7 @@ export const ExerciseList: React.FC = () => {
       // Charger les exercices listening
       let listeningExercises: Exercise[] = [];
       try {
-        const listeningResponse = await fetch('/corpus/listening/all_listening_100.json');
+        const listeningResponse = await fetch("/corpus/listening/all_listening_100.json");
         if (listeningResponse.ok) {
           const listeningData = await listeningResponse.json();
           const listeningTexts = listeningData.texts || [];
@@ -181,7 +181,7 @@ export const ExerciseList: React.FC = () => {
       // Charger les exercices reading
       let readingExercises: Exercise[] = [];
       try {
-        const readingResponse = await fetch('/corpus/reading/all_reading_100.json');
+        const readingResponse = await fetch("/corpus/reading/all_reading_100.json");
         if (readingResponse.ok) {
           const readingData = await readingResponse.json();
           const readingTexts = readingData.texts || [];
@@ -198,7 +198,7 @@ export const ExerciseList: React.FC = () => {
       const qcmExercises = Array.isArray(qcmData) ? qcmData : (qcmData.exercises || []);
       const clozeExercises = Array.isArray(clozeData) ? clozeData : (clozeData.exercises || []);
       
-      let allExercises = [
+      const allExercises = [
         ...qcmExercises,
         ...clozeExercises,
         ...listeningExercises,
@@ -242,11 +242,11 @@ export const ExerciseList: React.FC = () => {
       console.error("Erreur chargement exercices:", error);
       // Fallback: charger les petits fichiers (qui contiennent du vrai contenu validé)
       try {
-        const qcmSmall = await fetch('/data/exercises/qcm_exercises.json');
-        const clozeSmall = await fetch('/data/exercises/cloze_exercises.json');
+        const qcmSmall = await fetch("/data/exercises/qcm_exercises.json");
+        const clozeSmall = await fetch("/data/exercises/cloze_exercises.json");
         const qcmSmallData = await qcmSmall.json();
         const clozeSmallData = await clozeSmall.json();
-        let fallbackExercises = [
+        const fallbackExercises = [
           ...(qcmSmallData.exercises || []),
           ...(clozeSmallData.exercises || [])
         ];
@@ -547,8 +547,8 @@ export const ExerciseList: React.FC = () => {
                     label={exercise.level} 
                     color={
                       exercise.level === "C1" ? "error" : 
-                      exercise.level === "B2" ? "warning" : 
-                      exercise.level === "B1" ? "info" : "success"
+                        exercise.level === "B2" ? "warning" : 
+                          exercise.level === "B1" ? "info" : "success"
                     }
                     size="small"
                   />

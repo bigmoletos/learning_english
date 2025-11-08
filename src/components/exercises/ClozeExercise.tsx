@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box, Card, CardContent, Typography, TextField, Button, Alert, Chip
 } from "@mui/material";
@@ -24,29 +24,29 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
 }) => {
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
 
   const handleSubmit = () => {
     const correctAnswer = Array.isArray(question.correctAnswer)
       ? question.correctAnswer[0]
       : question.correctAnswer;
-    
+
     const isCorrect = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-    
+
     setSubmitted(true);
     onAnswer(userAnswer, isCorrect, timeSpent);
   };
 
-  const isCorrect = submitted && userAnswer.trim().toLowerCase() === 
-    (Array.isArray(question.correctAnswer) 
-      ? question.correctAnswer[0] 
+  const isCorrect = submitted && userAnswer.trim().toLowerCase() ===
+    (Array.isArray(question.correctAnswer)
+      ? question.correctAnswer[0]
       : question.correctAnswer
     ).toLowerCase();
 
   const renderTextWithBlanks = (text: string) => {
     const parts = text.split("___");
-    
+
     return parts.map((part, index) => (
       <React.Fragment key={index}>
         {part}
@@ -81,7 +81,7 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
           <Typography variant="h6" gutterBottom>
             Complétez le texte à trous
           </Typography>
-          
+
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, mb: 3, flexWrap: "wrap" }}>
               {question.grammarFocus.map((focus, idx) => (

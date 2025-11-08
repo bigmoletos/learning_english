@@ -29,14 +29,14 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleSubmit = () => {
     const isCorrect = selectedAnswer === question.correctAnswer;
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-    
+
     setSubmitted(true);
     onAnswer(selectedAnswer, isCorrect, timeSpent);
   };
@@ -51,7 +51,7 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
           <Typography variant="h6" gutterBottom>
             {question.text}
           </Typography>
-          
+
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "wrap" }}>
               {question.grammarFocus.map((focus, idx) => (

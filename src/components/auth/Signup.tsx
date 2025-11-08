@@ -1,6 +1,7 @@
 /**
- * Composant d'inscription
- * @version 1.0.0
+ * Composant d'inscription avec Firebase Auth
+ * @version 2.0.0
+ * @date 2025-11-06
  */
 
 import React, { useState } from "react";
@@ -9,10 +10,8 @@ import {
   Alert, Link, InputAdornment, IconButton, CircularProgress, Grid
 } from "@mui/material";
 import { Email, Lock, Person, Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
+import { registerUser } from "../../firebase/authService";
 import { VerifyEmail } from "./VerifyEmail";
-
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 interface SignupProps {
   onSuccess: (token: string, user: any) => void;
@@ -35,7 +34,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
   // Debug: Log quand l'erreur change
   React.useEffect(() => {
     if (error) {
-      console.log('✅ Erreur dans le state:', error);
+      console.log("✅ Erreur dans le state:", error);
     }
   }, [error]);
 
@@ -81,80 +80,69 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
-        email,
-        password,
-        firstName,
-        lastName
-      });
+      const displayName = `${firstName} ${lastName}`.trim() || email.split("@")[0];
+      const result = await registerUser(email, password, displayName);
 
-      if (response.data.success) {
-        // L'inscription a réussi, mais l'email doit être vérifié
-        // Ne pas connecter automatiquement
-        const { email: registeredEmailAddress, requiresVerification } = response.data;
-
-        if (requiresVerification || !response.data.token) {
-          // Afficher le composant de vérification d'email
-          setRegisteredEmail(registeredEmailAddress || email);
-          setShowVerifyEmail(true);
-          setError(""); // Pas d'erreur
-          return; // Ne pas appeler onSuccess
-        }
-
-        // Fallback si pas de requiresVerification (ancien comportement)
-        const { token, user } = response.data;
-        if (token && user) {
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(user));
-          onSuccess(token, user);
-        }
+      if (result.success && result.user) {
+        // L'inscription a réussi, Firebase envoie automatiquement un email de vérification
+        const firebaseUser = result.user;
+        
+        // Afficher le composant de vérification d'email
+        setRegisteredEmail(email);
+        setShowVerifyEmail(true);
+        setError(""); // Pas d'erreur
+        
+        // Stocker temporairement les infos utilisateur
+        const userData = {
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: displayName,
+          firstName,
+          lastName,
+          emailVerified: false,
+          currentLevel: "B1",
+          targetLevel: "C1",
+          createdAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem("pendingUser", JSON.stringify(userData));
+        localStorage.setItem("firebaseUser", JSON.stringify({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName
+        }));
       } else {
-        setError(response.data.message || "Erreur d'inscription");
+        setError(result.message || "Erreur d'inscription");
       }
     } catch (err: any) {
-      // Log pour debug
-      console.error('Erreur inscription:', err.response?.data || err);
+      console.error("Erreur inscription Firebase:", err);
 
-      // Gérer les différents types d'erreurs
       let errorMessage = "Erreur d'inscription. Veuillez réessayer.";
 
-      if (err.response?.data) {
-        // Erreur du backend avec structure détaillée
-        if (err.response.data.message) {
-          errorMessage = err.response.data.message;
-        } else if (err.response.data.errors && Array.isArray(err.response.data.errors)) {
-          // Erreurs de validation (array)
-          const firstError = err.response.data.errors[0];
-          if (typeof firstError === 'string') {
-            errorMessage = firstError;
-          } else if (firstError.msg) {
-            errorMessage = firstError.msg;
-          } else if (firstError.message) {
-            errorMessage = firstError.message;
-          } else if (firstError.param && firstError.location) {
-            // Format express-validator standard
-            errorMessage = `${firstError.param}: ${firstError.msg || firstError.message || 'Erreur de validation'}`;
-          }
-        } else if (typeof err.response.data === 'string') {
-          errorMessage = err.response.data;
+      // Gérer les erreurs Firebase spécifiques
+      if (err.code) {
+        switch (err.code) {
+        case "auth/email-already-in-use":
+          errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Adresse email invalide.";
+          break;
+        case "auth/weak-password":
+          errorMessage = "Le mot de passe est trop faible. Utilisez au moins 6 caractères.";
+          break;
+        case "auth/operation-not-allowed":
+          errorMessage = "L'inscription par email/mot de passe n'est pas activée. Contactez l'administrateur.";
+          break;
+        case "auth/network-request-failed":
+          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+          break;
+        default:
+          errorMessage = err.message || "Erreur d'inscription. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;
       }
-
-      // Messages d'erreur spécifiques
-      if (errorMessage.toLowerCase().includes("existe") &&
-          (errorMessage.toLowerCase().includes("déjà") || errorMessage.toLowerCase().includes("deja") ||
-           errorMessage.toLowerCase().includes("already exists"))) {
-        errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter ou utilisez un autre email.";
-      } else if (errorMessage.toLowerCase().includes("email") || errorMessage.toLowerCase().includes("invalide")) {
-        errorMessage = "Email invalide. Veuillez vérifier votre adresse email.";
-      } else if (errorMessage.toLowerCase().includes("password") || errorMessage.toLowerCase().includes("mot de passe")) {
-        errorMessage = "Le mot de passe ne respecte pas les critères requis (min. 8 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial).";
-      }
-
-      // Log pour debug
-      console.log('Message d\'erreur final:', errorMessage);
 
       setError(errorMessage);
     } finally {

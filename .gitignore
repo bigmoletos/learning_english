@@ -83,3 +83,6 @@ k8s/*-secret.yaml
 
 # Logs
 logs/
+
+# Firebase config générée
+src/services/firebase/firebaseConfig.generated.ts

@@ -1,6 +1,6 @@
 /**
  * Service Firestore générique pour opérations CRUD
- * @version 1.0.0
+ * @version 1.1.0
  * @date 01-11-2025
  */
 
@@ -22,7 +22,18 @@ import {
   QuerySnapshot,
   DocumentSnapshot
 } from "firebase/firestore";
-import { db } from "./config";
+import { db, auth } from "./config";
+
+/**
+ * Vérifie si l'utilisateur est authentifié
+ * Retourne true si authentifié, false sinon
+ */
+const isAuthenticated = (): boolean => {
+  if (!auth) {
+    return false;
+  }
+  return !!auth.currentUser;
+};
 
 /**
  * Convertit un objet Firestore avec Timestamp en objet JavaScript standard
@@ -65,8 +76,17 @@ export const getDocument = async <T = DocumentData>(
     }
 
     return null;
-  } catch (error) {
-    console.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}:`, error);
+  } catch (error: any) {
+    // Gérer silencieusement les erreurs offline ou d'authentification
+    if (error.code === "unavailable" || error.code === "failed-precondition" ||
+        error.message?.includes("offline") || error.message?.includes("network")) {
+      // Client offline - retourner null silencieusement
+      return null;
+    }
+    // Ne logger que les autres erreurs
+    if (error.code !== "permission-denied") {
+      console.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}:`, error);
+    }
     throw error;
   }
 };
@@ -98,8 +118,17 @@ export const getDocuments = async <T = DocumentData>(
     });
 
     return documents;
-  } catch (error) {
-    console.error(`Erreur lors de la récupération des documents ${collectionName}:`, error);
+  } catch (error: any) {
+    // Gérer silencieusement les erreurs offline ou d'authentification
+    if (error.code === "unavailable" || error.code === "failed-precondition" ||
+        error.message?.includes("offline") || error.message?.includes("network")) {
+      // Client offline - retourner un tableau vide silencieusement
+      return [];
+    }
+    // Ne logger que les autres erreurs
+    if (error.code !== "permission-denied") {
+      console.error(`Erreur lors de la récupération des documents ${collectionName}:`, error);
+    }
     throw error;
   }
 };
@@ -117,14 +146,26 @@ export const setDocument = async <T = DocumentData>(
     return;
   }
 
+  // Vérifier l'authentification avant l'écriture - v2
+  if (!isAuthenticated()) {
+    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
+    // Les données seront sauvegardées dans localStorage et synchronisées plus tard
+    return;
+  }
+
   try {
     const docRef = doc(db, collectionName, documentId);
     await setDoc(docRef, {
       ...data,
       updatedAt: Timestamp.now()
     }, { merge: true });
-  } catch (error) {
-    console.error(`Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`, error);
+  } catch (error: any) {
+    // Améliorer le message d'erreur pour les erreurs d'authentification
+    if (error.code === "permission-denied" || error.message?.includes("permission")) {
+      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
+    } else {
+      console.error(`Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`, error);
+    }
     throw error;
   }
 };
@@ -142,14 +183,25 @@ export const updateDocument = async <T = DocumentData>(
     return;
   }
 
+  // Vérifier l'authentification avant l'écriture
+  if (!isAuthenticated()) {
+    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
+    return;
+  }
+
   try {
     const docRef = doc(db, collectionName, documentId);
     await updateDoc(docRef, {
       ...data,
       updatedAt: Timestamp.now()
     });
-  } catch (error) {
-    console.error(`Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`, error);
+  } catch (error: any) {
+    // Améliorer le message d'erreur pour les erreurs d'authentification
+    if (error.code === "permission-denied" || error.message?.includes("permission")) {
+      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
+    } else {
+      console.error(`Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`, error);
+    }
     throw error;
   }
 };
@@ -166,11 +218,21 @@ export const deleteDocument = async (
     return;
   }
 
+  // Vérifier l'authentification avant la suppression
+  if (!isAuthenticated()) {
+    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
+    return;
+  }
+
   try {
     const docRef = doc(db, collectionName, documentId);
     await deleteDoc(docRef);
-  } catch (error) {
-    console.error(`Erreur lors de la suppression du document ${collectionName}/${documentId}:`, error);
+  } catch (error: any) {
+    if (error.code === "permission-denied" || error.message?.includes("permission")) {
+      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
+    } else {
+      console.error(`Erreur lors de la suppression du document ${collectionName}/${documentId}:`, error);
+    }
     throw error;
   }
 };

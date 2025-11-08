@@ -256,7 +256,7 @@ const assessmentQuestions: AssessmentQuestion[] = [
     level: "B2",
     points: 2
   }
-  ];
+];
 
 /**
  * Génère une explication grammaticale détaillée pour chaque question
@@ -270,7 +270,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Past Simple (Passé simple)</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le <strong>Past Simple</strong> est utilisé pour décrire une action terminée dans le passé, 
+          Le <strong>Past Simple</strong> est utilisé pour décrire une action terminée dans le passé,
           souvent accompagnée d'un indicateur de temps précis.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -280,7 +280,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           • Indicateurs : yesterday, last week, in 2020, ago
         </Typography>
         <Typography variant="body2" paragraph>
-          <strong>⚠️ Attention :</strong> "was deployed" est à la voix passive. 
+          <strong>⚠️ Attention :</strong> "was deployed" est à la voix passive.
           Voix active équivalente : "They deployed the system yesterday."
         </Typography>
         <Typography variant="body2">
@@ -297,7 +297,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Present Perfect Continuous</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le <strong>Present Perfect Continuous</strong> exprime une action qui a commencé dans le passé 
+          Le <strong>Present Perfect Continuous</strong> exprime une action qui a commencé dans le passé
           et qui continue jusqu'à maintenant, avec emphase sur la durée.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -326,7 +326,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Modal Perfect (Could have + past participle)</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          <strong>"Could have + past participle"</strong> exprime une possibilité dans le passé qui 
+          <strong>"Could have + past participle"</strong> exprime une possibilité dans le passé qui
           ne s'est pas réalisée (regret, reproche, ou constat).
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -358,7 +358,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Present Perfect + Cause/Effect</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le <strong>Present Perfect</strong> est utilisé ici pour montrer un résultat présent 
+          Le <strong>Present Perfect</strong> est utilisé ici pour montrer un résultat présent
           d'une action passée. "By implementing" (gérondif) exprime le moyen/la cause.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -387,7 +387,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Third Conditional (Inversion)</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le <strong>Third Conditional</strong> exprime une situation hypothétique dans le passé 
+          Le <strong>Third Conditional</strong> exprime une situation hypothétique dans le passé
           et son résultat irréel. L'inversion avec "Had" rend la phrase plus formelle.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -402,7 +402,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           • Note : "If" disparaît, "had" passe en tête
         </Typography>
         <Typography variant="body2" paragraph>
-          <strong>Signification :</strong> L'équipe n'a PAS suivi les bonnes pratiques, 
+          <strong>Signification :</strong> L'équipe n'a PAS suivi les bonnes pratiques,
           et en conséquence, la faille de sécurité s'est produite.
         </Typography>
         <Typography variant="body2">
@@ -419,7 +419,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Present Continuous Passive</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le <strong>Present Continuous Passive</strong> décrit une action en cours de réalisation 
+          Le <strong>Present Continuous Passive</strong> décrit une action en cours de réalisation
           au moment présent, à la voix passive (l'agent n'est pas l'acteur principal).
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -443,7 +443,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
         </Typography>
       </Box>
     ),
-    
+
     // READING QUESTIONS
     r1: (
       <Box>
@@ -451,7 +451,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Compréhension écrite : Idée principale</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le texte parle de la <strong>dette technique</strong> : des solutions rapides qui créent 
+          Le texte parle de la <strong>dette technique</strong> : des solutions rapides qui créent
           des problèmes à long terme.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -496,7 +496,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Acronyme : RAG (Retrieval-Augmented Generation)</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          <strong>RAG</strong> est un framework d'IA qui combine génération de texte et recherche 
+          <strong>RAG</strong> est un framework d'IA qui combine génération de texte et recherche
           d'informations externes pour des réponses plus précises.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -522,7 +522,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Compréhension : Mécanisme de fonctionnement</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          RAG améliore les réponses en <strong>accédant à des sources de connaissances externes</strong>, 
+          RAG améliore les réponses en <strong>accédant à des sources de connaissances externes</strong>,
           pas seulement aux données pré-entraînées.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -545,7 +545,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>MLOps : Machine Learning Operations</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          MLOps applique les principes DevOps au machine learning pour <strong>déployer et maintenir 
+          MLOps applique les principes DevOps au machine learning pour <strong>déployer et maintenir
           des modèles en production</strong>.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -571,7 +571,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Compréhension : Détails du texte</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          Le texte mentionne automated testing, CI/CD, model versioning, et performance monitoring, 
+          Le texte mentionne automated testing, CI/CD, model versioning, et performance monitoring,
           mais PAS le <strong>déploiement manuel</strong>.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -590,7 +590,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
         </Typography>
       </Box>
     ),
-    
+
     // WRITING QUESTIONS
     w1: (
       <Box>
@@ -626,7 +626,7 @@ const getDetailedExplanation = (question: AssessmentQuestion, isCorrect: boolean
           <strong>Règle : Present Perfect Continuous</strong>
         </Typography>
         <Typography variant="body2" paragraph>
-          "We have <strong>been</strong> implementing" exprime une action commencée dans le passé 
+          "We have <strong>been</strong> implementing" exprime une action commencée dans le passé
           et qui continue.
         </Typography>
         <Typography variant="body2" paragraph sx={{ bgcolor: "grey.100", p: 2, borderRadius: 1 }}>
@@ -832,7 +832,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
     assessmentQuestions.forEach(q => {
       maxPoints += q.points;
       const userAnswer = answers[q.id]?.toLowerCase().trim();
-      
+
       if (Array.isArray(q.correctAnswer)) {
         // Pour les questions writing
         if (q.correctAnswer.some(ans => userAnswer === ans.toLowerCase())) {
@@ -847,7 +847,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
     });
 
     const percentage = (totalPoints / maxPoints) * 100;
-    
+
     let level: LanguageLevel;
     if (percentage >= 80) level = "C1";
     else if (percentage >= 65) level = "B2";
@@ -894,23 +894,23 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
         {assessmentQuestions.map((question, index) => {
           const isCorrect = getQuestionResult(question);
           const userAnswer = answers[question.id];
-          const correctAnswer = Array.isArray(question.correctAnswer) 
-            ? question.correctAnswer[0] 
+          const correctAnswer = Array.isArray(question.correctAnswer)
+            ? question.correctAnswer[0]
             : question.correctAnswer;
 
           return (
-            <Card 
-              key={question.id} 
-              sx={{ 
-                mb: 3, 
-                border: 2, 
-                borderColor: isCorrect ? "success.main" : "error.main" 
+            <Card
+              key={question.id}
+              sx={{
+                mb: 3,
+                border: 2,
+                borderColor: isCorrect ? "success.main" : "error.main"
               }}
             >
               <CardContent>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-                  <Chip 
-                    label={`Question ${index + 1}`} 
+                  <Chip
+                    label={`Question ${index + 1}`}
                     color={isCorrect ? "success" : "error"}
                   />
                   <Chip label={question.section.toUpperCase()} size="small" />
@@ -994,14 +994,14 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
         })}
 
         <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-          <Button 
-            variant="outlined" 
+          <Button
+            variant="outlined"
             onClick={() => setShowCorrection(false)}
           >
             Retour au résultat
           </Button>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             onClick={onComplete}
           >
             Terminer et continuer
@@ -1017,7 +1017,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
         <Card elevation={3}>
           <CardContent sx={{ textAlign: "center", py: 6 }}>
             <CheckCircle sx={{ fontSize: 80, color: "success.main", mb: 3 }} />
-            
+
             <Typography variant="h4" gutterBottom>
               Évaluation complète terminée !
             </Typography>
@@ -1039,25 +1039,25 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
                 <Box>
                   <Headphones sx={{ verticalAlign: "middle", mr: 0.5 }} />
                   <Typography variant="caption">
-                    Listening: {assessmentQuestions.filter(q => q.section === "listening" && 
-                      answers[q.id]?.toLowerCase() === (Array.isArray(q.correctAnswer) ? 
+                    Listening: {assessmentQuestions.filter(q => q.section === "listening" &&
+                      answers[q.id]?.toLowerCase() === (Array.isArray(q.correctAnswer) ?
                         q.correctAnswer[0] : q.correctAnswer).toLowerCase()).length}/6
                   </Typography>
                 </Box>
                 <Box>
                   <MenuBook sx={{ verticalAlign: "middle", mr: 0.5 }} />
                   <Typography variant="caption">
-                    Reading: {assessmentQuestions.filter(q => q.section === "reading" && 
-                      answers[q.id]?.toLowerCase() === (Array.isArray(q.correctAnswer) ? 
+                    Reading: {assessmentQuestions.filter(q => q.section === "reading" &&
+                      answers[q.id]?.toLowerCase() === (Array.isArray(q.correctAnswer) ?
                         q.correctAnswer[0] : q.correctAnswer).toLowerCase()).length}/6
                   </Typography>
                 </Box>
                 <Box>
                   <Edit sx={{ verticalAlign: "middle", mr: 0.5 }} />
                   <Typography variant="caption">
-                    Writing: {assessmentQuestions.filter(q => q.section === "writing" && 
-                      Array.isArray(q.correctAnswer) && q.correctAnswer.some(ans => 
-                        answers[q.id]?.toLowerCase().trim() === ans.toLowerCase())).length}/6
+                    Writing: {assessmentQuestions.filter(q => q.section === "writing" &&
+                      Array.isArray(q.correctAnswer) && q.correctAnswer.some(ans =>
+                      answers[q.id]?.toLowerCase().trim() === ans.toLowerCase())).length}/6
                   </Typography>
                 </Box>
               </Box>
@@ -1068,15 +1068,15 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
             </Typography>
 
             <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-              <Button 
-                variant="outlined" 
+              <Button
+                variant="outlined"
                 size="large"
                 onClick={() => setShowCorrection(true)}
               >
                 📝 Voir la correction détaillée
               </Button>
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 size="large"
                 onClick={onComplete}
               >
@@ -1096,9 +1096,9 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
       </Typography>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Cette évaluation comporte 18 questions réparties en 3 sections : 
-        <strong> Listening (compréhension orale)</strong>, 
-        <strong> Reading (compréhension écrite)</strong>, et 
+        Cette évaluation comporte 18 questions réparties en 3 sections :
+        <strong> Listening (compréhension orale)</strong>,
+        <strong> Reading (compréhension écrite)</strong>, et
         <strong> Writing (expression écrite)</strong>.
       </Alert>
 
@@ -1115,19 +1115,19 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
       </Box>
 
       <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
-        <Chip 
+        <Chip
           icon={<Headphones />}
           label="Listening"
           color={currentSection === "listening" ? "primary" : "default"}
           variant={currentSection === "listening" ? "filled" : "outlined"}
         />
-        <Chip 
+        <Chip
           icon={<MenuBook />}
           label="Reading"
           color={currentSection === "reading" ? "primary" : "default"}
           variant={currentSection === "reading" ? "filled" : "outlined"}
         />
-        <Chip 
+        <Chip
           icon={<Edit />}
           label="Writing"
           color={currentSection === "writing" ? "primary" : "default"}
@@ -1155,18 +1155,20 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
                     Section d'écoute
                   </Typography>
                   <Tooltip title={isSpeaking ? "Arrêter" : "Écouter"}>
-                    <IconButton
-                      onClick={() => playAudio(currentQuestion.audioText!)}
-                      disabled={!isSupported}
-                      sx={{ 
-                        bgcolor: "white", 
-                        "&:hover": { bgcolor: "grey.200" },
-                        width: 60,
-                        height: 60
-                      }}
-                    >
-                      {isSpeaking ? <Stop sx={{ fontSize: 30 }} /> : <PlayArrow sx={{ fontSize: 30 }} />}
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onClick={() => playAudio(currentQuestion.audioText!)}
+                        disabled={!isSupported}
+                        sx={{
+                          bgcolor: "white",
+                          "&:hover": { bgcolor: "grey.200" },
+                          width: 60,
+                          height: 60
+                        }}
+                      >
+                        {isSpeaking ? <Stop sx={{ fontSize: 30 }} /> : <PlayArrow sx={{ fontSize: 30 }} />}
+                      </IconButton>
+                    </span>
                   </Tooltip>
                 </Box>
                 <Box sx={{ p: 2, bgcolor: "white", borderRadius: 1 }}>

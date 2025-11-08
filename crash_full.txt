@@ -1,0 +1,890 @@
+--------- beginning of main
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.708 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.709 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.710 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.711 W/IPCThreadState(  743): Sending oneway calls to frozen process.
+11-07 19:01:51.746 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: DockObserver
+11-07 19:01:51.746 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.747 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlinger
+11-07 19:01:51.747 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+11-07 19:01:51.747 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: accessibility
+11-07 19:01:51.748 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: account
+11-07 19:01:51.750 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: activity
+11-07 19:01:51.753 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: activity_task
+11-07 19:01:51.756 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: adb
+11-07 19:01:51.757 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: adservices_manager
+11-07 19:01:51.758 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: advanced_protection
+11-07 19:01:51.759 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: alarm
+11-07 19:01:51.761 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ambient_context
+11-07 19:01:51.762 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.cameraservice.service.ICameraService/default
+11-07 19:01:51.765 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.devicestate.IDeviceStateService/default
+11-07 19:01:51.766 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.location.altitude.IAltitudeService/default
+11-07 19:01:51.767 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.sensorservice.ISensorManager/default
+11-07 19:01:51.768 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.stats.IStats/default
+11-07 19:01:51.769 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.vibrator.IVibratorControlService/default
+11-07 19:01:51.771 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.authsecret.IAuthSecret/default
+11-07 19:01:51.765 W/service (11049): type=1400 audit(0.0:1822): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_authsecret_default:s0 tclass=binder permissive=0
+11-07 19:01:51.776 E/IPCThreadState(11049): Binder transaction failure. id: 968671, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.773 W/service (11049): type=1400 audit(0.0:1823): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_fingerprint_default:s0 tclass=binder permissive=0
+11-07 19:01:51.780 E/IPCThreadState(11049): Binder transaction failure. id: 968675, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.780 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.IBluetoothHci/default
+11-07 19:01:51.773 W/service (11049): type=1400 audit(0.0:1824): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_bluetooth_default:s0 tclass=binder permissive=0
+11-07 19:01:51.784 E/IPCThreadState(11049): Binder transaction failure. id: 968679, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.785 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.audio.IBluetoothAudioProviderFactory/default
+11-07 19:01:51.781 W/service (11049): type=1400 audit(0.0:1825): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_audio_default:s0 tclass=binder permissive=0
+11-07 19:01:51.789 E/IPCThreadState(11049): Binder transaction failure. id: 968684, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.789 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.offload.leaudio.IHciProxy/default
+11-07 19:01:51.781 W/service (11049): type=1400 audit(0.0:1826): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_bluetooth_default:s0 tclass=binder permissive=0
+11-07 19:01:51.793 E/IPCThreadState(11049): Binder transaction failure. id: 968688, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.793 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.camera.provider.ICameraProvider/internal/0
+11-07 19:01:51.793 E/IPCThreadState(11049): Binder transaction failure. id: 968692, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.793 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.camera.provider.ICameraProvider/internal/1
+11-07 19:01:51.794 E/IPCThreadState(11049): Binder transaction failure. id: 968696, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.794 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.cas.IMediaCasService/default
+11-07 19:01:51.796 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.contexthub.IContextHub/default
+11-07 19:01:51.789 W/service (11049): type=1400 audit(0.0:1827): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_camera_default:s0 tclass=binder permissive=0
+11-07 19:01:51.789 W/service (11049): type=1400 audit(0.0:1828): avc:  denied  { call } for  scontext=u:r:shell:s0 tcontext=u:r:hal_camera_default:s0 tclass=binder permissive=0
+11-07 19:01:51.801 E/IPCThreadState(11049): Binder transaction failure. id: 968705, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.802 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.drm.IDrmFactory/widevine
+11-07 19:01:51.803 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.gatekeeper.IGatekeeper/default
+11-07 19:01:51.803 E/IPCThreadState(11049): Binder transaction failure. id: 968715, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.805 E/IPCThreadState(11049): Binder transaction failure. id: 968719, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.806 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.graphics.allocator.IAllocator/default
+11-07 19:01:51.808 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.graphics.composer3.IComposer/default
+11-07 19:01:51.808 E/IPCThreadState(11049): Binder transaction failure. id: 968728, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.809 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.health.IHealth/default
+11-07 19:01:51.809 E/IPCThreadState(11049): Binder transaction failure. id: 968732, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.810 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.identity.IIdentityCredentialStore/default
+11-07 19:01:51.810 E/IPCThreadState(11049): Binder transaction failure. id: 968736, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.811 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.light.ILights/default
+11-07 19:01:51.811 E/IPCThreadState(11049): Binder transaction failure. id: 968740, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.812 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.media.c2.IComponentStore/software
+11-07 19:01:51.813 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_all
+11-07 19:01:51.815 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_quant
+11-07 19:01:51.816 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_sl_shim
+11-07 19:01:51.818 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.power.IPower/default
+11-07 19:01:51.818 E/IPCThreadState(11049): Binder transaction failure. id: 968765, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.819 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.power.stats.IPowerStats/default
+11-07 19:01:51.819 E/IPCThreadState(11049): Binder transaction failure. id: 968769, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.819 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.config.IRadioConfig/default
+11-07 19:01:51.819 E/IPCThreadState(11049): Binder transaction failure. id: 968773, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.820 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.data.IRadioData/slot1
+11-07 19:01:51.820 E/IPCThreadState(11049): Binder transaction failure. id: 968777, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.821 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.ims.IRadioIms/slot1
+11-07 19:01:51.821 E/IPCThreadState(11049): Binder transaction failure. id: 968781, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.822 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.ims.media.IImsMedia/default
+11-07 19:01:51.822 E/IPCThreadState(11049): Binder transaction failure. id: 968785, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.823 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.messaging.IRadioMessaging/slot1
+11-07 19:01:51.823 E/IPCThreadState(11049): Binder transaction failure. id: 968789, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.824 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.modem.IRadioModem/slot1
+11-07 19:01:51.824 E/IPCThreadState(11049): Binder transaction failure. id: 968793, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.825 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.network.IRadioNetwork/slot1
+11-07 19:01:51.825 E/IPCThreadState(11049): Binder transaction failure. id: 968797, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.826 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.sap.ISap/slot1
+11-07 19:01:51.826 E/IPCThreadState(11049): Binder transaction failure. id: 968801, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.826 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.sim.IRadioSim/slot1
+11-07 19:01:51.826 E/IPCThreadState(11049): Binder transaction failure. id: 968805, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.827 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.voice.IRadioVoice/slot1
+11-07 19:01:51.827 E/IPCThreadState(11049): Binder transaction failure. id: 968809, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.828 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.rebootescrow.IRebootEscrow/default
+11-07 19:01:51.828 E/IPCThreadState(11049): Binder transaction failure. id: 968813, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.831 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.security.keymint.IRemotelyProvisionedComponent/default
+11-07 19:01:51.840 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.security.sharedsecret.ISharedSecret/gatekeeper
+11-07 19:01:51.840 E/IPCThreadState(11049): Binder transaction failure. id: 968829, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.841 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.sensors.ISensors/default
+11-07 19:01:51.841 E/IPCThreadState(11049): Binder transaction failure. id: 968833, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.842 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.thermal.IThermal/default
+11-07 19:01:51.842 E/IPCThreadState(11049): Binder transaction failure. id: 968837, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.843 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.threadnetwork.IThreadChip/chip0
+11-07 19:01:51.843 E/IPCThreadState(11049): Binder transaction failure. id: 968841, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.844 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.usb.IUsb/default
+11-07 19:01:51.844 E/IPCThreadState(11049): Binder transaction failure. id: 968845, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.846 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.uwb.IUwb/default
+11-07 19:01:51.846 E/IPCThreadState(11049): Binder transaction failure. id: 968849, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.848 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.vibrator.IVibrator/default
+11-07 19:01:51.848 E/IPCThreadState(11049): Binder transaction failure. id: 968853, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.849 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.vibrator.IVibratorManager/default
+11-07 19:01:51.849 E/IPCThreadState(11049): Binder transaction failure. id: 968857, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.850 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.wifi.IWifi/default
+11-07 19:01:51.850 E/IPCThreadState(11049): Binder transaction failure. id: 968861, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.851 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.wifi.supplicant.ISupplicant/default
+11-07 19:01:51.851 E/IPCThreadState(11049): Binder transaction failure. id: 968866, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.852 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.apc
+11-07 19:01:51.853 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.authorization
+11-07 19:01:51.854 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.compat
+11-07 19:01:51.856 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.identity
+11-07 19:01:51.858 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.legacykeystore
+11-07 19:01:51.859 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.maintenance
+11-07 19:01:51.860 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.metrics
+11-07 19:01:51.866 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.keystore2.IKeystoreService/default
+11-07 19:01:51.867 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.net.netd.INetd/default
+11-07 19:01:51.867 E/IPCThreadState(11049): Binder transaction failure. id: 968913, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.870 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.suspend.ISystemSuspend/default
+11-07 19:01:51.870 E/IPCThreadState(11049): Binder transaction failure. id: 968917, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.871 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.vmtethering.IVmTethering
+11-07 19:01:51.872 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.vold.IVold/default
+11-07 19:01:51.872 E/IPCThreadState(11049): Binder transaction failure. id: 968926, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:51.873 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_binding
+11-07 19:01:51.874 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.875 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_function
+11-07 19:01:51.876 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_hibernation
+11-07 19:01:51.878 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_integrity
+11-07 19:01:51.880 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_prediction
+11-07 19:01:51.882 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_search
+11-07 19:01:51.883 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: appops
+11-07 19:01:51.885 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: appwidget
+11-07 19:01:51.886 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: attestation_verification
+11-07 19:01:51.888 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: audio
+11-07 19:01:51.890 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: auth
+11-07 19:01:51.891 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: authentication_policy
+11-07 19:01:51.893 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: autofill
+11-07 19:01:51.894 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: background_install_control
+11-07 19:01:51.896 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: backup
+11-07 19:01:51.897 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: battery
+11-07 19:01:51.899 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.899 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: batteryproperties
+11-07 19:01:51.901 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: batterystats
+11-07 19:01:51.903 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: binder_calls_stats
+11-07 19:01:51.904 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.906 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: biometric
+11-07 19:01:51.907 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: blob_store
+11-07 19:01:51.910 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: bluetooth_manager
+11-07 19:01:51.911 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: bugreport
+11-07 19:01:51.914 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: cacheinfo
+11-07 19:01:51.915 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.915 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: carrier_config
+11-07 19:01:51.916 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: clipboard
+11-07 19:01:51.918 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: color_display
+11-07 19:01:51.920 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: companiondevice
+11-07 19:01:51.922 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connectivity
+11-07 19:01:51.924 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connectivity_native
+11-07 19:01:51.925 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connmetrics
+11-07 19:01:51.927 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content
+11-07 19:01:51.929 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content_capture
+11-07 19:01:51.931 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content_suggestions
+11-07 19:01:51.933 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: contexthub
+11-07 19:01:51.934 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: country_detector
+11-07 19:01:51.936 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: cpuinfo
+11-07 19:01:51.938 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.938 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: credential
+11-07 19:01:51.940 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: crossprofileapps
+11-07 19:01:51.942 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dataloader_manager
+11-07 19:01:51.944 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dbinfo
+11-07 19:01:51.944 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.945 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_config
+11-07 19:01:51.947 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.948 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_identifiers
+11-07 19:01:51.950 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_lock
+11-07 19:01:51.953 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_policy
+11-07 19:01:51.953 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_state
+11-07 19:01:51.955 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: deviceidle
+11-07 19:01:51.957 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: devicestoragemonitor
+11-07 19:01:51.958 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.958 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: diskstats
+11-07 19:01:51.959 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.960 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: display
+11-07 19:01:51.964 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: domain_verification
+11-07 19:01:51.966 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dreams
+11-07 19:01:51.967 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: drm.drmManager
+11-07 19:01:51.969 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dropbox
+11-07 19:01:51.970 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dynamic_instrumentation
+11-07 19:01:51.972 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dynamic_system
+11-07 19:01:51.974 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ecm_enhanced_confirmation
+11-07 19:01:51.976 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: emergency_affordance
+11-07 19:01:51.976 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.978 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: external_vibrator_service
+11-07 19:01:51.978 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: feature_flags
+11-07 19:01:51.980 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: file_integrity
+11-07 19:01:51.981 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: fingerprint
+11-07 19:01:51.984 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: font
+11-07 19:01:51.986 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: game
+11-07 19:01:51.987 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: gfxinfo
+11-07 19:01:51.987 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:51.989 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: gpu
+11-07 19:01:51.990 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: grammatical_inflection
+11-07 19:01:51.991 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: graphicsstats
+11-07 19:01:51.993 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: hardware_properties
+11-07 19:01:51.994 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: healthconnect
+11-07 19:01:51.995 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: imms
+11-07 19:01:52.000 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: incidentcompanion
+11-07 19:01:52.003 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: incremental
+11-07 19:01:52.004 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: input
+11-07 19:01:52.006 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: input_method
+11-07 19:01:52.007 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: inputflinger
+11-07 19:01:52.009 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: intrusion_detection
+11-07 19:01:52.011 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ions
+11-07 19:01:52.013 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: iphonesubinfo
+11-07 19:01:52.015 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ipsec
+11-07 19:01:52.016 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: isms
+11-07 19:01:52.016 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: isub
+11-07 19:01:52.016 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: jobscheduler
+11-07 19:01:52.017 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: launcherapps
+11-07 19:01:52.018 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: legacy_permission
+11-07 19:01:52.019 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: lights
+11-07 19:01:52.020 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: locale
+11-07 19:01:52.021 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: location
+11-07 19:01:52.023 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: location_time_zone_manager
+11-07 19:01:52.024 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.025 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: lock_settings
+11-07 19:01:52.027 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: logcat
+11-07 19:01:52.029 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: looper_stats
+11-07 19:01:52.030 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.031 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: manager
+11-07 19:01:52.037 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.audio_flinger
+11-07 19:01:52.040 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.audio_policy
+11-07 19:01:52.042 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.camera
+11-07 19:01:52.043 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.camera.proxy
+11-07 19:01:52.044 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.extractor
+11-07 19:01:52.047 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.metrics
+11-07 19:01:52.049 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.player
+11-07 19:01:52.051 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.resource_manager
+11-07 19:01:52.052 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.resource_observer
+11-07 19:01:52.054 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_communication
+11-07 19:01:52.055 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_metrics
+11-07 19:01:52.056 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_projection
+11-07 19:01:52.058 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_resource_monitor
+11-07 19:01:52.058 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_router
+11-07 19:01:52.059 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_session
+11-07 19:01:52.060 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: meminfo
+11-07 19:01:52.060 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.062 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: memtrack.proxy
+11-07 19:01:52.062 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: midi
+11-07 19:01:52.063 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: mount
+11-07 19:01:52.064 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: music_recognition
+11-07 19:01:52.064 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: nearby
+11-07 19:01:52.068 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netd_listener
+11-07 19:01:52.069 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netpolicy
+11-07 19:01:52.070 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netstats
+11-07 19:01:52.073 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_management
+11-07 19:01:52.075 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_score
+11-07 19:01:52.077 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_stack
+11-07 19:01:52.078 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_time_update_service
+11-07 19:01:52.079 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.081 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_watchlist
+11-07 19:01:52.082 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: notification
+11-07 19:01:52.083 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: on_device_intelligence
+11-07 19:01:52.085 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ondevicepersonalization_system_service
+11-07 19:01:52.087 E/IPCThreadState(11049): Binder transaction failure. id: 969579, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.087 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: otadexopt
+11-07 19:01:52.089 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: overlay
+11-07 19:01:52.091 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: pac_proxy
+11-07 19:01:52.093 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package
+11-07 19:01:52.094 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package_native
+11-07 19:01:52.097 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: people
+11-07 19:01:52.098 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: performance_hint
+11-07 19:01:52.100 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permission
+11-07 19:01:52.101 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permission_checker
+11-07 19:01:52.103 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permissionmgr
+11-07 19:01:52.106 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: phone
+11-07 19:01:52.106 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: pinner
+11-07 19:01:52.107 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: platform_compat
+11-07 19:01:52.108 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: platform_compat_native
+11-07 19:01:52.109 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: power
+11-07 19:01:52.110 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: powerstats
+11-07 19:01:52.111 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: print
+11-07 19:01:52.112 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: processinfo
+11-07 19:01:52.114 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: procstats
+11-07 19:01:52.115 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: profiling_service
+11-07 19:01:52.116 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ranging
+11-07 19:01:52.117 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: reboot_readiness
+11-07 19:01:52.118 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: recovery
+11-07 19:01:52.119 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: remote_provisioning
+11-07 19:01:52.120 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: resources
+11-07 19:01:52.122 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: restrictions
+11-07 19:01:52.123 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: role
+11-07 19:01:52.124 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: rollback
+11-07 19:01:52.126 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: runtime
+11-07 19:01:52.126 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.126 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: safety_center
+11-07 19:01:52.128 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: scheduling_policy
+11-07 19:01:52.129 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sdk_sandbox
+11-07 19:01:52.130 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: search
+11-07 19:01:52.131 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: search_ui
+11-07 19:01:52.132 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sec_key_att_app_id_provider
+11-07 19:01:52.133 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: secure_element
+11-07 19:01:52.134 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: security_state
+11-07 19:01:52.135 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensitive_content_protection_service
+11-07 19:01:52.136 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensor_privacy
+11-07 19:01:52.137 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensorservice
+11-07 19:01:52.138 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: serial
+11-07 19:01:52.140 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: servicediscovery
+11-07 19:01:52.141 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: settings
+11-07 19:01:52.143 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.143 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: shortcut
+11-07 19:01:52.146 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: simphonebook
+11-07 19:01:52.148 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: slice
+11-07 19:01:52.149 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: smartspace
+11-07 19:01:52.151 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: soundtrigger
+11-07 19:01:52.152 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: soundtrigger_middleware
+11-07 19:01:52.152 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: speech_recognition
+11-07 19:01:52.153 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: stats
+11-07 19:01:52.154 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statsbootstrap
+11-07 19:01:52.154 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statscompanion
+11-07 19:01:52.154 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statsmanager
+11-07 19:01:52.155 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statusbar
+11-07 19:01:52.156 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storaged
+11-07 19:01:52.157 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storaged_pri
+11-07 19:01:52.158 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storagestats
+11-07 19:01:52.158 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: supervision
+11-07 19:01:52.166 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_config
+11-07 19:01:52.166 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_server_dumper
+11-07 19:01:52.167 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_update
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telecom
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telephony.registry
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telephony_ims
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: testharness
+11-07 19:01:52.167 E/Parcel  (11049): Reading a NULL string not supported here.
+11-07 19:01:52.167 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tethering
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: textclassification
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: textservices
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: texttospeech
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: thermalservice
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: thread_network
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: time_detector
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: time_zone_detector
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tracing.proxy
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tradeinmode
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: translation
+11-07 19:01:52.168 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: transparency
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: trust
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uimode
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: updatelock
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uri_grants
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: usagestats
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: usb
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: user
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uwb
+11-07 19:01:52.169 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vcn_management
+11-07 19:01:52.170 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vibrator_manager
+11-07 19:01:52.170 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: virtualdevice
+11-07 19:01:52.170 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: virtualdevice_native
+11-07 19:01:52.170 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: voiceinteraction
+11-07 19:01:52.174 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vpn_management
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wallpaper
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wallpaper_effects_generation
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wearable_sensing
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: webviewupdate
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifi
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifinl80211
+11-07 19:01:52.175 E/IPCThreadState(11049): Binder transaction failure. id: 970079, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifip2p
+11-07 19:01:52.175 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifiscanner
+11-07 19:01:52.176 W/service (11049): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: window
+11-07 19:01:52.191 E/studio.deploy(10973): ERROR: Could not remove dir '/data/data/fr.iaproject.learning_english/code_cache/.ll/': No such file or directory
+11-07 19:01:52.335 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: DockObserver
+11-07 19:01:52.336 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.336 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlinger
+11-07 19:01:52.338 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+11-07 19:01:52.339 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: accessibility
+11-07 19:01:52.341 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: account
+11-07 19:01:52.343 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: activity
+11-07 19:01:52.344 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: activity_task
+11-07 19:01:52.347 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: adb
+11-07 19:01:52.348 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: adservices_manager
+11-07 19:01:52.350 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: advanced_protection
+11-07 19:01:52.352 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: alarm
+11-07 19:01:52.353 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ambient_context
+11-07 19:01:52.354 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.cameraservice.service.ICameraService/default
+11-07 19:01:52.356 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.devicestate.IDeviceStateService/default
+11-07 19:01:52.358 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.location.altitude.IAltitudeService/default
+11-07 19:01:52.359 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.sensorservice.ISensorManager/default
+11-07 19:01:52.360 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.stats.IStats/default
+11-07 19:01:52.363 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.frameworks.vibrator.IVibratorControlService/default
+11-07 19:01:52.365 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.authsecret.IAuthSecret/default
+11-07 19:01:52.365 E/IPCThreadState(11059): Binder transaction failure. id: 970230, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.366 E/IPCThreadState(11059): Binder transaction failure. id: 970234, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.366 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.IBluetoothHci/default
+11-07 19:01:52.366 E/IPCThreadState(11059): Binder transaction failure. id: 970238, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.366 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.audio.IBluetoothAudioProviderFactory/default
+11-07 19:01:52.366 E/IPCThreadState(11059): Binder transaction failure. id: 970242, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.366 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.bluetooth.offload.leaudio.IHciProxy/default
+11-07 19:01:52.366 E/IPCThreadState(11059): Binder transaction failure. id: 970246, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.367 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.camera.provider.ICameraProvider/internal/0
+11-07 19:01:52.367 E/IPCThreadState(11059): Binder transaction failure. id: 970250, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.367 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.camera.provider.ICameraProvider/internal/1
+11-07 19:01:52.367 E/IPCThreadState(11059): Binder transaction failure. id: 970254, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.367 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.cas.IMediaCasService/default
+11-07 19:01:52.368 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.contexthub.IContextHub/default
+11-07 19:01:52.368 E/IPCThreadState(11059): Binder transaction failure. id: 970264, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.368 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.drm.IDrmFactory/widevine
+11-07 19:01:52.369 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.gatekeeper.IGatekeeper/default
+11-07 19:01:52.369 E/IPCThreadState(11059): Binder transaction failure. id: 970273, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.370 E/IPCThreadState(11059): Binder transaction failure. id: 970277, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.370 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.graphics.allocator.IAllocator/default
+11-07 19:01:52.371 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.graphics.composer3.IComposer/default
+11-07 19:01:52.371 E/IPCThreadState(11059): Binder transaction failure. id: 970286, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.371 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.health.IHealth/default
+11-07 19:01:52.371 E/IPCThreadState(11059): Binder transaction failure. id: 970290, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.371 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.identity.IIdentityCredentialStore/default
+11-07 19:01:52.372 E/IPCThreadState(11059): Binder transaction failure. id: 970294, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.372 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.light.ILights/default
+11-07 19:01:52.372 E/IPCThreadState(11059): Binder transaction failure. id: 970298, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.372 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.media.c2.IComponentStore/software
+11-07 19:01:52.372 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_all
+11-07 19:01:52.373 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_quant
+11-07 19:01:52.373 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.neuralnetworks.IDevice/nnapi-sample_sl_shim
+11-07 19:01:52.375 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.power.IPower/default
+11-07 19:01:52.375 E/IPCThreadState(11059): Binder transaction failure. id: 970322, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.375 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.power.stats.IPowerStats/default
+11-07 19:01:52.375 E/IPCThreadState(11059): Binder transaction failure. id: 970326, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.376 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.config.IRadioConfig/default
+11-07 19:01:52.376 E/IPCThreadState(11059): Binder transaction failure. id: 970330, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.376 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.data.IRadioData/slot1
+11-07 19:01:52.376 E/IPCThreadState(11059): Binder transaction failure. id: 970334, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.378 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.ims.IRadioIms/slot1
+11-07 19:01:52.378 E/IPCThreadState(11059): Binder transaction failure. id: 970338, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.378 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.ims.media.IImsMedia/default
+11-07 19:01:52.378 E/IPCThreadState(11059): Binder transaction failure. id: 970342, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.379 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.messaging.IRadioMessaging/slot1
+11-07 19:01:52.379 E/IPCThreadState(11059): Binder transaction failure. id: 970346, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.381 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.modem.IRadioModem/slot1
+11-07 19:01:52.381 E/IPCThreadState(11059): Binder transaction failure. id: 970350, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.381 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.network.IRadioNetwork/slot1
+11-07 19:01:52.381 E/IPCThreadState(11059): Binder transaction failure. id: 970354, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.381 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.sap.ISap/slot1
+11-07 19:01:52.381 E/IPCThreadState(11059): Binder transaction failure. id: 970358, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.382 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.sim.IRadioSim/slot1
+11-07 19:01:52.382 E/IPCThreadState(11059): Binder transaction failure. id: 970362, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.382 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.radio.voice.IRadioVoice/slot1
+11-07 19:01:52.382 E/IPCThreadState(11059): Binder transaction failure. id: 970366, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.382 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.rebootescrow.IRebootEscrow/default
+11-07 19:01:52.382 E/IPCThreadState(11059): Binder transaction failure. id: 970370, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.385 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.security.keymint.IRemotelyProvisionedComponent/default
+11-07 19:01:52.394 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.security.sharedsecret.ISharedSecret/gatekeeper
+11-07 19:01:52.394 E/IPCThreadState(11059): Binder transaction failure. id: 970386, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.394 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.sensors.ISensors/default
+11-07 19:01:52.394 E/IPCThreadState(11059): Binder transaction failure. id: 970390, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.395 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.thermal.IThermal/default
+11-07 19:01:52.395 E/IPCThreadState(11059): Binder transaction failure. id: 970394, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.395 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.threadnetwork.IThreadChip/chip0
+11-07 19:01:52.395 E/IPCThreadState(11059): Binder transaction failure. id: 970398, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.395 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.usb.IUsb/default
+11-07 19:01:52.395 E/IPCThreadState(11059): Binder transaction failure. id: 970402, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.395 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.uwb.IUwb/default
+11-07 19:01:52.395 E/IPCThreadState(11059): Binder transaction failure. id: 970406, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.395 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.vibrator.IVibrator/default
+11-07 19:01:52.395 E/IPCThreadState(11059): Binder transaction failure. id: 970410, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.396 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.vibrator.IVibratorManager/default
+11-07 19:01:52.396 E/IPCThreadState(11059): Binder transaction failure. id: 970414, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.396 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.wifi.IWifi/default
+11-07 19:01:52.396 E/IPCThreadState(11059): Binder transaction failure. id: 970418, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.396 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.hardware.wifi.supplicant.ISupplicant/default
+11-07 19:01:52.396 E/IPCThreadState(11059): Binder transaction failure. id: 970422, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.396 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.apc
+11-07 19:01:52.398 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.authorization
+11-07 19:01:52.400 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.compat
+11-07 19:01:52.401 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.identity
+11-07 19:01:52.403 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.legacykeystore
+11-07 19:01:52.405 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.maintenance
+11-07 19:01:52.406 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.security.metrics
+11-07 19:01:52.411 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.keystore2.IKeystoreService/default
+11-07 19:01:52.412 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.net.netd.INetd/default
+11-07 19:01:52.412 E/IPCThreadState(11059): Binder transaction failure. id: 970469, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.413 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.suspend.ISystemSuspend/default
+11-07 19:01:52.413 E/IPCThreadState(11059): Binder transaction failure. id: 970473, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.414 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.vmtethering.IVmTethering
+11-07 19:01:52.416 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: android.system.vold.IVold/default
+11-07 19:01:52.416 E/IPCThreadState(11059): Binder transaction failure. id: 970482, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.417 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_binding
+11-07 19:01:52.418 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.419 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_function
+11-07 19:01:52.420 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_hibernation
+11-07 19:01:52.422 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_integrity
+11-07 19:01:52.424 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_prediction
+11-07 19:01:52.425 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: app_search
+11-07 19:01:52.426 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: appops
+11-07 19:01:52.429 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: appwidget
+11-07 19:01:52.430 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: attestation_verification
+11-07 19:01:52.432 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: audio
+11-07 19:01:52.434 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: auth
+11-07 19:01:52.435 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: authentication_policy
+11-07 19:01:52.437 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: autofill
+11-07 19:01:52.439 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: background_install_control
+11-07 19:01:52.441 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: backup
+11-07 19:01:52.442 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: battery
+11-07 19:01:52.443 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.443 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: batteryproperties
+11-07 19:01:52.443 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: batterystats
+11-07 19:01:52.444 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: binder_calls_stats
+11-07 19:01:52.445 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.445 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: biometric
+11-07 19:01:52.446 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: blob_store
+11-07 19:01:52.448 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: bluetooth_manager
+11-07 19:01:52.449 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: bugreport
+11-07 19:01:52.451 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: cacheinfo
+11-07 19:01:52.451 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.451 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: carrier_config
+11-07 19:01:52.453 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: clipboard
+11-07 19:01:52.454 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: color_display
+11-07 19:01:52.455 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: companiondevice
+11-07 19:01:52.456 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connectivity
+11-07 19:01:52.457 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connectivity_native
+11-07 19:01:52.458 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: connmetrics
+11-07 19:01:52.459 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content
+11-07 19:01:52.461 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content_capture
+11-07 19:01:52.461 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: content_suggestions
+11-07 19:01:52.463 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: contexthub
+11-07 19:01:52.464 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: country_detector
+11-07 19:01:52.465 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: cpuinfo
+11-07 19:01:52.467 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.467 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: credential
+11-07 19:01:52.468 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: crossprofileapps
+11-07 19:01:52.469 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dataloader_manager
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dbinfo
+11-07 19:01:52.470 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_config
+11-07 19:01:52.470 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_identifiers
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_lock
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_policy
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: device_state
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: deviceidle
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: devicestoragemonitor
+11-07 19:01:52.470 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.470 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: diskstats
+11-07 19:01:52.471 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.471 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: display
+11-07 19:01:52.475 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: domain_verification
+11-07 19:01:52.477 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dreams
+11-07 19:01:52.479 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: drm.drmManager
+11-07 19:01:52.479 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dropbox
+11-07 19:01:52.481 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dynamic_instrumentation
+11-07 19:01:52.482 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: dynamic_system
+11-07 19:01:52.483 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ecm_enhanced_confirmation
+11-07 19:01:52.484 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: emergency_affordance
+11-07 19:01:52.484 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.485 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: external_vibrator_service
+11-07 19:01:52.485 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: feature_flags
+11-07 19:01:52.487 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: file_integrity
+11-07 19:01:52.489 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: fingerprint
+11-07 19:01:52.490 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: font
+11-07 19:01:52.492 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: game
+11-07 19:01:52.493 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: gfxinfo
+11-07 19:01:52.494 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.494 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: gpu
+11-07 19:01:52.495 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: grammatical_inflection
+11-07 19:01:52.496 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: graphicsstats
+11-07 19:01:52.498 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: hardware_properties
+11-07 19:01:52.499 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: healthconnect
+11-07 19:01:52.500 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: imms
+11-07 19:01:52.506 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: incidentcompanion
+11-07 19:01:52.508 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: incremental
+11-07 19:01:52.510 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: input
+11-07 19:01:52.514 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: input_method
+11-07 19:01:52.516 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: inputflinger
+11-07 19:01:52.523 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: intrusion_detection
+11-07 19:01:52.524 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ions
+11-07 19:01:52.527 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: iphonesubinfo
+11-07 19:01:52.530 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ipsec
+11-07 19:01:52.532 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: isms
+11-07 19:01:52.534 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: isub
+11-07 19:01:52.535 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: jobscheduler
+11-07 19:01:52.536 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: launcherapps
+11-07 19:01:52.536 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: legacy_permission
+11-07 19:01:52.537 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: lights
+11-07 19:01:52.539 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: locale
+11-07 19:01:52.539 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: location
+11-07 19:01:52.539 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: location_time_zone_manager
+11-07 19:01:52.540 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.540 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: lock_settings
+11-07 19:01:52.541 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: logcat
+11-07 19:01:52.542 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: looper_stats
+11-07 19:01:52.544 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.544 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: manager
+11-07 19:01:52.548 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.audio_flinger
+11-07 19:01:52.549 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.audio_policy
+11-07 19:01:52.549 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.camera
+11-07 19:01:52.550 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.camera.proxy
+11-07 19:01:52.551 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.extractor
+11-07 19:01:52.551 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.metrics
+11-07 19:01:52.552 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.player
+11-07 19:01:52.553 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.resource_manager
+11-07 19:01:52.554 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media.resource_observer
+11-07 19:01:52.554 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_communication
+11-07 19:01:52.556 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_metrics
+11-07 19:01:52.557 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_projection
+11-07 19:01:52.559 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_resource_monitor
+11-07 19:01:52.561 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_router
+11-07 19:01:52.562 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: media_session
+11-07 19:01:52.565 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: meminfo
+11-07 19:01:52.565 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.566 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: memtrack.proxy
+11-07 19:01:52.567 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: midi
+11-07 19:01:52.568 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: mount
+11-07 19:01:52.569 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: music_recognition
+11-07 19:01:52.570 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: nearby
+11-07 19:01:52.576 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netd_listener
+11-07 19:01:52.577 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netpolicy
+11-07 19:01:52.578 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: netstats
+11-07 19:01:52.578 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_management
+11-07 19:01:52.580 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_score
+11-07 19:01:52.580 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_stack
+11-07 19:01:52.581 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_time_update_service
+11-07 19:01:52.582 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: network_watchlist
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: notification
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: on_device_intelligence
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ondevicepersonalization_system_service
+11-07 19:01:52.582 E/IPCThreadState(11059): Binder transaction failure. id: 971132, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: otadexopt
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: overlay
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: pac_proxy
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package_native
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: people
+11-07 19:01:52.582 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: performance_hint
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permission
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permission_checker
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: permissionmgr
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: phone
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: pinner
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: platform_compat
+11-07 19:01:52.583 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: platform_compat_native
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: power
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: powerstats
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: print
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: processinfo
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: procstats
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: profiling_service
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: ranging
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: reboot_readiness
+11-07 19:01:52.584 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: recovery
+11-07 19:01:52.585 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: remote_provisioning
+11-07 19:01:52.585 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: resources
+11-07 19:01:52.585 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: restrictions
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: role
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: rollback
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: runtime
+11-07 19:01:52.586 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: safety_center
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: scheduling_policy
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sdk_sandbox
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: search
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: search_ui
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sec_key_att_app_id_provider
+11-07 19:01:52.586 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: secure_element
+11-07 19:01:52.587 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: security_state
+11-07 19:01:52.587 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensitive_content_protection_service
+11-07 19:01:52.587 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensor_privacy
+11-07 19:01:52.587 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: sensorservice
+11-07 19:01:52.588 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: serial
+11-07 19:01:52.588 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: servicediscovery
+11-07 19:01:52.588 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: settings
+11-07 19:01:52.588 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.588 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: shortcut
+11-07 19:01:52.588 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: simphonebook
+11-07 19:01:52.590 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: slice
+11-07 19:01:52.590 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: smartspace
+11-07 19:01:52.590 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: soundtrigger
+11-07 19:01:52.591 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: soundtrigger_middleware
+11-07 19:01:52.591 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: speech_recognition
+11-07 19:01:52.591 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: stats
+11-07 19:01:52.592 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statsbootstrap
+11-07 19:01:52.592 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statscompanion
+11-07 19:01:52.592 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statsmanager
+11-07 19:01:52.593 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: statusbar
+11-07 19:01:52.593 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storaged
+11-07 19:01:52.594 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storaged_pri
+11-07 19:01:52.595 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: storagestats
+11-07 19:01:52.595 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: supervision
+11-07 19:01:52.607 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_config
+11-07 19:01:52.607 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_server_dumper
+11-07 19:01:52.607 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.607 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: system_update
+11-07 19:01:52.608 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telecom
+11-07 19:01:52.608 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telephony.registry
+11-07 19:01:52.608 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: telephony_ims
+11-07 19:01:52.609 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: testharness
+11-07 19:01:52.609 E/Parcel  (11059): Reading a NULL string not supported here.
+11-07 19:01:52.610 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tethering
+11-07 19:01:52.610 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: textclassification
+11-07 19:01:52.610 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: textservices
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: texttospeech
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: thermalservice
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: thread_network
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: time_detector
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: time_zone_detector
+11-07 19:01:52.611 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tracing.proxy
+11-07 19:01:52.612 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: tradeinmode
+11-07 19:01:52.612 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: translation
+11-07 19:01:52.612 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: transparency
+11-07 19:01:52.612 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: trust
+11-07 19:01:52.613 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uimode
+11-07 19:01:52.613 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: updatelock
+11-07 19:01:52.613 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uri_grants
+11-07 19:01:52.613 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: usagestats
+11-07 19:01:52.613 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: usb
+11-07 19:01:52.615 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: user
+11-07 19:01:52.616 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: uwb
+11-07 19:01:52.618 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vcn_management
+11-07 19:01:52.619 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vibrator_manager
+11-07 19:01:52.621 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: virtualdevice
+11-07 19:01:52.623 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: virtualdevice_native
+11-07 19:01:52.623 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: voiceinteraction
+11-07 19:01:52.628 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: vpn_management
+11-07 19:01:52.629 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wallpaper
+11-07 19:01:52.630 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wallpaper_effects_generation
+11-07 19:01:52.632 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wearable_sensing
+11-07 19:01:52.633 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: webviewupdate
+11-07 19:01:52.636 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifi
+11-07 19:01:52.637 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifinl80211
+11-07 19:01:52.637 E/IPCThreadState(11059): Binder transaction failure. id: 971631, BR_*: 29201, error: -1 (Operation not permitted)
+11-07 19:01:52.637 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifip2p
+11-07 19:01:52.639 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: wifiscanner
+11-07 19:01:52.640 W/service (11059): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: window
+--------- beginning of system
+11-07 19:01:52.711 W/ActivityTaskManager(  743): callingPackage for (uid=2000, pid=11063) has no WPC
+11-07 19:01:52.716 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO_OVERRIDE
+11-07 19:01:52.716 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO_FULLSCREEN_OVERRIDE
+11-07 19:01:52.716 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_RESIZEABLE_ACTIVITY_OVERRIDES
+11-07 19:01:52.717 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_MIN_ASPECT_RATIO_OVERRIDE
+11-07 19:01:52.723 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_ORIENTATION_OVERRIDE
+11-07 19:01:52.743 W/SplitSelectStateCtor( 1156): Missing session instanceIds
+11-07 19:01:52.743 W/HWUI    ( 1012): Image decoding logging dropped!
+11-07 19:01:52.750 W/IPCThreadState(  632): Sending oneway calls to frozen process.
+11-07 19:01:52.750 W/IPCThreadState(  632): Sending oneway calls to frozen process.
+11-07 19:01:52.838 W/earning_english(11066): Unexpected CPU variant for x86: x86_64.
+11-07 19:01:52.838 W/earning_english(11066): Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, default
+11-07 19:01:52.892 W/earning_english(11066): Suspending all threads took: 9.597ms
+11-07 19:01:52.889 W/re-initialized>(11066): type=1400 audit(0.0:1906): avc:  granted  { execute } for  path="/data/data/fr.iaproject.learning_english/code_cache/startup_agents/5b4f70e9-agent.so" dev="dm-55" ino=360935 scontext=u:r:untrusted_app:s0:c218,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c218,c256,c512,c768 tclass=file app=fr.iaproject.learning_english
+11-07 19:01:52.920 W/earning_english(11066): hiddenapi: DexFile /data/data/fr.iaproject.learning_english/code_cache/.studio/instruments-25d868d4.jar is in boot class path but is not in a known location
+11-07 19:01:53.086 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=19 frameNumber=56 -> producedId=19 frameNumber=21
+11-07 19:01:53.133 W/ActivityTaskManager(  743): takeTaskSnapshot: taskId=26 not found or not visible
+11-07 19:01:53.153 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=19 frameNumber=56 -> producedId=19 frameNumber=22
+11-07 19:01:53.196 W/earning_english(11066): Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+11-07 19:01:53.197 W/earning_english(11066): Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+11-07 19:01:53.203 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=19 frameNumber=56 -> producedId=19 frameNumber=23
+11-07 19:01:53.219 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=19 frameNumber=56 -> producedId=19 frameNumber=24
+11-07 19:01:53.235 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=19 frameNumber=56 -> producedId=19 frameNumber=25
+11-07 19:01:53.511 W/OptProp (  743): Cannot read opt property android.window.PROPERTY_COMPAT_ENABLE_FAKE_FOCUS
+11-07 19:01:53.524 E/TransactionExecutor(11066): Failed to execute the transaction: tId:1494800343 ClientTransaction{
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343   transactionItems=[
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343     LaunchActivityItem{activityToken=android.os.BinderProxy@d52a792,intent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 xflg=0x4 cmp=fr.iaproject.learning_english/.MainActivity },ident=55390455,info=ActivityInfo{5eeb78c fr.iaproject.learning_english.MainActivity},curConfig={1.0 310mcc260mnc [en_US] ldltr sw427dp w427dp h952dp 480dpi nrml long port finger qwerty/v/v dpad/v winConfig={ mBounds=Rect(0, 0 - 1280, 2856) mAppBounds=Rect(0, 0 - 1280, 2856) mMaxBounds=Rect(0, 0 - 1280, 2856) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.93 fontWeightAdjustment=0},overrideConfig={1.0 310mcc260mnc [en_US] ldltr sw427dp w427dp h952dp 480dpi nrml long port finger qwerty/v/v dpad/v winConfig={ mBounds=Rect(0, 0 - 1280, 2856) mAppBounds=Rect(0, 0 - 1280, 2856) mMaxBounds=Rect(0, 0 - 1280, 2856) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.2 fontWeightAdjustment=0},deviceId=0,referrer=com.android.shell,procState=2,state=null,persistentState=null,pendingResults=null,pendingNewIntents=null,sceneTransitionInfo=null,profilerInfo=null,assistToken=android.os.BinderProxy@7cdda19,shareableActivityToken=android.os.BinderProxy@36faade,activityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 1280, 2856), taskFragmentBounds=Rect(0, 0 - 1280, 2856)}}
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343     ResumeActivityItem{mActivityToken=android.os.BinderProxy@d52a792,procState=-1,isForward=true,shouldSendCompatFakeFocus=false}
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343     Target activity: Not found for token: android.os.BinderProxy@d52a792
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343   ]
+11-07 19:01:53.524 E/TransactionExecutor(11066): tId:1494800343 }
+--------- beginning of crash
+11-07 19:01:53.529 E/AndroidRuntime(11066): FATAL EXCEPTION: main
+11-07 19:01:53.529 E/AndroidRuntime(11066): Process: fr.iaproject.learning_english, PID: 11066
+11-07 19:01:53.529 E/AndroidRuntime(11066): java.lang.RuntimeException: Unable to instantiate activity ComponentInfo{fr.iaproject.learning_english/fr.iaproject.learning_english.MainActivity}: java.lang.ClassNotFoundException: Didn't find class "fr.iaproject.learning_english.MainActivity" on path: DexPathList[[zip file "/data/app/~~YphhH9kODgqXxpFCSn2vQQ==/fr.iaproject.learning_english-HkRDushNQAqWlE6gp0LhhQ==/base.apk"],nativeLibraryDirectories=[/data/app/~~YphhH9kODgqXxpFCSn2vQQ==/fr.iaproject.learning_english-HkRDushNQAqWlE6gp0LhhQ==/lib/x86_64, /system/lib64, /system_ext/lib64]]
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:4186)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:4467)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:222)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.servertransaction.TransactionExecutor.executeNonLifecycleItem(TransactionExecutor.java:133)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.servertransaction.TransactionExecutor.executeTransactionItems(TransactionExecutor.java:103)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:80)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2823)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.os.Handler.dispatchMessage(Handler.java:110)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.os.Looper.loopOnce(Looper.java:248)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.os.Looper.loop(Looper.java:338)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.ActivityThread.main(ActivityThread.java:9067)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+11-07 19:01:53.529 E/AndroidRuntime(11066): Caused by: java.lang.ClassNotFoundException: Didn't find class "fr.iaproject.learning_english.MainActivity" on path: DexPathList[[zip file "/data/app/~~YphhH9kODgqXxpFCSn2vQQ==/fr.iaproject.learning_english-HkRDushNQAqWlE6gp0LhhQ==/base.apk"],nativeLibraryDirectories=[/data/app/~~YphhH9kODgqXxpFCSn2vQQ==/fr.iaproject.learning_english-HkRDushNQAqWlE6gp0LhhQ==/lib/x86_64, /system/lib64, /system_ext/lib64]]
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at java.lang.ClassLoader.loadClass(ClassLoader.java:637)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at java.lang.ClassLoader.loadClass(ClassLoader.java:573)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.AppComponentFactory.instantiateActivity(AppComponentFactory.java:95)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at androidx.core.app.CoreComponentFactory.instantiateActivity(CoreComponentFactory.java:44)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.Instrumentation.newActivity(Instrumentation.java:1443)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:4173)
+11-07 19:01:53.529 E/AndroidRuntime(11066): 	... 13 more
+11-07 19:01:53.537 W/ActivityTaskManager(  743):   Force finishing activity fr.iaproject.learning_english/.MainActivity
+11-07 19:01:53.698 E/FrameEvents( 1156): addRelease: Did not find frame.
+11-07 19:01:53.735 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=2
+11-07 19:01:53.756 W/IPCThreadState(  632): Sending oneway calls to frozen process.
+11-07 19:01:53.756 W/IPCThreadState(  632): Sending oneway calls to frozen process.
+11-07 19:01:53.758 W/WindowOnBackDispatcher( 1012): sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda13@8e59eee
+11-07 19:01:53.760 W/WindowManager(  743): Failed looking up window session=Session{5e7c55c 1012:u0a10187} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6410 com.android.server.wm.Session.setOnBackInvokedCallbackInfo:1002 android.view.IWindowSession$Stub.onTransact:1156 
+11-07 19:01:53.803 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=3
+11-07 19:01:53.824 W/PackageConfigPersister(  743): App-specific configuration not found for packageName: com.google.android.apps.nexuslauncher and userId: 0
+11-07 19:01:53.835 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=4
+11-07 19:01:53.852 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=5
+11-07 19:01:53.868 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=6
+11-07 19:01:53.886 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=7
+11-07 19:01:53.918 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=8
+11-07 19:01:53.951 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=9
+11-07 19:01:53.985 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=10
+11-07 19:01:54.003 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=11
+11-07 19:01:54.018 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=12
+11-07 19:01:54.035 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=13
+11-07 19:01:54.041 W/ActivityTaskManager(  743): Activity top resumed state loss timeout for ActivityRecord{55390455 u0 fr.iaproject.learning_english/.MainActivity t-1 f}}
+11-07 19:01:54.083 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=14
+11-07 19:01:54.091 W/HWUI    (  743): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+11-07 19:01:54.092 W/HWUI    (  743): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-07 19:01:54.092 E/SurfaceFlinger(  550): Out of order buffers detected for RequestedLayerState{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#111 parentId=110} producedId=20 frameNumber=56 -> producedId=20 frameNumber=15
+11-07 19:01:56.237 E/TaskPersister(  743): File error accessing recents directory (directory doesn't exist?).
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): Cannot acquire BluetoothActivityEnergyInfo
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): java.util.concurrent.ExecutionException: java.lang.RuntimeException: error: 9
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:372)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2072)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.BluetoothPowerStatsCollector.collectBluetoothActivityInfo(BluetoothPowerStatsCollector.java:192)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.BluetoothPowerStatsCollector.collectStats(BluetoothPowerStatsCollector.java:155)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.PowerStatsCollector.collectAndDeliverStats(PowerStatsCollector.java:176)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.PowerStatsCollector$$ExternalSyntheticLambda0.run(R8$$SyntheticClass:0)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.os.Handler.handleCallback(Handler.java:995)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.os.Handler.dispatchMessage(Handler.java:103)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.os.Looper.loopOnce(Looper.java:248)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.os.Looper.loop(Looper.java:338)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.os.HandlerThread.run(HandlerThread.java:85)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): Caused by: java.lang.RuntimeException: error: 9
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.BluetoothPowerStatsCollector$1.onBluetoothActivityEnergyInfoError(BluetoothPowerStatsCollector.java:181)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothAdapter$OnBluetoothActivityEnergyInfoProxy.lambda$onError$2(BluetoothAdapter.java:1059)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothAdapter$OnBluetoothActivityEnergyInfoProxy$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothUtils.lambda$executeFromBinder$0(BluetoothUtils.java:343)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothUtils$$ExternalSyntheticLambda1.run(D8$$SyntheticClass:0)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.SystemServerInitThreadPool$$ExternalSyntheticLambda0.execute(R8$$SyntheticClass:0)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothUtils.executeFromBinder(BluetoothUtils.java:343)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothAdapter$OnBluetoothActivityEnergyInfoProxy.onError(BluetoothAdapter.java:1058)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at android.bluetooth.BluetoothAdapter.requestControllerActivityEnergyInfo(BluetoothAdapter.java:2694)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.BatteryStatsImpl$BluetoothStatsRetrieverImpl.requestControllerActivityEnergyInfo(BatteryStatsImpl.java:485)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	at com.android.server.power.stats.BluetoothPowerStatsCollector.collectBluetoothActivityInfo(BluetoothPowerStatsCollector.java:170)
+11-07 19:02:52.759 E/BluetoothPowerStatsCollector(  743): 	... 8 more
+11-07 19:03:37.346 E/ClipboardService(  743): Denying clipboard access to com.android.chrome, application is not in focus nor is it a system service for user 0
+11-07 19:03:37.347 E/ClipboardService(  743): Denying clipboard access to com.android.chrome, application is not in focus nor is it a system service for user 0

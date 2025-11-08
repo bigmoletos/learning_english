@@ -63,12 +63,35 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
   const [scores, setScores] = useState<{ grammar: number; listening: number; total: number }>({ grammar: 0, listening: 0, total: 0 });
   const [completed, setCompleted] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
   const { addResponse } = useUser();
 
   useEffect(() => {
+    const loadTestData = async () => {
+      try {
+        const response = await fetch("/data/toeic_toefl/toeic_all_levels.json");
+        const data = await response.json();
+
+        // Chercher le test par niveau si fourni, sinon par testId
+        let test: TOEICTestData;
+        if (level) {
+          test = data.tests.find((t: TOEICTestData) => t.level === level);
+        } else {
+          test = data.tests.find((t: TOEICTestData) => t.id === testId);
+        }
+
+        if (!test) {
+          test = data.tests[0]; // Fallback au premier test
+        }
+
+        setTestData(test);
+      } catch (error) {
+        console.error("Erreur chargement test TOEIC:", error);
+      }
+    };
+
     loadTestData();
   }, [testId, level]);
 
@@ -80,29 +103,6 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
       return () => clearInterval(interval);
     }
   }, [completed, startTime, testData]);
-
-  const loadTestData = async () => {
-    try {
-      const response = await fetch('/data/toeic_toefl/toeic_all_levels.json');
-      const data = await response.json();
-      
-      // Chercher le test par niveau si fourni, sinon par testId
-      let test: TOEICTestData;
-      if (level) {
-        test = data.tests.find((t: TOEICTestData) => t.level === level);
-      } else {
-        test = data.tests.find((t: TOEICTestData) => t.id === testId);
-      }
-      
-      if (!test) {
-        test = data.tests[0]; // Fallback au premier test
-      }
-      
-      setTestData(test);
-    } catch (error) {
-      console.error("Erreur chargement test TOEIC:", error);
-    }
-  };
 
   const currentSection = testData?.sections[currentSectionIndex];
   const currentQuestion = currentSection?.questions[currentQuestionIndex];
@@ -333,7 +333,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
 
                 {section.questions.map((question, qIdx) => {
                   const userAnswer = answers[question.id];
-                  const isCorrect = userAnswer && question.correctAnswer 
+                  const isCorrect = userAnswer && question.correctAnswer
                     ? userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
                     : false;
 
@@ -376,8 +376,8 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                                 sx={{
                                   p: 1,
                                   mb: 0.5,
-                                  bgcolor: option === question.correctAnswer ? "success.light" : 
-                                          option === userAnswer && !isCorrect ? "error.light" : "grey.50",
+                                  bgcolor: option === question.correctAnswer ? "success.light" :
+                                    option === userAnswer && !isCorrect ? "error.light" : "grey.50",
                                   borderRadius: 1
                                 }}
                               >
@@ -439,7 +439,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
             </Typography>
             <Chip
               icon={<Timer />}
-              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, '0')}`}
+              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, "0")}`}
               color="primary"
             />
           </Box>

@@ -16,16 +16,19 @@
      * Ordre important : les règles des extensions ultérieures écrasent les précédentes.
      */
     "extends": [
-      "eslint:recommended",                // Règles de base recommandées par ESLint
-      "plugin:react/recommended",          // Règles spécifiques à React
-      "plugin:react-hooks/recommended"     // Règles pour les React Hooks (useState, useEffect, etc.)
+      "eslint:recommended",                      // Règles de base recommandées par ESLint
+      "plugin:react/recommended",                // Règles spécifiques à React
+      "plugin:react-hooks/recommended",          // Règles pour les React Hooks (useState, useEffect, etc.)
+      "plugin:@typescript-eslint/recommended"    // Règles TypeScript recommandées
     ],
 
     /*
      * PARSEUR
      * Spécifie le parseur à utiliser pour analyser le code.
-     * react-scripts utilise déjà un parseur configuré pour TypeScript.
+     * @typescript-eslint/parser pour supporter TypeScript.
      */
+    "parser": "@typescript-eslint/parser",
+
     /*
      * OPTIONS DU PARSEUR
      * Configure le comportement du parseur.
@@ -35,7 +38,8 @@
         "jsx": true  // Active le support JSX
       },
       "ecmaVersion": "latest",  // Utilise la dernière version d'ECMAScript
-      "sourceType": "module"    // Active le support des modules ES (import/export)
+      "sourceType": "module",   // Active le support des modules ES (import/export)
+      "project": "./tsconfig.json"  // Chemin vers tsconfig.json pour TypeScript
     },
 
     /*
@@ -45,7 +49,8 @@
      */
     "plugins": [
       "react",                // Plugin pour React
-      "react-hooks"           // Plugin pour les React Hooks
+      "react-hooks",          // Plugin pour les React Hooks
+      "@typescript-eslint"    // Plugin pour TypeScript
     ],
 
     /*
@@ -60,16 +65,27 @@
       "quotes": ["error", "double"],  // Utilise des guillemets doubles ("") pour les chaînes
       "semi": ["error", "always"],  // Oblige à mettre un point-virgule à la fin des instructions
       "no-console": "warn",  // Avertit si console.log() est utilisé (utile en production)
+      "no-undef": "off",  // Désactivé car géré par TypeScript
+      "no-unused-vars": "off",  // Désactivé car géré par TypeScript
+
+      /* ========== RÈGLES TYPESCRIPT ========== */
+      "@typescript-eslint/no-unused-vars": "warn",  // Avertit des variables non utilisées (en warning)
+      "@typescript-eslint/no-explicit-any": "off",  // Autorise le type any (temporaire)
 
       /* ========== RÈGLES REACT ========== */
       "react/prop-types": "off",  // Désactive la vérification des propTypes (TypeScript les remplace)
       "react/react-in-jsx-scope": "off",  // Pas besoin d'importer React dans chaque fichier (React 17+)
       "react/self-closing-comp": ["error", {
-        "component": true,  // Force les composants sans enfants à être auto-fermants (<Comp />)
-        "html": true         // Force les balises HTML sans enfants à être auto-fermantes (<img />)
+        "component": true,
+        "html": true
       }],
       "react/jsx-uses-react": "off",  // Pas besoin d'importer React avec la nouvelle JSX transform
-      "react/jsx-uses-vars": "error"  // Vérifie que les variables JSX sont utilisées
+      "react/jsx-uses-vars": "error",  // Vérifie que les variables JSX sont utilisées
+      "react/no-unescaped-entities": "warn",  // Met les apostrophes non échappées en warning
+      
+      /* ========== RÈGLES REACT HOOKS ========== */
+      "react-hooks/rules-of-hooks": "error",  // Vérifie les règles des hooks
+      "react-hooks/exhaustive-deps": "warn"  // Avertit des dépendances manquantes
     },
 
     /*

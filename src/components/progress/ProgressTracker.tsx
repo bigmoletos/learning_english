@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import {
   Box, Card, CardContent, Typography, LinearProgress, Grid, Chip
 } from "@mui/material";
@@ -15,13 +15,11 @@ import { ProgressAnalysis } from "../../types";
 
 export const ProgressTracker: React.FC = () => {
   const { user, responses } = useUser();
-  const [analysis, setAnalysis] = useState<ProgressAnalysis | null>(null);
-
-  useEffect(() => {
+  const analysis = useMemo(() => {
     if (user && responses.length > 0) {
-      const result = progressAgent.analyzeProgress(responses, [], user);
-      setAnalysis(result);
+      return progressAgent.analyzeProgress(responses, [], user);
     }
+    return null;
   }, [user, responses]);
 
   if (!user || !analysis) {

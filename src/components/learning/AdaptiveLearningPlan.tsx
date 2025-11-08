@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Chip, LinearProgress,
   Alert, Grid, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -44,35 +44,51 @@ interface AdaptiveLearningPlanProps {
 
 export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNavigate }) => {
   const { user, responses } = useUser();
-  const [learningGoals, setLearningGoals] = useState<LearningGoal[]>([]);
-  const [weaknesses, setWeaknesses] = useState<WeaknessArea[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<LearningGoal | null>(null);
   const [autoAdapt, setAutoAdapt] = useState(true);
+  const [manualGoals, setManualGoals] = useState<LearningGoal[]>([]);
+  const [removedGoalIds, setRemovedGoalIds] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    generateAdaptivePlan();
-  }, [responses, user]);
+  const calculateProgress = (level: LanguageLevel, responses: any[]): number => {
+    const levelResponses = responses.filter((r: any) => r.exerciseLevel === level);
+    if (levelResponses.length === 0) return 0;
+    const correct = levelResponses.filter((r: any) => r.isCorrect).length;
+    return Math.round((correct / levelResponses.length) * 100);
+  };
 
-  const generateAdaptivePlan = () => {
-    if (!user) return;
+  const getPriorityDomains = (responses: any[]): TechnicalDomain[] => {
+    // Analyser les domaines les plus échoués
+    return ["ai", "angular", "devops"];
+  };
+
+  const getNextLevel = (current: LanguageLevel): LanguageLevel => {
+    const levels: LanguageLevel[] = ["A2", "B1", "B2", "C1"];
+    const index = levels.indexOf(current);
+    return levels[Math.min(index + 1, levels.length - 1)];
+  };
+
+  // Calculer les faiblesses avec useMemo
+  const weaknesses = useMemo((): WeaknessArea[] => {
+    if (!user) return [];
 
     // Analyser les réponses pour détecter les faiblesses
     const analysis = analyzeUserProgress(responses);
-    
+
     // Identifier les points faibles
-    const detectedWeaknesses: WeaknessArea[] = [
-      ...analysis.weakAreas.map((area: string) => ({
-        area,
-        severity: "moderate" as const,
-        occurrences: responses.filter((r: any) => !r.isCorrect).length,
-        recommendedExercises: 10
-      }))
-    ];
+    return analysis.weakAreas.map((area: string) => ({
+      area,
+      severity: "moderate" as const,
+      occurrences: responses.filter((r: any) => !r.isCorrect).length,
+      recommendedExercises: 10
+    }));
+  }, [user, responses, refreshTrigger]);
 
-    setWeaknesses(detectedWeaknesses);
+  // Calculer les objectifs d'apprentissage avec useMemo
+  const learningGoals = useMemo((): LearningGoal[] => {
+    if (!user) return [];
 
-    // Générer les objectifs d'apprentissage adaptatifs
     const goals: LearningGoal[] = [];
     const currentLevel = user.currentLevel;
     const targetLevel = user.targetLevel;
@@ -92,11 +108,11 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
     });
 
     // Objectif 2 : Améliorer les points faibles
-    if (detectedWeaknesses.length > 0) {
+    if (weaknesses.length > 0) {
       goals.push({
         id: "weaknesses",
         title: "Améliorer les points faibles",
-        description: `Travailler sur : ${detectedWeaknesses.map(w => w.area).join(", ")}`,
+        description: `Travailler sur : ${weaknesses.map(w => w.area).join(", ")}`,
         priority: "high",
         targetLevel: currentLevel,
         estimatedWeeks: 3,
@@ -138,26 +154,14 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       completed: false
     });
 
-    setLearningGoals(goals);
-  };
-
-  const calculateProgress = (level: LanguageLevel, responses: any[]): number => {
-    const levelResponses = responses.filter((r: any) => r.exerciseLevel === level);
-    if (levelResponses.length === 0) return 0;
-    const correct = levelResponses.filter((r: any) => r.isCorrect).length;
-    return Math.round((correct / levelResponses.length) * 100);
-  };
-
-  const getPriorityDomains = (responses: any[]): TechnicalDomain[] => {
-    // Analyser les domaines les plus échoués
-    return ["ai", "angular", "devops"];
-  };
-
-  const getNextLevel = (current: LanguageLevel): LanguageLevel => {
-    const levels: LanguageLevel[] = ["A2", "B1", "B2", "C1"];
-    const index = levels.indexOf(current);
-    return levels[Math.min(index + 1, levels.length - 1)];
-  };
+    // Fusionner avec les objectifs modifiés manuellement et filtrer les supprimés
+    return goals
+      .filter(goal => !removedGoalIds.has(goal.id))
+      .map(goal => {
+        const manual = manualGoals.find(m => m.id === goal.id);
+        return manual || goal;
+      });
+  }, [user, responses, refreshTrigger, weaknesses, manualGoals, removedGoalIds]);
 
   const handleEditGoal = (goal: LearningGoal) => {
     setSelectedGoal(goal);
@@ -166,26 +170,32 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
 
   const handleSaveGoal = () => {
     if (!selectedGoal) return;
-    
-    setLearningGoals(prev =>
-      prev.map(g => (g.id === selectedGoal.id ? selectedGoal : g))
-    );
+
+    setManualGoals(prev => {
+      const existing = prev.find(g => g.id === selectedGoal.id);
+      if (existing) {
+        return prev.map(g => (g.id === selectedGoal.id ? selectedGoal : g));
+      }
+      return [...prev, selectedGoal];
+    });
     setEditDialogOpen(false);
     setSelectedGoal(null);
   };
 
   const handleRemoveGoal = (goalId: string) => {
-    setLearningGoals(prev => prev.filter(g => g.id !== goalId));
+    setRemovedGoalIds(prev => new Set(prev).add(goalId));
   };
 
   const handleRefreshPlan = () => {
-    generateAdaptivePlan();
+    setRefreshTrigger(prev => prev + 1);
+    setManualGoals([]);
+    setRemovedGoalIds(new Set());
   };
 
   const handleStartGoal = useCallback((goal: LearningGoal) => {
     console.log("🔄 Clic sur 'Commencer' pour l'objectif:", goal.id, goal.title);
     console.log("📋 Objectif complet:", goal);
-    
+
     if (goal.completed) {
       console.warn("⚠️ Objectif déjà complété");
       return;
@@ -198,15 +208,15 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
         types: goal.exerciseTypes,
         domains: goal.domains
       });
-      
+
       // Sauvegarder les filtres dans localStorage pour les appliquer dans ExerciseList
-      localStorage.setItem('goalFilters', JSON.stringify({
+      localStorage.setItem("goalFilters", JSON.stringify({
         level: goal.targetLevel,
         types: goal.exerciseTypes,
         domains: goal.domains,
         goalId: goal.id
       }));
-      
+
       onNavigate("exercises");
     } else {
       console.error("❌ Erreur: onNavigate non défini");
@@ -217,19 +227,19 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case "critical": return "error";
-      case "moderate": return "warning";
-      case "minor": return "info";
-      default: return "default";
+    case "critical": return "error";
+    case "moderate": return "warning";
+    case "minor": return "info";
+    default: return "default";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "error";
-      case "medium": return "warning";
-      case "low": return "info";
-      default: return "default";
+    case "high": return "error";
+    case "medium": return "warning";
+    case "low": return "info";
+    default: return "default";
     }
   };
 

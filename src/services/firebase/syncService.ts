@@ -70,11 +70,16 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
       timestamp: Date.now()
     });
 
-    // Synchroniser immédiatement si Firebase est disponible
+    // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
     try {
       await saveUser(user);
-    } catch (error) {
-      console.warn("Erreur lors de la synchronisation utilisateur avec Firestore:", error);
+    } catch (error: any) {
+      // Ignorer les erreurs d'authentification - les données seront synchronisées plus tard
+      if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
+        console.debug("Synchronisation utilisateur reportée (utilisateur non authentifié)");
+      } else {
+        console.warn("Erreur lors de la synchronisation utilisateur avec Firestore:", error);
+      }
       // Les données restent dans localStorage et seront synchronisées plus tard
     }
   } catch (error) {
@@ -105,11 +110,16 @@ export const syncUserUpdate = async (userId: string, updates: Partial<UserProfil
       timestamp: Date.now()
     });
 
-    // Synchroniser immédiatement si Firebase est disponible
+    // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
     try {
       await updateUser(userId, updates);
-    } catch (error) {
-      console.warn("Erreur lors de la synchronisation mise à jour utilisateur avec Firestore:", error);
+    } catch (error: any) {
+      // Ignorer les erreurs d'authentification
+      if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
+        console.debug("Synchronisation mise à jour utilisateur reportée (utilisateur non authentifié)");
+      } else {
+        console.warn("Erreur lors de la synchronisation mise à jour utilisateur avec Firestore:", error);
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour utilisateur:", error);
@@ -143,7 +153,7 @@ export const syncProgress = async (
       timestamp: Date.now()
     });
 
-    // Synchroniser immédiatement si Firebase est disponible
+    // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
     try {
       await saveProgress(
         userId,
@@ -153,8 +163,13 @@ export const syncProgress = async (
         level as any,
         domain
       );
-    } catch (error) {
-      console.warn("Erreur lors de la synchronisation progression avec Firestore:", error);
+    } catch (error: any) {
+      // Ignorer les erreurs d'authentification
+      if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
+        console.debug("Synchronisation progression reportée (utilisateur non authentifié)");
+      } else {
+        console.warn("Erreur lors de la synchronisation progression avec Firestore:", error);
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la sauvegarde progression:", error);
@@ -179,11 +194,16 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
       timestamp: Date.now()
     });
 
-    // Synchroniser immédiatement si Firebase est disponible
+    // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
     try {
       await saveAssessment(assessmentData);
-    } catch (error) {
-      console.warn("Erreur lors de la synchronisation évaluation avec Firestore:", error);
+    } catch (error: any) {
+      // Ignorer les erreurs d'authentification
+      if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
+        console.debug("Synchronisation évaluation reportée (utilisateur non authentifié)");
+      } else {
+        console.warn("Erreur lors de la synchronisation évaluation avec Firestore:", error);
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la sauvegarde évaluation:", error);
@@ -203,34 +223,34 @@ export const processSyncQueue = async (): Promise<void> => {
   for (const item of queue) {
     try {
       switch (item.type) {
-        case "user":
-          if (item.action === "create") {
-            await saveUser(item.data);
-          } else if (item.action === "update") {
-            await updateUser(item.data.userId, item.data.updates);
-          }
-          break;
-        case "progress":
-          if (item.action === "create") {
-            await saveProgress(
-              item.data.userId,
-              item.data.progress,
-              item.data.exerciseId,
-              item.data.exerciseType,
-              item.data.level,
-              item.data.domain
-            );
-          }
-          break;
-        case "assessment":
-          if (item.action === "create") {
-            await saveAssessment(item.data);
-          }
-          break;
+      case "user":
+        if (item.action === "create") {
+          await saveUser(item.data);
+        } else if (item.action === "update") {
+          await updateUser(item.data.userId, item.data.updates);
+        }
+        break;
+      case "progress":
+        if (item.action === "create") {
+          await saveProgress(
+            item.data.userId,
+            item.data.progress,
+            item.data.exerciseId,
+            item.data.exerciseType,
+            item.data.level,
+            item.data.domain
+          );
+        }
+        break;
+      case "assessment":
+        if (item.action === "create") {
+          await saveAssessment(item.data);
+        }
+        break;
       }
       processed.push(item.timestamp);
     } catch (error) {
-      console.error(`Erreur lors du traitement de l'élément de synchronisation:`, error);
+      console.error("Erreur lors du traitement de l'élément de synchronisation:", error);
       // Garder l'élément dans la queue pour réessayer plus tard
     }
   }
@@ -275,8 +295,17 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
     });
 
     localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
-  } catch (error) {
-    console.error("Erreur lors de la synchronisation depuis Firestore:", error);
+  } catch (error: any) {
+    // Gérer silencieusement les erreurs offline ou réseau
+    if (error.code === "unavailable" || error.code === "failed-precondition" ||
+        error.message?.includes("offline") || error.message?.includes("network")) {
+      // Client offline - ignorer silencieusement
+      return;
+    }
+    // Ne logger que les autres erreurs
+    if (error.code !== "permission-denied") {
+      console.error("Erreur lors de la synchronisation depuis Firestore:", error);
+    }
   }
 };
 

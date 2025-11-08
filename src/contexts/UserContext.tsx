@@ -85,8 +85,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               if (syncedResponses) {
                 setResponses(JSON.parse(syncedResponses));
               }
-            } catch (error) {
-              console.warn("Erreur lors de la synchronisation depuis Firestore:", error);
+            } catch (error: any) {
+              // Ignorer silencieusement les erreurs offline ou réseau
+              if (error.code !== "unavailable" && error.code !== "failed-precondition" &&
+                  !error.message?.includes("offline") && !error.message?.includes("network")) {
+                console.warn("Erreur lors de la synchronisation depuis Firestore:", error);
+              }
             }
 
             // Démarrer la synchronisation automatique
@@ -125,8 +129,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (user) {
       localStorage.setItem("userProfile", JSON.stringify(user));
       // Synchroniser avec Firestore en arrière-plan
-      syncUser(user).catch(error => {
-        console.warn("Erreur lors de la synchronisation utilisateur:", error);
+      syncUser(user).catch((error: any) => {
+        // Ignorer silencieusement les erreurs offline, réseau ou d'authentification
+        if (error.code !== "unavailable" && error.code !== "failed-precondition" &&
+            error.code !== "permission-denied" &&
+            !error.message?.includes("offline") && !error.message?.includes("network") &&
+            !error.message?.includes("non authentifié")) {
+          console.warn("Erreur lors de la synchronisation utilisateur:", error);
+        }
       });
     }
   }, [user]);
@@ -237,11 +247,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     // Arrêter la synchronisation automatique
     if (autoSyncCleanupRef.current) {
       autoSyncCleanupRef.current();
       autoSyncCleanupRef.current = null;
+    }
+
+    // Déconnexion Firebase Auth
+    try {
+      const { logoutUser } = await import("../firebase/authService");
+      await logoutUser();
+    } catch (error) {
+      console.warn("Erreur lors de la déconnexion Firebase:", error);
+      // Continuer le nettoyage même en cas d'erreur
     }
 
     setToken(null);
@@ -251,6 +270,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem("userProfile");
     localStorage.removeItem("userResponses");
     localStorage.removeItem("levelAssessed");
+    localStorage.removeItem("firebaseUser");
+    localStorage.removeItem("pendingUser");
   };
 
   const isAuthenticated = !!token && !!user;

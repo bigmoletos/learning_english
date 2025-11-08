@@ -1,6 +1,7 @@
 /**
- * Composant de connexion
- * @version 1.0.0
+ * Composant de connexion avec Firebase Auth
+ * @version 2.0.0
+ * @date 2025-11-06
  */
 
 import React, { useState } from "react";
@@ -9,9 +10,7 @@ import {
   Alert, Link, InputAdornment, IconButton, CircularProgress
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
-
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
+import { loginUser } from "../../firebase/authService";
 
 interface LoginProps {
   onSuccess: (token: string, user: any) => void;
@@ -32,57 +31,68 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
-        email,
-        password
-      });
+      const result = await loginUser(email, password);
 
-      if (response.data.success) {
-        const { token, user } = response.data;
+      if (result.success && result.user) {
+        // Convertir l'utilisateur Firebase en format attendu par le contexte
+        const firebaseUser = result.user;
+        const userData = {
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Utilisateur",
+          emailVerified: firebaseUser.emailVerified,
+          currentLevel: "B1", // Niveau par défaut
+          targetLevel: "C1",
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        };
+
+        // Utiliser l'ID token Firebase comme token
+        const token = await firebaseUser.getIdToken();
+        
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        onSuccess(token, user);
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("firebaseUser", JSON.stringify({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName
+        }));
+
+        onSuccess(token, userData);
       } else {
-        setError(response.data.message || "Erreur de connexion");
+        setError(result.message || "Erreur de connexion");
       }
     } catch (err: any) {
-      // Gérer les différents types d'erreurs
+      console.error("Erreur de connexion Firebase:", err);
+      
       let errorMessage = "Erreur de connexion. Vérifiez vos identifiants.";
 
-      // Erreur réseau (backend non accessible)
-      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK' || err.message?.includes('Network Error') || !err.response) {
-        errorMessage = "Erreur réseau : Impossible de se connecter au serveur. Vérifiez que le backend est démarré sur le port 5001.";
-        console.error("Erreur réseau:", err);
-      } else if (err.response?.data) {
-        // Erreur du backend avec structure détaillée
-        if (err.response.data.message) {
-          errorMessage = err.response.data.message;
-        } else if (err.response.data.errors && Array.isArray(err.response.data.errors)) {
-          // Erreurs de validation (array)
-          const firstError = err.response.data.errors[0];
-          if (typeof firstError === 'string') {
-            errorMessage = firstError;
-          } else if (firstError.msg) {
-            errorMessage = firstError.msg;
-          } else if (firstError.message) {
-            errorMessage = firstError.message;
-          }
-        } else if (typeof err.response.data === 'string') {
-          errorMessage = err.response.data;
+      // Gérer les erreurs Firebase spécifiques
+      if (err.code) {
+        switch (err.code) {
+        case "auth/user-not-found":
+          errorMessage = "Aucun compte trouvé avec cet email.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Mot de passe incorrect.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Adresse email invalide.";
+          break;
+        case "auth/user-disabled":
+          errorMessage = "Ce compte a été désactivé.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
+          break;
+        case "auth/network-request-failed":
+          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+          break;
+        default:
+          errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;
-      }
-
-      // Messages d'erreur spécifiques
-      if (errorMessage.includes("Email ou mot de passe incorrect")) {
-        errorMessage = "Email ou mot de passe incorrect. Veuillez vérifier vos identifiants.";
-      } else if (errorMessage.includes("Email invalide") || errorMessage.includes("invalid email")) {
-        // Vérifier si c'est vraiment un problème d'email ou de validation
-        // Si l'email est bien formaté côté frontend, c'est probablement un problème de validation backend
-        errorMessage = "L'adresse email n'est pas valide. Veuillez vérifier le format de votre email.";
-      } else if (errorMessage.includes("Ce compte a ete desactive")) {
-        errorMessage = "Ce compte a été désactivé. Contactez l'administrateur.";
       }
 
       setError(errorMessage);
@@ -125,6 +135,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
               onChange={(e) => setEmail(e.target.value)}
               margin="normal"
               required
+              autoComplete="email"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -142,6 +153,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
               onChange={(e) => setPassword(e.target.value)}
               margin="normal"
               required
+              autoComplete="current-password"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

@@ -85,13 +85,41 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
   });
   const [completed, setCompleted] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
   const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
   const { addResponse } = useUser();
 
   useEffect(() => {
+    const loadTestData = async () => {
+      try {
+        const response = await fetch("/data/toeic_toefl/efset_all_levels.json");
+        const data = await response.json();
+
+        // Chercher le test par niveau si fourni, sinon par testId
+        let test: EFSETTestData;
+        if (level) {
+          test = data.tests.find((t: EFSETTestData) => t.level === level);
+        } else {
+          test = data.tests.find((t: EFSETTestData) => t.id === testId);
+        }
+
+        if (!test) {
+          test = data.tests[0]; // Fallback au premier test
+        }
+
+        setTestData(test);
+        if (test.sections[0]?.initialLevel) {
+          setCurrentLevel(test.sections[0].initialLevel);
+        } else if (test.level) {
+          setCurrentLevel(test.level);
+        }
+      } catch (error) {
+        console.error("Erreur chargement test EF SET:", error);
+      }
+    };
+
     loadTestData();
   }, [testId, level]);
 
@@ -104,42 +132,14 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     }
   }, [completed, startTime, testData]);
 
-  const loadTestData = async () => {
-    try {
-      const response = await fetch('/data/toeic_toefl/efset_all_levels.json');
-      const data = await response.json();
-      
-      // Chercher le test par niveau si fourni, sinon par testId
-      let test: EFSETTestData;
-      if (level) {
-        test = data.tests.find((t: EFSETTestData) => t.level === level);
-      } else {
-        test = data.tests.find((t: EFSETTestData) => t.id === testId);
-      }
-      
-      if (!test) {
-        test = data.tests[0]; // Fallback au premier test
-      }
-      
-      setTestData(test);
-      if (test.sections[0]?.initialLevel) {
-        setCurrentLevel(test.sections[0].initialLevel);
-      } else if (test.level) {
-        setCurrentLevel(test.level);
-      }
-    } catch (error) {
-      console.error("Erreur chargement test EF SET:", error);
-    }
-  };
-
   const getAvailableQuestions = () => {
     if (!testData) return [];
-    
+
     const section = testData.sections[currentSectionIndex];
     if (!section.adaptive) {
       return section.questions;
     }
-    
+
     // Test adaptatif : filtrer les questions par niveau actuel
     return section.questions.filter(q => q.level === currentLevel);
   };
@@ -159,7 +159,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
 
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
-    
+
     // Test adaptatif : ajuster le niveau selon la réponse
     if (currentQuestion && currentQuestion.options) {
       const isCorrect = answer.toLowerCase().trim() === currentQuestion.correctAnswer?.toLowerCase().trim();
@@ -197,7 +197,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     } else if (currentSectionIndex > 0) {
       setCurrentSectionIndex(prev => prev - 1);
       const prevSection = testData!.sections[currentSectionIndex - 1];
-      const prevQuestions = prevSection.adaptive 
+      const prevQuestions = prevSection.adaptive
         ? prevSection.questions.filter(q => q.level === currentLevel)
         : prevSection.questions;
       setCurrentQuestionIndex(prevQuestions.length - 1);
@@ -449,7 +449,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
             </Typography>
             <Chip
               icon={<Timer />}
-              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, '0')}`}
+              label={`${Math.floor(elapsedTime / 60)}:${String(elapsedTime % 60).padStart(2, "0")}`}
               color="primary"
             />
           </Box>
@@ -469,8 +469,8 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                   <Chip
                     icon={
                       currentSection?.type === "listening" ? <Headphones /> :
-                      currentSection?.type === "writing" ? <Edit /> :
-                      currentSection?.type === "speaking" ? <Mic /> : <MenuBook />
+                        currentSection?.type === "writing" ? <Edit /> :
+                          currentSection?.type === "speaking" ? <Mic /> : <MenuBook />
                     }
                     label={`Question ${currentQuestionIndex + 1} / ${availableQuestions.length}`}
                     color="primary"
