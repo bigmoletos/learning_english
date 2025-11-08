@@ -1,7 +1,8 @@
 /**
- * Composant de gestion de la vérification d'email
- * Gère les routes /verify-email/:token, /verify-email/success, /verify-email/error
- * @version 1.0.0
+ * Composant de gestion de la vérification d'email avec Firebase Auth
+ * Firebase gère automatiquement la vérification via les liens dans les emails
+ * @version 2.0.0
+ * @date 2025-11-06
  */
 
 import React, { useEffect, useState } from "react";
@@ -10,9 +11,9 @@ import {
 } from "@mui/material";
 import { CheckCircle, Error as ErrorIcon } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
-import axios from "axios";
-
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
+import { auth } from "../../firebase/config";
+import { applyActionCode, checkActionCode, sendEmailVerification } from "firebase/auth";
+import { storageService, StorageKeys } from "../../utils/storageService";
 
 interface EmailVerificationProps {
   onSuccess?: (token: string, user: any) => void;
@@ -38,104 +39,125 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
     const verifyEmail = async () => {
       setIsVerifying(true);
       try {
-        // Récupérer le token depuis l'URL
-        const path = window.location.pathname;
-        const searchParams = new URLSearchParams(window.location.search);
-        const tokenFromPath = path.split("/verify-email/")[1]?.split("/")[0];
-        const token = tokenFromPath || searchParams.get("token");
+        // Récupérer le code de vérification depuis l'URL Firebase
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get("mode");
+        const actionCode = urlParams.get("oobCode");
 
-        if (!token) {
-          setStatus("error");
-          setError("Token de vérification manquant");
-          return;
-        }
-
-        // Vérifier si on est sur la route /verify-email/success
-        if (path.includes("/success")) {
-          const tokenParam = searchParams.get("token");
-          if (tokenParam) {
-            // Token JWT reçu après vérification réussie
+        // Si pas de code, vérifier si l'utilisateur est déjà connecté
+        if (!actionCode) {
+          const currentUser = auth.currentUser;
+          if (currentUser && currentUser.emailVerified) {
+            setStatus("success");
+            setMessage("Votre email est déjà vérifié. Vous êtes connecté.");
+            return;
+          } else if (currentUser && !currentUser.emailVerified) {
+            // Renvoyer un email de vérification
             try {
-              // Vérifier le token avec le backend
-              const response = await axios.get(`${API_URL}/users/me`, {
-                headers: { Authorization: `Bearer ${tokenParam}` }
-              });
-
-              if (response.data.success) {
-                const user = response.data.user;
-                localStorage.setItem("token", tokenParam);
-                localStorage.setItem("user", JSON.stringify(user));
-                if (login) login(tokenParam, user);
-                if (onSuccess) onSuccess(tokenParam, user);
-                setStatus("success");
-                setMessage("Email vérifié avec succès ! Vous êtes maintenant connecté.");
-              } else {
-                throw new Error("Token invalide");
-              }
-            } catch (err: any) {
+              await sendEmailVerification(currentUser);
               setStatus("error");
-              setError("Token invalide ou expiré. Veuillez vous connecter.");
+              setError("Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception.");
+            } catch (error: any) {
+              setStatus("error");
+              setError("Erreur lors de l'envoi de l'email de vérification. Veuillez réessayer.");
             }
+            return;
           } else {
             setStatus("error");
-            setError("Token manquant dans l'URL");
+            setError("Lien de vérification invalide. Veuillez vous connecter ou demander un nouveau lien.");
+            return;
           }
-          return;
         }
 
-        // Vérifier si on est sur la route /verify-email/error
-        if (path.includes("/error")) {
-          const tokenParam = searchParams.get("token");
-          setStatus("error");
-          setError(
-            tokenParam
-              ? "Le lien de vérification est invalide ou a expiré. Veuillez demander un nouveau lien."
-              : "Une erreur est survenue lors de la vérification."
-          );
-          return;
-        }
+        // Vérifier le code d'action Firebase
+        if (mode === "verifyEmail" && actionCode) {
+          try {
+            // Vérifier que le code est valide
+            await checkActionCode(auth, actionCode);
+            
+            // Appliquer le code pour vérifier l'email
+            await applyActionCode(auth, actionCode);
 
-        // Vérification normale via POST
-        const response = await axios.post(`${API_URL}/auth/verify-email/${token}`);
+            // Récupérer l'utilisateur actuel ou depuis le storage
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+              // Recharger l'utilisateur pour obtenir l'état de vérification mis à jour
+              await currentUser.reload();
+              
+              // Récupérer les données utilisateur depuis le storage
+              const pendingUser = await storageService.get<any>(StorageKeys.PENDING_USER);
+              const firebaseUser = await storageService.get<any>(StorageKeys.FIREBASE_USER);
+              
+              if (pendingUser || firebaseUser) {
+                const userData = pendingUser || {
+                  id: currentUser.uid,
+                  email: currentUser.email,
+                  name: currentUser.displayName || currentUser.email?.split("@")[0] || "Utilisateur",
+                  emailVerified: true,
+                  currentLevel: "B1",
+                  targetLevel: "C1",
+                  createdAt: new Date().toISOString()
+                };
 
-        if (response.data.success) {
-          const { token: jwtToken, user, alreadyVerified } = response.data;
-          localStorage.setItem("token", jwtToken);
-          localStorage.setItem("user", JSON.stringify(user));
-          if (login) login(jwtToken, user);
-          if (onSuccess) onSuccess(jwtToken, user);
-          setStatus("success");
-          setMessage(
-            alreadyVerified
-              ? "Votre email a déjà été vérifié. Vous êtes maintenant connecté."
-              : "Email vérifié avec succès ! Vous êtes maintenant connecté."
-          );
+                // Obtenir le token Firebase
+                const token = await currentUser.getIdToken();
+                
+                // Sauvegarder dans le storage
+                await storageService.setMultiple({
+                  [StorageKeys.TOKEN]: token,
+                  [StorageKeys.USER]: userData,
+                  [StorageKeys.FIREBASE_USER]: {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    displayName: currentUser.displayName
+                  }
+                });
+
+                // Nettoyer le pending user
+                await storageService.remove(StorageKeys.PENDING_USER);
+
+                // Connecter l'utilisateur
+                if (login) {
+                  await login(token, userData);
+                }
+                if (onSuccess) {
+                  onSuccess(token, userData);
+                }
+              }
+
+              setStatus("success");
+              setMessage("Email vérifié avec succès ! Vous êtes maintenant connecté.");
+            } else {
+              setStatus("error");
+              setError("Aucun utilisateur connecté. Veuillez vous connecter.");
+            }
+          } catch (error: any) {
+            console.error("Erreur vérification email Firebase:", error);
+            
+            let errorMessage = "Le lien de vérification est invalide ou a expiré.";
+            
+            if (error.code === "auth/invalid-action-code") {
+              errorMessage = "Le lien de vérification est invalide ou a déjà été utilisé.";
+            } else if (error.code === "auth/expired-action-code") {
+              errorMessage = "Le lien de vérification a expiré. Veuillez demander un nouveau lien.";
+            } else if (error.code === "auth/user-disabled") {
+              errorMessage = "Ce compte a été désactivé. Contactez l'administrateur.";
+            }
+            
+            setStatus("error");
+            setError(errorMessage);
+          }
         } else {
-          throw new Error(response.data.message || "Échec de la vérification");
+          setStatus("error");
+          setError("Lien de vérification invalide.");
         }
       } catch (err: any) {
-        // Gérer spécifiquement les erreurs 400 (token déjà utilisé) et 429 (rate limit)
-        if (err.response?.status === 400) {
-          // Vérifier si l'email est peut-être déjà vérifié
-          const errorMessage = err.response?.data?.message || err.message;
-          if (errorMessage.includes("deja verifie") || errorMessage.includes("déjà vérifié") || errorMessage.includes("already verified")) {
-            setStatus("error");
-            setError("Votre email a déjà été vérifié. Vous pouvez vous connecter.");
-          } else {
-            setStatus("error");
-            setError("Le lien de vérification est invalide ou a expiré. Veuillez demander un nouveau lien.");
-          }
-        } else if (err.response?.status === 429) {
-          setStatus("error");
-          setError("Trop de tentatives. Veuillez attendre quelques instants avant de réessayer.");
-        } else {
-          setStatus("error");
-          setError(
-            err.response?.data?.message ||
-            err.message ||
-            "Le lien de vérification est invalide ou a expiré. Veuillez demander un nouveau lien."
-          );
-        }
+        console.error("Erreur vérification email:", err);
+        setStatus("error");
+        setError(
+          err.message ||
+          "Une erreur est survenue lors de la vérification. Veuillez réessayer."
+        );
       } finally {
         setIsVerifying(false);
       }

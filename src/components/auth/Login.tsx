@@ -71,10 +71,13 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
       if (err.code) {
         switch (err.code) {
         case "auth/user-not-found":
-          errorMessage = "Aucun compte trouvé avec cet email.";
+          errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
           break;
         case "auth/wrong-password":
           errorMessage = "Mot de passe incorrect.";
+          break;
+        case "auth/invalid-credential":
+          errorMessage = "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.";
           break;
         case "auth/invalid-email":
           errorMessage = "Adresse email invalide.";

@@ -186,10 +186,13 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
   try {
     // Sauvegarder localement selon le type dans le service de stockage unifié
     const testType = assessmentData.testType || assessmentData.assessmentType;
-    const storageKey = testType === "efset" ? StorageKeys.EFSET_RESULTS :
-                      testType === "toeic" ? StorageKeys.TOEIC_RESULTS :
-                      testType === "toefl" ? StorageKeys.TOEFL_RESULTS :
-                      `${testType}Results`;
+    const storageKey = testType === "efset" 
+      ? StorageKeys.EFSET_RESULTS 
+      : testType === "toeic" 
+        ? StorageKeys.TOEIC_RESULTS 
+        : testType === "toefl" 
+          ? StorageKeys.TOEFL_RESULTS 
+          : `${testType}Results`;
 
     await storageService.set(storageKey, assessmentData);
 
@@ -301,10 +304,13 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
     const assessmentUpdates: Record<string, any> = {};
     assessments.forEach(assessment => {
       const testType = assessment.testType || assessment.assessmentType;
-      const storageKey = testType === "efset" ? StorageKeys.EFSET_RESULTS :
-                         testType === "toeic" ? StorageKeys.TOEIC_RESULTS :
-                         testType === "toefl" ? StorageKeys.TOEFL_RESULTS :
-                         `${testType}Results`;
+      const storageKey = testType === "efset" 
+        ? StorageKeys.EFSET_RESULTS 
+        : testType === "toeic" 
+          ? StorageKeys.TOEIC_RESULTS 
+          : testType === "toefl" 
+            ? StorageKeys.TOEFL_RESULTS 
+            : `${testType}Results`;
       assessmentUpdates[storageKey] = assessment;
     });
 

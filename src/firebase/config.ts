@@ -6,7 +6,7 @@
 
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
-import { getFirestore, enableIndexedDbPersistence, CACHE_SIZE_UNLIMITED } from "firebase/firestore";
+import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 import { firebaseConfigGenerated } from "../services/firebase/firebaseConfig.generated";
@@ -55,9 +55,7 @@ if (!isCapacitor && typeof window !== "undefined") {
 
 // Configurer Firestore avec cache offline persistant
 if (typeof window !== "undefined") {
-  enableIndexedDbPersistence(db, {
-    cacheSizeBytes: CACHE_SIZE_UNLIMITED
-  })
+  enableIndexedDbPersistence(db)
     .then(() => {
       console.log("✅ Cache Firestore offline activé");
     })

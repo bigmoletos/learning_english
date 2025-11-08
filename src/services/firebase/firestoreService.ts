@@ -77,16 +77,16 @@ export const getDocument = async <T = DocumentData>(
 
     return null;
   } catch (error: any) {
-    // Gérer silencieusement les erreurs offline ou d'authentification
+    // Gérer silencieusement les erreurs offline, d'authentification ou de permission
     if (error.code === "unavailable" || error.code === "failed-precondition" ||
-        error.message?.includes("offline") || error.message?.includes("network")) {
-      // Client offline - retourner null silencieusement
+        error.code === "permission-denied" || error.code === "unauthenticated" ||
+        error.message?.includes("offline") || error.message?.includes("network") ||
+        error.message?.includes("permission") || error.message?.includes("authenticated")) {
+      // Client offline ou non authentifié - retourner null silencieusement
       return null;
     }
     // Ne logger que les autres erreurs
-    if (error.code !== "permission-denied") {
-      console.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}:`, error);
-    }
+    console.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}:`, error);
     throw error;
   }
 };
@@ -119,16 +119,16 @@ export const getDocuments = async <T = DocumentData>(
 
     return documents;
   } catch (error: any) {
-    // Gérer silencieusement les erreurs offline ou d'authentification
+    // Gérer silencieusement les erreurs offline, d'authentification ou de permission
     if (error.code === "unavailable" || error.code === "failed-precondition" ||
-        error.message?.includes("offline") || error.message?.includes("network")) {
-      // Client offline - retourner un tableau vide silencieusement
+        error.code === "permission-denied" || error.code === "unauthenticated" ||
+        error.message?.includes("offline") || error.message?.includes("network") ||
+        error.message?.includes("permission") || error.message?.includes("authenticated")) {
+      // Client offline ou non authentifié - retourner un tableau vide silencieusement
       return [];
     }
     // Ne logger que les autres erreurs
-    if (error.code !== "permission-denied") {
-      console.error(`Erreur lors de la récupération des documents ${collectionName}:`, error);
-    }
+    console.error(`Erreur lors de la récupération des documents ${collectionName}:`, error);
     throw error;
   }
 };
