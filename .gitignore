@@ -89,3 +89,7 @@ src/services/firebase/firebaseConfig.generated.ts
 
 # Google Cloud credentials
 backend/credentials/
+client_secret_*.json
+learning-english-*.json
+*credentials*.json
+*service-account*.json
