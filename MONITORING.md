@@ -21,7 +21,7 @@ Le système de monitoring comprend :
 
 - Docker et Docker Compose installés
 - Node.js >= 18.0.0
-- Backend démarré sur le port 5000
+- Backend démarré sur le port 5010
 
 ### Étapes d'installation
 
@@ -99,7 +99,7 @@ Les fichiers de logs sont automatiquement rotés :
 
 ### Endpoint des métriques
 
-Les métriques sont exposées sur : `http://localhost:5000/metrics`
+Les métriques sont exposées sur : `http://localhost:5010/metrics`
 
 ### Métriques disponibles
 
@@ -292,10 +292,10 @@ docker run --rm -v learning_english_prometheus_data:/data -v $(pwd):/backup alpi
 **Problème** : `Error: context deadline exceeded`
 
 **Solution** :
-1. Vérifier que le backend est démarré : `curl http://localhost:5000/health`
-2. Vérifier que les métriques sont accessibles : `curl http://localhost:5000/metrics`
-3. Sur Windows/Mac, utiliser `host.docker.internal:5000` dans `prometheus.yml`
-4. Sur Linux, utiliser l'IP du host ou `172.17.0.1:5000`
+1. Vérifier que le backend est démarré : `curl http://localhost:5010/health`
+2. Vérifier que les métriques sont accessibles : `curl http://localhost:5010/metrics`
+3. Sur Windows/Mac, utiliser `host.docker.internal:5010` dans `prometheus.yml`
+4. Sur Linux, utiliser l'IP du host ou `172.17.0.1:5010`
 
 ### Grafana ne trouve pas Prometheus
 
@@ -360,7 +360,7 @@ Ne pas commiter les fichiers `.env` contenant :
 
 - [ ] Docker et Docker Compose installés
 - [ ] Variables d'environnement configurées
-- [ ] Backend démarré et accessible sur le port 5000
+- [ ] Backend démarré et accessible sur le port 5010
 - [ ] Services de monitoring démarrés (`docker-compose up -d`)
 - [ ] Prometheus accessible sur http://localhost:9090
 - [ ] Grafana accessible sur http://localhost:3001

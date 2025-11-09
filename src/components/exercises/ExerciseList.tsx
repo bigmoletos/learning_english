@@ -16,7 +16,7 @@ import { ClozeExercise } from "./ClozeExercise";
 import { ListeningExercise } from "./ListeningExercise";
 import { ReadingExercise } from "./ReadingExercise";
 import { AudioPlayer } from "../voice/AudioPlayer";
-import { VoiceTester } from "../voice/VoiceTester";
+// import { VoiceTester } from "../voice/VoiceTester"; // Commenté - testeur de voix désactivé
 import { useUser } from "../../contexts/UserContext";
 
 export const ExerciseList: React.FC = () => {
@@ -472,7 +472,7 @@ export const ExerciseList: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <VoiceTester />
+      {/* <VoiceTester /> */} {/* Commenté - testeur de voix désactivé */}
 
       {incompleteFiltered > 0 && (
         <Alert severity="warning" sx={{ mb: 3 }}>

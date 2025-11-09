@@ -73,7 +73,8 @@ router.post('/', async (req, res) => {
       voice: {
         languageCode,
         name: voiceName || undefined, // Si null, Google choisit automatiquement
-        ssmlGender: 'NEUTRAL', // ou 'MALE', 'FEMALE'
+        // Ne pas spécifier ssmlGender si voiceName est fourni (Google le détermine automatiquement)
+        ...(voiceName ? {} : { ssmlGender: 'FEMALE' }) // Fallback si pas de voiceName
       },
       audioConfig: {
         audioEncoding: 'MP3',

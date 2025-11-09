@@ -53,7 +53,7 @@ node scripts/checkUser.js email@example.com
 # localStorage.getItem('token')
 
 # Voir votre profil
-curl -X GET http://localhost:5000/api/users/me \
+curl -X GET http://localhost:5010/api/users/me \
   -H "Authorization: Bearer VOTRE_TOKEN_ICI" \
   -H "Content-Type: application/json"
 ```

@@ -47,7 +47,7 @@ adb install android/app/build/outputs/apk/debug/app-debug.apk
 
 ## 🎯 Changements dans cette Version
 
-- ✅ **Firebase Auth uniquement** : L'application n'essaie plus de se connecter au backend sur le port 5001
+- ✅ **Firebase Auth uniquement** : L'application n'essaie plus de se connecter au backend sur le port 5000
 - ✅ **Authentification Firebase** : Toute l'authentification passe maintenant par Firebase Auth
 - ✅ **Logs améliorés** : Plus de logs détaillés pour le diagnostic
 - ✅ **Gestion d'erreurs améliorée** : Meilleure gestion des erreurs avec try/catch

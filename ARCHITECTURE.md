@@ -14,7 +14,7 @@
 ├─────────────────────────────────────────┤
 │                                         │
 │  Frontend (React/TS)  ←──HTTP──→  Backend (Node.js)
-│  Port 3000                         Port 5000
+│  Port 3000                         Port 5010
 │                                         │
 │                                    Database (SQLite)
 └─────────────────────────────────────────┘
@@ -26,8 +26,8 @@
 
 ### 1. Frontend (`/package.json`)
 
-**Langage** : TypeScript  
-**Framework** : React 18.2  
+**Langage** : TypeScript
+**Framework** : React 18.2
 **UI** : Material-UI 5
 
 ```json
@@ -48,8 +48,8 @@
 
 ### 2. Backend (`/backend/package.json`)
 
-**Langage** : JavaScript (Node.js)  
-**Framework** : Express.js 4.18  
+**Langage** : JavaScript (Node.js)
+**Framework** : Express.js 4.18
 **ORM** : Sequelize
 
 ```json
@@ -65,7 +65,7 @@
 
 **Rôle** : API REST, authentification JWT, base de données
 
-**Démarrage** : `cd backend && npm start` → http://localhost:5000
+**Démarrage** : `cd backend && npm start` → http://localhost:5010
 
 ---
 
@@ -148,7 +148,7 @@ learning_english/
 // Frontend (TypeScript)
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5010/api';
 
 // Login
 const response = await axios.post(`${API_URL}/auth/login`, {
@@ -170,17 +170,17 @@ const profile = await axios.get(`${API_URL}/users/me`, {
 router.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
-  
+
   if (!user || !await user.comparePassword(password)) {
     return res.status(401).json({ message: 'Identifiants invalides' });
   }
-  
+
   const token = jwt.sign(
     { userId: user.id, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
-  
+
   res.json({ success: true, token, user });
 });
 ```
@@ -213,7 +213,7 @@ users (1) ──< (N) learning_plans
 | Service | Port | URL | Rôle |
 |---------|------|-----|------|
 | **Frontend** | 3000 | http://localhost:3000 | Interface React |
-| **Backend** | 5000 | http://localhost:5000 | API REST |
+| **Backend** | 5010 | http://localhost:5010 | API REST |
 | **Database** | - | `database/learning_english.db` | SQLite |
 
 ---

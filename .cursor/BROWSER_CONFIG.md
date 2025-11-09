@@ -29,14 +29,14 @@ Le navigateur intégré de Cursor peut avoir des problèmes avec :
    Le serveur devrait démarrer sur `http://localhost:3000`
 
 4. **Vérifier que le proxy fonctionne**
-   - Le fichier `src/setupProxy.js` redirige `/api/*` vers `http://localhost:5000`
-   - Vérifiez que le backend est démarré sur le port 5000
+   - Le fichier `src/setupProxy.js` redirige `/api/*` vers `http://localhost:5010`
+   - Vérifiez que le backend est démarré sur le port 5010
 
 ## URLs importantes
 
 - **Frontend React** : `http://localhost:3000`
-- **Backend API** : `http://localhost:5000`
-- **Proxy API** : `http://localhost:3000/api/*` → `http://localhost:5000/api/*`
+- **Backend API** : `http://localhost:5010`
+- **Proxy API** : `http://localhost:3000/api/*` → `http://localhost:5010/api/*`
 
 ## Dépannage
 

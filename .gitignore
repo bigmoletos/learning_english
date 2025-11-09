@@ -86,3 +86,6 @@ logs/
 
 # Firebase config générée
 src/services/firebase/firebaseConfig.generated.ts
+
+# Google Cloud credentials
+backend/credentials/

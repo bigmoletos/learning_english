@@ -9,7 +9,7 @@ const https = require('https');
 
 const PORTS = {
   frontend: 3000,
-  backend: 5000
+  backend: 5010
 };
 
 const COLORS = {

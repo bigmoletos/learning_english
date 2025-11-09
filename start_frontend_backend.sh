@@ -16,7 +16,7 @@
 #
 # COMMANDES DISPONIBLES
 # ---------------------
-#   start           - Démarrer frontend (port 3000) + backend (port 5000)
+#   start           - Démarrer frontend (port 3000) + backend (port 5010)
 #   stop            - Arrêter tous les serveurs
 #   restart         - Redémarrer tous les serveurs
 #   status          - Voir l'état des serveurs (démarrés/arrêtés)
@@ -60,20 +60,22 @@
 # URLS
 # ----
 #   Frontend: http://localhost:3000
-#   Backend : http://localhost:5000
-#   Health  : http://localhost:5000/health
+#   Backend : http://localhost:5010
+#   Health  : http://localhost:5010/health
 #
 # NOTES
 # -----
 #   • Le script vérifie automatiquement si les serveurs sont déjà en cours
 #   • Les logs sont accessibles en temps réel avec tail -f
 #   • Utilisez Ctrl+C pour quitter la visualisation des logs
-#   • Le script gère automatiquement les ports (3000 pour frontend, 5000 pour backend)
+#   • Le script gère automatiquement les ports (3000 pour frontend, 5010 pour backend)
 #
 # ============================================================================
 
 # Détecter automatiquement le répertoire du projet (depuis le script)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Compatible avec bash et sh (dash)
+# Utiliser $0 qui fonctionne avec les deux shells
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 FRONTEND_LOG="/tmp/frontend_react.log"
 BACKEND_LOG="/tmp/backend_api.log"
@@ -97,6 +99,10 @@ log_success() {
 
 log_error() {
     echo -e "${RED}[ERREUR]${NC} $1" >&2
+}
+
+log_warning() {
+    echo -e "${YELLOW}[AVERTISSEMENT]${NC} $1"
 }
 
 # Fonction pour vérifier si un serveur est en cours
@@ -157,9 +163,9 @@ start_backend() {
     local timeout=30
     local elapsed=0
     while [ $elapsed -lt $timeout ]; do
-        if curl -s http://localhost:5000/health > /dev/null 2>&1; then
+        if curl -s http://localhost:5010/health > /dev/null 2>&1; then
             log_success "Backend démarré (PID: $(cat $BACKEND_PID_FILE))"
-            log_info "API disponible sur http://localhost:5000"
+            log_info "API disponible sur http://localhost:5010"
             return 0
         fi
         sleep 2
@@ -234,7 +240,7 @@ status() {
     # Backend
     if is_running "$BACKEND_PID_FILE"; then
         echo -e "Backend:  ${GREEN}✓ En cours${NC} (PID: $(cat $BACKEND_PID_FILE))"
-        echo "          http://localhost:5000"
+        echo "          http://localhost:5010"
     else
         echo -e "Backend:  ${RED}✗ Arrêté${NC}"
     fi
@@ -314,9 +320,9 @@ main() {
             ;;
 
         restart)
-            $0 stop
+            "$SCRIPT_DIR/start_frontend_backend.sh" stop
             sleep 2
-            $0 start
+            "$SCRIPT_DIR/start_frontend_backend.sh" start
             ;;
 
         status)
@@ -378,7 +384,7 @@ main() {
             echo "  COMMANDES DISPONIBLES"
             echo "═══════════════════════════════════════════════════════════"
             echo ""
-            echo "  start           Démarrer frontend (port 3000) + backend (port 5000)"
+            echo "  start           Démarrer frontend (port 3000) + backend (port 5010)"
             echo "                  Exemple: $0 start"
             echo "                  • Vérifie automatiquement si les serveurs sont déjà en cours"
             echo "                  • Crée les logs dans /tmp/"
@@ -454,8 +460,8 @@ main() {
             echo "═══════════════════════════════════════════════════════════"
             echo ""
             echo "  Frontend: http://localhost:3000"
-            echo "  Backend : http://localhost:5000"
-            echo "  Health  : http://localhost:5000/health"
+            echo "  Backend : http://localhost:5010"
+            echo "  Health  : http://localhost:5010/health"
             echo ""
             echo "═══════════════════════════════════════════════════════════"
             echo "  NOTES IMPORTANTES"
@@ -464,7 +470,7 @@ main() {
             echo "  • Le script vérifie automatiquement si les serveurs sont déjà en cours"
             echo "  • Les logs sont accessibles en temps réel avec tail -f"
             echo "  • Utilisez Ctrl+C pour quitter la visualisation des logs"
-            echo "  • Le script gère automatiquement les ports (3000/5000)"
+            echo "  • Le script gère automatiquement les ports (3000/5010)"
             echo "  • Le fichier .env doit être configuré pour le backend"
             echo ""
             echo "═══════════════════════════════════════════════════════════"

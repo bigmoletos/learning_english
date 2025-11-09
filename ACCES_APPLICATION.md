@@ -11,7 +11,7 @@ Les serveurs sont **EN LIGNE** et accessibles localement :
 ### 🖥️ Sur votre navigateur (même machine)
 ```
 Frontend : http://localhost:3000
-Backend  : http://localhost:5000
+Backend  : http://localhost:5010
 ```
 
 **Pour tester :**
@@ -104,8 +104,8 @@ Ensuite, accédez à cette URL depuis n'importe quel appareil.
 
 ### ✅ Backend (Node.js)
 - **Status:** En ligne
-- **Port:** 5000
-- **URL locale:** http://localhost:5000
+- **Port:** 5010
+- **URL locale:** http://localhost:5010
 - **Accès réseau:** ❌ Bloqué par proxy
 
 ### ✅ Frontend (React)

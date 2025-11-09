@@ -47,7 +47,7 @@ if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
 }
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5010;
 
 // ==================================
 // MIDDLEWARES DE SÉCURITÉ

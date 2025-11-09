@@ -395,7 +395,7 @@ const AppContent: React.FC = () => {
                 window.location.reload(); // Simple refresh pour mettre à jour
               }
               // Retourner aux tests après 5 secondes
-              setTimeout(() => setCurrentView("tests"), 5000);
+              setTimeout(() => setCurrentView("tests"), 5010);
             }}
           />
         </Box>
@@ -429,7 +429,7 @@ const AppContent: React.FC = () => {
               }
               // Retourner aux tests après 5 secondes
               setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
+              setTimeout(() => setCurrentView("tests"), 5010);
             }}
           />
         </Box>
@@ -463,7 +463,7 @@ const AppContent: React.FC = () => {
               }
               // Retourner aux tests après 5 secondes
               setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
+              setTimeout(() => setCurrentView("tests"), 5010);
             }}
           />
         </Box>

@@ -23,8 +23,8 @@ fi
 
 # Vérifier que le backend est démarré
 echo "🔍 Vérification du backend..."
-if ! curl -s http://localhost:5000/health > /dev/null 2>&1; then
-    echo "⚠️  Le backend n'est pas accessible sur http://localhost:5000"
+if ! curl -s http://localhost:5010/health > /dev/null 2>&1; then
+    echo "⚠️  Le backend n'est pas accessible sur http://localhost:5010"
     echo "   Veuillez démarrer le backend d'abord :"
     echo "   cd backend && npm start"
     echo ""
@@ -82,7 +82,7 @@ echo "📍 URLs disponibles :"
 echo "   - Prometheus  : http://localhost:9090"
 echo "   - Grafana     : http://localhost:3001 (admin/admin)"
 echo "   - Alertmanager: http://localhost:9093"
-echo "   - Backend     : http://localhost:5000/metrics"
+echo "   - Backend     : http://localhost:5010/metrics"
 echo ""
 echo "📊 Dashboards Grafana :"
 echo "   - Application : Application - Métriques Backend"

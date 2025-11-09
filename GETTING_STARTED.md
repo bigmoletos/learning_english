@@ -142,16 +142,16 @@ npm run seed
 
 ```bash
 # 1. Backend
-curl http://localhost:5000/health
+curl http://localhost:5010/health
 # Devrait retourner: {"status":"OK",...}
 
 # 2. Inscription
-curl -X POST http://localhost:5000/api/auth/register \
+curl -X POST http://localhost:5010/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"Test123!@"}'
 
 # 3. Connexion
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST http://localhost:5010/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"Test123!@"}'
 ```
@@ -169,7 +169,7 @@ Ouvrir http://localhost:3000 et :
 ### Port déjà utilisé
 ```bash
 lsof -i :3000  # Frontend
-lsof -i :5000  # Backend
+lsof -i :5010  # Backend
 kill -9 <PID>
 ```
 
@@ -215,9 +215,9 @@ cd backend && npm run seed
 - [ ] Fichier `.env` créé et configuré
 - [ ] Clés JWT générées
 - [ ] Compte admin créé (`cd backend && npm run seed`)
-- [ ] Backend démarré (port 5000)
+- [ ] Backend démarré (port 5010)
 - [ ] Frontend démarré (port 3000)
-- [ ] Test backend OK (`curl http://localhost:5000/health`)
+- [ ] Test backend OK (`curl http://localhost:5010/health`)
 - [ ] Application accessible (`http://localhost:3000`)
 
 ---

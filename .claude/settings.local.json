@@ -23,7 +23,13 @@
       "Bash(timeout 30 bash:*)",
       "Bash(npm install:*)",
       "WebSearch",
-      "Bash(npm start)"
+      "Bash(npm start)",
+      "Bash(sed:*)",
+      "Bash(bash:*)",
+      "Read(//home/iaproject/.android/**)",
+      "Bash(keytool:*)",
+      "Bash(echo:*)",
+      "Bash(./build-apk.sh:*)"
     ],
     "deny": [],
     "ask": []

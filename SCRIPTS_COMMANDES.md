@@ -26,7 +26,7 @@ Le projet dispose de **3 scripts** avec des commandes et exemples détaillés.
 
 | Commande | Description | Exemple |
 |----------|-------------|---------|
-| `start` | Démarrer frontend (3000) + backend (5000) | `./start_frontend_backend.sh start` |
+| `start` | Démarrer frontend (3000) + backend (5010) | `./start_frontend_backend.sh start` |
 | `stop` | Arrêter tous les serveurs | `./start_frontend_backend.sh stop` |
 | `restart` | Redémarrer tous les serveurs | `./start_frontend_backend.sh restart` |
 | `status` | Voir l'état des serveurs | `./start_frontend_backend.sh status` |
@@ -121,7 +121,7 @@ Le projet dispose de **3 scripts** avec des commandes et exemples détaillés.
 
 ### Note
 
-Ce script démarre **uniquement le FRONTEND**.  
+Ce script démarre **uniquement le FRONTEND**.
 Pour démarrer frontend + backend ensemble, utilisez : `./start_frontend_backend.sh start`
 
 ---

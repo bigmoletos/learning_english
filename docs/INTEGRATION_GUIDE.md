@@ -94,7 +94,7 @@ loadSecrets()
   .then(() => {
     // Démarrer le serveur
     const app = require("./server");
-    app.listen(process.env.PORT || 5000);
+    app.listen(process.env.PORT || 5010);
   })
   .catch((error) => {
     console.error("Erreur lors du chargement des secrets:", error);
