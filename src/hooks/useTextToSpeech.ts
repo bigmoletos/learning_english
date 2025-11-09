@@ -1,11 +1,13 @@
 /**
  * Hook personnalisé pour la synthèse vocale (Text-to-Speech)
- * Optimisé pour Android mobile
- * @version 2.0.0
- * @date 04-11-2025
+ * Optimisé pour Android mobile avec support Capacitor natif
+ * @version 3.0.0
+ * @date 08-11-2025
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Capacitor } from "@capacitor/core";
+import { TextToSpeech } from "@capacitor-community/text-to-speech";
 
 interface Voice {
   name: string;
@@ -34,10 +36,17 @@ const isAndroid = (): boolean => {
   return /Android/i.test(navigator.userAgent);
 };
 
+// Détection Capacitor native
+const isNativePlatform = (): boolean => {
+  return Capacitor.isNativePlatform();
+};
+
 export const useTextToSpeech = (): UseTextToSpeechReturn => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const isSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+  // Sur les plateformes natives Capacitor, considérer comme supporté même si l'API n'est pas encore disponible
+  const webSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+  const isSupported = webSupported || isNativePlatform();
   const [voices, setVoices] = useState<Voice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [rate, setRate] = useState(1.0); // Vitesse (0.1 - 10)
@@ -48,59 +57,191 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   );
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const voicesLoadedRef = useRef(false);
+  const selectedVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
 
   useEffect(() => {
+    console.log("🔍 [useTextToSpeech] useEffect - Vérification support:", {
+      isSupported,
+      isNative: isNativePlatform(),
+      hasWindow: typeof window !== "undefined",
+      hasSpeechSynthesis: typeof window !== "undefined" && "speechSynthesis" in window
+    });
+
     // Vérifier si l'API est supportée
     if (isSupported) {
+      const checkWebSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+      console.log("🔍 [useTextToSpeech] checkWebSupported:", checkWebSupported);
 
-      // Charger les voix disponibles
+      // Sur les plateformes natives, attendre que l'API soit disponible
+      if (isNativePlatform() && !checkWebSupported) {
+        console.log("⏳ [useTextToSpeech] Plateforme native détectée, attente de speechSynthesis...");
+        // Attendre que speechSynthesis soit disponible (peut prendre du temps sur Android)
+        let attempts = 0;
+        const maxAttempts = 50; // 5 secondes max (50 * 100ms)
+
+        const checkSpeechSynthesis = setInterval(() => {
+          attempts++;
+          const hasAPI = typeof window !== "undefined" && "speechSynthesis" in window;
+          console.log(`🔍 [useTextToSpeech] Tentative ${attempts}/${maxAttempts}:`, {
+            hasAPI,
+            userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "N/A"
+          });
+
+          if (hasAPI) {
+            console.log("✅ [useTextToSpeech] speechSynthesis maintenant disponible!");
+            clearInterval(checkSpeechSynthesis);
+            // Recharger les voix une fois que l'API est disponible
+            const loadVoices = () => {
+              try {
+                const availableVoices = window.speechSynthesis.getVoices();
+                console.log(`📢 [useTextToSpeech] ${availableVoices.length} voix disponibles`);
+
+                if (availableVoices.length > 0) {
+                  voicesLoadedRef.current = true;
+                  const formattedVoices = availableVoices.map(v => ({
+                    name: v.name,
+                    lang: v.lang,
+                    default: v.default
+                  }));
+                  setVoices(formattedVoices);
+
+                  // Sélectionner une voix anglaise par défaut
+                  let englishVoice = availableVoices.find(v =>
+                    v.lang.startsWith("en-") && v.localService && v.name.toLowerCase().includes("google")
+                  );
+                  if (!englishVoice) {
+                    englishVoice = availableVoices.find(v => v.lang.startsWith("en-"));
+                  }
+                  if (englishVoice) {
+                    console.log("✅ [useTextToSpeech] Voix anglaise sélectionnée:", englishVoice.name);
+                    setSelectedVoice(englishVoice);
+                    selectedVoiceRef.current = englishVoice;
+                  } else if (availableVoices.length > 0) {
+                    console.log("⚠️ [useTextToSpeech] Utilisation de la première voix disponible:", availableVoices[0].name);
+                    setSelectedVoice(availableVoices[0]);
+                    selectedVoiceRef.current = availableVoices[0];
+                  }
+                } else {
+                  console.warn("⚠️ [useTextToSpeech] Aucune voix disponible");
+                }
+              } catch (err) {
+                console.error("❌ [useTextToSpeech] Erreur lors du chargement des voix:", err);
+              }
+            };
+            loadVoices();
+            if (window.speechSynthesis.onvoiceschanged) {
+              window.speechSynthesis.onvoiceschanged = loadVoices;
+            }
+          } else if (attempts >= maxAttempts) {
+            console.error("❌ [useTextToSpeech] speechSynthesis non disponible après", maxAttempts, "tentatives");
+            clearInterval(checkSpeechSynthesis);
+            setError("La synthèse vocale n'est pas disponible sur cet appareil Android.");
+          }
+        }, 100);
+
+        return () => {
+          clearInterval(checkSpeechSynthesis);
+        };
+      }
+
+      // Charger les voix disponibles (pour les plateformes web ou natives avec API disponible)
       const loadVoices = () => {
-        const availableVoices = window.speechSynthesis.getVoices();
-
-        // Sur Android, les voix peuvent prendre du temps à charger
-        if (availableVoices.length === 0 && !voicesLoadedRef.current) {
-          // Réessayer après un délai
-          setTimeout(loadVoices, 100);
+        if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+          console.warn("⚠️ [useTextToSpeech] loadVoices: speechSynthesis non disponible");
           return;
         }
 
-        voicesLoadedRef.current = true;
-        const formattedVoices = availableVoices.map(v => ({
-          name: v.name,
-          lang: v.lang,
-          default: v.default
-        }));
-        setVoices(formattedVoices);
+        try {
+          const availableVoices = window.speechSynthesis.getVoices();
+          console.log(`📢 [useTextToSpeech] loadVoices: ${availableVoices.length} voix trouvées`);
 
-        // Sélectionner une voix anglaise par défaut
-        // Sur Android, privilégier les voix locales Google
-        let englishVoice = availableVoices.find(v =>
-          v.lang.startsWith("en-") && v.localService && v.name.toLowerCase().includes("google")
-        );
+          // Sur Android, les voix peuvent prendre du temps à charger
+          if (availableVoices.length === 0 && !voicesLoadedRef.current) {
+            console.log("⏳ [useTextToSpeech] Aucune voix encore, réessai dans 100ms...");
+            // Réessayer après un délai
+            setTimeout(loadVoices, 100);
+            return;
+          }
 
-        if (!englishVoice) {
-          englishVoice = availableVoices.find(v =>
-            v.lang.startsWith("en-") && (v.name.includes("Google") || v.name.includes("Microsoft"))
+          voicesLoadedRef.current = true;
+          const formattedVoices = availableVoices.map(v => ({
+            name: v.name,
+            lang: v.lang,
+            default: v.default
+          }));
+          console.log("✅ [useTextToSpeech] Voix chargées:", formattedVoices.length);
+          setVoices(formattedVoices);
+
+          // Sélectionner la meilleure voix anglaise native
+          // Priorité 1: Voix US/UK natives locales (Chrome, Edge)
+          let englishVoice = availableVoices.find(v =>
+            (v.lang === "en-US" || v.lang === "en-GB") &&
+            v.localService &&
+            !v.name.toLowerCase().includes("french") &&
+            (v.name.includes("Google") || v.name.includes("Microsoft") || v.name.includes("Natural"))
           );
-        }
 
-        if (!englishVoice) {
-          englishVoice = availableVoices.find(v => v.lang.startsWith("en-"));
-        }
+          // Priorité 2: Voix US/UK locales (sans restriction de fournisseur)
+          if (!englishVoice) {
+            englishVoice = availableVoices.find(v =>
+              (v.lang === "en-US" || v.lang === "en-GB") &&
+              v.localService &&
+              !v.name.toLowerCase().includes("french")
+            );
+          }
 
-        if (englishVoice) {
-          setSelectedVoice(englishVoice);
-        } else if (availableVoices.length > 0) {
-          // En dernier recours, utiliser la première voix disponible
-          setSelectedVoice(availableVoices[0]);
+          // Priorité 3: Toute voix anglaise native (US/UK/AU)
+          if (!englishVoice) {
+            englishVoice = availableVoices.find(v =>
+              v.lang.startsWith("en-") &&
+              v.localService &&
+              !v.name.toLowerCase().includes("french")
+            );
+          }
+
+          // Priorité 4: Voix anglaise en ligne de qualité (Google/Microsoft)
+          if (!englishVoice) {
+            englishVoice = availableVoices.find(v =>
+              v.lang.startsWith("en-") &&
+              !v.name.toLowerCase().includes("french") &&
+              (v.name.includes("Google") || v.name.includes("Microsoft"))
+            );
+          }
+
+          // Priorité 5: N'importe quelle voix anglaise
+          if (!englishVoice) {
+            englishVoice = availableVoices.find(v =>
+              v.lang.startsWith("en-") &&
+              !v.name.toLowerCase().includes("french")
+            );
+          }
+
+          if (englishVoice) {
+            console.log("✅ [useTextToSpeech] Voix anglaise sélectionnée:", englishVoice.name, englishVoice.lang, "Local:", englishVoice.localService);
+            setSelectedVoice(englishVoice);
+            selectedVoiceRef.current = englishVoice;
+          } else if (availableVoices.length > 0) {
+            // En dernier recours, utiliser la première voix disponible
+            console.log("⚠️ [useTextToSpeech] Utilisation de la première voix disponible:", availableVoices[0].name);
+            setSelectedVoice(availableVoices[0]);
+            selectedVoiceRef.current = availableVoices[0];
+          }
+        } catch (err) {
+          console.error("❌ [useTextToSpeech] Erreur dans loadVoices:", err);
         }
       };
 
       // Charger immédiatement
+      console.log("🔄 [useTextToSpeech] Chargement initial des voix...");
       loadVoices();
 
       // Recharger quand les voix changent (Android charge de manière asynchrone)
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      if (window.speechSynthesis.onvoiceschanged) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          console.log("🔄 [useTextToSpeech] onvoiceschanged déclenché");
+          loadVoices();
+        };
+      }
 
       // Prévention du bug Android: la synthèse peut s'arrêter après 15 secondes
       if (isAndroid()) {
@@ -125,26 +266,130 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   }, []);
 
   const speak = useCallback(async (text: string, lang = "en-US"): Promise<void> => {
+    console.log("🔊 [useTextToSpeech] Début speak:", {
+      text: text.substring(0, 50) + "...",
+      lang,
+      isSupported,
+      isNative: isNativePlatform(),
+      hasWindow: typeof window !== "undefined",
+      hasSpeechSynthesis: typeof window !== "undefined" && "speechSynthesis" in window
+    });
+
     if (!isSupported || !text) {
-      setError("Synthèse vocale non supportée ou texte vide.");
+      const errorMsg = !isSupported ? "Synthèse vocale non supportée." : "Texte vide.";
+      console.error("❌ [useTextToSpeech]", errorMsg);
+      setError(errorMsg);
       return;
     }
 
+    // Sur les plateformes natives, utiliser le plugin Capacitor
+    if (isNativePlatform()) {
+      console.log("📱 [useTextToSpeech] Utilisation du plugin Capacitor natif");
+      try {
+        setIsSpeaking(true);
+        setIsPaused(false);
+        setError(null);
+
+        await TextToSpeech.speak({
+          text: text,
+          lang: lang,
+          rate: rate,
+          pitch: pitch,
+          volume: volume,
+          category: "ambient"
+        });
+
+        console.log("✅ [useTextToSpeech] Synthèse vocale native terminée");
+        setIsSpeaking(false);
+        setIsPaused(false);
+      } catch (err: any) {
+        console.error("❌ [useTextToSpeech] Erreur synthèse native:", err);
+        setError(`Erreur de synthèse vocale: ${err.message || "Inconnue"}`);
+        setIsSpeaking(false);
+        setIsPaused(false);
+      }
+      return;
+    }
+
+    // Vérifier que speechSynthesis est disponible avant d'utiliser
+    // Sur Android WebView, l'API peut nécessiter plusieurs tentatives ou une interaction utilisateur
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      console.warn("⚠️ [useTextToSpeech] speechSynthesis non disponible immédiatement");
+
+      // Sur les plateformes natives, essayer plusieurs fois avec des délais progressifs
+      if (isNativePlatform()) {
+        console.log("⏳ [useTextToSpeech] Tentative d'activation de l'API sur plateforme native...");
+
+        // Essayer plusieurs fois avec des délais progressifs (jusqu'à 3 secondes)
+        let attempts = 0;
+        const maxAttempts = 6; // 6 tentatives : 100ms, 200ms, 300ms, 500ms, 1000ms, 2000ms
+        const delays = [100, 200, 300, 500, 1000, 2000];
+
+        while (attempts < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, delays[attempts]));
+          attempts++;
+
+          if (typeof window !== "undefined" && "speechSynthesis" in window) {
+            console.log(`✅ [useTextToSpeech] speechSynthesis disponible après ${attempts} tentative(s)`);
+            break;
+          }
+
+          console.log(`⏳ [useTextToSpeech] Tentative ${attempts}/${maxAttempts}...`);
+        }
+
+        // Vérification finale
+        if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+          console.error("❌ [useTextToSpeech] speechSynthesis toujours non disponible après toutes les tentatives");
+          setError("La synthèse vocale n'est pas disponible sur cet appareil Android. L'API peut nécessiter une mise à jour du système ou n'est pas supportée par votre version d'Android.");
+          return;
+        }
+      } else {
+        console.error("❌ [useTextToSpeech] Synthèse vocale non supportée sur cette plateforme");
+        setError("Synthèse vocale non supportée sur cette plateforme.");
+        return;
+      }
+    }
+
+    // Vérification supplémentaire : s'assurer que l'objet speechSynthesis est fonctionnel
+    try {
+      if (typeof window !== "undefined" && window.speechSynthesis) {
+        // Tester si getVoices() fonctionne (indicateur que l'API est vraiment disponible)
+        const testVoices = window.speechSynthesis.getVoices();
+        console.log(`✅ [useTextToSpeech] API fonctionnelle, ${testVoices.length} voix disponible(s)`);
+      }
+    } catch (err) {
+      console.warn("⚠️ [useTextToSpeech] Erreur lors du test de l'API:", err);
+      // Continuer quand même, l'API peut fonctionner malgré cette erreur
+    }
+
+    console.log("🛑 [useTextToSpeech] Arrêt de toute lecture en cours...");
     // Arrêter toute lecture en cours
-    window.speechSynthesis.cancel();
+    try {
+      window.speechSynthesis.cancel();
+      console.log("✅ [useTextToSpeech] Lecture précédente annulée");
+    } catch (err) {
+      console.warn("⚠️ [useTextToSpeech] Erreur lors de l'annulation:", err);
+    }
 
     // Petit délai pour Android pour s'assurer que cancel() est effectif
     if (isAndroid()) {
+      console.log("⏳ [useTextToSpeech] Délai Android (50ms)...");
       await new Promise(resolve => setTimeout(resolve, 50));
     }
 
+    console.log("📝 [useTextToSpeech] Création de l'utterance...");
     // Créer une nouvelle utterance (énoncé)
     const utterance = new SpeechSynthesisUtterance(text);
     utteranceRef.current = utterance;
+    console.log("✅ [useTextToSpeech] Utterance créée");
 
-    // Configurer la voix
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
+    // Configurer la voix - utiliser la ref pour avoir la dernière valeur
+    const voiceToUse = selectedVoiceRef.current;
+    if (voiceToUse) {
+      utterance.voice = voiceToUse;
+      console.log("🎤 [useTextToSpeech] Voix utilisée:", voiceToUse.name, voiceToUse.lang);
+    } else {
+      console.warn("⚠️ [useTextToSpeech] Aucune voix spécifique sélectionnée, utilisation de la voix par défaut");
     }
 
     utterance.lang = lang;
@@ -160,7 +405,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
 
       for (let i = 0; i < sentences.length; i++) {
         const sentenceUtterance = new SpeechSynthesisUtterance(sentences[i]);
-        sentenceUtterance.voice = selectedVoice;
+        sentenceUtterance.voice = selectedVoiceRef.current;
         sentenceUtterance.lang = lang;
         sentenceUtterance.rate = rate;
         sentenceUtterance.pitch = pitch;
@@ -207,26 +452,45 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
     };
 
     utterance.onerror = (event) => {
-      console.error("Erreur de synthèse vocale:", event);
+      console.error("❌ [useTextToSpeech] Erreur de synthèse vocale:", {
+        error: event.error,
+        type: event.type,
+        charIndex: (event as any).charIndex,
+        charLength: (event as any).charLength,
+        utterance: {
+          text: utterance.text.substring(0, 50),
+          lang: utterance.lang,
+          voice: utterance.voice?.name
+        }
+      });
 
       // Gestion des erreurs spécifiques
+      let errorMessage = "Erreur de synthèse vocale.";
       switch (event.error) {
       case "network":
-        setError("Erreur réseau lors de la synthèse vocale.");
+        errorMessage = "Erreur réseau lors de la synthèse vocale.";
         break;
       case "synthesis-failed":
-        setError("Échec de la synthèse vocale.");
+        errorMessage = "Échec de la synthèse vocale. Vérifiez que les voix sont installées sur votre appareil.";
         break;
       case "audio-busy":
-        setError("Audio occupé. Réessayez.");
+        errorMessage = "Audio occupé. Réessayez.";
         break;
       case "not-allowed":
-        setError("Permission audio refusée.");
+        errorMessage = "Permission audio refusée. Vérifiez les paramètres de l'application.";
+        break;
+      case "interrupted":
+        errorMessage = "Synthèse vocale interrompue.";
+        break;
+      case "canceled":
+        errorMessage = "Synthèse vocale annulée.";
         break;
       default:
-        setError(`Erreur: ${event.error}`);
+        errorMessage = `Erreur: ${event.error}`;
       }
 
+      console.error("❌ [useTextToSpeech] Message d'erreur:", errorMessage);
+      setError(errorMessage);
       setIsSpeaking(false);
       setIsPaused(false);
     };
@@ -241,18 +505,48 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
 
     // Lancer la lecture
     try {
+      console.log("🎤 [useTextToSpeech] Lancement de la synthèse vocale...", {
+        textLength: text.length,
+        lang: utterance.lang,
+        rate: utterance.rate,
+        pitch: utterance.pitch,
+        volume: utterance.volume,
+        voiceName: utterance.voice?.name || "défaut"
+      });
+
       window.speechSynthesis.speak(utterance);
+      console.log("✅ [useTextToSpeech] speak() appelé avec succès");
+
+      // Vérifier après un court délai si la lecture a vraiment démarré
+      setTimeout(() => {
+        const currentlySpeaking = window.speechSynthesis.speaking;
+        if (currentlySpeaking) {
+          console.log("✅ [useTextToSpeech] La lecture a démarré (vérification différée)");
+          setIsSpeaking(true);
+        } else {
+          console.warn("⚠️ [useTextToSpeech] La lecture ne semble pas avoir démarré");
+        }
+      }, 100);
     } catch (err: any) {
-      console.error("Error speaking:", err);
+      console.error("❌ [useTextToSpeech] Erreur lors du lancement:", {
+        error: err,
+        message: err.message,
+        stack: err.stack
+      });
       setError("Impossible de lancer la synthèse vocale.");
       setIsSpeaking(false);
     }
-  }, [isSupported, selectedVoice, rate, pitch, volume]);
+  }, [isSupported, rate, pitch, volume]); // Retiré selectedVoice car on utilise la ref
 
-  const stop = useCallback(() => {
+  const stop = useCallback(async () => {
     if (!isSupported) return;
     try {
-      window.speechSynthesis.cancel();
+      if (isNativePlatform()) {
+        await TextToSpeech.stop();
+        console.log("✅ [useTextToSpeech] Stop natif");
+      } else {
+        window.speechSynthesis.cancel();
+      }
       setIsSpeaking(false);
       setIsPaused(false);
       setError(null);
@@ -264,8 +558,12 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   const pause = useCallback(() => {
     if (!isSupported) return;
     try {
-      window.speechSynthesis.pause();
-      setIsPaused(true);
+      if (!isNativePlatform()) {
+        window.speechSynthesis.pause();
+        setIsPaused(true);
+      } else {
+        console.warn("⚠️ [useTextToSpeech] Pause non supportée sur le plugin natif");
+      }
     } catch (err) {
       console.error("Error pausing speech:", err);
     }
@@ -274,19 +572,37 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   const resume = useCallback(() => {
     if (!isSupported) return;
     try {
-      window.speechSynthesis.resume();
-      setIsPaused(false);
+      if (!isNativePlatform()) {
+        window.speechSynthesis.resume();
+        setIsPaused(false);
+      } else {
+        console.warn("⚠️ [useTextToSpeech] Resume non supporté sur le plugin natif");
+      }
     } catch (err) {
       console.error("Error resuming speech:", err);
     }
   }, [isSupported]);
 
   const setVoice = useCallback((voiceName: string) => {
-    const voice = window.speechSynthesis.getVoices().find(v => v.name === voiceName);
+    console.log("🎤 [useTextToSpeech] setVoice appelé avec:", voiceName);
+
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      console.error("❌ [useTextToSpeech] speechSynthesis non disponible");
+      setError("Synthèse vocale non disponible.");
+      return;
+    }
+
+    const availableVoices = window.speechSynthesis.getVoices();
+    console.log("📢 [useTextToSpeech] Voix disponibles:", availableVoices.length);
+
+    const voice = availableVoices.find(v => v.name === voiceName);
     if (voice) {
+      console.log("✅ [useTextToSpeech] Voix trouvée et sélectionnée:", voice.name, voice.lang);
       setSelectedVoice(voice);
+      selectedVoiceRef.current = voice; // Mettre à jour la ref pour la closure
       setError(null);
     } else {
+      console.error("❌ [useTextToSpeech] Voix non trouvée:", voiceName);
       setError("Voix non trouvée.");
     }
   }, []);

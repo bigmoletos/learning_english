@@ -5,17 +5,9 @@
  */
 
 import React from "react";
-import { Box, IconButton, Tooltip, Typography, Slider, Alert } from "@mui/material";
-import { PlayArrow, Stop, VolumeUp, Speed } from "@mui/icons-material";
-import { useTextToSpeech } from "../../hooks/useTextToSpeech";
-import { Capacitor } from "@capacitor/core";
-
-/**
- * Détecte si on est sur une plateforme native Capacitor
- */
-const isNativePlatform = () => {
-  return Capacitor.isNativePlatform();
-};
+import { Box, IconButton, Tooltip, Typography, Alert, Select, MenuItem, FormControl, InputLabel, Chip } from "@mui/material";
+import { PlayArrow, Stop, VolumeUp, RecordVoiceOver, Cloud, CloudOff } from "@mui/icons-material";
+import { useGoogleTTS } from "../../hooks/useGoogleTTS";
 
 interface AudioPlayerProps {
   text: string;
@@ -23,6 +15,7 @@ interface AudioPlayerProps {
   title?: string;
   showControls?: boolean;
   autoPlay?: boolean;
+  voice?: string; // Voix sélectionnée depuis l'extérieur (optionnel)
 }
 
 export const AudioPlayer: React.FC<AudioPlayerProps> = ({
@@ -30,15 +23,25 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   lang = "en-US",
   title,
   showControls = true,
-  autoPlay = false
+  autoPlay = false,
+  voice: externalVoice
 }) => {
-  const { speak, stop, isSpeaking, isSupported, setRate, setVolume } = useTextToSpeech();
-  const [speed, setSpeed] = React.useState(1.0);
-  const [volume, setVolumeState] = React.useState(1.0);
+  const { speak, stop, isSpeaking, isLoading, error, isGoogleTTSAvailable } = useGoogleTTS();
+  const [selectedVoice, setSelectedVoice] = React.useState<string>(
+    externalVoice || (lang.startsWith("en-US") ? "en-US-Neural2-F" : "en-GB-Neural2-A")
+  );
+
+  // Synchroniser avec la voix externe si fournie
+  React.useEffect(() => {
+    if (externalVoice && externalVoice !== selectedVoice) {
+      console.log("[AudioPlayer] Synchronisation avec voix externe:", externalVoice);
+      setSelectedVoice(externalVoice);
+    }
+  }, [externalVoice]); // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
-    if (autoPlay && isSupported && text) {
-      speak(text, lang);
+    if (autoPlay && text) {
+      speak(text, lang, selectedVoice);
     }
     // Nettoyage : arrêter la lecture quand le composant est démonté
     return () => {
@@ -47,37 +50,49 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   }, [autoPlay]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePlay = () => {
-    if (isSpeaking) {
+    console.log("🎵 [AudioPlayer] handlePlay appelé:", {
+      isSpeaking,
+      isLoading,
+      voice: selectedVoice,
+      lang: lang,
+      textLength: text.length
+    });
+
+    if (isSpeaking || isLoading) {
+      console.log("🎵 [AudioPlayer] Arrêt de la lecture");
       stop();
     } else {
-      speak(text, lang);
+      console.log("🎵 [AudioPlayer] Démarrage lecture avec voix sélectionnée:", {
+        voice: selectedVoice,
+        lang: lang,
+        textLength: text.length,
+        textPreview: text.substring(0, 50)
+      });
+      speak(text, lang, selectedVoice);
     }
   };
 
-  const handleSpeedChange = (_event: Event, newValue: number | number[]) => {
-    const newSpeed = newValue as number;
-    setSpeed(newSpeed);
-    setRate(newSpeed);
+  const handleVoiceChange = (event: any) => {
+    const newVoice = event.target.value;
+    console.log("[AudioPlayer] Changement de voix:", {
+      ancienne: selectedVoice,
+      nouvelle: newVoice
+    });
+    setSelectedVoice(newVoice);
   };
 
-  const handleVolumeChange = (_event: Event, newValue: number | number[]) => {
-    const newVolume = newValue as number;
-    setVolumeState(newVolume);
-    setVolume(newVolume);
-  };
-
-  if (!isSupported && !isNativePlatform()) {
-    return (
-      <Alert severity="warning" sx={{ my: 2 }}>
-        <Typography variant="body2">
-          Votre navigateur ne supporte pas la synthèse vocale.
-          {isNativePlatform()
-            ? " La fonctionnalité native sera utilisée sur mobile."
-            : " Veuillez utiliser Chrome, Edge ou Safari."}
-        </Typography>
-      </Alert>
-    );
-  }
+  // Voix Google Cloud TTS disponibles
+  const googleVoices = [
+    { name: "en-US-Neural2-A", label: "US Female - Emma", lang: "en-US" },
+    { name: "en-US-Neural2-C", label: "US Female - Sarah", lang: "en-US" },
+    { name: "en-US-Neural2-D", label: "US Male - David", lang: "en-US" },
+    { name: "en-US-Neural2-F", label: "US Female - Michelle", lang: "en-US" },
+    { name: "en-US-Neural2-I", label: "US Male - Alex", lang: "en-US" },
+    { name: "en-GB-Neural2-A", label: "UK Female - Emma", lang: "en-GB" },
+    { name: "en-GB-Neural2-B", label: "UK Male - George", lang: "en-GB" },
+    { name: "en-GB-Neural2-C", label: "UK Female - Charlotte", lang: "en-GB" },
+    { name: "en-GB-Neural2-D", label: "UK Male - Oliver", lang: "en-GB" },
+  ];
 
   return (
     <Box sx={{ p: 2, bgcolor: "primary.light", borderRadius: 2, border: 2, borderColor: "primary.main" }}>
@@ -109,47 +124,68 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         </Tooltip>
       </Box>
 
+      {/* Affichage des erreurs */}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
+      {/* Badge statut Google TTS */}
+      <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+        {isGoogleTTSAvailable ? (
+          <Chip
+            icon={<Cloud />}
+            label="Google Cloud TTS - Voix Neural"
+            color="success"
+            size="small"
+          />
+        ) : (
+          <Chip
+            icon={<CloudOff />}
+            label="Fallback: Web Speech API"
+            color="warning"
+            size="small"
+          />
+        )}
+        {isLoading && (
+          <Chip
+            label="Chargement..."
+            color="info"
+            size="small"
+          />
+        )}
+      </Box>
+
       {showControls && (
         <Box sx={{ bgcolor: "white", p: 2, borderRadius: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-            <Speed sx={{ color: "text.secondary" }} />
-            <Typography variant="body2" sx={{ minWidth: 100 }}>
-              Vitesse: {speed.toFixed(1)}x
-            </Typography>
-            <Slider
-              value={speed}
-              onChange={handleSpeedChange}
-              min={0.5}
-              max={2.0}
-              step={0.1}
-              sx={{ flexGrow: 1 }}
-              disabled={isSpeaking}
-            />
-          </Box>
-
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <VolumeUp sx={{ color: "text.secondary" }} />
-            <Typography variant="body2" sx={{ minWidth: 100 }}>
-              Volume: {Math.round(volume * 100)}%
-            </Typography>
-            <Slider
-              value={volume}
-              onChange={handleVolumeChange}
-              min={0}
-              max={1}
-              step={0.1}
-              sx={{ flexGrow: 1 }}
-              disabled={isSpeaking}
-            />
+            <RecordVoiceOver sx={{ color: "text.secondary" }} />
+            <FormControl fullWidth size="small">
+              <InputLabel id="voice-select-label">Voix anglaise (Neural)</InputLabel>
+              <Select
+                labelId="voice-select-label"
+                value={selectedVoice}
+                label="Voix anglaise (Neural)"
+                onChange={handleVoiceChange}
+                disabled={isSpeaking || isLoading}
+              >
+                {googleVoices.map((voice) => (
+                  <MenuItem key={voice.name} value={voice.name}>
+                    {voice.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </Box>
       )}
 
       <Typography variant="caption" sx={{ display: "block", mt: 1, color: "white" }}>
         💡 Cliquez sur le bouton lecture pour entendre le texte en anglais
-        {showControls && " • Ajustez la vitesse et le volume selon vos besoins"}
+        {showControls && " • Sélectionnez une voix Neural haute qualité"}
+        {isGoogleTTSAvailable && " • Audio mis en cache pour lecture rapide"}
       </Typography>
     </Box>
   );
 };
-

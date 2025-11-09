@@ -61,6 +61,26 @@ const isMUITooltipWarning = (error: any): boolean => {
          /Tooltip.*disabled.*element/i.test(errorMessage);
 };
 
+const isSpeechSynthesisInterruptedError = (error: any): boolean => {
+  const errorMessage = typeof error === "string" ? error : error?.message || "";
+  const errorString = JSON.stringify(error);
+
+  // Filtrer les erreurs "interrupted" et "canceled" de la Web Speech API
+  // Ces erreurs sont normales quand on appelle cancel() avant qu'une lecture ne commence
+  const speechErrorPatterns = [
+    /SpeechSynthesisErrorEvent.*interrupted/i,
+    /SpeechSynthesisErrorEvent.*canceled/i,
+    /error.*interrupted/i,
+    /error.*canceled/i,
+    /\[GoogleTTS\].*interrupted/i,
+    /\[GoogleTTS\].*canceled/i,
+  ];
+
+  return speechErrorPatterns.some(
+    (pattern) => pattern.test(errorMessage) || pattern.test(errorString)
+  );
+};
+
 // Gestionnaire d'erreur global pour window.onerror
 window.addEventListener("error", (event) => {
   if (isExtensionError(event.error || event.message)) {
@@ -91,11 +111,12 @@ if (process.env.NODE_ENV === "development") {
   console.error = (...args: any[]) => {
     const errorString = args.join(" ");
 
-    // Filtrer les erreurs d'extensions, Firestore auth/offline, et MUI Tooltip
+    // Filtrer les erreurs d'extensions, Firestore auth/offline, MUI Tooltip, et Speech Synthesis "interrupted"
     if (
       !isExtensionError(errorString) &&
       !isFirestoreAuthError(errorString) &&
-      !isMUITooltipWarning(errorString)
+      !isMUITooltipWarning(errorString) &&
+      !isSpeechSynthesisInterruptedError(errorString)
     ) {
       originalConsoleError.apply(console, args);
     }

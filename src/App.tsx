@@ -480,8 +480,22 @@ const AppContent: React.FC = () => {
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          // Ajouter un padding-top pour éviter le chevauchement avec la barre de statut système
+          paddingTop: {
+            xs: "env(safe-area-inset-top, 24px)", // iOS safe area ou 24px par défaut
+            sm: "env(safe-area-inset-top, 0px)" // Sur desktop, pas de padding supplémentaire
+          },
+          // Sur Android, la barre de statut fait généralement 24-28px
+          "@media (max-width: 600px)": {
+            paddingTop: "max(env(safe-area-inset-top, 0px), 24px)"
+          }
+        }}
+      >
+        <Toolbar sx={{ minHeight: { xs: "56px !important", sm: "64px !important" } }}>
           <IconButton
             color="inherit"
             edge="start"
@@ -521,7 +535,10 @@ const AppContent: React.FC = () => {
           "& .MuiDrawer-paper": {
             width: 240,
             boxSizing: "border-box",
-            mt: 8
+            mt: {
+              xs: "calc(64px + env(safe-area-inset-top, 24px))", // AppBar height + safe area
+              sm: 8 // Desktop: AppBar height seulement
+            }
           }
         }}
       >
@@ -557,7 +574,14 @@ const AppContent: React.FC = () => {
         onClose={() => setDrawerOpen(false)}
         sx={{
           display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", mt: 8 }
+          "& .MuiDrawer-paper": {
+            width: 240,
+            boxSizing: "border-box",
+            mt: {
+              xs: "calc(64px + env(safe-area-inset-top, 24px))", // AppBar height + safe area
+              sm: 8 // Desktop: AppBar height seulement
+            }
+          }
         }}
       >
         <List>
@@ -578,7 +602,17 @@ const AppContent: React.FC = () => {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, mt: 8, bgcolor: "grey.50" }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          mt: {
+            xs: "calc(64px + env(safe-area-inset-top, 24px))", // AppBar height + safe area
+            sm: 8 // Desktop: AppBar height seulement
+          },
+          bgcolor: "grey.50"
+        }}
+      >
         <Container maxWidth="xl">
           {renderView()}
         </Container>

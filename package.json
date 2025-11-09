@@ -4,6 +4,7 @@
   "private": true,
   "description": "Outil d'entraînement en anglais technique (IA/DevOps) avec agent IA, reconnaissance vocale, et préparation TOEIC/TOEFL (B2→C1).",
   "dependencies": {
+    "@capacitor-community/text-to-speech": "^6.1.0",
     "@capacitor/android": "^7.4.4",
     "@capacitor/camera": "^7.0.2",
     "@capacitor/cli": "^7.4.4",
@@ -51,6 +52,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:chrome": "react-scripts start && pwsh -ExecutionPolicy Bypass -File scripts/open-browser.ps1",
     "prebuild": "node scripts/copy-env-to-build.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -60,7 +62,8 @@
     "train:agent": "ts-node src/agents/trainAgent.ts",
     "cap:sync": "npm run build && npx cap sync android",
     "cap:open": "npx cap open android",
-    "cap:run": "npm run cap:sync && npm run cap:open"
+    "cap:run": "npm run cap:sync && npm run cap:open",
+    "open:browser": "pwsh -ExecutionPolicy Bypass -File scripts/open-browser.ps1"
   },
   "eslintConfig": {
     "extends": [

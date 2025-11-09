@@ -16,6 +16,7 @@ import { ClozeExercise } from "./ClozeExercise";
 import { ListeningExercise } from "./ListeningExercise";
 import { ReadingExercise } from "./ReadingExercise";
 import { AudioPlayer } from "../voice/AudioPlayer";
+import { VoiceTester } from "../voice/VoiceTester";
 import { useUser } from "../../contexts/UserContext";
 
 export const ExerciseList: React.FC = () => {
@@ -154,14 +155,14 @@ export const ExerciseList: React.FC = () => {
         throw new Error(`Erreur HTTP ${qcmResponse.status} pour all_qcm_200.json`);
       }
       const qcmData = await qcmResponse.json();
-      
+
       // Charger tous les textes à trous (200 exercices complets à 100%)
       const clozeResponse = await fetch("/data/exercises/all_cloze_200.json");
       if (!clozeResponse.ok) {
         throw new Error(`Erreur HTTP ${clozeResponse.status} pour all_cloze_200.json`);
       }
       const clozeData = await clozeResponse.json();
-      
+
       // Charger les exercices listening
       let listeningExercises: Exercise[] = [];
       try {
@@ -193,18 +194,18 @@ export const ExerciseList: React.FC = () => {
       } catch (err) {
         console.warn("Erreur chargement reading:", err);
       }
-      
+
       // Gérer différents formats de fichiers JSON
       const qcmExercises = Array.isArray(qcmData) ? qcmData : (qcmData.exercises || []);
       const clozeExercises = Array.isArray(clozeData) ? clozeData : (clozeData.exercises || []);
-      
+
       const allExercises = [
         ...qcmExercises,
         ...clozeExercises,
         ...listeningExercises,
         ...readingExercises
       ];
-      
+
       console.log(`📚 Total exercices chargés: ${allExercises.length} (${qcmExercises.length} QCM + ${clozeExercises.length} Cloze + ${listeningExercises.length} Listening + ${readingExercises.length} Reading)`);
 
       // Double validation : s'assurer que tous les exercices sont complets à 100%
@@ -217,7 +218,7 @@ export const ExerciseList: React.FC = () => {
         if (ex.questions && (ex.type === "listening" || ex.type === "reading")) {
           for (const question of ex.questions) {
             if (question.options) {
-              const hasPlaceholder = question.options.some((opt: string) => 
+              const hasPlaceholder = question.options.some((opt: string) =>
                 /^other \d+$/i.test(opt.trim())
               );
               if (hasPlaceholder) {
@@ -272,25 +273,25 @@ export const ExerciseList: React.FC = () => {
     console.log("🔄 Clic sur exercice:", exercise.id, exercise.title);
     console.log("📋 Exercice complet:", exercise);
     console.log("📝 Questions:", exercise.questions?.length || 0);
-    
+
     if (!exercise || !exercise.id) {
       console.error("❌ Erreur: exercice invalide", exercise);
       alert("Erreur: exercice invalide");
       return;
     }
-    
+
     if (!exercise.questions || exercise.questions.length === 0) {
       console.error("❌ Erreur: l'exercice n'a pas de questions", exercise);
       alert("Cet exercice n'a pas de questions disponibles. Veuillez choisir un autre exercice.");
       return;
     }
-    
+
     // Créer une copie de l'exercice pour éviter les problèmes de référence
     const exerciseCopy = {
       ...exercise,
       questions: [...exercise.questions]
     };
-    
+
     console.log("✅ Définition de l'exercice sélectionné:", exerciseCopy.id);
     setSelectedExercise(exerciseCopy);
   }, []);
@@ -319,7 +320,7 @@ export const ExerciseList: React.FC = () => {
         <Button onClick={handleBackToList} sx={{ mb: 3 }} variant="outlined">
           ← Retour aux exercices
         </Button>
-        
+
         {selectedExercise.type === "qcm" ? (
           <Box>
             <Typography variant="h5" gutterBottom>{selectedExercise.title}</Typography>
@@ -331,7 +332,7 @@ export const ExerciseList: React.FC = () => {
                 <QCMExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) => 
+                  onAnswer={(answer, isCorrect, timeSpent) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                 />
@@ -353,7 +354,7 @@ export const ExerciseList: React.FC = () => {
                 <ClozeExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) => 
+                  onAnswer={(answer, isCorrect, timeSpent) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                 />
@@ -370,7 +371,7 @@ export const ExerciseList: React.FC = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
-            
+
             {/* Afficher l'audio une seule fois pour tout l'exercice */}
             {/* Utiliser AudioPlayer avec synthèse vocale car les fichiers audio MP3 n'existent pas */}
             {(selectedExercise as any).transcript && (
@@ -384,7 +385,7 @@ export const ExerciseList: React.FC = () => {
                 />
                 <Alert severity="info" sx={{ mt: 2 }}>
                   <Typography variant="body2">
-                    <strong>Conseil :</strong> Cliquez sur le bouton lecture dans le lecteur audio ci-dessus pour écouter la transcription. 
+                    <strong>Conseil :</strong> Cliquez sur le bouton lecture dans le lecteur audio ci-dessus pour écouter la transcription.
                     La transcription complète sera disponible après avoir répondu aux questions.
                   </Typography>
                 </Alert>
@@ -399,7 +400,7 @@ export const ExerciseList: React.FC = () => {
                     <ListeningExercise
                       key={question.id || `q${idx}`}
                       question={question}
-                      onAnswer={(answer, isCorrect, timeSpent) => 
+                      onAnswer={(answer, isCorrect, timeSpent) =>
                         handleAnswer(question.id, answer, isCorrect, timeSpent)
                       }
                       audioUrl={undefined} // Pas besoin, l'audio est déjà affiché en haut
@@ -407,7 +408,7 @@ export const ExerciseList: React.FC = () => {
                     />
                   );
                 })}
-                
+
                 {/* Afficher la transcription complète après toutes les questions */}
                 {(selectedExercise as any).transcript && (
                   <Box sx={{ mt: 4, p: 3, bgcolor: "grey.100", borderRadius: 2 }}>
@@ -432,7 +433,7 @@ export const ExerciseList: React.FC = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
-            
+
             {/* Afficher le texte de lecture une seule fois en haut */}
             {(selectedExercise as any).readingText || selectedExercise.content ? (
               <Box sx={{ mb: 3, p: 3, bgcolor: "grey.50", borderRadius: 2 }}>
@@ -448,7 +449,7 @@ export const ExerciseList: React.FC = () => {
                 <ReadingExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) => 
+                  onAnswer={(answer, isCorrect, timeSpent) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                   text={undefined} // Pas besoin, le texte est déjà affiché en haut
@@ -471,10 +472,12 @@ export const ExerciseList: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      <VoiceTester />
+
       {incompleteFiltered > 0 && (
         <Alert severity="warning" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            <strong>Note :</strong> {incompleteFiltered} exercice(s) incomplet(s) ont été automatiquement filtrés 
+            <strong>Note :</strong> {incompleteFiltered} exercice(s) incomplet(s) ont été automatiquement filtrés
             car ils contiennent des placeholders au lieu de contenu réel. Seuls les exercices complets sont affichés.
           </Typography>
         </Alert>
@@ -491,10 +494,10 @@ export const ExerciseList: React.FC = () => {
       <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
         Exercices disponibles
         {exercises.length > 0 && (
-          <Chip 
-            label={`${exercises.length} exercice(s) au total`} 
-            color="primary" 
-            sx={{ ml: 2 }} 
+          <Chip
+            label={`${exercises.length} exercice(s) au total`}
+            color="primary"
+            sx={{ ml: 2 }}
           />
         )}
       </Typography>
@@ -530,9 +533,9 @@ export const ExerciseList: React.FC = () => {
           </Select>
         </FormControl>
 
-        <Chip 
-          label={`${filteredExercises.length} exercice(s)`} 
-          color="primary" 
+        <Chip
+          label={`${filteredExercises.length} exercice(s)`}
+          color="primary"
           sx={{ ml: "auto", alignSelf: "center" }}
         />
       </Box>
@@ -543,17 +546,17 @@ export const ExerciseList: React.FC = () => {
             <Card elevation={3} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                  <Chip 
-                    label={exercise.level} 
+                  <Chip
+                    label={exercise.level}
                     color={
-                      exercise.level === "C1" ? "error" : 
-                        exercise.level === "B2" ? "warning" : 
+                      exercise.level === "C1" ? "error" :
+                        exercise.level === "B2" ? "warning" :
                           exercise.level === "B1" ? "info" : "success"
                     }
                     size="small"
                   />
-                  <Chip 
-                    label={exercise.type === "qcm" ? "QCM" : "Texte à trous"} 
+                  <Chip
+                    label={exercise.type === "qcm" ? "QCM" : "Texte à trous"}
                     variant="outlined"
                     size="small"
                   />
@@ -588,16 +591,16 @@ export const ExerciseList: React.FC = () => {
                   </Box>
                 </Box>
 
-                <Chip 
-                  label={exercise.domain} 
-                  size="small" 
+                <Chip
+                  label={exercise.domain}
+                  size="small"
                   sx={{ mt: 1 }}
                 />
               </CardContent>
 
               <Box sx={{ p: 2, pt: 0 }}>
-                <Button 
-                  variant="contained" 
+                <Button
+                  variant="contained"
                   fullWidth
                   type="button"
                   onClick={(e) => {
@@ -617,7 +620,7 @@ export const ExerciseList: React.FC = () => {
                     console.log("🖱️ MouseDown détecté pour:", exercise.id);
                   }}
                   disabled={!exercise.questions || exercise.questions.length === 0}
-                  sx={{ 
+                  sx={{
                     cursor: exercise.questions && exercise.questions.length > 0 ? "pointer" : "not-allowed",
                     "&:hover": {
                       backgroundColor: exercise.questions && exercise.questions.length > 0 ? "primary.dark" : "action.disabled"

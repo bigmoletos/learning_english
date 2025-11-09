@@ -20,7 +20,10 @@
       "Bash(tee:*)",
       "Bash(lsof:*)",
       "Bash(xargs kill:*)",
-      "Bash(timeout 30 bash:*)"
+      "Bash(timeout 30 bash:*)",
+      "Bash(npm install:*)",
+      "WebSearch",
+      "Bash(npm start)"
     ],
     "deny": [],
     "ask": []

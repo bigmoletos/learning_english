@@ -92,25 +92,82 @@ export const getUserByEmail = async (email: string): Promise<UserProfile | null>
  * Crée ou met à jour un utilisateur
  */
 export const saveUser = async (user: UserProfile): Promise<void> => {
-  const firestoreUser = toFirestoreUser(user);
+  console.log("💾 [saveUser] Début sauvegarde utilisateur:", {
+    userId: user.id,
+    email: (user as any).email,
+    name: user.name
+  });
 
-  // S'assurer que toutes les propriétés requises sont présentes
-  const userData: Partial<FirestoreUser> = {
-    id: user.id,
-    email: firestoreUser.email || (user as any).email || "",
-    currentLevel: user.currentLevel,
-    targetLevel: user.targetLevel,
-    createdAt: firestoreUser.createdAt || new Date(),
-    updatedAt: new Date(),
-    ...(firestoreUser.firstName && { firstName: firestoreUser.firstName }),
-    ...(firestoreUser.lastName && { lastName: firestoreUser.lastName }),
-    ...(user.weaknesses && user.weaknesses.length > 0 && { weaknesses: user.weaknesses }),
-    ...(user.completedExercises !== undefined && { completedExercises: user.completedExercises }),
-    ...(user.totalScore !== undefined && { totalScore: user.totalScore }),
-    ...(firestoreUser.lastActivity && { lastActivity: firestoreUser.lastActivity })
-  };
+  try {
+    // Vérifier que l'utilisateur a un ID valide
+    if (!user.id) {
+      const error = new Error("L'utilisateur doit avoir un ID pour être sauvegardé dans Firestore");
+      console.error("❌ [saveUser]", error.message);
+      throw error;
+    }
 
-  await setDocument<FirestoreUser>(COLLECTION_NAME, user.id, userData);
+    console.log("🔄 [saveUser] Conversion en FirestoreUser...");
+    const firestoreUser = toFirestoreUser(user);
+    console.log("✅ [saveUser] Conversion réussie:", {
+      id: firestoreUser.id,
+      email: firestoreUser.email,
+      hasFirstName: !!firestoreUser.firstName,
+      hasLastName: !!firestoreUser.lastName
+    });
+
+    // Extraire l'email - c'est obligatoire pour Firestore
+    const userEmail = firestoreUser.email || (user as any).email || "";
+    if (!userEmail) {
+      const error = new Error("L'utilisateur doit avoir un email pour être sauvegardé dans Firestore");
+      console.error("❌ [saveUser]", error.message, {
+        userData: {
+          id: user.id,
+          name: user.name,
+          hasEmail: !!(user as any).email
+        }
+      });
+      throw error;
+    }
+
+    console.log("🔧 [saveUser] Construction des données Firestore...");
+    // S'assurer que toutes les propriétés requises sont présentes
+    const userData: Partial<FirestoreUser> = {
+      id: user.id,
+      email: userEmail,
+      currentLevel: user.currentLevel,
+      targetLevel: user.targetLevel,
+      createdAt: firestoreUser.createdAt instanceof Date ? firestoreUser.createdAt : new Date(firestoreUser.createdAt || Date.now()),
+      updatedAt: new Date(),
+      ...(firestoreUser.firstName && { firstName: firestoreUser.firstName }),
+      ...(firestoreUser.lastName && { lastName: firestoreUser.lastName }),
+      ...(user.weaknesses && user.weaknesses.length > 0 && { weaknesses: user.weaknesses }),
+      ...(user.completedExercises !== undefined && { completedExercises: user.completedExercises }),
+      ...(user.totalScore !== undefined && { totalScore: user.totalScore }),
+      ...(firestoreUser.lastActivity && { lastActivity: firestoreUser.lastActivity instanceof Date ? firestoreUser.lastActivity : new Date(firestoreUser.lastActivity) })
+    };
+
+    console.log("💾 [saveUser] Données préparées:", {
+      userId: user.id,
+      email: userEmail,
+      currentLevel: userData.currentLevel,
+      targetLevel: userData.targetLevel,
+      dataKeys: Object.keys(userData)
+    });
+
+    console.log("🌐 [saveUser] Appel setDocument...");
+    await setDocument<FirestoreUser>(COLLECTION_NAME, user.id, userData);
+    console.log("✅ [saveUser] Utilisateur sauvegardé avec succès dans Firestore");
+  } catch (error: any) {
+    console.error("❌ [saveUser] Erreur lors de la sauvegarde:", {
+      code: error.code,
+      message: error.message,
+      stack: error.stack,
+      userId: user.id,
+      email: (user as any).email,
+      error: error
+    });
+    throw error;
+  }
 };
 
 /**
