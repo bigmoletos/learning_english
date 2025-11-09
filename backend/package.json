@@ -22,7 +22,9 @@
   "author": "AI English Trainer Team",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/speech": "^7.2.1",
     "@google-cloud/text-to-speech": "^6.4.0",
+    "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",

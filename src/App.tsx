@@ -18,6 +18,7 @@ import { UserProvider, useUser } from "./contexts/UserContext";
 import { Dashboard } from "./components/layout/Dashboard";
 import { ProgressTracker } from "./components/progress/ProgressTracker";
 import { ExerciseList } from "./components/exercises/ExerciseList";
+import { SpeakingExerciseList } from "./components/exercises/SpeakingExerciseList";
 import { ComprehensiveAssessment } from "./components/tests/ComprehensiveAssessment";
 import { AdaptiveLearningPlan } from "./components/learning/AdaptiveLearningPlan";
 import { Login } from "./components/auth/Login";
@@ -155,7 +156,7 @@ const theme = createTheme({
   }
 });
 
-type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset";
+type ViewType = "dashboard" | "exercises" | "speaking" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, login, logout, user } = useUser();
@@ -230,6 +231,7 @@ const AppContent: React.FC = () => {
     { id: "dashboard" as ViewType, label: "Tableau de bord", icon: <DashboardIcon /> },
     { id: "learning" as ViewType, label: "Mon Programme", icon: <Assessment /> },
     { id: "exercises" as ViewType, label: "Exercices", icon: <School /> },
+    { id: "speaking" as ViewType, label: "Speaking", icon: <VolumeUp /> },
     { id: "progress" as ViewType, label: "Progression", icon: <Assessment /> },
     { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> }
   ];
@@ -299,6 +301,8 @@ const AppContent: React.FC = () => {
       return <ProgressTracker />;
     case "exercises":
       return <ExerciseList />;
+    case "speaking":
+      return <SpeakingExerciseList />;
     case "tests":
       return (
         <Box sx={{ p: 3 }}>

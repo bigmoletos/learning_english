@@ -212,6 +212,8 @@ app.use('/api/exercises', require('./routes/exercises'));
 app.use('/api/progress', require('./routes/progress'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/text-to-speech', require('./routes/textToSpeech'));
+app.use('/api/speech-to-text', require('./routes/speechToText'));
+app.use('/api/speaking-agent', require('./routes/speakingAgent'));
 
 // Route 404
 app.use((req, res) => {
