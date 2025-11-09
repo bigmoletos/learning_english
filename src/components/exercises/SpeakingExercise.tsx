@@ -530,6 +530,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                             />
                           </Box>
                         }
+                        primaryTypographyProps={{ component: "div" }}
                         secondary={
                           <Box sx={{ mt: 1 }}>
                             <Typography variant="body2">
@@ -553,6 +554,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                             )}
                           </Box>
                         }
+                        secondaryTypographyProps={{ component: "div" }}
                       />
                     </ListItem>
                   ))}
@@ -602,6 +604,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                             </Box>
                           </Box>
                         }
+                        secondaryTypographyProps={{ component: "div" }}
                       />
                     </ListItem>
                   ))}

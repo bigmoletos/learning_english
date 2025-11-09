@@ -53,10 +53,31 @@ router.post("/analyze", async (req, res) => {
           targetLevel
         );
         if (ollamaAnalysis && ollamaAnalysis.errors) {
+          // Ajouter le champ 'position' aux erreurs Ollama pour assurer la cohérence
+          const ollamaErrorsWithPosition = ollamaAnalysis.errors.map((err) => {
+            if (!err.position) {
+              // Chercher la position de l'erreur dans le texte
+              const index = transcript.toLowerCase().indexOf(err.original.toLowerCase());
+              return {
+                ...err,
+                position: {
+                  start: index >= 0 ? index : 0,
+                  end: index >= 0 ? index + err.original.length : 0,
+                },
+              };
+            }
+            return err;
+          });
+
           // Fusionner les erreurs détectées par Ollama avec celles de base
-          errors = [...errors, ...ollamaAnalysis.errors];
+          errors = [...errors, ...ollamaErrorsWithPosition];
+
+          // Régénérer la phrase corrigée avec toutes les erreurs fusionnées
           if (ollamaAnalysis.correctedSentence) {
             correctedSentence = ollamaAnalysis.correctedSentence;
+          } else {
+            // Régénérer avec les erreurs fusionnées
+            correctedSentence = generateCorrectedSentence(transcript, errors);
           }
         }
       } catch (err) {
@@ -66,7 +87,7 @@ router.post("/analyze", async (req, res) => {
 
     // Calcul des scores
     const grammarScore = calculateGrammarScore(errors, transcript);
-    const pronunciationScore = Math.round(confidence);
+    const pronunciationScore = Math.round(confidence * 100);
     const fluencyScore = calculateFluencyScore(transcript, confidence);
     const overallScore = Math.round(
       (grammarScore + pronunciationScore + fluencyScore) / 3
@@ -315,7 +336,12 @@ function detectGrammarErrors(text) {
           corrected = original.replace(/^an\s+/i, "a ");
         }
       } else if (pattern.type === "quantifier") {
-        corrected = original.replace(/much/i, "many");
+        // Vérifier si on doit remplacer "much" par "many" ou l'inverse
+        if (/much/i.test(original)) {
+          corrected = original.replace(/much/i, "many");
+        } else if (/many/i.test(original)) {
+          corrected = original.replace(/many/i, "much");
+        }
       } else if (pattern.type === "double_negative") {
         const verb = original.split(/\s+/)[1];
         corrected = `didn't ${getBaseForm(verb)}`;
