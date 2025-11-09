@@ -10,6 +10,7 @@ import { saveProgress, getUserProgress, getUserProgressStats } from "./progressS
 import { saveAssessment, getUserAssessments } from "./assessmentService";
 import { UserProfile, UserResponse } from "../../types";
 import { storageService, StorageKeys } from "../../utils/storageService";
+import { auth } from "../../firebase/config";
 
 const SYNC_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
@@ -73,16 +74,33 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
     });
 
     // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
+    if (!auth.currentUser) {
+      console.debug("Utilisateur non authentifié. Synchronisation reportée.");
+      return;
+    }
+
+    if (auth.currentUser.uid !== user.id) {
+      console.warn(`UID mismatch: auth.uid=${auth.currentUser.uid}, user.id=${user.id}. Synchronisation reportée.`);
+      return;
+    }
+
+    // S'assurer que l'utilisateur a un email
+    if (!(user as any).email && !user.name) {
+      console.warn("Utilisateur sans email. Synchronisation reportée.");
+      return;
+    }
+
     try {
       await saveUser(user);
+      console.log("✅ Utilisateur synchronisé avec Firestore");
     } catch (error: any) {
-      // Ignorer les erreurs d'authentification - les données seront synchronisées plus tard
-      if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
-        console.debug("Synchronisation utilisateur reportée (utilisateur non authentifié)");
-      } else {
-        console.warn("Erreur lors de la synchronisation utilisateur avec Firestore:", error);
-      }
-      // Les données restent dans localStorage et seront synchronisées plus tard
+      // Logger l'erreur pour diagnostic mais ne pas bloquer l'application
+      console.error("Erreur lors de la synchronisation utilisateur avec Firestore:", {
+        code: error.code,
+        message: error.message,
+        userId: user.id
+      });
+      // Les données restent dans le stockage local et seront synchronisées plus tard via la queue
     }
   } catch (error) {
     console.error("Erreur lors de la sauvegarde utilisateur:", error);
@@ -225,6 +243,11 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
  * Traite la queue de synchronisation
  */
 export const processSyncQueue = async (): Promise<void> => {
+  // Vérifier que l'utilisateur est authentifié
+  if (!auth.currentUser) {
+    return; // Ne pas synchroniser si l'utilisateur n'est pas authentifié
+  }
+
   const queue = await getSyncQueue();
   if (queue.length === 0) return;
 
@@ -259,7 +282,13 @@ export const processSyncQueue = async (): Promise<void> => {
         break;
       }
       processed.push(item.timestamp);
-    } catch (error) {
+    } catch (error: any) {
+      // Ignorer silencieusement les erreurs d'authentification ou de permission
+      if (error.code === "permission-denied" || error.code === "unauthenticated" ||
+          error.message?.includes("permission") || error.message?.includes("authenticated")) {
+        // Garder l'élément dans la queue pour réessayer après authentification
+        return;
+      }
       console.error("Erreur lors du traitement de l'élément de synchronisation:", error);
       // Garder l'élément dans la queue pour réessayer plus tard
     }
@@ -283,6 +312,11 @@ export const processSyncQueue = async (): Promise<void> => {
  * Synchronise toutes les données depuis Firestore vers le service de stockage
  */
 export const syncFromFirestore = async (userId: string): Promise<void> => {
+  // Vérifier que l'utilisateur est authentifié
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    return; // Ne pas synchroniser si l'utilisateur n'est pas authentifié
+  }
+
   try {
     // Récupérer l'utilisateur depuis Firestore
     const user = await getUserById(userId);
@@ -349,6 +383,11 @@ export const needsSync = async (): Promise<boolean> => {
  */
 export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL): () => void => {
   const syncInterval = setInterval(async () => {
+    // Vérifier que l'utilisateur est toujours authentifié
+    if (!auth.currentUser || auth.currentUser.uid !== userId) {
+      return; // Ne pas synchroniser si l'utilisateur n'est pas authentifié
+    }
+
     if (await needsSync()) {
       await processSyncQueue();
       await syncFromFirestore(userId);

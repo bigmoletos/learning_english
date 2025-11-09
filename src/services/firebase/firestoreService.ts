@@ -148,24 +148,70 @@ export const setDocument = async <T = DocumentData>(
 
   // Vérifier l'authentification avant l'écriture - v2
   if (!isAuthenticated()) {
-    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
-    // Les données seront sauvegardées dans localStorage et synchronisées plus tard
-    return;
+    throw new Error("Utilisateur non authentifié. Impossible de sauvegarder dans Firestore.");
   }
 
   try {
+    // Vérifier que l'utilisateur est bien authentifié avec un token valide
+    if (!auth.currentUser) {
+      throw new Error("Utilisateur non authentifié");
+    }
+
+    // Vérifier que le documentId correspond à l'UID de l'utilisateur pour la collection users
+    if (collectionName === "users" && documentId !== auth.currentUser.uid) {
+      throw new Error(`UID mismatch: documentId=${documentId}, auth.uid=${auth.currentUser.uid}`);
+    }
+
     const docRef = doc(db, collectionName, documentId);
+    
+    // Convertir les dates en Timestamp Firestore
+    const firestoreData: any = { ...data };
+    Object.keys(firestoreData).forEach((key) => {
+      if (firestoreData[key] instanceof Date) {
+        firestoreData[key] = Timestamp.fromDate(firestoreData[key]);
+      } else if (firestoreData[key] && typeof firestoreData[key] === "string" && firestoreData[key].match(/^\d{4}-\d{2}-\d{2}T/)) {
+        // Convertir les chaînes ISO en Timestamp
+        try {
+          firestoreData[key] = Timestamp.fromDate(new Date(firestoreData[key]));
+        } catch (e) {
+          // Garder la chaîne si la conversion échoue
+        }
+      }
+    });
+    
+    // Vérifier que les données essentielles sont présentes
+    if (collectionName === "users" && !firestoreData.email) {
+      console.warn("⚠️ Tentative de sauvegarde utilisateur sans email:", firestoreData);
+    }
+
     await setDoc(docRef, {
-      ...data,
+      ...firestoreData,
       updatedAt: Timestamp.now()
     }, { merge: true });
+    
+    console.log(`✅ Document sauvegardé: ${collectionName}/${documentId}`);
   } catch (error: any) {
-    // Améliorer le message d'erreur pour les erreurs d'authentification
-    if (error.code === "permission-denied" || error.message?.includes("permission")) {
-      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
-    } else {
-      console.error(`Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`, error);
+    // Logger l'erreur complète pour diagnostic
+    const errorDetails = {
+      code: error.code,
+      message: error.message,
+      collection: collectionName,
+      documentId: documentId,
+      authUid: auth.currentUser?.uid || "non authentifié",
+      dataKeys: Object.keys(data || {}),
+      dataSample: collectionName === "users" ? { id: (data as any)?.id, email: (data as any)?.email } : "N/A"
+    };
+    
+    console.error(`❌ Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`, errorDetails);
+    
+    // Si c'est une erreur de permission, donner plus de détails
+    if (error.code === "permission-denied") {
+      console.error("🔒 Permission refusée. Vérifiez que:");
+      console.error("  1. Les règles Firestore sont déployées");
+      console.error("  2. L'utilisateur est authentifié (auth.uid:", auth.currentUser?.uid, ")");
+      console.error("  3. Le documentId correspond à auth.uid pour la collection users");
     }
+    
     throw error;
   }
 };
@@ -185,23 +231,31 @@ export const updateDocument = async <T = DocumentData>(
 
   // Vérifier l'authentification avant l'écriture
   if (!isAuthenticated()) {
-    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
-    return;
+    throw new Error("Utilisateur non authentifié. Impossible de mettre à jour dans Firestore.");
   }
 
   try {
     const docRef = doc(db, collectionName, documentId);
+
+    // Convertir les dates en Timestamp Firestore
+    const firestoreData: any = { ...data };
+    Object.keys(firestoreData).forEach((key) => {
+      if (firestoreData[key] instanceof Date) {
+        firestoreData[key] = Timestamp.fromDate(firestoreData[key]);
+      }
+    });
+
     await updateDoc(docRef, {
-      ...data,
+      ...firestoreData,
       updatedAt: Timestamp.now()
     });
   } catch (error: any) {
-    // Améliorer le message d'erreur pour les erreurs d'authentification
-    if (error.code === "permission-denied" || error.message?.includes("permission")) {
-      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
-    } else {
-      console.error(`Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`, error);
-    }
+    // Logger l'erreur pour diagnostic
+    console.error(`Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`, {
+      code: error.code,
+      message: error.message,
+      data: data
+    });
     throw error;
   }
 };
@@ -220,19 +274,18 @@ export const deleteDocument = async (
 
   // Vérifier l'authentification avant la suppression
   if (!isAuthenticated()) {
-    // Ne pas afficher d'avertissement - c'est normal si Firebase Auth n'est pas configuré
-    return;
+    throw new Error("Utilisateur non authentifié. Impossible de supprimer dans Firestore.");
   }
 
   try {
     const docRef = doc(db, collectionName, documentId);
     await deleteDoc(docRef);
   } catch (error: any) {
-    if (error.code === "permission-denied" || error.message?.includes("permission")) {
-      console.warn(`Permission refusée pour ${collectionName}/${documentId}. L'utilisateur doit être authentifié.`);
-    } else {
-      console.error(`Erreur lors de la suppression du document ${collectionName}/${documentId}:`, error);
-    }
+    // Logger l'erreur pour diagnostic
+    console.error(`Erreur lors de la suppression du document ${collectionName}/${documentId}:`, {
+      code: error.code,
+      message: error.message
+    });
     throw error;
   }
 };

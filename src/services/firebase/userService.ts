@@ -35,15 +35,22 @@ export interface FirestoreUser {
  * Convertit un UserProfile en FirestoreUser
  */
 const toFirestoreUser = (user: UserProfile): Partial<FirestoreUser> => {
+  // Extraire l'email depuis user.email ou user.name si email n'est pas disponible
+  const userEmail = (user as any).email || user.name || "";
+
   return {
-    email: user.name, // Utiliser name comme email temporaire, à adapter selon votre modèle
+    id: user.id,
+    email: userEmail,
+    firstName: (user as any).firstName,
+    lastName: (user as any).lastName,
     currentLevel: user.currentLevel,
     targetLevel: user.targetLevel,
     weaknesses: user.weaknesses,
     completedExercises: user.completedExercises,
     totalScore: user.totalScore,
-    createdAt: user.createdAt,
-    lastActivity: user.lastActivity
+    createdAt: user.createdAt instanceof Date ? user.createdAt : new Date(user.createdAt || Date.now()),
+    updatedAt: new Date(),
+    lastActivity: user.lastActivity instanceof Date ? user.lastActivity : (user.lastActivity ? new Date(user.lastActivity) : undefined)
   };
 };
 
@@ -86,11 +93,24 @@ export const getUserByEmail = async (email: string): Promise<UserProfile | null>
  */
 export const saveUser = async (user: UserProfile): Promise<void> => {
   const firestoreUser = toFirestoreUser(user);
-  await setDocument<FirestoreUser>(COLLECTION_NAME, user.id, {
-    ...firestoreUser,
-    createdAt: user.createdAt || new Date(),
-    updatedAt: new Date()
-  } as Partial<FirestoreUser>);
+
+  // S'assurer que toutes les propriétés requises sont présentes
+  const userData: Partial<FirestoreUser> = {
+    id: user.id,
+    email: firestoreUser.email || (user as any).email || "",
+    currentLevel: user.currentLevel,
+    targetLevel: user.targetLevel,
+    createdAt: firestoreUser.createdAt || new Date(),
+    updatedAt: new Date(),
+    ...(firestoreUser.firstName && { firstName: firestoreUser.firstName }),
+    ...(firestoreUser.lastName && { lastName: firestoreUser.lastName }),
+    ...(user.weaknesses && user.weaknesses.length > 0 && { weaknesses: user.weaknesses }),
+    ...(user.completedExercises !== undefined && { completedExercises: user.completedExercises }),
+    ...(user.totalScore !== undefined && { totalScore: user.totalScore }),
+    ...(firestoreUser.lastActivity && { lastActivity: firestoreUser.lastActivity })
+  };
+
+  await setDocument<FirestoreUser>(COLLECTION_NAME, user.id, userData);
 };
 
 /**

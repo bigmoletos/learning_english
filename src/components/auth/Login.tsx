@@ -38,7 +38,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
         const firebaseUser = result.user;
         const userData = {
           id: firebaseUser.uid,
-          email: firebaseUser.email,
+          email: firebaseUser.email || "",
           name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Utilisateur",
           emailVerified: firebaseUser.emailVerified,
           currentLevel: "B1", // Niveau par défaut
