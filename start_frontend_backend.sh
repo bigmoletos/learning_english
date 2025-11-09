@@ -311,9 +311,24 @@ main() {
             stop_server "Frontend" "$FRONTEND_PID_FILE"
             stop_server "Backend" "$BACKEND_PID_FILE"
 
-            # Nettoyage processus résiduels
+            # Nettoyage processus résiduels par nom
             pkill -f "react-scripts" 2>/dev/null
             pkill -f "node.*server.js" 2>/dev/null
+
+            # Nettoyage processus résiduels par port (plus fiable)
+            # Tuer les processus sur le port 3000 (frontend)
+            if command -v lsof >/dev/null 2>&1; then
+                lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+            elif command -v fuser >/dev/null 2>&1; then
+                fuser -k 3000/tcp 2>/dev/null || true
+            fi
+
+            # Tuer les processus sur le port 5010 (backend)
+            if command -v lsof >/dev/null 2>&1; then
+                lsof -ti:5010 | xargs kill -9 2>/dev/null || true
+            elif command -v fuser >/dev/null 2>&1; then
+                fuser -k 5010/tcp 2>/dev/null || true
+            fi
 
             log_success "Tous les serveurs sont arrêtés"
             echo ""
