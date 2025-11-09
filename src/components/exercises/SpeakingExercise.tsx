@@ -478,8 +478,8 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                 analysis.score >= 75
                   ? "success"
                   : analysis.score >= 50
-                  ? "warning"
-                  : "error"
+                    ? "warning"
+                    : "error"
               }
               sx={{ mb: 2 }}
             >
@@ -523,8 +523,8 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                                 err.severity === "high"
                                   ? "error"
                                   : err.severity === "medium"
-                                  ? "warning"
-                                  : "default"
+                                    ? "warning"
+                                    : "default"
                               }
                               sx={{ ml: 1 }}
                             />
@@ -538,12 +538,12 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                             </Typography>
                             {err.exceptions && err.exceptions.length > 0 && (
                               <Box sx={{ mt: 1 }}>
-                            <Typography variant="caption" color="text.secondary">
-                              Exceptions :
+                                <Typography variant="caption" color="text.secondary">
+                                  Exceptions :
                                 </Typography>
                                 <List dense>
-                              {err.exceptions.map((exc, excIdx) => (
-                                <ListItem key={excIdx}>
+                                  {err.exceptions.map((exc, excIdx) => (
+                                    <ListItem key={excIdx}>
                                       <Typography variant="caption">
                                         • {exc}
                                       </Typography>
