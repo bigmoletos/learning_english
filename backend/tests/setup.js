@@ -1,6 +1,11 @@
 // Backend test setup
 const dotenv = require('dotenv');
 const path = require('path');
+const { TextEncoder, TextDecoder } = require('util');
+
+// Polyfills for Node.js environment
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 
 // Load test environment variables
 dotenv.config({ path: path.join(__dirname, '../../.env.test') });

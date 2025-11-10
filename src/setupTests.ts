@@ -1,5 +1,13 @@
 // Jest-dom adds custom jest matchers for asserting on DOM nodes
 import '@testing-library/jest-dom';
+import 'whatwg-fetch';
+
+// Polyfills for Node.js environment
+if (typeof global.TextEncoder === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('util');
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
+}
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {

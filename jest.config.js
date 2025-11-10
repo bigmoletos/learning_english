@@ -5,6 +5,8 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
+    '^firebase/auth$': '<rootDir>/src/__mocks__/firebase/auth.ts',
+    '^firebase/firestore$': '<rootDir>/src/__mocks__/firebase/firestore.ts',
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
