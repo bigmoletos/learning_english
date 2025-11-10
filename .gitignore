@@ -64,3 +64,15 @@ ios/App/*.xcodeproj/project.xcworkspace/
 *.sqlite
 *.pid
 *.log
+
+# Firebase sensitive files
+android/app/google-services.json
+ios/App/GoogleService-Info.plist
+
+# Backups
+backups/
+*.backup
+*.bak
+
+# Production secrets
+.env.production

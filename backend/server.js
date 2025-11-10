@@ -32,15 +32,35 @@ if (fs.existsSync(envPath)) {
   dotenv.config(); // Tentative de chargement depuis le répertoire courant
 }
 
-// Vérifier les variables critiques
-if (!process.env.JWT_SECRET) {
-  console.error('❌ ERREUR: JWT_SECRET non défini dans .env');
-  console.error('   Le serveur ne pourra pas générer de tokens JWT.');
-  console.error('   Ajoutez JWT_SECRET dans votre fichier .env');
+// ===================================
+// VALIDATION DES VARIABLES D'ENVIRONNEMENT
+// ===================================
+const requiredEnvVars = ['JWT_SECRET', 'NODE_ENV'];
+const missingVars = requiredEnvVars.filter(v => !process.env[v]);
+
+if (missingVars.length > 0) {
+  console.error('❌ ERREUR: Variables d\'environnement requises manquantes:');
+  missingVars.forEach(v => console.error(`   - ${v}`));
+  console.error('\n💡 Copiez .env.example vers .env et configurez les valeurs');
+  process.exit(1);
 }
 
+// Vérifier JWT_SECRET strength en production
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.JWT_SECRET.length < 32) {
+    console.error('❌ ERREUR: JWT_SECRET trop court en production (minimum 32 caractères)');
+    console.error('   Générez un secret fort avec: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
+    process.exit(1);
+  }
+}
+
+// Warnings pour variables optionnelles
 if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
   console.warn('⚠️  SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
+}
+
+if (!process.env.CORS_ORIGIN && process.env.NODE_ENV === 'production') {
+  console.warn('⚠️  CORS_ORIGIN non défini en production - utilisation des valeurs par défaut');
 }
 
 const app = express();
@@ -50,17 +70,72 @@ const PORT = process.env.PORT || 5000;
 // MIDDLEWARES DE SÉCURITÉ
 // ==================================
 
-// Helmet - Protection des headers HTTP
-app.use(helmet());
+// HTTPS Enforcement en production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    // Vérifier si la requête est en HTTPS
+    if (req.header('x-forwarded-proto') !== 'https' && req.header('host') !== 'localhost') {
+      return res.redirect(301, `https://${req.header('host')}${req.url}`);
+    }
+    next();
+  });
+}
 
-// CORS - Configuration
-const corsOptions = {
-  origin: process.env.NODE_ENV === 'development'
-    ? true // Accepte toutes les origines en développement
-    : (process.env.CORS_ORIGIN || 'http://localhost:3000'),
-  credentials: true,
-  optionsSuccessStatus: 200
+// Helmet - Protection des headers HTTP
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"], // React needs unsafe-inline
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://firebasestorage.googleapis.com", "https://*.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Pour compatibilité avec certains services tiers
+}));
+
+// CORS - Configuration sécurisée
+const getAllowedOrigins = () => {
+  if (process.env.NODE_ENV === 'development') {
+    // En développement, autoriser localhost sur différents ports
+    return ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000'];
+  }
+
+  // En production, utiliser CORS_ORIGIN depuis .env (supports multiple origins separated by comma)
+  if (process.env.CORS_ORIGIN) {
+    return process.env.CORS_ORIGIN.split(',').map(origin => origin.trim());
+  }
+
+  // Fallback (ne devrait pas arriver grâce à la validation)
+  return ['http://localhost:3000'];
 };
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = getAllowedOrigins();
+
+    // Allow requests with no origin (mobile apps, curl, postman)
+    if (!origin && process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
 app.use(cors(corsOptions));
 
 // Rate Limiting - Protection contre les attaques
