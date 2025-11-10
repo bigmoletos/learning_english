@@ -1,37 +1,41 @@
 {
   "permissions": {
     "allow": [
-      "Bash(chmod:*)",
-      "Bash(cat:*)",
-      "Bash(/mnt/c/programmation/learning_english/start_frontend_backend.sh:*)",
-      "Read(//tmp/**)",
-      "Bash(npm rebuild:*)",
-      "Bash(curl:*)",
-      "Bash(npm run build:*)",
-      "Bash(npx cap:*)",
-      "Bash(./gradlew assembleDebug:*)",
-      "Read(//mnt/c/Users/**)",
-      "Bash(./gradlew clean:*)",
-      "Bash(stat:*)",
-      "Bash(pkill:*)",
-      "Bash(netstat:*)",
-      "Bash(ss:*)",
-      "Bash(DISABLE_ESLINT_PLUGIN=true npm run build:*)",
-      "Bash(tee:*)",
-      "Bash(lsof:*)",
-      "Bash(xargs kill:*)",
-      "Bash(timeout 30 bash:*)",
-      "Bash(npm install:*)",
-      "WebSearch",
-      "Bash(npm start)",
-      "Bash(sed:*)",
-      "Bash(bash:*)",
-      "Read(//home/iaproject/.android/**)",
-      "Bash(keytool:*)",
-      "Bash(echo:*)",
-      "Bash(./build-apk.sh:*)"
+      "Bash(claude install:*)"
     ],
     "deny": [],
     "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /mnt/c/programmation/learning_english/.claude/scripts/statusline.sh"
+  },
+  "hooks": {
+    "tool-use": {
+      "Edit": [
+        "bash .claude/hooks/auto-lint-on-edit.sh {{file_path}}"
+      ],
+      "Write": [
+        "bash .claude/hooks/auto-lint-on-edit.sh {{file_path}}"
+      ]
+    },
+    "tool-result": {
+      "Bash": [
+        "if [[ '{{command}}' == *'npm install'* ]]; then bash .claude/hooks/post-npm-install.sh; fi"
+      ]
+    },
+    "user-prompt-submit": [
+      "if git diff --cached --quiet; then true; else bash .claude/hooks/pre-commit-check.sh; fi"
+    ]
+  },
+  "autoSave": true,
+  "theme": {
+    "colors": {
+      "primary": "#007ACC",
+      "success": "#4CAF50",
+      "warning": "#FFC107",
+      "error": "#F44336",
+      "info": "#2196F3"
+    }
   }
 }

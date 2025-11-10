@@ -151,6 +151,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
       mediaRecorder.onstop = async () => {
         // Arrêter le stream
         stream.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
 
         // Traiter l'audio
         await processRecording();
@@ -196,6 +197,11 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
     setError(null);
 
     try {
+      // Vérifier qu'il y a des chunks
+      if (audioChunksRef.current.length === 0) {
+        throw new Error("Aucune donnée audio enregistrée");
+      }
+
       // Créer le blob audio avec le bon type MIME
       const firstChunk = audioChunksRef.current[0];
       const mimeType = firstChunk?.type || "audio/webm;codecs=opus";
@@ -281,12 +287,28 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
   // Nettoyage
   React.useEffect(() => {
     return () => {
+      // Nettoyer le timer
       if (timerRef.current) {
         clearInterval(timerRef.current);
+        timerRef.current = null;
       }
+
+      // Nettoyer le stream audio
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
       }
+
+      // Nettoyer le MediaRecorder
+      if (mediaRecorderRef.current) {
+        if (mediaRecorderRef.current.state === "recording") {
+          mediaRecorderRef.current.stop();
+        }
+        mediaRecorderRef.current = null;
+      }
+
+      // Libérer la mémoire des chunks audio
+      audioChunksRef.current = [];
     };
   }, []);
 

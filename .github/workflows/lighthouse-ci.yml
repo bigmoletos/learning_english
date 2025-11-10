@@ -1,0 +1,74 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: 🔍 Lighthouse Performance Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build
+        run: npm run build
+        env:
+          CI: false
+          DISABLE_ESLINT_PLUGIN: true
+
+      - name: 📊 Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:3000
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: 📈 Format Lighthouse Score
+        id: lighthouse-score
+        run: |
+          echo "performance=${{ steps.lhci.outputs.manifest[0].summary.performance }}" >> $GITHUB_OUTPUT
+          echo "accessibility=${{ steps.lhci.outputs.manifest[0].summary.accessibility }}" >> $GITHUB_OUTPUT
+          echo "best-practices=${{ steps.lhci.outputs.manifest[0].summary['best-practices'] }}" >> $GITHUB_OUTPUT
+          echo "seo=${{ steps.lhci.outputs.manifest[0].summary.seo }}" >> $GITHUB_OUTPUT
+
+      - name: 📝 Comment PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = `## 🔍 Lighthouse Performance Report
+
+            | Category | Score |
+            |----------|-------|
+            | 🚀 Performance | ${{ steps.lighthouse-score.outputs.performance }} |
+            | ♿ Accessibility | ${{ steps.lighthouse-score.outputs.accessibility }} |
+            | ✅ Best Practices | ${{ steps.lighthouse-score.outputs.best-practices }} |
+            | 🔍 SEO | ${{ steps.lighthouse-score.outputs.seo }} |
+
+            [📊 Full Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/${{ steps.lhci.outputs.links[0] }})
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

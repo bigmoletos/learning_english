@@ -14,8 +14,38 @@ const logger = require("../utils/logger");
 class OllamaService {
   constructor() {
     // URL d'Ollama (local par défaut)
-    this.ollamaUrl =
-      process.env.OLLAMA_URL || "http://localhost:11434";
+    const rawUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+
+    // Validation de l'URL pour prévenir SSRF
+    try {
+      const parsedUrl = new URL(rawUrl);
+      const allowedHosts = ['localhost', '127.0.0.1', '::1'];
+      const allowedProtocols = ['http:', 'https:'];
+
+      // Vérifier le protocole
+      if (!allowedProtocols.includes(parsedUrl.protocol)) {
+        throw new Error(`Invalid protocol: ${parsedUrl.protocol}. Only http/https allowed.`);
+      }
+
+      // Vérifier l'hôte
+      if (!allowedHosts.includes(parsedUrl.hostname)) {
+        throw new Error(`Invalid host: ${parsedUrl.hostname}. Only localhost/127.0.0.1 allowed.`);
+      }
+
+      // Vérifier le port (doit être entre 1024 et 65535)
+      const port = parsedUrl.port ? parseInt(parsedUrl.port) : (parsedUrl.protocol === 'https:' ? 443 : 80);
+      if (port < 1024 || port > 65535) {
+        throw new Error(`Invalid port: ${port}. Must be between 1024 and 65535.`);
+      }
+
+      this.ollamaUrl = parsedUrl.toString().replace(/\/$/, ''); // Remove trailing slash
+      logger.info(`[Ollama] Service configured at: ${this.ollamaUrl}`);
+    } catch (error) {
+      logger.error(`[Ollama] Invalid URL configuration: ${error.message}`);
+      this.ollamaUrl = "http://localhost:11434"; // Fallback sûr
+      logger.warn(`[Ollama] Falling back to default: ${this.ollamaUrl}`);
+    }
+
     this.enabled = process.env.ENABLE_OLLAMA === "true";
     this.model = process.env.OLLAMA_MODEL || "llama2"; // ou "mistral", "codellama", etc.
   }

@@ -8,12 +8,33 @@ const express = require("express");
 const router = express.Router();
 const logger = require("../utils/logger");
 const ollamaService = require("../services/ollamaService");
+const rateLimit = require("express-rate-limit");
+
+// Rate limiting pour prévenir les abus
+const analyzeRateLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // max 10 requêtes par minute
+  message: { success: false, message: "Trop de requêtes. Réessayez dans une minute." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const exercisesRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 20, // max 20 requêtes par 5 minutes
+  message: { success: false, message: "Trop de requêtes d'exercices. Réessayez plus tard." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Longueur maximale pour prévenir ReDoS
+const MAX_TEXT_LENGTH = 1000;
 
 /**
  * POST /api/speaking-agent/analyze
  * Analyse une phrase prononcée et retourne un rapport détaillé
  */
-router.post("/analyze", async (req, res) => {
+router.post("/analyze", analyzeRateLimiter, async (req, res) => {
   try {
     const {
       transcript,
@@ -22,6 +43,14 @@ router.post("/analyze", async (req, res) => {
       expectedSentence,
       userId,
     } = req.body;
+
+    // Protection ReDoS : limiter la longueur du texte
+    if (transcript && transcript.length > MAX_TEXT_LENGTH) {
+      return res.status(400).json({
+        success: false,
+        message: `Le texte est trop long (max ${MAX_TEXT_LENGTH} caractères)`,
+      });
+    }
 
     if (!transcript || transcript.trim().length === 0) {
       return res.json({
@@ -158,7 +187,7 @@ router.post("/analyze", async (req, res) => {
  * POST /api/speaking-agent/exercises
  * Génère des exercices de speaking personnalisés selon le niveau
  */
-router.post("/exercises", async (req, res) => {
+router.post("/exercises", exercisesRateLimiter, async (req, res) => {
   try {
     const { level = "B1", focusAreas = [], count = 5 } = req.body;
 
@@ -309,6 +338,12 @@ const GRAMMAR_PATTERNS = [
 
 function detectGrammarErrors(text) {
   const errors = [];
+
+  // Protection ReDoS : limiter la longueur
+  if (text.length > MAX_TEXT_LENGTH) {
+    logger.warn(`[SpeakingAgent] Text too long for grammar check: ${text.length} chars`);
+    text = text.substring(0, MAX_TEXT_LENGTH);
+  }
 
   GRAMMAR_PATTERNS.forEach((pattern) => {
     const regex = new RegExp(pattern.pattern);

@@ -1,0 +1,55 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  test-e2e:
+    name: 🎭 E2E Tests
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: 🎭 Run Playwright tests
+        run: npx playwright test --project=${{ matrix.browser }}
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: 📦 Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: 📊 Publish HTML Report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./playwright-report
+          destination_dir: e2e-reports/${{ github.run_id }}/${{ matrix.browser }}

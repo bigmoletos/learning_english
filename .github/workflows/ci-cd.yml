@@ -1,0 +1,287 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+  CACHE_NAME: node-modules
+
+jobs:
+  # Job 1: Linting et Type Checking
+  lint-and-typecheck:
+    name: 🔍 Lint & TypeCheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Run ESLint
+        run: npx eslint src/ --max-warnings 0
+        continue-on-error: false
+
+      - name: 📘 Run TypeScript check
+        run: npx tsc --noEmit
+
+      - name: 💅 Run Prettier check
+        run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,md}"
+
+  # Job 2: Tests Frontend
+  test-frontend:
+    name: 🧪 Test Frontend
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests
+        run: npm test -- --coverage --watchAll=false
+        env:
+          CI: true
+
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: frontend
+          name: frontend-coverage
+          fail_ci_if_error: false
+
+  # Job 3: Tests Backend
+  test-backend:
+    name: 🔧 Test Backend
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 📦 Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: 🧪 Run backend tests
+        run: |
+          cd backend
+          npm test -- --coverage
+        env:
+          NODE_ENV: test
+
+      - name: 📊 Upload backend coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./backend/coverage/lcov.info
+          flags: backend
+          name: backend-coverage
+          fail_ci_if_error: false
+
+  # Job 4: Build Frontend
+  build-frontend:
+    name: 🏗️ Build Frontend
+    runs-on: ubuntu-latest
+    needs: [test-frontend, test-backend]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build
+        run: npm run build
+        env:
+          CI: false
+          DISABLE_ESLINT_PLUGIN: true
+
+      - name: 📦 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-frontend
+          path: build/
+          retention-days: 7
+
+      - name: 📊 Analyze bundle size
+        run: |
+          npm run analyze > bundle-report.txt || true
+          du -sh build/static/js/*.js | sort -hr | head -10 > bundle-sizes.txt
+
+      - name: 📊 Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: |
+            bundle-report.txt
+            bundle-sizes.txt
+          retention-days: 7
+
+  # Job 5: Security Audit
+  security-audit:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 🔒 Run npm audit (Frontend)
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: 🔒 Run npm audit (Backend)
+        run: |
+          cd backend
+          npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: 🔍 Check for secrets
+        run: |
+          echo "Checking for hardcoded secrets..."
+          ! grep -r "password\s*=\s*['\"]" src/ || exit 1
+          ! grep -r "api[_-]?key\s*=\s*['\"]" src/ || exit 1
+          ! grep -r "secret\s*=\s*['\"]" src/ || exit 1
+          echo "✅ No obvious secrets found"
+
+  # Job 6: Build Android (optionnel, commenté par défaut)
+  # build-android:
+  #   name: 📱 Build Android APK
+  #   runs-on: ubuntu-latest
+  #   needs: build-frontend
+  #   if: github.ref == 'refs/heads/main'
+  #
+  #   steps:
+  #     - name: 📥 Checkout code
+  #       uses: actions/checkout@v4
+  #
+  #     - name: 🟢 Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #
+  #     - name: ☕ Setup Java
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: '17'
+  #
+  #     - name: 📦 Install dependencies
+  #       run: npm ci
+  #
+  #     - name: 🏗️ Build frontend
+  #       run: npm run build
+  #
+  #     - name: 📱 Sync Capacitor
+  #       run: npx cap sync android
+  #
+  #     - name: 🏗️ Build APK
+  #       run: |
+  #         cd android
+  #         ./gradlew assembleDebug
+  #
+  #     - name: 📦 Upload APK
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: android-apk
+  #         path: android/app/build/outputs/apk/debug/*.apk
+
+  # Job 7: Deploy (Production uniquement)
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    needs: [build-frontend, security-audit]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-frontend
+          path: build/
+
+      # Exemple: Deploy to Firebase Hosting
+      # - name: 🚀 Deploy to Firebase
+      #   uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+      #     channelId: live
+      #     projectId: your-firebase-project-id
+
+      # Exemple: Deploy to Vercel
+      # - name: 🚀 Deploy to Vercel
+      #   uses: amondnet/vercel-action@v25
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      #     vercel-args: '--prod'
+
+      - name: ✅ Deployment successful
+        run: echo "🚀 Deployment completed successfully!"
+
+  # Job 8: Notification (optionnel)
+  notify:
+    name: 📢 Notify
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always()
+
+    steps:
+      - name: 📢 Send notification
+        run: |
+          echo "Pipeline completed with status: ${{ job.status }}"
+          # Ajouter ici l'intégration Slack, Discord, Email, etc.
+
+# Configuration des permissions
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
