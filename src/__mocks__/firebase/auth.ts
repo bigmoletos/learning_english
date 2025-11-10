@@ -10,19 +10,67 @@ export const mockUser = {
   }
 };
 
-export const createUserWithEmailAndPassword = jest.fn();
-export const signInWithEmailAndPassword = jest.fn();
-export const signOut = jest.fn();
-export const sendPasswordResetEmail = jest.fn();
-export const sendEmailVerification = jest.fn();
-export const updateProfile = jest.fn();
-export const GoogleAuthProvider = jest.fn();
-export const signInWithPopup = jest.fn();
+// Mock auth instance
+const mockAuth = {
+  currentUser: null,
+  app: { name: '[DEFAULT]' },
+  name: 'auth'
+};
+
+export const getAuth = jest.fn(() => mockAuth);
+
+export const createUserWithEmailAndPassword = jest.fn((auth, email, password) =>
+  Promise.resolve({
+    user: { ...mockUser, email },
+    providerId: 'password'
+  })
+);
+
+export const signInWithEmailAndPassword = jest.fn((auth, email, password) =>
+  Promise.resolve({
+    user: { ...mockUser, email },
+    providerId: 'password'
+  })
+);
+
+export const signOut = jest.fn(() => Promise.resolve());
+
+export const sendPasswordResetEmail = jest.fn(() => Promise.resolve());
+
+export const sendEmailVerification = jest.fn(() => Promise.resolve());
+
+export const updateProfile = jest.fn(() => Promise.resolve());
+
+export class GoogleAuthProvider {
+  providerId = 'google.com';
+  static PROVIDER_ID = 'google.com';
+  static credential = jest.fn();
+  addScope = jest.fn();
+  setCustomParameters = jest.fn();
+}
+
+export const signInWithPopup = jest.fn((auth, provider) =>
+  Promise.resolve({
+    user: mockUser,
+    providerId: 'google.com',
+    operationType: 'signIn'
+  })
+);
+
 export const onAuthStateChanged = jest.fn((auth, callback) => {
-  callback(null);
-  return jest.fn(); // Unsubscribe function
+  // Call callback immediately with null (no user)
+  setTimeout(() => callback(null), 0);
+  // Return unsubscribe function
+  return jest.fn();
 });
 
-export const getAuth = jest.fn(() => ({
-  currentUser: null
-}));
+export const setPersistence = jest.fn(() => Promise.resolve());
+
+export const browserLocalPersistence = 'LOCAL';
+export const browserSessionPersistence = 'SESSION';
+
+export const getIdToken = jest.fn(() => Promise.resolve('mock-id-token'));
+
+export const reload = jest.fn(() => Promise.resolve());
+
+export const deleteUser = jest.fn(() => Promise.resolve());
