@@ -43,7 +43,7 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
     h4: {
       fontWeight: 600,
       fontSize: "clamp(1.5rem, 5vw, 2.125rem)" // Responsive
@@ -72,19 +72,19 @@ const theme = createTheme({
           minHeight: 44,
           minWidth: 44,
           borderRadius: 8,
-          padding: '10px 20px',
+          padding: "10px 20px",
           // Amélioration du feedback tactile
-          '@media (hover: none)': {
-            '&:active': {
-              transform: 'scale(0.98)',
-              transition: 'transform 0.1s'
+          "@media (hover: none)": {
+            "&:active": {
+              transform: "scale(0.98)",
+              transition: "transform 0.1s"
             }
           }
         },
         sizeLarge: {
           minHeight: 56,
-          padding: '14px 28px',
-          fontSize: '1.1rem'
+          padding: "14px 28px",
+          fontSize: "1.1rem"
         }
       }
     },
@@ -105,9 +105,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           // Zones de saisie plus grandes sur mobile
-          '& .MuiInputBase-input': {
-            fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-            padding: '14px'
+          "& .MuiInputBase-input": {
+            fontSize: "clamp(0.875rem, 2vw, 1rem)",
+            padding: "14px"
           }
         }
       }
@@ -117,8 +117,8 @@ const theme = createTheme({
         root: {
           borderRadius: 12,
           // Pas d'ombre excessive sur mobile
-          '@media (max-width: 600px)': {
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          "@media (max-width: 600px)": {
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
           }
         }
       }
@@ -127,7 +127,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           minHeight: 32,
-          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+          fontSize: "clamp(0.75rem, 2vw, 0.875rem)"
         }
       }
     },
@@ -135,8 +135,8 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           // Meilleure gestion sur mobile
-          '@media (max-width: 600px)': {
-            width: '75vw',
+          "@media (max-width: 600px)": {
+            width: "75vw",
             maxWidth: 280
           }
         }
@@ -280,304 +280,304 @@ const AppContent: React.FC = () => {
     }
 
     switch (currentView) {
-      case "dashboard":
-        return (
-          <Dashboard
-            onStartAssessment={handleStartAssessment}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "learning":
-        return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
-      case "progress":
-        return <ProgressTracker />;
-      case "exercises":
-        return <ExerciseList />;
-      case "tests":
-        return (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+    case "dashboard":
+      return (
+        <Dashboard
+          onStartAssessment={handleStartAssessment}
+          onNavigate={handleNavigate}
+        />
+      );
+    case "learning":
+      return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
+    case "progress":
+      return <ProgressTracker />;
+    case "exercises":
+      return <ExerciseList />;
+    case "tests":
+      return (
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
               Tests d'Évaluation
-            </Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <Card elevation={3}>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
                       EF SET - 4 Skills
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
                       Test adaptatif complet inspiré d'EF SET : Reading, Listening, Writing, Speaking (90 min).
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      color="primary"
-                      onClick={() => setSelectedTestType("efset")}
-                    >
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    color="primary"
+                    onClick={() => setSelectedTestType("efset")}
+                  >
                       Passer le test EF SET
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Card elevation={3}>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Test TOEIC
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      Testez votre niveau d'anglais avec un test TOEIC complet (Grammaire + Compréhension audio).
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      onClick={() => setSelectedTestType("toeic")}
-                    >
-                      Passer le test TOEIC
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Card elevation={3}>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Test TOEFL
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      Testez votre niveau d'anglais avec un test TOEFL avancé (Reading + Listening + Writing).
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      onClick={() => setSelectedTestType("toefl")}
-                    >
-                      Passer le test TOEFL
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
+                  </Button>
+                </CardContent>
+              </Card>
             </Grid>
-          </Box>
-        );
-      case "efset":
-        return (
-          <Box sx={{ p: 0 }}>
-            <Button
-              variant="text"
-              onClick={() => setCurrentView("tests")}
-              sx={{ mb: 2 }}
-            >
+            <Grid item xs={12} md={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                      Test TOEIC
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                      Testez votre niveau d'anglais avec un test TOEIC complet (Grammaire + Compréhension audio).
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => setSelectedTestType("toeic")}
+                  >
+                      Passer le test TOEIC
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                      Test TOEFL
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                      Testez votre niveau d'anglais avec un test TOEFL avancé (Reading + Listening + Writing).
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => setSelectedTestType("toefl")}
+                  >
+                      Passer le test TOEFL
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
+      );
+    case "efset":
+      return (
+        <Box sx={{ p: 0 }}>
+          <Button
+            variant="text"
+            onClick={() => setCurrentView("tests")}
+            sx={{ mb: 2 }}
+          >
               ← Retour aux tests
-            </Button>
-            <EFSETTest
-              level={selectedTestLevel || undefined}
-              onComplete={(scores) => {
-                if (user) {
-                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
-                  const updatedUser = {
-                    ...user,
-                    currentLevel: scores.level,
-                    lastActivity: new Date()
-                  };
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                  // Sauvegarder les résultats dans localStorage
-                  localStorage.setItem("efsetResults", JSON.stringify(scores));
-                  localStorage.setItem("lastTestType", "efset");
-                  // Rafraîchir le contexte utilisateur
-                  window.location.reload(); // Simple refresh pour mettre à jour
-                }
-                // Retourner aux tests après 5 secondes
-                setTimeout(() => setCurrentView("tests"), 5000);
-              }}
-            />
-          </Box>
-        );
-      case "toeic":
-        return (
-          <Box sx={{ p: 0 }}>
-            <Button
-              variant="text"
-              onClick={() => setCurrentView("tests")}
-              sx={{ mb: 2 }}
-            >
-              ← Retour aux tests
-            </Button>
-            <TOEICTest
-              level={selectedTestLevel || undefined}
-              onComplete={(scores) => {
-                if (user) {
-                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
-                  const updatedUser = {
-                    ...user,
-                    currentLevel: scores.level,
-                    lastActivity: new Date()
-                  };
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                  // Sauvegarder les résultats dans localStorage
-                  localStorage.setItem("toeicResults", JSON.stringify(scores));
-                  localStorage.setItem("lastTestType", "toeic");
-                  // Rafraîchir le contexte utilisateur
-                  window.location.reload(); // Simple refresh pour mettre à jour
-                }
-                // Retourner aux tests après 5 secondes
-                setSelectedTestLevel(null);
-                setTimeout(() => setCurrentView("tests"), 5000);
-              }}
-            />
-          </Box>
-        );
-      case "toefl":
-        return (
-          <Box sx={{ p: 0 }}>
-            <Button
-              variant="text"
-              onClick={() => setCurrentView("tests")}
-              sx={{ mb: 2 }}
-            >
-              ← Retour aux tests
-            </Button>
-            <TOEFLTest
-              level={selectedTestLevel || undefined}
-              onComplete={(scores) => {
-                if (user) {
-                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
-                  const updatedUser = {
-                    ...user,
-                    currentLevel: scores.level,
-                    lastActivity: new Date()
-                  };
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                  // Sauvegarder les résultats dans localStorage
-                  localStorage.setItem("toeflResults", JSON.stringify(scores));
-                  localStorage.setItem("lastTestType", "toefl");
-                  // Rafraîchir le contexte utilisateur
-                  window.location.reload(); // Simple refresh pour mettre à jour
-                }
-                // Retourner aux tests après 5 secondes
-                setSelectedTestLevel(null);
-                setTimeout(() => setCurrentView("tests"), 5000);
-              }}
-            />
-          </Box>
-        );
-      default:
-        return (
-          <Dashboard
-            onStartAssessment={handleStartAssessment}
-            onNavigate={handleNavigate}
+          </Button>
+          <EFSETTest
+            level={selectedTestLevel || undefined}
+            onComplete={(scores) => {
+              if (user) {
+                // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
+                const updatedUser = {
+                  ...user,
+                  currentLevel: scores.level,
+                  lastActivity: new Date()
+                };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                // Sauvegarder les résultats dans localStorage
+                localStorage.setItem("efsetResults", JSON.stringify(scores));
+                localStorage.setItem("lastTestType", "efset");
+                // Rafraîchir le contexte utilisateur
+                window.location.reload(); // Simple refresh pour mettre à jour
+              }
+              // Retourner aux tests après 5 secondes
+              setTimeout(() => setCurrentView("tests"), 5000);
+            }}
           />
-        );
+        </Box>
+      );
+    case "toeic":
+      return (
+        <Box sx={{ p: 0 }}>
+          <Button
+            variant="text"
+            onClick={() => setCurrentView("tests")}
+            sx={{ mb: 2 }}
+          >
+              ← Retour aux tests
+          </Button>
+          <TOEICTest
+            level={selectedTestLevel || undefined}
+            onComplete={(scores) => {
+              if (user) {
+                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
+                const updatedUser = {
+                  ...user,
+                  currentLevel: scores.level,
+                  lastActivity: new Date()
+                };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                // Sauvegarder les résultats dans localStorage
+                localStorage.setItem("toeicResults", JSON.stringify(scores));
+                localStorage.setItem("lastTestType", "toeic");
+                // Rafraîchir le contexte utilisateur
+                window.location.reload(); // Simple refresh pour mettre à jour
+              }
+              // Retourner aux tests après 5 secondes
+              setSelectedTestLevel(null);
+              setTimeout(() => setCurrentView("tests"), 5000);
+            }}
+          />
+        </Box>
+      );
+    case "toefl":
+      return (
+        <Box sx={{ p: 0 }}>
+          <Button
+            variant="text"
+            onClick={() => setCurrentView("tests")}
+            sx={{ mb: 2 }}
+          >
+              ← Retour aux tests
+          </Button>
+          <TOEFLTest
+            level={selectedTestLevel || undefined}
+            onComplete={(scores) => {
+              if (user) {
+                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
+                const updatedUser = {
+                  ...user,
+                  currentLevel: scores.level,
+                  lastActivity: new Date()
+                };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                // Sauvegarder les résultats dans localStorage
+                localStorage.setItem("toeflResults", JSON.stringify(scores));
+                localStorage.setItem("lastTestType", "toefl");
+                // Rafraîchir le contexte utilisateur
+                window.location.reload(); // Simple refresh pour mettre à jour
+              }
+              // Retourner aux tests après 5 secondes
+              setSelectedTestLevel(null);
+              setTimeout(() => setCurrentView("tests"), 5000);
+            }}
+          />
+        </Box>
+      );
+    default:
+      return (
+        <Dashboard
+          onStartAssessment={handleStartAssessment}
+          onNavigate={handleNavigate}
+        />
+      );
     }
   };
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={{ mr: 2, display: { sm: "none" } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <VolumeUp sx={{ mr: 2 }} />
-              <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <VolumeUp sx={{ mr: 2 }} />
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                 AI English Trainer for IT Professionals
-              </Typography>
-              {user && (
-                <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
-                  {user.name}
-                </Typography>
-              )}
-              <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
+          </Typography>
+          {user && (
+            <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
+              {user.name}
+            </Typography>
+          )}
+          <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
                 B2 → C1
-              </Typography>
-              <IconButton
-                color="inherit"
-                onClick={logout}
-                title="Déconnexion"
-              >
-                <ExitToApp />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: "none", sm: "block" },
-              width: 240,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: 240,
-                boxSizing: "border-box",
-                mt: 8
-              }
-            }}
+          </Typography>
+          <IconButton
+            color="inherit"
+            onClick={logout}
+            title="Déconnexion"
           >
-            <List>
-              {menuItems.map((item) => (
-                <ListItem
-                  button
-                  key={item.id}
-                  selected={currentView === item.id}
-                  onClick={() => setCurrentView(item.id)}
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.light",
-                      color: "primary.main",
-                      "&:hover": {
-                        bgcolor: "primary.light"
-                      }
-                    }
-                  }}
-                >
-                  <ListItemIcon sx={{ color: currentView === item.id ? "primary.main" : "inherit" }}>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
+            <ExitToApp />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-          <Drawer
-            variant="temporary"
-            open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-            sx={{
-              display: { xs: "block", sm: "none" },
-              "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", mt: 8 }
-            }}
-          >
-            <List>
-              {menuItems.map((item) => (
-                <ListItem
-                  button
-                  key={item.id}
-                  selected={currentView === item.id}
-                  onClick={() => {
-                    setCurrentView(item.id);
-                    setDrawerOpen(false);
-                  }}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          width: 240,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: 240,
+            boxSizing: "border-box",
+            mt: 8
+          }
+        }}
+      >
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              button
+              key={item.id}
+              selected={currentView === item.id}
+              onClick={() => setCurrentView(item.id)}
+              sx={{
+                "&.Mui-selected": {
+                  bgcolor: "primary.light",
+                  color: "primary.main",
+                  "&:hover": {
+                    bgcolor: "primary.light"
+                  }
+                }
+              }}
+            >
+              <ListItemIcon sx={{ color: currentView === item.id ? "primary.main" : "inherit" }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
 
-          <Box component="main" sx={{ flexGrow: 1, mt: 8, bgcolor: "grey.50" }}>
-            <Container maxWidth="xl">
-              {renderView()}
-            </Container>
-          </Box>
-        </Box>
+      <Drawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", mt: 8 }
+        }}
+      >
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              button
+              key={item.id}
+              selected={currentView === item.id}
+              onClick={() => {
+                setCurrentView(item.id);
+                setDrawerOpen(false);
+              }}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+
+      <Box component="main" sx={{ flexGrow: 1, mt: 8, bgcolor: "grey.50" }}>
+        <Container maxWidth="xl">
+          {renderView()}
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

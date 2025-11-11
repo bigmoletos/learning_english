@@ -98,19 +98,19 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         alignItems: "center",
         gap: { xs: 1, sm: 2 },
         mb: 2,
-        flexDirection: { xs: 'column', sm: 'row' }
+        flexDirection: { xs: "column", sm: "row" }
       }}>
-        <VolumeUp sx={{ fontSize: { xs: 24, sm: 30 }, color: "white", display: { xs: 'none', sm: 'block' } }} />
+        <VolumeUp sx={{ fontSize: { xs: 24, sm: 30 }, color: "white", display: { xs: "none", sm: "block" } }} />
         <Box sx={{
           flexGrow: 1,
-          width: '100%',
+          width: "100%",
           p: { xs: 1.5, sm: 2 },
           bgcolor: "white",
           borderRadius: 1
         }}>
           <Typography variant="body1" sx={{
             fontStyle: "italic",
-            fontSize: { xs: '0.9rem', sm: '1rem' }
+            fontSize: { xs: "0.9rem", sm: "1rem" }
           }}>
             {text}
           </Typography>
@@ -126,10 +126,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
               minWidth: 44,
               minHeight: 44,
               // Feedback tactile pour mobile
-              '@media (hover: none)': {
-                '&:active': {
-                  transform: 'scale(0.95)',
-                  transition: 'transform 0.1s'
+              "@media (hover: none)": {
+                "&:active": {
+                  transform: "scale(0.95)",
+                  transition: "transform 0.1s"
                 }
               }
             }}
@@ -150,13 +150,13 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             alignItems: "center",
             gap: { xs: 1, sm: 2 },
             mb: 2,
-            flexDirection: { xs: 'column', sm: 'row' }
+            flexDirection: { xs: "column", sm: "row" }
           }}>
             <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               gap: 1,
-              width: { xs: '100%', sm: 'auto' }
+              width: { xs: "100%", sm: "auto" }
             }}>
               <Speed sx={{ color: "text.secondary" }} />
               <Typography variant="body2" sx={{ minWidth: { xs: 80, sm: 100 } }}>
@@ -171,16 +171,16 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
               step={0.1}
               sx={{
                 flexGrow: 1,
-                width: { xs: '100%', sm: 'auto' },
+                width: { xs: "100%", sm: "auto" },
                 // Curseur plus grand sur mobile
-                '& .MuiSlider-thumb': {
+                "& .MuiSlider-thumb": {
                   width: { xs: 24, sm: 20 },
                   height: { xs: 24, sm: 20 }
                 },
-                '& .MuiSlider-track': {
+                "& .MuiSlider-track": {
                   height: { xs: 6, sm: 4 }
                 },
-                '& .MuiSlider-rail': {
+                "& .MuiSlider-rail": {
                   height: { xs: 6, sm: 4 }
                 }
               }}
@@ -192,13 +192,13 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             display: "flex",
             alignItems: "center",
             gap: { xs: 1, sm: 2 },
-            flexDirection: { xs: 'column', sm: 'row' }
+            flexDirection: { xs: "column", sm: "row" }
           }}>
             <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               gap: 1,
-              width: { xs: '100%', sm: 'auto' }
+              width: { xs: "100%", sm: "auto" }
             }}>
               <VolumeUp sx={{ color: "text.secondary" }} />
               <Typography variant="body2" sx={{ minWidth: { xs: 80, sm: 100 } }}>
@@ -213,16 +213,16 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
               step={0.1}
               sx={{
                 flexGrow: 1,
-                width: { xs: '100%', sm: 'auto' },
+                width: { xs: "100%", sm: "auto" },
                 // Curseur plus grand sur mobile
-                '& .MuiSlider-thumb': {
+                "& .MuiSlider-thumb": {
                   width: { xs: 24, sm: 20 },
                   height: { xs: 24, sm: 20 }
                 },
-                '& .MuiSlider-track': {
+                "& .MuiSlider-track": {
                   height: { xs: 6, sm: 4 }
                 },
-                '& .MuiSlider-rail': {
+                "& .MuiSlider-rail": {
                   height: { xs: 6, sm: 4 }
                 }
               }}
@@ -236,7 +236,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         display: "block",
         mt: 1,
         color: "white",
-        fontSize: { xs: '0.7rem', sm: '0.75rem' }
+        fontSize: { xs: "0.7rem", sm: "0.75rem" }
       }}>
         💡 Cliquez sur le bouton lecture pour entendre le texte en anglais
         {showControls && " • Ajustez la vitesse et le volume selon vos besoins"}
