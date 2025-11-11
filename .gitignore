@@ -35,6 +35,9 @@ backend/*.log
 *.swo
 *~
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # OS
 Thumbs.db
 
