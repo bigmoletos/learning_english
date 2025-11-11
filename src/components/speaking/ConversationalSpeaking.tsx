@@ -5,7 +5,7 @@
  * @date 11-11-2025
  */
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -24,7 +24,7 @@ import {
   Divider,
   CircularProgress,
   Paper,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Mic,
   Stop,
@@ -33,11 +33,11 @@ import {
   CheckCircle,
   Error as ErrorIcon,
   TrendingUp,
-} from '@mui/icons-material';
-import { useSpeechRecognition } from '../../hooks/useSpeechRecognition';
-import { textToSpeechService } from '../../services/textToSpeechService';
-import { speakingAgent, SpeakingAnalysis } from '../../agents/speakingAgent';
-import { LanguageLevel } from '../../types';
+} from "@mui/icons-material";
+import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
+import { textToSpeechService } from "../../services/textToSpeechService";
+import { speakingAgent, SpeakingAnalysis } from "../../agents/speakingAgent";
+import { LanguageLevel } from "../../types";
 
 interface ConversationalSpeakingProps {
   level?: LanguageLevel;
@@ -60,7 +60,7 @@ interface AnalysisHistory {
 }
 
 export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
-  level = 'B1',
+  level = "B1",
   onComplete,
 }) => {
   const {
@@ -87,10 +87,11 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
     totalErrors: 0,
     averageScore: 0,
     duration: 0,
+    improvements: [],
   });
 
   const startTimeRef = useRef<number>(0);
-  const lastTranscriptRef = useRef<string>('');
+  const lastTranscriptRef = useRef<string>("");
   const processingRef = useRef<boolean>(false);
   const audioPlayerRef = useRef<HTMLAudioElement | null>(null);
 
@@ -99,7 +100,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
    */
   const startConversation = useCallback(async () => {
     if (!browserSupportsSpeechRecognition) {
-      setError('Votre navigateur ne supporte pas la reconnaissance vocale.');
+      setError("Votre navigateur ne supporte pas la reconnaissance vocale.");
       return;
     }
 
@@ -114,6 +115,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
         totalErrors: 0,
         averageScore: 0,
         duration: 0,
+        improvements: [],
       });
 
       await startListening();
@@ -121,11 +123,11 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       // Message de bienvenue
       if (speakCorrections) {
-        await speakText('Hello! Start speaking in English, and I will help you improve your pronunciation and grammar in real time.');
+        await speakText("Hello! Start speaking in English, and I will help you improve your pronunciation and grammar in real time.");
       }
     } catch (err: any) {
-      console.error('[ConversationalSpeaking] Erreur démarrage:', err);
-      setError(err.message || 'Erreur lors du démarrage de la conversation');
+      console.error("[ConversationalSpeaking] Erreur démarrage:", err);
+      setError(err.message || "Erreur lors du démarrage de la conversation");
     }
   }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections]);
 
@@ -157,7 +159,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
   /**
    * Prononce un texte en anglais
    */
-  const speakText = useCallback(async (text: string, rate: number = 1.0) => {
+  const speakText = useCallback(async (text: string, rate = 1.0) => {
     try {
       // Arrêter l'audio en cours
       if (audioPlayerRef.current) {
@@ -166,7 +168,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       const audioUrl = await textToSpeechService.synthesize({
         text,
-        lang: 'en-US',
+        lang: "en-US",
         rate,
       });
 
@@ -180,7 +182,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
         audioPlayerRef.current = null;
       };
     } catch (err) {
-      console.error('[ConversationalSpeaking] Erreur TTS:', err);
+      console.error("[ConversationalSpeaking] Erreur TTS:", err);
       // Ne pas bloquer sur une erreur TTS
     }
   }, []);
@@ -233,7 +235,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       // Feedback vocal si activé
       if (speakCorrections && autoCorrect && analysis.errors.length > 0) {
-        let correctionText = '';
+        let correctionText = "";
 
         if (analysis.errors.length === 1) {
           const err = analysis.errors[0];
@@ -251,15 +253,15 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
           prev.map(h => h.timestamp === historyEntry.timestamp ? historyEntry : h)
         );
       } else if (speakCorrections && analysis.score >= 90) {
-        await speakText('Excellent! Keep going.', 1.0);
+        await speakText("Excellent! Keep going.", 1.0);
       }
 
       // Réinitialiser la transcription pour la prochaine phrase
       resetTranscript();
-      lastTranscriptRef.current = '';
+      lastTranscriptRef.current = "";
     } catch (err: any) {
-      console.error('[ConversationalSpeaking] Erreur analyse:', err);
-      setError(err.message || 'Erreur lors de l\'analyse');
+      console.error("[ConversationalSpeaking] Erreur analyse:", err);
+      setError(err.message || "Erreur lors de l'analyse");
     } finally {
       setIsAnalyzing(false);
       processingRef.current = false;
@@ -336,7 +338,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             grammaire et orthographe. Le système vous corrige en temps réel et vous aide à vous améliorer.
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: "flex", gap: 2, mb: 2, flexWrap: "wrap" }}>
             <Chip
               icon={<TrendingUp />}
               label={`Niveau ${level}`}
@@ -352,16 +354,16 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
               size="small"
               color={
                 conversationStats.averageScore >= 75
-                  ? 'success'
+                  ? "success"
                   : conversationStats.averageScore >= 50
-                  ? 'warning'
-                  : 'error'
+                    ? "warning"
+                    : "error"
               }
             />
           </Box>
 
           {/* Paramètres */}
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: "flex", gap: 2, mb: 2, flexWrap: "wrap" }}>
             <FormControlLabel
               control={
                 <Switch
@@ -385,7 +387,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
           </Box>
 
           {/* Contrôles */}
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {!isConversing ? (
               <Button
                 variant="contained"
@@ -410,7 +412,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             )}
 
             {listening && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircularProgress size={20} />
                 <Typography variant="body2" color="primary">
                   Écoute en cours...
@@ -419,7 +421,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             )}
 
             {isAnalyzing && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircularProgress size={20} />
                 <Typography variant="body2">
                   Analyse...
@@ -439,11 +441,11 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       {/* Transcription en cours */}
       {transcript && isConversing && (
-        <Paper elevation={2} sx={{ p: 2, mb: 3, bgcolor: 'grey.50' }}>
+        <Paper elevation={2} sx={{ p: 2, mb: 3, bgcolor: "grey.50" }}>
           <Typography variant="subtitle2" gutterBottom>
             Vous dites :
           </Typography>
-          <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+          <Typography variant="body1" sx={{ fontStyle: "italic" }}>
             {transcript}
           </Typography>
         </Paper>
@@ -451,7 +453,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       {/* Analyse actuelle */}
       {currentAnalysis && (
-        <Card sx={{ mb: 3, bgcolor: 'background.paper' }}>
+        <Card sx={{ mb: 3, bgcolor: "background.paper" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Dernière analyse
@@ -459,7 +461,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
             {/* Scores */}
             <Box sx={{ mb: 2 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography variant="caption">Score global</Typography>
                 <Typography variant="caption">{currentAnalysis.score}%</Typography>
               </Box>
@@ -469,14 +471,14 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                 sx={{ height: 8, borderRadius: 1, mb: 2 }}
                 color={
                   currentAnalysis.score >= 75
-                    ? 'success'
+                    ? "success"
                     : currentAnalysis.score >= 50
-                    ? 'warning'
-                    : 'error'
+                      ? "warning"
+                      : "error"
                 }
               />
 
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                 <Chip
                   label={`Grammaire: ${currentAnalysis.grammarScore}%`}
                   size="small"
@@ -516,10 +518,10 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             <Alert
               severity={
                 currentAnalysis.score >= 75
-                  ? 'success'
+                  ? "success"
                   : currentAnalysis.score >= 50
-                  ? 'warning'
-                  : 'error'
+                    ? "warning"
+                    : "error"
               }
               sx={{ mb: 2 }}
             >
@@ -541,8 +543,8 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                             <Typography
                               component="span"
                               sx={{
-                                textDecoration: 'line-through',
-                                color: 'error.main',
+                                textDecoration: "line-through",
+                                color: "error.main",
                                 mr: 1,
                               }}
                             >
@@ -550,7 +552,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                             </Typography>
                             <Typography
                               component="span"
-                              sx={{ color: 'success.main' }}
+                              sx={{ color: "success.main" }}
                             >
                               → {err.corrected}
                             </Typography>
@@ -581,7 +583,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                   <ListItem alignItems="flex-start">
                     <ListItemText
                       primary={
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                           <Typography variant="body2">
                             {item.transcript}
                           </Typography>
@@ -598,7 +600,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                             Score: {item.analysis.score}% | {item.analysis.errors.length} erreur(s)
                           </Typography>
                           {item.analysis.correctedSentence && (
-                            <Typography variant="body2" sx={{ mt: 0.5, fontStyle: 'italic' }}>
+                            <Typography variant="body2" sx={{ mt: 0.5, fontStyle: "italic" }}>
                               → {item.analysis.correctedSentence}
                             </Typography>
                           )}

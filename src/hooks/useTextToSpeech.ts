@@ -50,7 +50,8 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   useEffect(() => {
     // Vérifier si l'API est supportée
     if ("speechSynthesis" in window) {
-      setIsSupported(true);
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => setIsSupported(true), 0);
 
       // Charger les voix disponibles
       const loadVoices = () => {
@@ -121,13 +122,13 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
         window.speechSynthesis.cancel();
       };
     } else {
-      setError('La synthèse vocale n\'est pas supportée sur votre appareil.');
+      setError("La synthèse vocale n'est pas supportée sur votre appareil.");
     }
   }, []);
 
-  const speak = useCallback(async (text: string, lang: string = "en-US"): Promise<void> => {
+  const speak = useCallback(async (text: string, lang = "en-US"): Promise<void> => {
     if (!isSupported || !text) {
-      setError('Synthèse vocale non supportée ou texte vide.');
+      setError("Synthèse vocale non supportée ou texte vide.");
       return;
     }
 
@@ -212,20 +213,20 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
 
       // Gestion des erreurs spécifiques
       switch (event.error) {
-        case 'network':
-          setError('Erreur réseau lors de la synthèse vocale.');
-          break;
-        case 'synthesis-failed':
-          setError('Échec de la synthèse vocale.');
-          break;
-        case 'audio-busy':
-          setError('Audio occupé. Réessayez.');
-          break;
-        case 'not-allowed':
-          setError('Permission audio refusée.');
-          break;
-        default:
-          setError(`Erreur: ${event.error}`);
+      case "network":
+        setError("Erreur réseau lors de la synthèse vocale.");
+        break;
+      case "synthesis-failed":
+        setError("Échec de la synthèse vocale.");
+        break;
+      case "audio-busy":
+        setError("Audio occupé. Réessayez.");
+        break;
+      case "not-allowed":
+        setError("Permission audio refusée.");
+        break;
+      default:
+        setError(`Erreur: ${event.error}`);
       }
 
       setIsSpeaking(false);
@@ -244,8 +245,8 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
     try {
       window.speechSynthesis.speak(utterance);
     } catch (err: any) {
-      console.error('Error speaking:', err);
-      setError('Impossible de lancer la synthèse vocale.');
+      console.error("Error speaking:", err);
+      setError("Impossible de lancer la synthèse vocale.");
       setIsSpeaking(false);
     }
   }, [isSupported, selectedVoice, rate, pitch, volume]);
@@ -258,7 +259,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
       setIsPaused(false);
       setError(null);
     } catch (err) {
-      console.error('Error stopping speech:', err);
+      console.error("Error stopping speech:", err);
     }
   }, [isSupported]);
 
@@ -268,7 +269,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
       window.speechSynthesis.pause();
       setIsPaused(true);
     } catch (err) {
-      console.error('Error pausing speech:', err);
+      console.error("Error pausing speech:", err);
     }
   }, [isSupported]);
 
@@ -278,7 +279,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
       window.speechSynthesis.resume();
       setIsPaused(false);
     } catch (err) {
-      console.error('Error resuming speech:', err);
+      console.error("Error resuming speech:", err);
     }
   }, [isSupported]);
 
@@ -288,7 +289,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
       setSelectedVoice(voice);
       setError(null);
     } else {
-      setError('Voix non trouvée.');
+      setError("Voix non trouvée.");
     }
   }, []);
 
