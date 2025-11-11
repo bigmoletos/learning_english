@@ -108,7 +108,8 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       let interimTranscript = "";
       let finalTranscript = "";
 
-      for (let i = event.resultIndex; i < event.results.length; i++) {
+      // Parcourir TOUS les résultats pour reconstruire le transcript complet
+      for (let i = 0; i < event.results.length; i++) {
         const transcriptPart = event.results[i][0].transcript;
         console.log("[SpeechRecognition] Transcript part:", transcriptPart, "isFinal:", event.results[i].isFinal);
         if (event.results[i].isFinal) {
@@ -117,16 +118,15 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
           // Android peut ne pas fournir de confidence, on met 80 par défaut
           setConfidence(conf ? Math.round(conf * 100) : 80);
         } else {
-          interimTranscript += transcriptPart;
+          interimTranscript += transcriptPart + " ";
         }
       }
 
       console.log("[SpeechRecognition] Final transcript:", finalTranscript, "Interim:", interimTranscript);
 
-      setTranscript((prev) => {
-        const updated = prev + finalTranscript;
-        return interimTranscript ? updated + interimTranscript : updated;
-      });
+      // Mise à jour du transcript: final + interim (sans accumuler avec prev)
+      const fullTranscript = finalTranscript + interimTranscript;
+      setTranscript(fullTranscript.trim());
 
       // Sur Android, redémarrer automatiquement si en mode continu simulé
       if (isAndroid() && finalTranscript && listening) {
@@ -151,25 +151,30 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       switch (event.error) {
       case "network":
         setError("Erreur réseau. Vérifiez votre connexion Internet.");
+        setListening(false);
         break;
       case "not-allowed":
         setError("Permission microphone refusée.");
         setPermissionGranted(false);
+        setListening(false);
         break;
       case "no-speech":
-        setError("Aucune parole détectée. Réessayez.");
+        // Ne pas afficher d'erreur pour "no-speech", juste logger
+        console.log("[SpeechRecognition] Aucune parole détectée, en attente...");
+        // Ne pas arrêter l'écoute
         break;
       case "audio-capture":
         setError("Impossible d'accéder au microphone.");
+        setListening(false);
         break;
       case "aborted":
-        // Ignore, c'est souvent un arrêt volontaire
+        // Ignore, c'est un arrêt volontaire
+        console.log("[SpeechRecognition] Reconnaissance arrêtée (aborted)");
         break;
       default:
         setError(`Erreur de reconnaissance: ${event.error}`);
+        setListening(false);
       }
-
-      setListening(false);
     };
 
     recognition.onstart = () => {
