@@ -255,6 +255,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/exercises', require('./routes/exercises'));
 app.use('/api/progress', require('./routes/progress'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/text-to-speech', require('./routes/textToSpeech'));
 
 // Route 404
 app.use((req, res) => {
