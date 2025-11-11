@@ -436,6 +436,77 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
               {error || speechError}
             </Alert>
           )}
+
+          {/* Debug Panel - État du microphone */}
+          <Paper
+            elevation={1}
+            sx={{
+              mt: 2,
+              p: 2,
+              bgcolor: "background.default",
+              border: "1px solid",
+              borderColor: "divider",
+            }}
+          >
+            <Typography variant="subtitle2" gutterBottom>
+              État du système (Debug)
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Typography variant="body2" sx={{ minWidth: 180 }}>
+                  Navigateur compatible:
+                </Typography>
+                <Chip
+                  size="small"
+                  label={browserSupportsSpeechRecognition ? "OUI" : "NON"}
+                  color={browserSupportsSpeechRecognition ? "success" : "error"}
+                />
+              </Box>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Typography variant="body2" sx={{ minWidth: 180 }}>
+                  Permission microphone:
+                </Typography>
+                <Chip
+                  size="small"
+                  label={permissionGranted ? "ACCORDÉE" : "NON ACCORDÉE"}
+                  color={permissionGranted ? "success" : "warning"}
+                />
+              </Box>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Typography variant="body2" sx={{ minWidth: 180 }}>
+                  Écoute active:
+                </Typography>
+                <Chip
+                  size="small"
+                  label={listening ? "OUI" : "NON"}
+                  color={listening ? "success" : "default"}
+                />
+              </Box>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Typography variant="body2" sx={{ minWidth: 180 }}>
+                  Confiance reconnaissance:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {confidence}%
+                </Typography>
+              </Box>
+              {transcript && (
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="body2" sx={{ mb: 0.5 }}>
+                    Transcript en direct:
+                  </Typography>
+                  <Paper
+                    variant="outlined"
+                    sx={{ p: 1, bgcolor: "background.paper" }}
+                  >
+                    <Typography variant="body2" sx={{ fontStyle: "italic" }}>
+                      {transcript || "(vide)"}
+                    </Typography>
+                  </Paper>
+                </Box>
+              )}
+            </Box>
+          </Paper>
         </CardContent>
       </Card>
 
