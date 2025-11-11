@@ -62,7 +62,9 @@
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer build/static/js/*.js",
     "generate:corpus": "node scripts/generateCorpus.js",
-    "train:agent": "ts-node src/agents/trainAgent.ts"
+    "train:agent": "ts-node src/agents/trainAgent.ts",
+    "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix"
   },
   "eslintConfig": {
     "extends": [

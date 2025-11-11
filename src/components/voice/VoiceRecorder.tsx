@@ -136,7 +136,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 {isSpeaking ? "Lecture..." : "Écouter"}
               </Button>
             </Box>
-            <Typography variant="body1" sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
+            <Typography variant="body1" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
               {expectedText}
             </Typography>
           </Box>
@@ -158,10 +158,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
               onClick={handleStart}
               sx={{
                 minHeight: 56,
-                minWidth: { xs: '100%', sm: 'auto' },
+                minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: '1.1rem'
+                fontSize: "1.1rem"
               }}
             >
               Commencer l'enregistrement
@@ -175,10 +175,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
               onClick={handleStop}
               sx={{
                 minHeight: 56,
-                minWidth: { xs: '100%', sm: 'auto' },
+                minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: '1.1rem'
+                fontSize: "1.1rem"
               }}
             >
               Arrêter
@@ -193,10 +193,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
               onClick={handleReset}
               sx={{
                 minHeight: 56,
-                minWidth: { xs: '100%', sm: 'auto' },
+                minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: '1.1rem'
+                fontSize: "1.1rem"
               }}
             >
               Réessayer
@@ -239,7 +239,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                   label={`Confiance: ${confidence}%`}
                   color={confidence >= 75 ? "success" : "warning"}
                   size="medium"
-                  sx={{ fontSize: '0.9rem', height: 32 }}
+                  sx={{ fontSize: "0.9rem", height: 32 }}
                 />
               )}
             </Box>
@@ -250,7 +250,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
               color: "white",
               minHeight: 60
             }}>
-              <Typography variant="body1" sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
+              <Typography variant="body1" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
                 {transcript}
               </Typography>
             </Box>

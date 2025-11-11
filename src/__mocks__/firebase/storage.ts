@@ -1,6 +1,6 @@
 // Mock for Firebase Storage
 const mockStorage = {
-  app: { name: '[DEFAULT]' },
+  app: { name: "[DEFAULT]" },
   maxOperationRetryTime: 120000,
   maxUploadRetryTime: 600000
 };
@@ -8,31 +8,31 @@ const mockStorage = {
 export const getStorage = jest.fn(() => mockStorage);
 
 export const ref = jest.fn((storage, path) => ({
-  bucket: 'mock-bucket',
-  fullPath: path || '',
-  name: path ? path.split('/').pop() : '',
+  bucket: "mock-bucket",
+  fullPath: path || "",
+  name: path ? path.split("/").pop() : "",
   parent: null,
-  root: { fullPath: '', name: '' },
+  root: { fullPath: "", name: "" },
   storage: mockStorage,
-  toString: () => `gs://mock-bucket/${path || ''}`
+  toString: () => `gs://mock-bucket/${path || ""}`
 }));
 
 export const uploadBytes = jest.fn(() =>
   Promise.resolve({
     metadata: {
-      bucket: 'mock-bucket',
-      fullPath: 'mock-path',
-      generation: '1',
-      metageneration: '1',
-      name: 'mock-file',
+      bucket: "mock-bucket",
+      fullPath: "mock-path",
+      generation: "1",
+      metageneration: "1",
+      name: "mock-file",
       size: 1024,
       timeCreated: new Date().toISOString(),
       updated: new Date().toISOString()
     },
     ref: {
-      bucket: 'mock-bucket',
-      fullPath: 'mock-path',
-      name: 'mock-file'
+      bucket: "mock-bucket",
+      fullPath: "mock-path",
+      name: "mock-file"
     }
   })
 );
@@ -42,7 +42,7 @@ export const uploadBytesResumable = jest.fn(() => {
     snapshot: {
       bytesTransferred: 0,
       totalBytes: 0,
-      state: 'running',
+      state: "running",
       metadata: {},
       ref: {}
     },
@@ -54,7 +54,7 @@ export const uploadBytesResumable = jest.fn(() => {
       resolve({
         bytesTransferred: 1024,
         totalBytes: 1024,
-        state: 'success'
+        state: "success"
       });
       return task;
     }),
@@ -64,7 +64,7 @@ export const uploadBytesResumable = jest.fn(() => {
 });
 
 export const getDownloadURL = jest.fn(() =>
-  Promise.resolve('https://mock-storage.example.com/mock-file.jpg')
+  Promise.resolve("https://mock-storage.example.com/mock-file.jpg")
 );
 
 export const deleteObject = jest.fn(() => Promise.resolve());
@@ -78,9 +78,9 @@ export const listAll = jest.fn(() =>
 
 export const getMetadata = jest.fn(() =>
   Promise.resolve({
-    bucket: 'mock-bucket',
-    fullPath: 'mock-path',
-    name: 'mock-file',
+    bucket: "mock-bucket",
+    fullPath: "mock-path",
+    name: "mock-file",
     size: 1024,
     timeCreated: new Date().toISOString(),
     updated: new Date().toISOString()
@@ -89,9 +89,9 @@ export const getMetadata = jest.fn(() =>
 
 export const updateMetadata = jest.fn(() =>
   Promise.resolve({
-    bucket: 'mock-bucket',
-    fullPath: 'mock-path',
-    name: 'mock-file',
+    bucket: "mock-bucket",
+    fullPath: "mock-path",
+    name: "mock-file",
     size: 1024
   })
 );

@@ -3,18 +3,18 @@
  * @version 1.0.0
  */
 
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { useFirebaseAuth } from '../../hooks/useFirebaseAuth';
-import * as authService from '../../firebase/authService';
+import { renderHook, act, waitFor } from "@testing-library/react";
+import { useFirebaseAuth } from "../../hooks/useFirebaseAuth";
+import * as authService from "../../firebase/authService";
 
 // Mock auth service
-jest.mock('../../firebase/authService');
+jest.mock("../../firebase/authService");
 
-describe('useFirebaseAuth Hook', () => {
+describe("useFirebaseAuth Hook", () => {
   const mockUser = {
-    uid: 'test-uid-123',
-    email: 'test@example.com',
-    displayName: 'Test User',
+    uid: "test-uid-123",
+    email: "test@example.com",
+    displayName: "Test User",
     emailVerified: true,
     metadata: {
       creationTime: new Date().toISOString(),
@@ -36,8 +36,8 @@ describe('useFirebaseAuth Hook', () => {
     });
   });
 
-  describe('Initialization', () => {
-    it('should initialize with loading true and no user', () => {
+  describe("Initialization", () => {
+    it("should initialize with loading true and no user", () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       expect(result.current.loading).toBe(false); // After initial callback
@@ -46,13 +46,13 @@ describe('useFirebaseAuth Hook', () => {
       expect(result.current.isAuthenticated).toBe(false);
     });
 
-    it('should subscribe to auth state changes on mount', () => {
+    it("should subscribe to auth state changes on mount", () => {
       renderHook(() => useFirebaseAuth());
 
       expect(authService.onAuthStateChange).toHaveBeenCalledWith(expect.any(Function));
     });
 
-    it('should unsubscribe from auth state changes on unmount', () => {
+    it("should unsubscribe from auth state changes on unmount", () => {
       const unsubscribeMock = jest.fn();
       (authService.onAuthStateChange as jest.Mock).mockReturnValue(unsubscribeMock);
 
@@ -62,7 +62,7 @@ describe('useFirebaseAuth Hook', () => {
       expect(unsubscribeMock).toHaveBeenCalled();
     });
 
-    it('should update user when auth state changes', async () => {
+    it("should update user when auth state changes", async () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       // Simulate user login
@@ -76,12 +76,12 @@ describe('useFirebaseAuth Hook', () => {
     });
   });
 
-  describe('register', () => {
-    it('should register user successfully', async () => {
+  describe("register", () => {
+    it("should register user successfully", async () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: 'User registered successfully'
+        message: "User registered successfully"
       };
 
       (authService.registerUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -91,27 +91,27 @@ describe('useFirebaseAuth Hook', () => {
       let registerResult: any;
       await act(async () => {
         registerResult = await result.current.register(
-          'test@example.com',
-          'Password123!',
-          'Test User'
+          "test@example.com",
+          "Password123!",
+          "Test User"
         );
       });
 
       expect(authService.registerUser).toHaveBeenCalledWith(
-        'test@example.com',
-        'Password123!',
-        'Test User'
+        "test@example.com",
+        "Password123!",
+        "Test User"
       );
       expect(registerResult).toEqual(mockResponse);
       expect(result.current.error).toBeNull();
       expect(result.current.loading).toBe(false);
     });
 
-    it('should set error on registration failure', async () => {
+    it("should set error on registration failure", async () => {
       const mockResponse = {
         success: false,
-        message: 'Email already in use',
-        error: 'auth/email-already-in-use'
+        message: "Email already in use",
+        error: "auth/email-already-in-use"
       };
 
       (authService.registerUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -119,14 +119,14 @@ describe('useFirebaseAuth Hook', () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       await act(async () => {
-        await result.current.register('test@example.com', 'Password123!', 'Test User');
+        await result.current.register("test@example.com", "Password123!", "Test User");
       });
 
-      expect(result.current.error).toBe('Email already in use');
+      expect(result.current.error).toBe("Email already in use");
       expect(result.current.loading).toBe(false);
     });
 
-    it('should set loading state during registration', async () => {
+    it("should set loading state during registration", async () => {
       let resolveRegister: any;
       const registerPromise = new Promise((resolve) => {
         resolveRegister = resolve;
@@ -137,7 +137,7 @@ describe('useFirebaseAuth Hook', () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       act(() => {
-        result.current.register('test@example.com', 'Password123!', 'Test User');
+        result.current.register("test@example.com", "Password123!", "Test User");
       });
 
       // Should be loading
@@ -152,12 +152,12 @@ describe('useFirebaseAuth Hook', () => {
     });
   });
 
-  describe('login', () => {
-    it('should login user successfully', async () => {
+  describe("login", () => {
+    it("should login user successfully", async () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: 'Login successful'
+        message: "Login successful"
       };
 
       (authService.loginUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -166,20 +166,20 @@ describe('useFirebaseAuth Hook', () => {
 
       let loginResult: any;
       await act(async () => {
-        loginResult = await result.current.login('test@example.com', 'Password123!');
+        loginResult = await result.current.login("test@example.com", "Password123!");
       });
 
-      expect(authService.loginUser).toHaveBeenCalledWith('test@example.com', 'Password123!');
+      expect(authService.loginUser).toHaveBeenCalledWith("test@example.com", "Password123!");
       expect(loginResult).toEqual(mockResponse);
       expect(result.current.error).toBeNull();
       expect(result.current.loading).toBe(false);
     });
 
-    it('should set error on login failure', async () => {
+    it("should set error on login failure", async () => {
       const mockResponse = {
         success: false,
-        message: 'Invalid credentials',
-        error: 'auth/wrong-password'
+        message: "Invalid credentials",
+        error: "auth/wrong-password"
       };
 
       (authService.loginUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -187,26 +187,26 @@ describe('useFirebaseAuth Hook', () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       await act(async () => {
-        await result.current.login('test@example.com', 'wrongpassword');
+        await result.current.login("test@example.com", "wrongpassword");
       });
 
-      expect(result.current.error).toBe('Invalid credentials');
+      expect(result.current.error).toBe("Invalid credentials");
     });
 
-    it('should clear previous error before new login attempt', async () => {
+    it("should clear previous error before new login attempt", async () => {
       // First attempt - failure
       (authService.loginUser as jest.Mock).mockResolvedValueOnce({
         success: false,
-        message: 'First error'
+        message: "First error"
       });
 
       const { result } = renderHook(() => useFirebaseAuth());
 
       await act(async () => {
-        await result.current.login('test@example.com', 'wrong');
+        await result.current.login("test@example.com", "wrong");
       });
 
-      expect(result.current.error).toBe('First error');
+      expect(result.current.error).toBe("First error");
 
       // Second attempt - success
       (authService.loginUser as jest.Mock).mockResolvedValueOnce({
@@ -215,18 +215,18 @@ describe('useFirebaseAuth Hook', () => {
       });
 
       await act(async () => {
-        await result.current.login('test@example.com', 'correct');
+        await result.current.login("test@example.com", "correct");
       });
 
       expect(result.current.error).toBeNull();
     });
   });
 
-  describe('logout', () => {
-    it('should logout user successfully', async () => {
+  describe("logout", () => {
+    it("should logout user successfully", async () => {
       const mockResponse = {
         success: true,
-        message: 'Logged out successfully'
+        message: "Logged out successfully"
       };
 
       (authService.logoutUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -243,11 +243,11 @@ describe('useFirebaseAuth Hook', () => {
       expect(result.current.error).toBeNull();
     });
 
-    it('should set error on logout failure', async () => {
+    it("should set error on logout failure", async () => {
       const mockResponse = {
         success: false,
-        message: 'Network error',
-        error: 'network-error'
+        message: "Network error",
+        error: "network-error"
       };
 
       (authService.logoutUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -258,15 +258,15 @@ describe('useFirebaseAuth Hook', () => {
         await result.current.logout();
       });
 
-      expect(result.current.error).toBe('Network error');
+      expect(result.current.error).toBe("Network error");
     });
   });
 
-  describe('resetPassword', () => {
-    it('should send password reset email successfully', async () => {
+  describe("resetPassword", () => {
+    it("should send password reset email successfully", async () => {
       const mockResponse = {
         success: true,
-        message: 'Password reset email sent'
+        message: "Password reset email sent"
       };
 
       (authService.resetPassword as jest.Mock).mockResolvedValue(mockResponse);
@@ -275,19 +275,19 @@ describe('useFirebaseAuth Hook', () => {
 
       let resetResult: any;
       await act(async () => {
-        resetResult = await result.current.resetPassword('test@example.com');
+        resetResult = await result.current.resetPassword("test@example.com");
       });
 
-      expect(authService.resetPassword).toHaveBeenCalledWith('test@example.com');
+      expect(authService.resetPassword).toHaveBeenCalledWith("test@example.com");
       expect(resetResult).toEqual(mockResponse);
       expect(result.current.error).toBeNull();
     });
 
-    it('should set error on password reset failure', async () => {
+    it("should set error on password reset failure", async () => {
       const mockResponse = {
         success: false,
-        message: 'User not found',
-        error: 'auth/user-not-found'
+        message: "User not found",
+        error: "auth/user-not-found"
       };
 
       (authService.resetPassword as jest.Mock).mockResolvedValue(mockResponse);
@@ -295,19 +295,19 @@ describe('useFirebaseAuth Hook', () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       await act(async () => {
-        await result.current.resetPassword('nonexistent@example.com');
+        await result.current.resetPassword("nonexistent@example.com");
       });
 
-      expect(result.current.error).toBe('User not found');
+      expect(result.current.error).toBe("User not found");
     });
   });
 
-  describe('signInWithGoogle', () => {
-    it('should sign in with Google successfully', async () => {
+  describe("signInWithGoogle", () => {
+    it("should sign in with Google successfully", async () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: 'Google sign-in successful'
+        message: "Google sign-in successful"
       };
 
       (authService.signInWithGoogle as jest.Mock).mockResolvedValue(mockResponse);
@@ -324,11 +324,11 @@ describe('useFirebaseAuth Hook', () => {
       expect(result.current.error).toBeNull();
     });
 
-    it('should set error on Google sign-in failure', async () => {
+    it("should set error on Google sign-in failure", async () => {
       const mockResponse = {
         success: false,
-        message: 'Popup closed by user',
-        error: 'auth/popup-closed-by-user'
+        message: "Popup closed by user",
+        error: "auth/popup-closed-by-user"
       };
 
       (authService.signInWithGoogle as jest.Mock).mockResolvedValue(mockResponse);
@@ -339,25 +339,25 @@ describe('useFirebaseAuth Hook', () => {
         await result.current.signInWithGoogle();
       });
 
-      expect(result.current.error).toBe('Popup closed by user');
+      expect(result.current.error).toBe("Popup closed by user");
     });
   });
 
-  describe('clearError', () => {
-    it('should clear error state', async () => {
+  describe("clearError", () => {
+    it("should clear error state", async () => {
       (authService.loginUser as jest.Mock).mockResolvedValue({
         success: false,
-        message: 'Test error'
+        message: "Test error"
       });
 
       const { result } = renderHook(() => useFirebaseAuth());
 
       // Create an error
       await act(async () => {
-        await result.current.login('test@example.com', 'wrong');
+        await result.current.login("test@example.com", "wrong");
       });
 
-      expect(result.current.error).toBe('Test error');
+      expect(result.current.error).toBe("Test error");
 
       // Clear the error
       act(() => {
@@ -368,14 +368,14 @@ describe('useFirebaseAuth Hook', () => {
     });
   });
 
-  describe('isAuthenticated', () => {
-    it('should return false when no user', () => {
+  describe("isAuthenticated", () => {
+    it("should return false when no user", () => {
       const { result } = renderHook(() => useFirebaseAuth());
 
       expect(result.current.isAuthenticated).toBe(false);
     });
 
-    it('should return true when user is authenticated', () => {
+    it("should return true when user is authenticated", () => {
       (authService.onAuthStateChange as jest.Mock).mockImplementation((callback) => {
         callback(mockUser);
         return jest.fn();
@@ -387,8 +387,8 @@ describe('useFirebaseAuth Hook', () => {
     });
   });
 
-  describe('Loading States', () => {
-    it('should manage loading state correctly through auth flow', async () => {
+  describe("Loading States", () => {
+    it("should manage loading state correctly through auth flow", async () => {
       let resolveLogin: any;
       const loginPromise = new Promise((resolve) => {
         resolveLogin = resolve;
@@ -403,7 +403,7 @@ describe('useFirebaseAuth Hook', () => {
 
       // Start login
       act(() => {
-        result.current.login('test@example.com', 'password');
+        result.current.login("test@example.com", "password");
       });
 
       expect(result.current.loading).toBe(true);
