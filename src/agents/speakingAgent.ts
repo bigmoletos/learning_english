@@ -33,14 +33,14 @@ export interface GrammarError {
   corrected: string;
   explanation: string;
   exceptions?: string[];
-  severity: 'low' | 'medium' | 'high';
+  severity: "low" | "medium" | "high";
   position: { start: number; end: number };
 }
 
 export interface SpeakingExercise {
   id: string;
   level: LanguageLevel;
-  type: 'pronunciation' | 'fluency' | 'grammar' | 'vocabulary';
+  type: "pronunciation" | "fluency" | "grammar" | "vocabulary";
   title: string;
   prompt: string;
   targetSentence?: string;
@@ -57,9 +57,9 @@ class SpeakingAgent {
         const [subject, verb] = match.toLowerCase().split(/\s+/);
         return `${subject} ${this.conjugateThirdPerson(verb)}`;
       },
-      type: 'subject_verb_agreement',
-      explanation: 'Avec he/she/it, il faut ajouter -s/-es au verbe au présent simple.',
-      exceptions: ['Verbes modaux (can, must, should) ne prennent jamais de -s', 'Verbe "to be" : he is, she is, it is']
+      type: "subject_verb_agreement",
+      explanation: "Avec he/she/it, il faut ajouter -s/-es au verbe au présent simple.",
+      exceptions: ["Verbes modaux (can, must, should) ne prennent jamais de -s", "Verbe \"to be\" : he is, she is, it is"]
     },
     {
       pattern: /\b(I|you|we|they)\s+(goes|has|does|says)\b/gi,
@@ -67,36 +67,36 @@ class SpeakingAgent {
         const [subject, verb] = match.toLowerCase().split(/\s+/);
         return `${subject} ${this.removeThirdPersonS(verb)}`;
       },
-      type: 'subject_verb_agreement',
-      explanation: 'Avec I/you/we/they, le verbe ne prend pas de -s au présent simple.',
-      exceptions: ['Sauf avec "have" qui devient "have" pour I/you/we/they']
+      type: "subject_verb_agreement",
+      explanation: "Avec I/you/we/they, le verbe ne prend pas de -s au présent simple.",
+      exceptions: ["Sauf avec \"have\" qui devient \"have\" pour I/you/we/they"]
     },
     {
       pattern: /\b(a)\s+([aeiou]\w+)\b/gi,
-      correction: (match: string) => match.replace(/^a\s+/i, 'an '),
-      type: 'article',
-      explanation: 'Utilisez "an" devant un mot commençant par une voyelle (a, e, i, o, u).',
-      exceptions: ['Exception : "a university" (son de "you"), "a European" (son de "eu")']
+      correction: (match: string) => match.replace(/^a\s+/i, "an "),
+      type: "article",
+      explanation: "Utilisez \"an\" devant un mot commençant par une voyelle (a, e, i, o, u).",
+      exceptions: ["Exception : \"a university\" (son de \"you\"), \"a European\" (son de \"eu\")"]
     },
     {
       pattern: /\b(an)\s+([bcdfghjklmnpqrstvwxyz]\w+)\b/gi,
-      correction: (match: string) => match.replace(/^an\s+/i, 'a '),
-      type: 'article',
-      explanation: 'Utilisez "a" devant un mot commençant par une consonne.',
-      exceptions: ['Exception : "an hour" (h muet), "an honest person"']
+      correction: (match: string) => match.replace(/^an\s+/i, "a "),
+      type: "article",
+      explanation: "Utilisez \"a\" devant un mot commençant par une consonne.",
+      exceptions: ["Exception : \"an hour\" (h muet), \"an honest person\""]
     },
     {
       pattern: /\bmuch\s+(people|things|cars|books)\b/gi,
-      correction: (match: string) => match.replace(/much/i, 'many'),
-      type: 'quantifier',
-      explanation: '"Much" s\'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez "many".',
-      exceptions: ['Much water, much time (indénombrables) vs many cars, many people (dénombrables)']
+      correction: (match: string) => match.replace(/much/i, "many"),
+      type: "quantifier",
+      explanation: "\"Much\" s'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez \"many\".",
+      exceptions: ["Much water, much time (indénombrables) vs many cars, many people (dénombrables)"]
     },
     {
       pattern: /\bmany\s+(water|money|information|time)\b/gi,
-      correction: (match: string) => match.replace(/many/i, 'much'),
-      type: 'quantifier',
-      explanation: '"Many" s\'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez "much".',
+      correction: (match: string) => match.replace(/many/i, "much"),
+      type: "quantifier",
+      explanation: "\"Many\" s'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez \"much\".",
       exceptions: []
     },
     {
@@ -105,9 +105,9 @@ class SpeakingAgent {
         const verb = match.split(/\s+/)[1];
         return `didn't ${this.getBaseForm(verb)}`;
       },
-      type: 'double_negative',
-      explanation: 'Après "didn\'t", utilisez la forme de base du verbe (infinitif sans "to").',
-      exceptions: ['didn\'t go (pas "didn\'t went")', 'didn\'t have (pas "didn\'t had")']
+      type: "double_negative",
+      explanation: "Après \"didn't\", utilisez la forme de base du verbe (infinitif sans \"to\").",
+      exceptions: ["didn't go (pas \"didn't went\")", "didn't have (pas \"didn't had\")"]
     }
   ];
 
@@ -283,13 +283,13 @@ class SpeakingAgent {
       return "Excellent ! Votre expression orale est très claire et grammaticalement correcte. Continuez à ce niveau.";
     } else if (score >= 75) {
       const mainError = errors[0];
-      return `Très bien ! Quelques petites améliorations possibles, notamment sur : ${mainError?.type.replace(/_/g, ' ')}. ${mainError?.explanation}`;
+      return `Très bien ! Quelques petites améliorations possibles, notamment sur : ${mainError?.type.replace(/_/g, " ")}. ${mainError?.explanation}`;
     } else if (score >= 60) {
-      return `Bon effort ! Concentrez-vous sur l'amélioration de ${errors.length} points grammaticaux. Voyez les explications ci-dessous.`;
+      return `Bon effort ! Concentrez-vous sur l"amélioration de ${errors.length} points grammaticaux. Voyez les explications ci-dessous.`;
     } else if (score >= 40) {
-      return `Vous progressez. Il y a plusieurs points à améliorer. Pratiquez les exercices suggérés pour renforcer vos bases.`;
+      return "Vous progressez. Il y a plusieurs points à améliorer. Pratiquez les exercices suggérés pour renforcer vos bases.";
     } else {
-      return `Continuez à pratiquer ! La grammaire de base nécessite plus d'attention. Commencez par les exercices de niveau A2.`;
+      return "Continuez à pratiquer ! La grammaire de base nécessite plus d'attention. Commencez par les exercices de niveau A2.";
     }
   }
 
@@ -302,7 +302,7 @@ class SpeakingAgent {
     if (errors.length > 0) {
       const errorTypes = new Set(errors.map(e => e.type));
       errorTypes.forEach(type => {
-        recommendations.push(`Révisez les règles de : ${type.replace(/_/g, ' ')}`);
+        recommendations.push(`Révisez les règles de : ${type.replace(/_/g, " ")}`);
       });
     }
 
@@ -352,28 +352,28 @@ class SpeakingAgent {
   private createExerciseForErrorType(errorType: string, level: LanguageLevel, index: number): SpeakingExercise | null {
     const exerciseTemplates: { [key: string]: any } = {
       subject_verb_agreement: {
-        type: 'grammar',
-        title: 'Concordance sujet-verbe',
-        prompt: 'Décrivez votre routine quotidienne en utilisant he/she pour parler d\'une personne. Exemple: "She works from 9 to 5."',
-        focusAreas: ['third person singular', 'present simple']
+        type: "grammar",
+        title: "Concordance sujet-verbe",
+        prompt: "Décrivez votre routine quotidienne en utilisant he/she pour parler d'une personne. Exemple: \"She works from 9 to 5.\"",
+        focusAreas: ["third person singular", "present simple"]
       },
       article: {
-        type: 'grammar',
-        title: 'Articles a/an',
-        prompt: 'Énumérez 5 objets dans votre pièce en utilisant "a" ou "an". Exemple: "I see an apple and a book."',
-        focusAreas: ['indefinite articles', 'pronunciation']
+        type: "grammar",
+        title: "Articles a/an",
+        prompt: "Énumérez 5 objets dans votre pièce en utilisant \"a\" ou \"an\". Exemple: \"I see an apple and a book.\"",
+        focusAreas: ["indefinite articles", "pronunciation"]
       },
       quantifier: {
-        type: 'grammar',
-        title: 'Quantificateurs much/many',
-        prompt: 'Décrivez ce que vous avez dans votre cuisine en utilisant "much" et "many". Exemple: "I have many apples but not much milk."',
-        focusAreas: ['countable/uncountable nouns', 'quantifiers']
+        type: "grammar",
+        title: "Quantificateurs much/many",
+        prompt: "Décrivez ce que vous avez dans votre cuisine en utilisant \"much\" et \"many\". Exemple: \"I have many apples but not much milk.\"",
+        focusAreas: ["countable/uncountable nouns", "quantifiers"]
       },
       double_negative: {
-        type: 'grammar',
-        title: 'Négation au passé',
-        prompt: 'Racontez ce que vous n\'avez pas fait hier en utilisant "didn\'t". Exemple: "I didn\'t go to the gym yesterday."',
-        focusAreas: ['past simple negative', 'base form']
+        type: "grammar",
+        title: "Négation au passé",
+        prompt: "Racontez ce que vous n'avez pas fait hier en utilisant \"didn't\". Exemple: \"I didn't go to the gym yesterday.\"",
+        focusAreas: ["past simple negative", "base form"]
       }
     };
 
@@ -398,22 +398,22 @@ class SpeakingAgent {
   private createGeneralExercise(level: LanguageLevel, index: number): SpeakingExercise {
     const generalExercises = [
       {
-        type: 'fluency' as const,
-        title: 'Description libre',
-        prompt: 'Décrivez votre journée idéale en détail. Parlez pendant au moins 30 secondes.',
-        focusAreas: ['fluency', 'vocabulary', 'present simple']
+        type: "fluency" as const,
+        title: "Description libre",
+        prompt: "Décrivez votre journée idéale en détail. Parlez pendant au moins 30 secondes.",
+        focusAreas: ["fluency", "vocabulary", "present simple"]
       },
       {
-        type: 'pronunciation' as const,
-        title: 'Prononciation des verbes irréguliers',
-        prompt: 'Conjuguez ces verbes au passé à voix haute: go, see, eat, take, make',
-        focusAreas: ['irregular verbs', 'past simple', 'pronunciation']
+        type: "pronunciation" as const,
+        title: "Prononciation des verbes irréguliers",
+        prompt: "Conjuguez ces verbes au passé à voix haute: go, see, eat, take, make",
+        focusAreas: ["irregular verbs", "past simple", "pronunciation"]
       },
       {
-        type: 'vocabulary' as const,
-        title: 'Vocabulaire technique IT',
-        prompt: 'Expliquez ce qu\'est le cloud computing comme si vous parliez à quelqu\'un qui ne connaît pas l\'informatique.',
-        focusAreas: ['technical vocabulary', 'explanation skills']
+        type: "vocabulary" as const,
+        title: "Vocabulaire technique IT",
+        prompt: "Expliquez ce qu'est le cloud computing comme si vous parliez à quelqu'un qui ne connaît pas l'informatique.",
+        focusAreas: ["technical vocabulary", "explanation skills"]
       }
     ];
 
@@ -432,25 +432,25 @@ class SpeakingAgent {
 
   private conjugateThirdPerson(verb: string): string {
     const lowerVerb = verb.toLowerCase();
-    if (lowerVerb.endsWith('y') && !/[aeiou]y$/.test(lowerVerb)) {
-      return lowerVerb.slice(0, -1) + 'ies';
+    if (lowerVerb.endsWith("y") && !/[aeiou]y$/.test(lowerVerb)) {
+      return lowerVerb.slice(0, -1) + "ies";
     }
-    if (lowerVerb.endsWith('s') || lowerVerb.endsWith('sh') || lowerVerb.endsWith('ch') ||
-        lowerVerb.endsWith('x') || lowerVerb.endsWith('o')) {
-      return lowerVerb + 'es';
+    if (lowerVerb.endsWith("s") || lowerVerb.endsWith("sh") || lowerVerb.endsWith("ch") ||
+        lowerVerb.endsWith("x") || lowerVerb.endsWith("o")) {
+      return lowerVerb + "es";
     }
-    return lowerVerb + 's';
+    return lowerVerb + "s";
   }
 
   private removeThirdPersonS(verb: string): string {
     const lowerVerb = verb.toLowerCase();
-    if (lowerVerb.endsWith('ies')) {
-      return lowerVerb.slice(0, -3) + 'y';
+    if (lowerVerb.endsWith("ies")) {
+      return lowerVerb.slice(0, -3) + "y";
     }
-    if (lowerVerb.endsWith('es')) {
+    if (lowerVerb.endsWith("es")) {
       return lowerVerb.slice(0, -2);
     }
-    if (lowerVerb.endsWith('s')) {
+    if (lowerVerb.endsWith("s")) {
       return lowerVerb.slice(0, -1);
     }
     return lowerVerb;
@@ -458,43 +458,43 @@ class SpeakingAgent {
 
   private getBaseForm(verb: string): string {
     const irregularVerbs: { [key: string]: string } = {
-      'went': 'go',
-      'had': 'have',
-      'was': 'be',
-      'were': 'be',
-      'did': 'do'
+      "went": "go",
+      "had": "have",
+      "was": "be",
+      "were": "be",
+      "did": "do"
     };
 
     return irregularVerbs[verb.toLowerCase()] || verb;
   }
 
-  private determineSeverity(type: string): 'low' | 'medium' | 'high' {
-    const highSeverity = ['subject_verb_agreement', 'double_negative'];
-    const mediumSeverity = ['article', 'quantifier'];
+  private determineSeverity(type: string): "low" | "medium" | "high" {
+    const highSeverity = ["subject_verb_agreement", "double_negative"];
+    const mediumSeverity = ["article", "quantifier"];
 
-    if (highSeverity.includes(type)) return 'high';
-    if (mediumSeverity.includes(type)) return 'medium';
-    return 'low';
+    if (highSeverity.includes(type)) return "high";
+    if (mediumSeverity.includes(type)) return "medium";
+    return "low";
   }
 
   private getDurationForLevel(level: LanguageLevel): number {
     const durations: { [key in LanguageLevel]: number } = {
-      'A1': 20,
-      'A2': 30,
-      'B1': 45,
-      'B2': 60,
-      'C1': 90
+      "A1": 20,
+      "A2": 30,
+      "B1": 45,
+      "B2": 60,
+      "C1": 90
     };
     return durations[level] || 30;
   }
 
   private getDifficultyForLevel(level: LanguageLevel): number {
     const difficulties: { [key in LanguageLevel]: number } = {
-      'A1': 1,
-      'A2': 2,
-      'B1': 3,
-      'B2': 4,
-      'C1': 5
+      "A1": 1,
+      "A2": 2,
+      "B1": 3,
+      "B2": 4,
+      "C1": 5
     };
     return difficulties[level] || 3;
   }

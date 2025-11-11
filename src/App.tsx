@@ -247,11 +247,11 @@ const AppContent: React.FC = () => {
 
   const handleTestLevelSelected = (level: LanguageLevel) => {
     setSelectedTestLevel(level);
-    
+
     // Déterminer quelle vue afficher selon le type de test (avant de réinitialiser)
     const testType = selectedTestType;
     setSelectedTestType(null); // Fermer le sélecteur
-    
+
     // Déterminer quelle vue afficher selon le type de test
     if (testType === "efset") {
       setCurrentView("efset");
@@ -299,9 +299,9 @@ const AppContent: React.FC = () => {
       return (
         <Box sx={{ p: 3 }}>
           <ConversationalSpeaking
-            level={user?.currentLevel || 'B1'}
+            level={user?.currentLevel || "B1"}
             onComplete={(stats) => {
-              console.log('[App] Conversation terminée:', stats);
+              console.log("[App] Conversation terminée:", stats);
             }}
           />
         </Box>
