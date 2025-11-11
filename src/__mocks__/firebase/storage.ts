@@ -38,7 +38,7 @@ export const uploadBytes = jest.fn(() =>
 );
 
 export const uploadBytesResumable = jest.fn(() => {
-  const task = {
+  const task: any = {
     snapshot: {
       bytesTransferred: 0,
       totalBytes: 0,

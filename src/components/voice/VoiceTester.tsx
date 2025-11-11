@@ -155,7 +155,6 @@ export const VoiceTester: React.FC = () => {
             title="Test de voix"
             showControls={true}
             autoPlay={false}
-            voice={selectedVoice}
           />
         </Box>
 
