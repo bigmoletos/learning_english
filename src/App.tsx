@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon, School, Psychology, Assessment,
-  Menu as MenuIcon, VolumeUp, ExitToApp
+  Menu as MenuIcon, VolumeUp, ExitToApp, RecordVoiceOver
 } from "@mui/icons-material";
 import { UserProvider, useUser } from "./contexts/UserContext";
 import { Dashboard } from "./components/layout/Dashboard";
@@ -28,6 +28,7 @@ import { TOEICTest } from "./components/tests/TOEICTest";
 import { TOEFLTest } from "./components/tests/TOEFLTest";
 import { EFSETTest } from "./components/tests/EFSETTest";
 import { TestLevelSelector } from "./components/tests/TestLevelSelector";
+import { ConversationalSpeaking } from "./components/speaking/ConversationalSpeaking";
 import { LanguageLevel } from "./types";
 
 const theme = createTheme({
@@ -154,7 +155,7 @@ const theme = createTheme({
   }
 });
 
-type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset";
+type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset" | "speaking";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, login, logout, user } = useUser();
@@ -224,6 +225,7 @@ const AppContent: React.FC = () => {
     { id: "dashboard" as ViewType, label: "Tableau de bord", icon: <DashboardIcon /> },
     { id: "learning" as ViewType, label: "Mon Programme", icon: <Assessment /> },
     { id: "exercises" as ViewType, label: "Exercices", icon: <School /> },
+    { id: "speaking" as ViewType, label: "Mode Conversationnel", icon: <RecordVoiceOver /> },
     { id: "progress" as ViewType, label: "Progression", icon: <Assessment /> },
     { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> }
   ];
@@ -293,6 +295,17 @@ const AppContent: React.FC = () => {
       return <ProgressTracker />;
     case "exercises":
       return <ExerciseList />;
+    case "speaking":
+      return (
+        <Box sx={{ p: 3 }}>
+          <ConversationalSpeaking
+            level={user?.currentLevel || 'B1'}
+            onComplete={(stats) => {
+              console.log('[App] Conversation terminée:', stats);
+            }}
+          />
+        </Box>
+      );
     case "tests":
       return (
         <Box sx={{ p: 3 }}>
