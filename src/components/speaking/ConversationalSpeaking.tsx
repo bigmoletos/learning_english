@@ -128,7 +128,8 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
       console.error("[ConversationalSpeaking] Erreur démarrage:", err);
       setError(err.message || "Erreur lors du démarrage de la conversation");
     }
-  }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections, speakText]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections]);
 
   /**
    * Arrête la conversation
