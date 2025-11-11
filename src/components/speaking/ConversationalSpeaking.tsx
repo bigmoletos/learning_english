@@ -29,7 +29,6 @@ import {
   Mic,
   Stop,
   VolumeUp,
-  Settings,
   CheckCircle,
   Error as ErrorIcon,
   TrendingUp,
@@ -129,7 +128,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
       console.error("[ConversationalSpeaking] Erreur démarrage:", err);
       setError(err.message || "Erreur lors du démarrage de la conversation");
     }
-  }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections]);
+  }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections, speakText]);
 
   /**
    * Arrête la conversation
@@ -577,7 +576,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                 </Typography>
                 <IconButton
                   size="small"
-                  onClick={() => speakText(currentAnalysis.correctedSentence!, 0.8)}
+                  onClick={() => speakText(currentAnalysis.correctedSentence || "", 0.8)}
                   sx={{ ml: 1 }}
                 >
                   <VolumeUp fontSize="small" />
