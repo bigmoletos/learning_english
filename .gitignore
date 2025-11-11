@@ -76,3 +76,10 @@ backups/
 
 # Production secrets
 .env.production
+.env_old
+
+# Firebase and Google credentials
+learning-english-*.json
+client_secret_*.json
+backend/credentials/
+*.service-account.json
