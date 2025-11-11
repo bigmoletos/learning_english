@@ -4,11 +4,11 @@
  * @date 2025-11-04
  */
 
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 
 // Configuration Firebase depuis les variables d'environnement
 const firebaseConfig = {
@@ -31,7 +31,7 @@ export const storage = getStorage(app);
 
 // Analytics (optionnel)
 let analytics = null;
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
   analytics = getAnalytics(app);
 }
 export { analytics };

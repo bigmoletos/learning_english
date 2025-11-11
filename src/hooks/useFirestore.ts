@@ -4,7 +4,7 @@
  * @date 2025-11-06
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   getUserProfile,
   createOrUpdateUserProfile,
@@ -16,7 +16,7 @@ import {
   saveConversation,
   subscribeToProgress,
   subscribeToTestResults
-} from '../firebase/firestoreService';
+} from "../firebase/firestoreService";
 
 /**
  * Custom hook for user profile
@@ -30,9 +30,12 @@ export const useUserProfile = (userId: string | null) => {
 
   useEffect(() => {
     if (!userId) {
-      setProfile(null);
-      setLoading(false);
-      return;
+      // Use setTimeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setProfile(null);
+        setLoading(false);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     const fetchProfile = async () => {
@@ -52,7 +55,7 @@ export const useUserProfile = (userId: string | null) => {
   }, [userId]);
 
   const updateProfile = async (profileData: any) => {
-    if (!userId) return { success: false, message: 'User ID required' };
+    if (!userId) return { success: false, message: "User ID required" };
 
     setLoading(true);
     const result = await createOrUpdateUserProfile(userId, profileData);
@@ -81,16 +84,19 @@ export const useUserProfile = (userId: string | null) => {
  * @param realtime - Enable real-time updates
  * @returns Progress state and methods
  */
-export const useProgress = (userId: string | null, realtime: boolean = false) => {
+export const useProgress = (userId: string | null, realtime = false) => {
   const [progress, setProgress] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!userId) {
-      setProgress(null);
-      setLoading(false);
-      return;
+      // Use setTimeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setProgress(null);
+        setLoading(false);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     if (realtime) {
@@ -121,7 +127,7 @@ export const useProgress = (userId: string | null, realtime: boolean = false) =>
   }, [userId, realtime]);
 
   const updateProgress = async (progressData: any) => {
-    if (!userId) return { success: false, message: 'User ID required' };
+    if (!userId) return { success: false, message: "User ID required" };
 
     setLoading(true);
     const result = await saveProgress(userId, progressData);
@@ -152,16 +158,19 @@ export const useProgress = (userId: string | null, realtime: boolean = false) =>
  * @param realtime - Enable real-time updates
  * @returns Test results state and methods
  */
-export const useTestResults = (userId: string | null, limit: number = 10, realtime: boolean = false) => {
+export const useTestResults = (userId: string | null, limit = 10, realtime = false) => {
   const [testResults, setTestResults] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!userId) {
-      setTestResults([]);
-      setLoading(false);
-      return;
+      // Use setTimeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setTestResults([]);
+        setLoading(false);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     if (realtime) {
@@ -192,7 +201,7 @@ export const useTestResults = (userId: string | null, limit: number = 10, realti
   }, [userId, limit, realtime]);
 
   const addTestResult = async (testData: any) => {
-    if (!userId) return { success: false, message: 'User ID required' };
+    if (!userId) return { success: false, message: "User ID required" };
 
     setLoading(true);
     const result = await saveTestResult(userId, testData);
@@ -222,16 +231,19 @@ export const useTestResults = (userId: string | null, limit: number = 10, realti
  * @param limit - Number of conversations to fetch
  * @returns Conversations state and methods
  */
-export const useConversations = (userId: string | null, limit: number = 20) => {
+export const useConversations = (userId: string | null, limit = 20) => {
   const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!userId) {
-      setConversations([]);
-      setLoading(false);
-      return;
+      // Use setTimeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setConversations([]);
+        setLoading(false);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     const fetchConversations = async () => {
@@ -251,7 +263,7 @@ export const useConversations = (userId: string | null, limit: number = 20) => {
   }, [userId, limit]);
 
   const addConversation = async (conversationData: any) => {
-    if (!userId) return { success: false, message: 'User ID required' };
+    if (!userId) return { success: false, message: "User ID required" };
 
     setLoading(true);
     const result = await saveConversation(userId, conversationData);
