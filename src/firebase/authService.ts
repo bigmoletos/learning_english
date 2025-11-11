@@ -15,8 +15,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User
-} from "firebase/auth";
-import { auth } from "./config";
+} from 'firebase/auth';
+import { auth } from './config';
 
 interface AuthResult {
   success: boolean;
@@ -47,10 +47,10 @@ export const registerUser = async (email: string, password: string, displayName:
     return {
       success: true,
       user: userCredential.user,
-      message: "Registration successful. Please check your email for verification."
+      message: 'Registration successful. Please check your email for verification.'
     };
   } catch (error: any) {
-    console.error("Registration error:", error);
+    console.error('Registration error:', error);
     return {
       success: false,
       error: error.code,
@@ -73,7 +73,7 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
       user: userCredential.user
     };
   } catch (error: any) {
-    console.error("Login error:", error);
+    console.error('Login error:', error);
     return {
       success: false,
       error: error.code,
@@ -91,10 +91,10 @@ export const logoutUser = async (): Promise<AuthResult> => {
     await signOut(auth);
     return {
       success: true,
-      message: "Logout successful"
+      message: 'Logout successful'
     };
   } catch (error: any) {
-    console.error("Logout error:", error);
+    console.error('Logout error:', error);
     return {
       success: false,
       error: error.code,
@@ -113,10 +113,10 @@ export const resetPassword = async (email: string): Promise<AuthResult> => {
     await sendPasswordResetEmail(auth, email);
     return {
       success: true,
-      message: "Password reset email sent. Please check your inbox."
+      message: 'Password reset email sent. Please check your inbox.'
     };
   } catch (error: any) {
-    console.error("Password reset error:", error);
+    console.error('Password reset error:', error);
     return {
       success: false,
       error: error.code,
@@ -138,7 +138,7 @@ export const signInWithGoogle = async (): Promise<AuthResult> => {
       user: userCredential.user
     };
   } catch (error: any) {
-    console.error("Google sign-in error:", error);
+    console.error('Google sign-in error:', error);
     return {
       success: false,
       error: error.code,
@@ -171,23 +171,20 @@ export const onAuthStateChange = (callback: (user: User | null) => void): (() =>
  */
 const getAuthErrorMessage = (errorCode: string): string => {
   const errorMessages: { [key: string]: string } = {
-    "auth/email-already-in-use": "Cet email est déjà enregistré.",
-    "auth/invalid-email": "Adresse email invalide.",
-    "auth/operation-not-allowed": "Opération non autorisée. Contactez le support.",
-    "auth/weak-password": "Le mot de passe est trop faible. Utilisez au moins 6 caractères.",
-    "auth/user-disabled": "Ce compte a été désactivé.",
-    "auth/user-not-found": "Aucun compte trouvé avec cet email.",
-    "auth/wrong-password": "Mot de passe incorrect.",
-    "auth/invalid-credential": "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.",
-    "auth/invalid-verification-code": "Code de vérification invalide.",
-    "auth/invalid-verification-id": "ID de vérification invalide.",
-    "auth/too-many-requests": "Trop de tentatives. Veuillez réessayer plus tard.",
-    "auth/network-request-failed": "Erreur réseau. Vérifiez votre connexion internet.",
-    "auth/popup-closed-by-user": "La fenêtre de connexion a été fermée.",
-    "auth/cancelled-popup-request": "Une seule demande de connexion est autorisée à la fois."
+    'auth/email-already-in-use': 'This email is already registered.',
+    'auth/invalid-email': 'Invalid email address.',
+    'auth/operation-not-allowed': 'Operation not allowed. Please contact support.',
+    'auth/weak-password': 'Password is too weak. Use at least 6 characters.',
+    'auth/user-disabled': 'This account has been disabled.',
+    'auth/user-not-found': 'No account found with this email.',
+    'auth/wrong-password': 'Incorrect password.',
+    'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
+    'auth/network-request-failed': 'Network error. Please check your connection.',
+    'auth/popup-closed-by-user': 'Sign-in popup was closed before completion.',
+    'auth/cancelled-popup-request': 'Only one popup request is allowed at a time.'
   };
 
-  return errorMessages[errorCode] || "Une erreur est survenue. Veuillez réessayer.";
+  return errorMessages[errorCode] || 'An error occurred. Please try again.';
 };
 
 export default {

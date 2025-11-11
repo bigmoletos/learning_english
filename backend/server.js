@@ -12,9 +12,6 @@ const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
-const logger = require('./utils/logger');
-const metrics = require('./utils/metrics');
-const setupSequelizeMetrics = require('./utils/dbMonitoring');
 
 // Charger les variables d'environnement
 // Chercher le fichier .env dans le répertoire parent (racine du projet)
@@ -29,41 +26,116 @@ if (!fs.existsSync(envPath)) {
 
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
-  logger.info(`Variables d'environnement chargées depuis: ${envPath}`);
+  console.log(`✅ Variables d'environnement chargées depuis: ${envPath}`);
 } else {
-  logger.warn('Fichier .env non trouvé. Variables d\'environnement par défaut utilisées.');
+  console.warn('⚠️  Fichier .env non trouvé. Variables d\'environnement par défaut utilisées.');
   dotenv.config(); // Tentative de chargement depuis le répertoire courant
 }
 
-// Vérifier les variables critiques
-if (!process.env.JWT_SECRET) {
-  logger.error('ERREUR: JWT_SECRET non défini dans .env');
-  logger.error('Le serveur ne pourra pas générer de tokens JWT.');
-  logger.error('Ajoutez JWT_SECRET dans votre fichier .env');
+// ===================================
+// VALIDATION DES VARIABLES D'ENVIRONNEMENT
+// ===================================
+const requiredEnvVars = ['JWT_SECRET', 'NODE_ENV'];
+const missingVars = requiredEnvVars.filter(v => !process.env[v]);
+
+if (missingVars.length > 0) {
+  console.error('❌ ERREUR: Variables d\'environnement requises manquantes:');
+  missingVars.forEach(v => console.error(`   - ${v}`));
+  console.error('\n💡 Copiez .env.example vers .env et configurez les valeurs');
+  process.exit(1);
 }
 
+// Vérifier JWT_SECRET strength en production
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.JWT_SECRET.length < 32) {
+    console.error('❌ ERREUR: JWT_SECRET trop court en production (minimum 32 caractères)');
+    console.error('   Générez un secret fort avec: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
+    process.exit(1);
+  }
+}
+
+// Warnings pour variables optionnelles
 if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-  logger.warn('SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
+  console.warn('⚠️  SMTP_USER ou SMTP_PASSWORD non défini - les emails ne fonctionneront pas');
+}
+
+if (!process.env.CORS_ORIGIN && process.env.NODE_ENV === 'production') {
+  console.warn('⚠️  CORS_ORIGIN non défini en production - utilisation des valeurs par défaut');
 }
 
 const app = express();
-const PORT = process.env.PORT || 5010;
+const PORT = process.env.PORT || 5000;
 
 // ==================================
 // MIDDLEWARES DE SÉCURITÉ
 // ==================================
 
-// Helmet - Protection des headers HTTP
-app.use(helmet());
+// HTTPS Enforcement en production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    // Vérifier si la requête est en HTTPS
+    if (req.header('x-forwarded-proto') !== 'https' && req.header('host') !== 'localhost') {
+      return res.redirect(301, `https://${req.header('host')}${req.url}`);
+    }
+    next();
+  });
+}
 
-// CORS - Configuration
-const corsOptions = {
-  origin: process.env.NODE_ENV === 'development'
-    ? true // Accepte toutes les origines en développement
-    : (process.env.CORS_ORIGIN || 'http://localhost:3000'),
-  credentials: true,
-  optionsSuccessStatus: 200
+// Helmet - Protection des headers HTTP
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"], // React needs unsafe-inline
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://firebasestorage.googleapis.com", "https://*.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Pour compatibilité avec certains services tiers
+}));
+
+// CORS - Configuration sécurisée
+const getAllowedOrigins = () => {
+  if (process.env.NODE_ENV === 'development') {
+    // En développement, autoriser localhost sur différents ports
+    return ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000'];
+  }
+
+  // En production, utiliser CORS_ORIGIN depuis .env (supports multiple origins separated by comma)
+  if (process.env.CORS_ORIGIN) {
+    return process.env.CORS_ORIGIN.split(',').map(origin => origin.trim());
+  }
+
+  // Fallback (ne devrait pas arriver grâce à la validation)
+  return ['http://localhost:3000'];
 };
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = getAllowedOrigins();
+
+    // Allow requests with no origin (mobile apps, curl, postman)
+    if (!origin && process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
 app.use(cors(corsOptions));
 
 // Rate Limiting - Protection contre les attaques
@@ -108,22 +180,11 @@ app.use(cookieParser());
 // Compression des réponses
 app.use(compression());
 
-// Middleware de métriques Prometheus (avant les routes)
-app.use(metrics.middleware);
-
-// Logging HTTP avec Winston
+// Logging
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev', {
-    stream: {
-      write: (message) => logger.http(message.trim())
-    }
-  }));
+  app.use(morgan('dev'));
 } else {
-  app.use(morgan('combined', {
-    stream: {
-      write: (message) => logger.http(message.trim())
-    }
-  }));
+  app.use(morgan('combined'));
 }
 
 // ==================================
@@ -132,35 +193,18 @@ if (process.env.NODE_ENV === 'development') {
 
 const db = require('./database/connection');
 
-// Configurer le monitoring de la base de données
-setupSequelizeMetrics(db);
-
 // Initialiser la base de données
 db.sync()
   .then(() => {
-    logger.info('Base de données connectée et synchronisée');
-    metrics.metrics.db.connectionsActive.set(1);
+    console.log('✅ Base de données connectée et synchronisée');
   })
   .catch((err) => {
-    logger.error('Erreur de connexion à la base de données', { error: err.message, stack: err.stack });
-    metrics.metrics.app.errorsTotal.inc({ type: 'database', severity: 'critical' });
+    console.error('❌ Erreur de connexion à la base de données:', err);
   });
 
 // ==================================
 // ROUTES
 // ==================================
-
-// Route de métriques Prometheus
-app.get('/metrics', async (req, res) => {
-  try {
-    res.set('Content-Type', metrics.register.contentType);
-    const metricsData = await metrics.getMetrics();
-    res.end(metricsData);
-  } catch (err) {
-    logger.error('Erreur lors de la récupération des métriques', { error: err.message });
-    res.status(500).end();
-  }
-});
 
 // Route de santé
 app.get('/health', (req, res) => {
@@ -211,9 +255,6 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/exercises', require('./routes/exercises'));
 app.use('/api/progress', require('./routes/progress'));
 app.use('/api/admin', require('./routes/admin'));
-app.use('/api/text-to-speech', require('./routes/textToSpeech'));
-app.use('/api/speech-to-text', require('./routes/speechToText'));
-app.use('/api/speaking-agent', require('./routes/speakingAgent'));
 
 // Route 404
 app.use((req, res) => {
@@ -228,23 +269,10 @@ app.use((req, res) => {
 // ==================================
 
 app.use((err, req, res, next) => {
+  console.error('Erreur serveur:', err);
+
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Erreur interne du serveur';
-
-  // Logger l'erreur
-  logger.error('Erreur serveur', {
-    error: message,
-    stack: err.stack,
-    statusCode,
-    path: req.path,
-    method: req.method
-  });
-
-  // Incrémenter les métriques d'erreur
-  metrics.metrics.app.errorsTotal.inc({
-    type: err.name || 'UnknownError',
-    severity: statusCode >= 500 ? 'critical' : 'warning'
-  });
 
   res.status(statusCode).json({
     success: false,
@@ -259,64 +287,41 @@ app.use((err, req, res, next) => {
 
 const HOST = process.env.HOST || '0.0.0.0';
 const server = app.listen(PORT, HOST, () => {
-  logger.info('Serveur backend démarré', {
-    port: PORT,
-    host: HOST,
-    url: `http://localhost:${PORT}`,
-    networkUrl: `http://${HOST}:${PORT}`,
-    environment: process.env.NODE_ENV,
-    corsOrigin: process.env.CORS_ORIGIN
-  });
-
-  if (process.env.NODE_ENV === 'development') {
-    console.log('');
-    console.log('═══════════════════════════════════════════════════════════');
-    console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
-    console.log(`📍 URL locale: http://localhost:${PORT}`);
-    console.log(`🌐 URL réseau: http://${HOST}:${PORT}`);
-    console.log(`🌍 Environnement: ${process.env.NODE_ENV}`);
-    console.log(`🔒 CORS autorisé depuis: ${process.env.CORS_ORIGIN}`);
-    console.log(`📊 Métriques disponibles sur: http://localhost:${PORT}/metrics`);
-    console.log('═══════════════════════════════════════════════════════════');
-    console.log('');
-    console.log('Routes disponibles:');
-    console.log('  GET  /health            - Vérifier l\'état du serveur');
-    console.log('  GET  /metrics           - Métriques Prometheus');
-    console.log('  POST /api/auth/register - Inscription');
-    console.log('  POST /api/auth/login    - Connexion');
-    console.log('  POST /api/auth/verify   - Vérification email');
-    console.log('  GET  /api/users/me      - Profil utilisateur');
-    console.log('');
-  }
+  console.log('');
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
+  console.log(`📍 URL locale: http://localhost:${PORT}`);
+  console.log(`🌐 URL réseau: http://${HOST}:${PORT}`);
+  console.log(`🌍 Environnement: ${process.env.NODE_ENV}`);
+  console.log(`🔒 CORS autorisé depuis: ${process.env.CORS_ORIGIN}`);
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log('');
+  console.log('Routes disponibles:');
+  console.log('  GET  /health           - Vérifier l\'état du serveur');
+  console.log('  POST /api/auth/register - Inscription');
+  console.log('  POST /api/auth/login    - Connexion');
+  console.log('  POST /api/auth/verify   - Vérification email');
+  console.log('  GET  /api/users/me      - Profil utilisateur');
+  console.log('');
+  console.log('💡 Accès smartphone: http://21.0.0.112:5000');
+  console.log('');
 });
 
 // Gestion de l'arrêt gracieux
 process.on('SIGTERM', () => {
-  logger.info('SIGTERM reçu, arrêt gracieux du serveur...');
+  console.log('🛑 SIGTERM reçu, arrêt gracieux du serveur...');
   server.close(() => {
-    logger.info('Serveur arrêté proprement');
+    console.log('✅ Serveur arrêté proprement');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  logger.info('SIGINT reçu (Ctrl+C), arrêt gracieux du serveur...');
+  console.log('\n🛑 SIGINT reçu (Ctrl+C), arrêt gracieux du serveur...');
   server.close(() => {
-    logger.info('Serveur arrêté proprement');
+    console.log('✅ Serveur arrêté proprement');
     process.exit(0);
   });
-});
-
-// Gestion des erreurs non capturées
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection', { reason, promise });
-  metrics.metrics.app.errorsTotal.inc({ type: 'unhandledRejection', severity: 'critical' });
-});
-
-process.on('uncaughtException', (error) => {
-  logger.error('Uncaught Exception', { error: error.message, stack: error.stack });
-  metrics.metrics.app.errorsTotal.inc({ type: 'uncaughtException', severity: 'critical' });
-  process.exit(1);
 });
 
 module.exports = app;

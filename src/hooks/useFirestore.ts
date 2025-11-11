@@ -4,7 +4,7 @@
  * @date 2025-11-06
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   getUserProfile,
   createOrUpdateUserProfile,
@@ -16,7 +16,7 @@ import {
   saveConversation,
   subscribeToProgress,
   subscribeToTestResults
-} from "../firebase/firestoreService";
+} from '../firebase/firestoreService';
 
 /**
  * Custom hook for user profile
@@ -52,7 +52,7 @@ export const useUserProfile = (userId: string | null) => {
   }, [userId]);
 
   const updateProfile = async (profileData: any) => {
-    if (!userId) return { success: false, message: "User ID required" };
+    if (!userId) return { success: false, message: 'User ID required' };
 
     setLoading(true);
     const result = await createOrUpdateUserProfile(userId, profileData);
@@ -81,7 +81,7 @@ export const useUserProfile = (userId: string | null) => {
  * @param realtime - Enable real-time updates
  * @returns Progress state and methods
  */
-export const useProgress = (userId: string | null, realtime = false) => {
+export const useProgress = (userId: string | null, realtime: boolean = false) => {
   const [progress, setProgress] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export const useProgress = (userId: string | null, realtime = false) => {
   }, [userId, realtime]);
 
   const updateProgress = async (progressData: any) => {
-    if (!userId) return { success: false, message: "User ID required" };
+    if (!userId) return { success: false, message: 'User ID required' };
 
     setLoading(true);
     const result = await saveProgress(userId, progressData);
@@ -152,7 +152,7 @@ export const useProgress = (userId: string | null, realtime = false) => {
  * @param realtime - Enable real-time updates
  * @returns Test results state and methods
  */
-export const useTestResults = (userId: string | null, limit = 10, realtime = false) => {
+export const useTestResults = (userId: string | null, limit: number = 10, realtime: boolean = false) => {
   const [testResults, setTestResults] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -192,7 +192,7 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
   }, [userId, limit, realtime]);
 
   const addTestResult = async (testData: any) => {
-    if (!userId) return { success: false, message: "User ID required" };
+    if (!userId) return { success: false, message: 'User ID required' };
 
     setLoading(true);
     const result = await saveTestResult(userId, testData);
@@ -222,7 +222,7 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
  * @param limit - Number of conversations to fetch
  * @returns Conversations state and methods
  */
-export const useConversations = (userId: string | null, limit = 20) => {
+export const useConversations = (userId: string | null, limit: number = 20) => {
   const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -251,7 +251,7 @@ export const useConversations = (userId: string | null, limit = 20) => {
   }, [userId, limit]);
 
   const addConversation = async (conversationData: any) => {
-    if (!userId) return { success: false, message: "User ID required" };
+    if (!userId) return { success: false, message: 'User ID required' };
 
     setLoading(true);
     const result = await saveConversation(userId, conversationData);

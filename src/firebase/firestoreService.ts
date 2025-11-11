@@ -19,8 +19,8 @@ import {
   onSnapshot,
   serverTimestamp,
   increment
-} from "firebase/firestore";
-import { db } from "./config";
+} from 'firebase/firestore';
+import { db } from './config';
 
 interface FirestoreResult {
   success: boolean;
@@ -33,10 +33,10 @@ interface FirestoreResult {
 
 // Collection names
 const COLLECTIONS = {
-  USERS: "users",
-  PROGRESS: "progress",
-  TEST_RESULTS: "test_results",
-  CONVERSATIONS: "conversations"
+  USERS: 'users',
+  PROGRESS: 'progress',
+  TEST_RESULTS: 'test_results',
+  CONVERSATIONS: 'conversations'
 };
 
 /**
@@ -65,9 +65,9 @@ export const createOrUpdateUserProfile = async (userId: string, userData: any): 
       });
     }
 
-    return { success: true, message: "User profile saved successfully" };
+    return { success: true, message: 'User profile saved successfully' };
   } catch (error: any) {
-    console.error("Error saving user profile:", error);
+    console.error('Error saving user profile:', error);
     return { success: false, error: error.message };
   }
 };
@@ -85,10 +85,10 @@ export const getUserProfile = async (userId: string): Promise<FirestoreResult> =
     if (userDoc.exists()) {
       return { success: true, data: { id: userDoc.id, ...userDoc.data() } };
     } else {
-      return { success: false, message: "User not found" };
+      return { success: false, message: 'User not found' };
     }
   } catch (error: any) {
-    console.error("Error getting user profile:", error);
+    console.error('Error getting user profile:', error);
     return { success: false, error: error.message };
   }
 };
@@ -120,9 +120,9 @@ export const saveProgress = async (userId: string, progressData: any): Promise<F
       });
     }
 
-    return { success: true, message: "Progress saved successfully" };
+    return { success: true, message: 'Progress saved successfully' };
   } catch (error: any) {
-    console.error("Error saving progress:", error);
+    console.error('Error saving progress:', error);
     return { success: false, error: error.message };
   }
 };
@@ -140,10 +140,10 @@ export const getProgress = async (userId: string): Promise<FirestoreResult> => {
     if (progressDoc.exists()) {
       return { success: true, data: { id: progressDoc.id, ...progressDoc.data() } };
     } else {
-      return { success: false, message: "Progress not found" };
+      return { success: false, message: 'Progress not found' };
     }
   } catch (error: any) {
-    console.error("Error getting progress:", error);
+    console.error('Error getting progress:', error);
     return { success: false, error: error.message };
   }
 };
@@ -170,9 +170,9 @@ export const saveTestResult = async (userId: string, testData: any): Promise<Fir
       updatedAt: serverTimestamp()
     });
 
-    return { success: true, message: "Test result saved successfully", testId: testRef.id };
+    return { success: true, message: 'Test result saved successfully', testId: testRef.id };
   } catch (error: any) {
-    console.error("Error saving test result:", error);
+    console.error('Error saving test result:', error);
     return { success: false, error: error.message };
   }
 };
@@ -183,12 +183,12 @@ export const saveTestResult = async (userId: string, testData: any): Promise<Fir
  * @param {number} limitCount - Number of results to fetch
  * @returns {Promise<Object>} Test results array
  */
-export const getTestResults = async (userId: string, limitCount = 10): Promise<FirestoreResult> => {
+export const getTestResults = async (userId: string, limitCount: number = 10): Promise<FirestoreResult> => {
   try {
     const testsQuery = query(
       collection(db, COLLECTIONS.TEST_RESULTS),
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc"),
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc'),
       limit(limitCount)
     );
 
@@ -200,7 +200,7 @@ export const getTestResults = async (userId: string, limitCount = 10): Promise<F
 
     return { success: true, data: tests };
   } catch (error: any) {
-    console.error("Error getting test results:", error);
+    console.error('Error getting test results:', error);
     return { success: false, error: error.message };
   }
 };
@@ -220,9 +220,9 @@ export const saveConversation = async (userId: string, conversationData: any): P
       createdAt: serverTimestamp()
     });
 
-    return { success: true, message: "Conversation saved successfully", conversationId: conversationRef.id };
+    return { success: true, message: 'Conversation saved successfully', conversationId: conversationRef.id };
   } catch (error: any) {
-    console.error("Error saving conversation:", error);
+    console.error('Error saving conversation:', error);
     return { success: false, error: error.message };
   }
 };
@@ -233,12 +233,12 @@ export const saveConversation = async (userId: string, conversationData: any): P
  * @param {number} limitCount - Number of conversations to fetch
  * @returns {Promise<Object>} Conversations array
  */
-export const getConversations = async (userId: string, limitCount = 20): Promise<FirestoreResult> => {
+export const getConversations = async (userId: string, limitCount: number = 20): Promise<FirestoreResult> => {
   try {
     const conversationsQuery = query(
       collection(db, COLLECTIONS.CONVERSATIONS),
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc"),
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc'),
       limit(limitCount)
     );
 
@@ -250,7 +250,7 @@ export const getConversations = async (userId: string, limitCount = 20): Promise
 
     return { success: true, data: conversations };
   } catch (error: any) {
-    console.error("Error getting conversations:", error);
+    console.error('Error getting conversations:', error);
     return { success: false, error: error.message };
   }
 };
@@ -279,11 +279,11 @@ export const subscribeToProgress = (userId: string, callback: (data: any) => voi
  * @param {number} limitCount - Number of results to fetch
  * @returns {Function} Unsubscribe function
  */
-export const subscribeToTestResults = (userId: string, callback: (data: any[]) => void, limitCount = 10): (() => void) => {
+export const subscribeToTestResults = (userId: string, callback: (data: any[]) => void, limitCount: number = 10): (() => void) => {
   const testsQuery = query(
     collection(db, COLLECTIONS.TEST_RESULTS),
-    where("userId", "==", userId),
-    orderBy("createdAt", "desc"),
+    where('userId', '==', userId),
+    orderBy('createdAt', 'desc'),
     limit(limitCount)
   );
 
@@ -312,7 +312,7 @@ export const deleteUserData = async (userId: string): Promise<FirestoreResult> =
     // Delete test results
     const testsQuery = query(
       collection(db, COLLECTIONS.TEST_RESULTS),
-      where("userId", "==", userId)
+      where('userId', '==', userId)
     );
     const querySnapshot = await getDocs(testsQuery);
     const deletePromises: Promise<any>[] = [];
@@ -324,7 +324,7 @@ export const deleteUserData = async (userId: string): Promise<FirestoreResult> =
     // Delete conversations
     const conversationsQuery = query(
       collection(db, COLLECTIONS.CONVERSATIONS),
-      where("userId", "==", userId)
+      where('userId', '==', userId)
     );
     const conversationsSnapshot = await getDocs(conversationsQuery);
     const conversationDeletePromises: Promise<any>[] = [];
@@ -333,9 +333,9 @@ export const deleteUserData = async (userId: string): Promise<FirestoreResult> =
     });
     await Promise.all(conversationDeletePromises);
 
-    return { success: true, message: "All user data deleted successfully" };
+    return { success: true, message: 'All user data deleted successfully' };
   } catch (error: any) {
-    console.error("Error deleting user data:", error);
+    console.error('Error deleting user data:', error);
     return { success: false, error: error.message };
   }
 };

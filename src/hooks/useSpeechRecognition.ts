@@ -34,32 +34,23 @@ const isAndroid = (): boolean => {
 
 // Vérification HTTPS (requis pour Web Speech API)
 const isSecureContext = (): boolean => {
-  return window.isSecureContext || window.location.protocol === "https:" ||
-         window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  return window.isSecureContext || window.location.protocol === 'https:' ||
+         window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 };
 
 export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
-  const browserSupportsSpeechRecognition =
-    typeof window !== "undefined" &&
-    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) &&
-    isSecureContext();
-
   const [transcript, setTranscript] = useState<string>("");
   const [listening, setListening] = useState<boolean>(false);
   const [confidence, setConfidence] = useState<number>(0);
-  const [error, setError] = useState<string | null>(() => {
-    if (!browserSupportsSpeechRecognition) {
-      if (!isSecureContext()) {
-        return "HTTPS requis pour la reconnaissance vocale. Veuillez utiliser une connexion sécurisée.";
-      } else {
-        return "Votre navigateur ne supporte pas la reconnaissance vocale.";
-      }
-    }
-    return null;
-  });
+  const [error, setError] = useState<string | null>(null);
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const browserSupportsSpeechRecognition =
+    typeof window !== 'undefined' &&
+    ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) &&
+    isSecureContext();
 
   // Vérifier les permissions microphone
   const checkMicrophonePermission = useCallback(async (): Promise<boolean> => {
@@ -72,13 +63,13 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       setError(null);
       return true;
     } catch (err: any) {
-      console.error("Microphone permission error:", err);
-      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
-        setError("Permission microphone refusée. Veuillez autoriser l'accès au microphone.");
-      } else if (err.name === "NotFoundError") {
-        setError("Aucun microphone détecté sur votre appareil.");
+      console.error('Microphone permission error:', err);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setError('Permission microphone refusée. Veuillez autoriser l\'accès au microphone.');
+      } else if (err.name === 'NotFoundError') {
+        setError('Aucun microphone détecté sur votre appareil.');
       } else {
-        setError("Erreur d'accès au microphone.");
+        setError('Erreur d\'accès au microphone.');
       }
       setPermissionGranted(false);
       return false;
@@ -87,6 +78,11 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
 
   useEffect(() => {
     if (!browserSupportsSpeechRecognition) {
+      if (!isSecureContext()) {
+        setError('HTTPS requis pour la reconnaissance vocale. Veuillez utiliser une connexion sécurisée.');
+      } else {
+        setError('Votre navigateur ne supporte pas la reconnaissance vocale.');
+      }
       return;
     }
 
@@ -96,7 +92,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     // Configuration optimisée pour Android
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = "en-US";
+    recognition.lang = 'en-US';
     recognition.maxAlternatives = 1;
 
     // Pour Android, on limite la reconnaissance pour éviter les timeouts
@@ -105,13 +101,13 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     }
 
     recognition.onresult = (event: any) => {
-      let interimTranscript = "";
-      let finalTranscript = "";
+      let interimTranscript = '';
+      let finalTranscript = '';
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcriptPart = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
-          finalTranscript += transcriptPart + " ";
+          finalTranscript += transcriptPart + ' ';
           const conf = event.results[i][0].confidence;
           // Android peut ne pas fournir de confidence, on met 80 par défaut
           setConfidence(conf ? Math.round(conf * 100) : 80);
@@ -142,28 +138,28 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     };
 
     recognition.onerror = (event: any) => {
-      console.error("Speech recognition error:", event.error);
+      console.error('Speech recognition error:', event.error);
 
       // Gestion des erreurs spécifiques Android
       switch (event.error) {
-      case "network":
-        setError("Erreur réseau. Vérifiez votre connexion Internet.");
-        break;
-      case "not-allowed":
-        setError("Permission microphone refusée.");
-        setPermissionGranted(false);
-        break;
-      case "no-speech":
-        setError("Aucune parole détectée. Réessayez.");
-        break;
-      case "audio-capture":
-        setError("Impossible d'accéder au microphone.");
-        break;
-      case "aborted":
-        // Ignore, c'est souvent un arrêt volontaire
-        break;
-      default:
-        setError(`Erreur de reconnaissance: ${event.error}`);
+        case 'network':
+          setError('Erreur réseau. Vérifiez votre connexion Internet.');
+          break;
+        case 'not-allowed':
+          setError('Permission microphone refusée.');
+          setPermissionGranted(false);
+          break;
+        case 'no-speech':
+          setError('Aucune parole détectée. Réessayez.');
+          break;
+        case 'audio-capture':
+          setError('Impossible d\'accéder au microphone.');
+          break;
+        case 'aborted':
+          // Ignore, c'est souvent un arrêt volontaire
+          break;
+        default:
+          setError(`Erreur de reconnaissance: ${event.error}`);
       }
 
       setListening(false);
@@ -219,8 +215,8 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       setListening(true);
       setError(null);
     } catch (error: any) {
-      console.error("Error starting recognition:", error);
-      if (error.name === "InvalidStateError") {
+      console.error('Error starting recognition:', error);
+      if (error.name === 'InvalidStateError') {
         // Déjà en cours, on réessaie après un arrêt
         try {
           recognitionRef.current.stop();
@@ -228,10 +224,10 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
             recognitionRef.current.start();
           }, 200);
         } catch (e) {
-          setError("Impossible de démarrer la reconnaissance vocale.");
+          setError('Impossible de démarrer la reconnaissance vocale.');
         }
       } else {
-        setError("Erreur lors du démarrage de la reconnaissance vocale.");
+        setError('Erreur lors du démarrage de la reconnaissance vocale.');
       }
       setListening(false);
     }
@@ -243,7 +239,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
         recognitionRef.current.stop();
         setListening(false);
       } catch (error) {
-        console.error("Error stopping recognition:", error);
+        console.error('Error stopping recognition:', error);
       }
     }
     if (restartTimeoutRef.current) {

@@ -4,8 +4,8 @@
  * @date 2025-11-06
  */
 
-import { useState, useEffect } from "react";
-import { User } from "firebase/auth";
+import { useState, useEffect } from 'react';
+import { User } from 'firebase/auth';
 import {
   registerUser,
   loginUser,
@@ -14,7 +14,7 @@ import {
   signInWithGoogle,
   getCurrentUser,
   onAuthStateChange
-} from "../firebase/authService";
+} from '../firebase/authService';
 
 /**
  * Custom hook for Firebase authentication

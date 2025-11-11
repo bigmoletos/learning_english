@@ -1,28 +1,26 @@
-/**
- * Configuration Jest pour les tests backend
- * @version 1.0.0
- * @date 10-11-2025
- */
-
+// Jest configuration for backend
 module.exports = {
-  testEnvironment: "node",
-  coverageDirectory: "coverage",
-  collectCoverageFrom: [
-    "routes/**/*.js",
-    "services/**/*.js",
-    "middleware/**/*.js",
-    "!**/node_modules/**",
-    "!**/coverage/**",
+  testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  testMatch: [
+    '**/__tests__/**/*.js',
+    '**/?(*.)+(spec|test).js'
   ],
-  testMatch: ["**/__tests__/**/*.js", "**/?(*.)+(spec|test).js"],
-  testPathIgnorePatterns: ["/node_modules/"],
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/node_modules/**',
+    '!**/tests/**',
+    '!**/coverage/**',
+    '!jest.config.js',
+  ],
   coverageThreshold: {
     global: {
-      branches: 50,
-      functions: 50,
-      lines: 50,
-      statements: 50,
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
     },
   },
+  testTimeout: 10000,
   verbose: true,
 };

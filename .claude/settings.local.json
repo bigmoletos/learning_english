@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(claude install:*)"
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
