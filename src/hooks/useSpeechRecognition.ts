@@ -104,11 +104,13 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     }
 
     recognition.onresult = (event: any) => {
+      console.log("[SpeechRecognition] onresult event:", event);
       let interimTranscript = "";
       let finalTranscript = "";
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcriptPart = event.results[i][0].transcript;
+        console.log("[SpeechRecognition] Transcript part:", transcriptPart, "isFinal:", event.results[i].isFinal);
         if (event.results[i].isFinal) {
           finalTranscript += transcriptPart + " ";
           const conf = event.results[i][0].confidence;
@@ -118,6 +120,8 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
           interimTranscript += transcriptPart;
         }
       }
+
+      console.log("[SpeechRecognition] Final transcript:", finalTranscript, "Interim:", interimTranscript);
 
       setTranscript((prev) => {
         const updated = prev + finalTranscript;
@@ -169,6 +173,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     };
 
     recognition.onstart = () => {
+      console.log("[SpeechRecognition] Recognition started (onstart event)");
       setError(null);
       setListening(true);
     };
@@ -197,10 +202,22 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   }, [browserSupportsSpeechRecognition, listening]);
 
   const startListening = useCallback(async () => {
-    if (!recognitionRef.current || listening) return;
+    console.log("[SpeechRecognition] startListening called", {
+      hasRecognition: !!recognitionRef.current,
+      isListening: listening
+    });
+
+    if (!recognitionRef.current || listening) {
+      console.log("[SpeechRecognition] startListening skipped", {
+        reason: !recognitionRef.current ? "no recognition" : "already listening"
+      });
+      return;
+    }
 
     // Vérifier la permission avant de commencer
+    console.log("[SpeechRecognition] Checking microphone permission...");
     const hasPermission = await checkMicrophonePermission();
+    console.log("[SpeechRecognition] Permission result:", hasPermission);
     if (!hasPermission) return;
 
     try {
@@ -214,11 +231,13 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       // Petit délai pour Android
       await new Promise(resolve => setTimeout(resolve, 100));
 
+      console.log("[SpeechRecognition] Starting recognition...");
       recognitionRef.current.start();
       setListening(true);
       setError(null);
+      console.log("[SpeechRecognition] Recognition started successfully");
     } catch (error: any) {
-      console.error("Error starting recognition:", error);
+      console.error("[SpeechRecognition] Error starting recognition:", error);
       if (error.name === "InvalidStateError") {
         // Déjà en cours, on réessaie après un arrêt
         try {
