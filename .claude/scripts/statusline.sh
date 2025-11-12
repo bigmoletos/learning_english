@@ -21,7 +21,8 @@ cd "$cwd" 2>/dev/null || cd "$(pwd)"
 transcript_path=$(echo "$input" | grep -o '"transcript_path":"[^"]*"' | sed 's/"transcript_path":"\(.*\)"/\1/')
 
 # Parse transcript to get token stats
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+# Use cwd-relative path instead of $0 to handle different calling contexts
+SCRIPT_DIR="$cwd/.claude/scripts"
 if [ -n "$transcript_path" ] && [ -f "$SCRIPT_DIR/parse_transcript.sh" ]; then
     token_stats=$("$SCRIPT_DIR/parse_transcript.sh" "$transcript_path" 2>/dev/null)
 else
@@ -50,9 +51,10 @@ SESSION_ICON="⏱️"
 MESSAGES_ICON="💬"
 PERCENT_ICON="📊"
 
-# Free tier limits (approximate)
-FREE_TIER_MAX_MESSAGES=9
-FREE_TIER_SESSION_HOURS=5
+# Pro tier limits (approximate)
+# Adjust these values based on your actual Pro plan limits
+FREE_TIER_MAX_MESSAGES=500  # Pro plan: ~500 messages per session
+FREE_TIER_SESSION_HOURS=24  # Pro plan: 24 hours session
 
 # Function to get git branch
 get_git_branch() {

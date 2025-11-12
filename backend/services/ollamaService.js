@@ -248,6 +248,41 @@ Feedback:`;
       return null;
     }
   }
+
+  /**
+   * Génère une réponse conversationnelle
+   */
+  async generateResponse(prompt, options = {}) {
+    if (!(await this.isAvailable())) {
+      return null;
+    }
+
+    try {
+      const response = await axios.post(
+        `${this.ollamaUrl}/api/generate`,
+        {
+          model: this.model,
+          prompt: prompt,
+          stream: false,
+          options: {
+            temperature: options.temperature || 0.7,
+            top_p: options.top_p || 0.9,
+            max_tokens: options.max_tokens || 200,
+          },
+        },
+        {
+          timeout: options.timeout || 15000, // 15 secondes par défaut
+        }
+      );
+
+      const generatedText = response.data.response?.trim();
+      logger.info("[Ollama] Réponse conversationnelle générée");
+      return generatedText || null;
+    } catch (error) {
+      logger.error("[Ollama] Erreur lors de la génération de réponse:", error.message);
+      return null;
+    }
+  }
 }
 
 module.exports = new OllamaService();

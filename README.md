@@ -1,174 +1,160 @@
-# Infrastructure de Gestion de Secrets - Infisical
+# AI English Trainer IT
 
-**Version** : 1.0.0 | **Date** : Novembre 2025
+> Application d'apprentissage de l'anglais technique (IA/DevOps) avec agent IA, reconnaissance vocale et préparation TOEIC/TOEFL (B2→C1)
+
+**Version**: 1.0.0 | **Date**: Novembre 2025
 
 ---
 
 ## 🎯 Vue d'ensemble
 
-Ce projet fournit une infrastructure complète et sécurisée pour la gestion centralisée de secrets applicatifs via **Infisical** (auto-hébergé).
-
-### Fonctionnalités
-
-- ✅ **Gestion centralisée** : Un seul point d'accès pour tous vos projets
-- ✅ **Auto-hébergé** : Contrôle total sur vos données
-- ✅ **Sécurisé** : Chiffrement au repos et en transit, RBAC, audit logs
-- ✅ **Multi-projets** : Support web, mobile, Kubernetes, CI/CD
-- ✅ **Bastion** : Reverse proxy sécurisé avec authentification
-- ✅ **Documentation complète** : Guides d'installation et d'utilisation
-
----
-
-## 📋 Prérequis
-
-- Docker et Docker Compose installés
-- Serveur Linux avec au moins 2GB RAM et 10GB disque
-- Domaine pointant vers le serveur (pour HTTPS)
-- Accès root ou sudo pour configuration réseau
+Application React + Firebase pour l'apprentissage interactif de l'anglais technique avec :
+- 🎤 **Mode conversationnel** : Parlez et recevez des corrections en temps réel
+- 🤖 **Agent IA** : Corrections grammaticales avec explications détaillées
+- 📚 **Corpus technique** : 100+ sujets (DevOps, Cloud, IA, Cybersécurité)
+- 📝 **Exercices TOEIC/TOEFL** : Préparation niveau B2 à C1
+- 📱 **Support mobile** : Application Android (APK disponible)
+- 🔊 **Text-to-Speech** : Google Cloud TTS pour prononciation native
 
 ---
 
 ## 🚀 Démarrage rapide
 
-### 1. Installation sur le serveur
+### Prérequis
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+- Compte Firebase (authentification)
+- Compte Google Cloud (TTS)
+
+### Installation
 
 ```bash
-# Cloner ou copier ce projet sur votre serveur
-cd /opt/gestion_secrets
+# 1. Cloner le projet
+cd /mnt/c/programmation/learning_english
 
-# Configurer les variables d'environnement
-cp infisical/.env.example infisical/.env
-nano infisical/.env  # Modifier les valeurs
+# 2. Installer les dépendances
+npm install
+cd backend && npm install && cd ..
 
-# Démarrer Infisical
-cd infisical
-docker-compose up -d
+# 3. Configurer les variables d'environnement
+cp .env.example .env
+# Éditer .env avec vos credentials Firebase et Google Cloud
 
-# Configurer le bastion
-cd ../bastion
-./setup.sh
+# 4. Démarrer le backend
+cd backend && npm run dev &
+
+# 5. Démarrer l'application React
+npm start
 ```
 
-### 2. Installation du client CLI
+L'application sera accessible sur `http://localhost:3000`
 
-**Windows (PowerShell) :**
-```powershell
-.\scripts\setup-cli.ps1
+---
+
+## 📖 Structure du projet
+
 ```
-
-**Linux :**
-```bash
-chmod +x scripts/setup-cli.sh
-./scripts/setup-cli.sh
-```
-
-### 3. Migration des secrets
-
-```bash
-# Analyser et migrer les secrets depuis .env_old
-node scripts/migrate-secrets.js
+learning_english/
+├── src/                    # Code source React
+│   ├── agents/            # Agent IA de correction
+│   ├── components/        # Composants React
+│   ├── hooks/            # Hooks personnalisés (speech, TTS)
+│   ├── services/         # Services (Firebase, TTS, STT)
+│   └── types/            # Définitions TypeScript
+├── backend/              # API Express.js
+│   ├── routes/          # Routes API
+│   ├── database/        # SQLite + Sequelize
+│   └── credentials/     # Credentials Google Cloud TTS
+├── public/corpus/       # Contenu pédagogique
+│   ├── grammar/        # 20 leçons de grammaire
+│   ├── technical/      # 106 sujets techniques
+│   └── toeic_toefl/   # 8 exercices d'examen
+├── android/            # Build Android Capacitor
+└── docs/              # Documentation complémentaire
 ```
 
 ---
 
 ## 📚 Documentation
 
-- **[INSTALLATION.md](docs/INSTALLATION.md)** : Guide d'installation détaillé
-- **[USAGE.md](docs/USAGE.md)** : Guide d'utilisation pour développeurs
-- **[INTEGRATION_GUIDE.md](docs/INTEGRATION_GUIDE.md)** : Comment intégrer dans un projet
-- **[BASTION_SETUP.md](docs/BASTION_SETUP.md)** : Configuration du bastion
-- **[SECURITY_CHECKLIST.md](docs/SECURITY_CHECKLIST.md)** : Checklist sécurité
+- **[SETUP.md](SETUP.md)** - Installation complète et configuration (Firebase, Google Cloud, Android)
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Guide développeur (architecture, features, tests)
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Déploiement en production et build APK
+- **[CHANGELOG.md](CHANGELOG.md)** - Historique des modifications
 
 ---
 
-## 🏗️ Structure du projet
+## 🎯 Fonctionnalités principales
 
-```
-gestion_secrets/
-├── .env_old                    # Référence des secrets à migrer
-├── infisical/                  # Configuration Infisical
-│   ├── docker-compose.yml
-│   ├── .env.example
-│   └── nginx.conf
-├── bastion/                    # Configuration bastion/jump host
-│   ├── nginx.conf
-│   ├── setup.sh
-│   └── firewall-rules.sh
-├── scripts/                    # Scripts utilitaires
-│   ├── setup-cli.sh
-│   ├── setup-cli.ps1
-│   ├── migrate-secrets.js
-│   └── rotate-secrets.js
-├── k8s/                        # Intégration Kubernetes
-│   ├── external-secrets/
-│   └── infisical-sync/
-├── templates/                  # Templates réutilisables
-│   └── ci-cd/
-└── docs/                       # Documentation
-```
+### Mode Conversationnel
+- Reconnaissance vocale en temps réel (Web Speech API)
+- Détection automatique de fin de phrase (pause de 2s)
+- Corrections grammaticales instantanées
+- Feedback vocal avec Google Cloud TTS
+- Historique des conversations
+
+### Exercices
+- **Grammaire** : 20 leçons (present perfect, conditionnels, modaux...)
+- **Technique** : 106 sujets (Kubernetes, Docker, CI/CD, AI/ML...)
+- **TOEIC/TOEFL** : Exercices par niveau (A2, B1, B2, C1)
+
+### Agent IA
+- Détection de 10+ types d'erreurs grammaticales
+- Explications détaillées avec exceptions
+- Suggestions d'amélioration
+- Score de fluidité et prononciation
 
 ---
 
-## 🔐 Sécurité
+## 🔧 Technologies
 
-- **Chiffrement au repos** : PostgreSQL avec chiffrement AES-256
-- **Chiffrement en transit** : HTTPS/TLS avec Let's Encrypt
-- **Authentification** : MFA supportée
-- **Audit** : Logs complets de tous les accès
-- **RBAC** : Contrôle d'accès basé sur les rôles
-- **Bastion** : Reverse proxy avec authentification forte
+**Frontend**
+- React 18.2 + TypeScript
+- Material-UI 5.14
+- Firebase Auth + Firestore
+- Web Speech API + Google Cloud TTS
 
----
+**Backend**
+- Node.js + Express 4.18
+- Sequelize + SQLite
+- JWT Authentication
+- Winston (logging)
 
-## 📖 Utilisation
-
-### Ajouter un secret
-
-```bash
-infisical secrets set SECRET_NAME "secret_value" --project=mon-projet --env=production
-```
-
-### Récupérer un secret
-
-```bash
-infisical secrets get SECRET_NAME --project=mon-projet --env=production
-```
-
-### Lister tous les secrets
-
-```bash
-infisical secrets list --project=mon-projet --env=production
-```
+**Mobile**
+- Capacitor 7.4 (Android)
+- Build APK via Android Studio
 
 ---
 
-## 🔗 Intégration dans vos projets
+## 🤝 Contribution
 
-Voir [docs/INTEGRATION_GUIDE.md](docs/INTEGRATION_GUIDE.md) pour :
-
-- Intégration Backend Node.js
-- Intégration Frontend React
-- Intégration Mobile (Android/iOS)
-- Intégration Kubernetes
-- Intégration CI/CD (GitHub Actions, GitLab CI)
-
----
-
-## 🆘 Support
-
-Pour toute question ou problème :
-
-1. Consulter la documentation dans `docs/`
-2. Vérifier les logs : `docker-compose logs -f` dans `infisical/`
-3. Consulter la [documentation officielle Infisical](https://infisical.com/docs)
+Ce projet est en développement actif. Pour contribuer :
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/ma-feature`)
+3. Commit (`git commit -m 'Ajout de ma feature'`)
+4. Push (`git push origin feature/ma-feature`)
+5. Ouvrir une Pull Request
 
 ---
 
 ## 📝 Licence
 
-Ce projet est fourni "tel quel" pour usage interne.
+MIT License - Voir le fichier LICENSE pour plus de détails
 
 ---
 
-**Auteur** : Infrastructure DevOps
-**Date** : Novembre 2025
+## 👤 Auteur
+
+AI English Trainer Team
+- Email: admin@iaproject.fr
+- GitHub: [@iaproject](https://github.com/iaproject)
+
+---
+
+## ⚡ Liens rapides
+
+- 📱 **APK Android** : Voir [DEPLOYMENT.md](DEPLOYMENT.md#build-android)
+- 🔐 **Configuration Firebase** : Voir [SETUP.md](SETUP.md#firebase)
+- 🗣️ **Configuration TTS** : Voir [SETUP.md](SETUP.md#google-cloud-tts)
+- 🧪 **Lancer les tests** : `npm test`
+- 🏗️ **Build production** : `npm run build`

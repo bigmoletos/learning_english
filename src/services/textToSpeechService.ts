@@ -97,8 +97,9 @@ class TextToSpeechService {
 
   /**
    * Génère l'audio avec Google Cloud TTS
+   * Retourne null si le service n'est pas disponible
    */
-  async synthesize(options: TTSOptions): Promise<string> {
+  async synthesize(options: TTSOptions): Promise<string | null> {
     const { text, lang = "en-US", voice, rate = 1.0, pitch = 0 } = options;
 
     // Vérifier le cache d'abord
@@ -137,7 +138,16 @@ class TextToSpeechService {
       });
 
       if (!response.ok) {
-        throw new Error(`TTS API error: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.message || `TTS API error: ${response.status}`;
+
+        // Si le service n'est pas disponible (503), retourner null au lieu de throw
+        if (response.status === 503) {
+          console.warn("[TTS] Service TTS non disponible:", errorMessage);
+          return null;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -150,8 +160,12 @@ class TextToSpeechService {
 
       console.log("[TTS] Audio généré avec succès");
       return audioUrl;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[TTS] Erreur lors de la génération:", error);
+      // Si c'est une erreur 503, retourner null au lieu de throw
+      if (error.message && error.message.includes("503")) {
+        return null;
+      }
       throw error;
     }
   }

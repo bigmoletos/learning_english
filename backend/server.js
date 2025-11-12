@@ -256,6 +256,10 @@ app.use('/api/exercises', require('./routes/exercises'));
 app.use('/api/progress', require('./routes/progress'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/text-to-speech', require('./routes/textToSpeech'));
+app.use('/api/conversation', require('./routes/conversation'));
+app.use('/api/translation', require('./routes/translation'));
+app.use('/api/speaking-agent', require('./routes/speakingAgent'));
+app.use('/api/speech-to-text', require('./routes/speechToText'));
 
 // Route 404
 app.use((req, res) => {

@@ -58,15 +58,7 @@ total_tokens=$((input_tokens + output_tokens + cache_read_tokens + cache_creatio
 # Calculate last prompt total
 last_prompt_tokens=$((last_input + last_output + last_cache_read + last_cache_creation))
 
-# Output as JSON
+# Output as JSON (compact format without spaces for grep parsing)
 cat <<EOF
-{
-  "input_tokens": $input_tokens,
-  "output_tokens": $output_tokens,
-  "cache_read_tokens": $cache_read_tokens,
-  "cache_creation_tokens": $cache_creation_tokens,
-  "total_tokens": $total_tokens,
-  "message_count": $message_count,
-  "last_prompt_tokens": $last_prompt_tokens
-}
+{"input_tokens":$input_tokens,"output_tokens":$output_tokens,"cache_read_tokens":$cache_read_tokens,"cache_creation_tokens":$cache_creation_tokens,"total_tokens":$total_tokens,"message_count":$message_count,"last_prompt_tokens":$last_prompt_tokens}
 EOF

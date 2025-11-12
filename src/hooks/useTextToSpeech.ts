@@ -122,7 +122,8 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
         window.speechSynthesis.cancel();
       };
     } else {
-      setError("La synthèse vocale n'est pas supportée sur votre appareil.");
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => setError("La synthèse vocale n'est pas supportée sur votre appareil."), 0);
     }
   }, []);
 

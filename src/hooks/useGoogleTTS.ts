@@ -348,6 +348,14 @@ export const useGoogleTTS = (): UseGoogleTTSReturn => {
           rate: 1.0,
           pitch: 0
         });
+
+        // Vérifier si le service TTS est disponible
+        if (!audioUrl) {
+          console.warn("[GoogleTTS] Service TTS non disponible, audio ignoré");
+          setIsLoading(false);
+          return;
+        }
+
         console.log("[GoogleTTS] Audio généré avec succès, URL:", audioUrl.substring(0, 50) + "...");
 
         // Créer et jouer l'audio

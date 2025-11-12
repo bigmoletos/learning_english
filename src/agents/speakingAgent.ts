@@ -108,6 +108,215 @@ class SpeakingAgent {
       type: "double_negative",
       explanation: "Après \"didn't\", utilisez la forme de base du verbe (infinitif sans \"to\").",
       exceptions: ["didn't go (pas \"didn't went\")", "didn't have (pas \"didn't had\")"]
+    },
+    {
+      // Détecte les répétitions de mots (ex: "me with me", "the the", "and and")
+      pattern: /\b(\w+)\s+(\w+\s+)?\1\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+        if (words.length < 2) return match;
+        const repeated = words[0];
+        // Retirer la répétition si elle existe
+        const filtered = words.filter((w, i) => i === 0 || w !== repeated);
+        return filtered.join(" ");
+      },
+      type: "word_repetition",
+      explanation: "Vous avez répété le même mot. Vérifiez votre phrase.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(me|you|him|her|us|them|it)\s+\w+\s+\1\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const pronoun = words[0];
+        return words.filter((w, i) => i === 0 || w !== pronoun).join(" ");
+      },
+      type: "pronoun_repetition",
+      explanation: "Vous avez répété le même pronom. Vérifiez votre phrase.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(projek|projec|proj|projeckt)\b/gi,
+      correction: () => "project",
+      type: "spelling",
+      explanation: "L'orthographe correcte est \"project\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(call|ask|tell|give)\s+(you|he|she|it|they)\s+(update|provide|give|send)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb1 = words[0];
+        const pronoun = words[1];
+        const verb2 = words[2];
+        // Corriger : "call you update" → "call me to update" ou "update me"
+        if (verb1 === "call" && verb2 === "update") {
+          return "call me to update";
+        }
+        return `${verb1} me to ${verb2}`;
+      },
+      type: "sentence_structure",
+      explanation: "La structure de la phrase est incorrecte. Utilisez \"call me to update\" ou \"update me\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(call)\s+(you)\b/gi,
+      correction: () => "call me",
+      type: "pronoun_error",
+      explanation: "Utilisez \"call me\" pour dire que vous allez appeler quelqu'un, ou \"I'll call you\" pour dire que vous allez l'appeler.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(call)\s+(you)\s+\w+/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[2]; // Le verbe après "call you"
+        return `call me to ${verb}`;
+      },
+      type: "sentence_structure",
+      explanation: "La structure est incorrecte. Utilisez \"call me to [verb]\" ou \"I'll call you to [verb]\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(provide|give|send|show)\s+with\s+(me|you|him|her|us|them|it)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[0];
+        const pronoun = words[2];
+        return `${verb} ${pronoun}`;
+      },
+      type: "preposition_error",
+      explanation: "Utilisez \"provide me\" ou \"provide me with\" (pas \"provide with me\").",
+      exceptions: []
+    },
+    {
+      pattern: /\b(provide|give|send|show)\s+(with)\s+(me|you|him|her|us|them|it)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[0];
+        const pronoun = words[2];
+        return `${verb} ${pronoun}`;
+      },
+      type: "preposition_error",
+      explanation: "L'ordre est incorrect. Utilisez \"provide me\" ou \"provide me with\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+with\s+(me|you|him|her|us|them|it)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[0];
+        const pronoun1 = words[1];
+        const pronoun2 = words[3]; // "with" est à l'index 2
+        // Si les deux pronoms sont identiques, retirer "with [pronoun]"
+        if (pronoun1 === pronoun2) {
+          return `${verb} ${pronoun1}`;
+        }
+        return match; // Sinon, ne pas modifier
+      },
+      type: "redundant_preposition",
+      explanation: "Vous avez répété le pronom après \"with\". Utilisez simplement \"provide me\" ou \"give me\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+and\s+(a|an|the)\s+\w+/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[0];
+        const pronoun = words[1];
+        const article = words[3];
+        const noun = words.slice(4).join(" ");
+        return `${verb} ${pronoun} with ${article} ${noun}`;
+      },
+      type: "missing_preposition",
+      explanation: "Il manque \"with\" après le pronom. Utilisez \"provide me with a date\" (pas \"provide me and a date\").",
+      exceptions: []
+    },
+    {
+      pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+and\s+\w+/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[0];
+        const pronoun = words[1];
+        const rest = words.slice(3).join(" ");
+        return `${verb} ${pronoun} with ${rest}`;
+      },
+      type: "missing_preposition",
+      explanation: "Il manque \"with\" après le pronom. Utilisez \"provide me with [something]\" (pas \"provide me and [something]\").",
+      exceptions: []
+    },
+    {
+      // Détecte "on project progress", "about task update", etc. (manque l'article "the")
+      pattern: /\b(on|about|for)\s+(project|task|work|job|meeting|call|update)\s+(progress|update|status|report|information|details)/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const preposition = words[0];
+        const noun = words[1];
+        const rest = words.slice(2).join(" ");
+        // Ajouter l'article "the" si manquant
+        return `${preposition} the ${noun} ${rest}`;
+      },
+      type: "missing_article",
+      explanation: "Il manque l'article \"the\" avant le nom. Utilisez \"on the project progress\" ou \"about the project progress\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(to|for|with|at|in|on)\s+\1\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        return words[0]; // Garder seulement le premier
+      },
+      type: "preposition_repetition",
+      explanation: "Vous avez répété la même préposition. Vérifiez votre phrase.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(and|or|but)\s+\1\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        return words[0]; // Garder seulement le premier
+      },
+      type: "conjunction_repetition",
+      explanation: "Vous avez répété la même conjonction. Utilisez-la une seule fois.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(the|a|an)\s+\1\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        return words[0]; // Garder seulement le premier
+      },
+      type: "article_repetition",
+      explanation: "Vous avez répété le même article. Utilisez-le une seule fois.",
+      exceptions: []
+    },
+    {
+      pattern: /\b(recieve|recieved|recieving)\b/gi,
+      correction: (match: string) => match.replace(/recieve/gi, "receive").replace(/recieved/gi, "received").replace(/recieving/gi, "receiving"),
+      type: "spelling",
+      explanation: "L'orthographe correcte est \"receive\" (i avant e sauf après c).",
+      exceptions: []
+    },
+    {
+      pattern: /\b(seperate|seperated|seperating)\b/gi,
+      correction: (match: string) => match.replace(/seperate/gi, "separate").replace(/seperated/gi, "separated").replace(/seperating/gi, "separating"),
+      type: "spelling",
+      explanation: "L'orthographe correcte est \"separate\" (a, pas e).",
+      exceptions: []
+    },
+    {
+      pattern: /\b(definately|definately|definetly)\b/gi,
+      correction: () => "definitely",
+      type: "spelling",
+      explanation: "L'orthographe correcte est \"definitely\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(accomodate|accomodation)\b/gi,
+      correction: (match: string) => match.replace(/accomodate/gi, "accommodate").replace(/accomodation/gi, "accommodation"),
+      type: "spelling",
+      explanation: "L'orthographe correcte est \"accommodate\" (double m et double c).",
+      exceptions: []
     }
   ];
 
@@ -174,15 +383,39 @@ class SpeakingAgent {
    */
   private detectGrammarErrors(text: string): GrammarError[] {
     const errors: GrammarError[] = [];
+    const processedPositions = new Set<string>(); // Pour éviter les doublons
 
-    this.GRAMMAR_PATTERNS.forEach(pattern => {
+    // Trier les patterns par spécificité (les plus spécifiques en premier)
+    const sortedPatterns = [...this.GRAMMAR_PATTERNS].sort((a, b) => {
+      const aSpecificity = (a.pattern.toString().match(/\\b/g) || []).length;
+      const bSpecificity = (b.pattern.toString().match(/\\b/g) || []).length;
+      return bSpecificity - aSpecificity; // Plus spécifique en premier
+    });
+
+    sortedPatterns.forEach(pattern => {
       const regex = new RegExp(pattern.pattern);
       let match;
       const tempText = text;
+      let lastIndex = 0;
+
+      // Réinitialiser le regex pour chaque pattern
+      regex.lastIndex = 0;
 
       while ((match = regex.exec(tempText)) !== null) {
+        // Éviter les boucles infinies
+        if (match.index === lastIndex && match[0].length === 0) {
+          break;
+        }
+        lastIndex = match.index;
+
         const original = match[0];
         const corrected = pattern.correction(original);
+        const positionKey = `${match.index}-${match.index + original.length}`;
+
+        // Vérifier si cette position a déjà été traitée
+        if (processedPositions.has(positionKey)) {
+          continue;
+        }
 
         if (original.toLowerCase() !== corrected.toLowerCase()) {
           errors.push({
@@ -194,6 +427,9 @@ class SpeakingAgent {
             severity: this.determineSeverity(pattern.type),
             position: { start: match.index, end: match.index + original.length }
           });
+
+          // Marquer cette position comme traitée
+          processedPositions.add(positionKey);
         }
       }
     });
@@ -227,15 +463,19 @@ class SpeakingAgent {
 
     const wordCount = text.split(/\s+/).length;
     const severityWeight = {
-      high: 15,
-      medium: 10,
-      low: 5
+      high: 20,    // Augmenté pour être plus sévère avec les erreurs importantes
+      medium: 12,  // Augmenté pour les erreurs moyennes
+      low: 6       // Augmenté pour les erreurs mineures
     };
 
     const totalPenalty = errors.reduce((sum, error) => sum + severityWeight[error.severity], 0);
     const errorRate = (totalPenalty / wordCount) * 100;
 
-    return Math.max(0, 100 - errorRate);
+    // Pénalité supplémentaire pour les erreurs multiples (plus il y a d'erreurs, plus la pénalité est forte)
+    const multipleErrorsPenalty = errors.length > 1 ? (errors.length - 1) * 5 : 0;
+    const finalPenalty = errorRate + multipleErrorsPenalty;
+
+    return Math.max(0, Math.round(100 - finalPenalty));
   }
 
   /**
@@ -469,12 +709,14 @@ class SpeakingAgent {
   }
 
   private determineSeverity(type: string): "low" | "medium" | "high" {
-    const highSeverity = ["subject_verb_agreement", "double_negative"];
-    const mediumSeverity = ["article", "quantifier"];
+    const highSeverity = ["subject_verb_agreement", "double_negative", "sentence_structure", "pronoun_repetition", "word_repetition"];
+    const mediumSeverity = ["article", "quantifier", "redundant_preposition", "spelling"];
+    const lowSeverity = ["preposition_repetition", "conjunction_repetition", "article_repetition"];
 
     if (highSeverity.includes(type)) return "high";
     if (mediumSeverity.includes(type)) return "medium";
-    return "low";
+    if (lowSeverity.includes(type)) return "low";
+    return "medium"; // Par défaut
   }
 
   private getDurationForLevel(level: LanguageLevel): number {
