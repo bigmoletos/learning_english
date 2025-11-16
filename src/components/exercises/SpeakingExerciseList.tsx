@@ -21,6 +21,7 @@ import {
 import { Mic, PlayArrow } from "@mui/icons-material";
 import { SpeakingExercise } from "./SpeakingExercise";
 import { LanguageLevel } from "../../types";
+import { buildApiUrl } from "../../services/apiConfig";
 
 interface SpeakingExerciseData {
   id: string;
@@ -50,7 +51,7 @@ export const SpeakingExerciseList: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/speaking-agent/exercises", {
+      const response = await fetch(buildApiUrl("/api/speaking-agent/exercises"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -230,6 +230,9 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
         stopListening();
       }
 
+      // Attendre 300ms pour s'assurer que le micro est bien arrêté
+      await new Promise(resolve => setTimeout(resolve, 300));
+
       // Réinitialiser le transcript pour éviter de capturer ce que dit le coach
       resetTranscript();
       lastTranscriptRef.current = "";
@@ -260,25 +263,49 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
       audioPlayerRef.current = audio;
 
       // Reprendre l'écoute après la fin de la lecture
-      audio.onended = () => {
+      audio.onended = async () => {
         audioPlayerRef.current = null;
+        // Attendre 500ms après la fin du TTS avant de relancer l'écoute
+        // Cela évite de capturer les dernières millisecondes du son
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         setIsCoachSpeaking(false);
+        // Réinitialiser à nouveau le transcript avant de relancer l'écoute
+        resetTranscript();
+        lastTranscriptRef.current = "";
+
         // Reprendre l'écoute si on était en conversation
         if (isConversing && !isPaused) {
-          startListening();
+          await startListening();
+          console.log("[ConversationalSpeaking] 🎤 Écoute relancée après TTS du coach");
+        }
+      };
+
+      // Gérer les erreurs de lecture audio
+      audio.onerror = async () => {
+        console.error("[ConversationalSpeaking] Erreur de lecture audio");
+        audioPlayerRef.current = null;
+        setIsCoachSpeaking(false);
+        resetTranscript();
+        lastTranscriptRef.current = "";
+        if (isConversing && !isPaused) {
+          await startListening();
         }
       };
 
       await audio.play();
+      console.log("[ConversationalSpeaking] 🔇 TTS du coach en cours, micro arrêté");
     } catch (err) {
       console.error("[ConversationalSpeaking] Erreur TTS:", err);
       setIsCoachSpeaking(false);
+      resetTranscript();
+      lastTranscriptRef.current = "";
       // Reprendre l'écoute en cas d'erreur
       if (isConversing && !isPaused) {
-        startListening();
+        await startListening();
       }
     }
-  }, [listening, stopListening, startListening, isConversing, isPaused]);
+  }, [listening, stopListening, resetTranscript, startListening, isConversing, isPaused]);
 
   /**
    * Analyse la parole et donne un feedback
@@ -292,77 +319,55 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
     setIsAnalyzing(true);
 
     try {
-      // Liste complète des phrases possibles du coach à filtrer (plus exhaustive)
-      // IMPORTANT: Les patterns avec .* à la fin doivent être en dernier pour éviter de capturer trop
-      const coachPhrases = [
-        // Patterns spécifiques d'abord (sans .*)
-        /excellent keep going/gi,
-        /keep going excellent/gi,
-        /excellent.*keep going/gi,
-        /keep going.*excellent/gi,
-        /Translation:/gi,
-        /I've translated/gi,
-        /I found \d+ mistake/gi,
-        /The correct sentence is:/gi,
-        /That's great/gi,
-        /Good job/gi,
-        /Well done/gi,
-        /Keep practicing/gi,
-        // Patterns avec .* en dernier (plus généraux)
-        /hello start speaking in English and I will help you improve your pronunciation and grammar in real time/gi,
-        /start speaking in English and I will help you improve your pronunciation and grammar in real time/gi,
-        /hello start speaking in English and I will help you.*/gi,
-        /start speaking in English and I will help you.*/gi,
-        /I will help you improve your pronunciation and grammar.*/gi,
-        /improve your pronunciation and grammar.*/gi,
-        /help you improve your pronunciation.*/gi,
-        /pronunciation and grammar in real time/gi,
-        /pronunciation and grammar in Real-Time/gi,
-        /I'm your English coach.*/gi,
-        /Let's have a conversation.*/gi,
-        /I'll help you improve.*/gi,
-        /What would you like to talk about\?/gi,
-        /You said.*but the correct form is.*/gi,
+      // STRATÉGIE DE FILTRAGE SIMPLIFIÉE
+      // Au lieu de patterns complexes, on vérifie si le transcript contient des fragments du coach
+      // et on les supprime de manière plus robuste
+
+      let userText = text.trim(); // Trim d'abord
+      const originalText = text.trim();
+
+      // Liste des fragments à supprimer (du plus long au plus court pour éviter les faux positifs)
+      const coachFragments = [
+        "in English and I will help you improve your pronunciation and grammar in Real-Time",
+        "in English and I will help you improve your pronunciation and grammar in real-time",
+        "in English and I will help you improve your pronunciation and grammar",
+        "start speaking in English and I will help you",
+        "I will help you improve your pronunciation and grammar",
+        "improve your pronunciation and grammar in real-time",
+        "improve your pronunciation and grammar in Real-Time",
+        "pronunciation and grammar in real-time",
+        "pronunciation and grammar in Real-Time",
+        "improve your pronunciation and grammar",
+        "help you improve your pronunciation",
+        "your pronunciation and grammar",
+        "I will help you improve",
+        "I will help you",
+        "in English and",
+        "Translation:",
+        "I've translated",
+        "The correct sentence is:",
+        "That's great",
+        "Good job",
+        "Well done",
+        "Keep practicing",
+        "Excellent! Keep going",
+        "Keep going! Excellent",
+        "I'm your English coach",
+        "Let's have a conversation",
+        "I'll help you improve",
+        "What would you like to talk about?",
+        "I'm listening",
+        "Go ahead",
       ];
 
-      // Filtrer les messages du coach du transcript
-      let userText = text;
-      const originalText = text;
-
-      // Trouver toutes les positions des phrases du coach dans le transcript
-      const coachMatches: Array<{ start: number; end: number; text: string }> = [];
-      coachPhrases.forEach(phrase => {
-        const regex = new RegExp(phrase.source, "gi");
-        // Réinitialiser lastIndex pour chaque pattern
-        regex.lastIndex = 0;
-        let match: RegExpExecArray | null;
-        while ((match = regex.exec(originalText)) !== null) {
-          // À ce stade, match n'est pas null grâce à la condition du while
-          const currentMatch: RegExpExecArray = match;
-          // Éviter les doublons
-          const isDuplicate = coachMatches.some(m =>
-            m.start === currentMatch.index && m.end === currentMatch.index + currentMatch[0].length
-          );
-          if (!isDuplicate) {
-            coachMatches.push({
-              start: currentMatch.index,
-              end: currentMatch.index + currentMatch[0].length,
-              text: currentMatch[0]
-            });
-          }
-        }
-      });
-
-      // Trier les matches par position de début (décroissant pour supprimer de la fin)
-      coachMatches.sort((a, b) => b.start - a.start);
-
-      // Supprimer les phrases du coach du transcript (de la fin vers le début pour ne pas décaler les indices)
-      coachMatches.forEach(match => {
-        userText = userText.substring(0, match.start) + " " + userText.substring(match.end);
+      // Supprimer chaque fragment (case insensitive)
+      coachFragments.forEach(fragment => {
+        const regex = new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        userText = userText.replace(regex, ' ');
       });
 
       // Nettoyer les espaces multiples et trim
-      userText = userText.replace(/\s+/g, " ").trim();
+      userText = userText.replace(/\s+/g, ' ').trim();
 
       // Vérifier si le transcript ne contient que des phrases du coach
       if (!userText || userText.length < 2) {
@@ -421,6 +426,13 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       // Vérifier si c'est une demande de traduction
       const isTranslationRequest = /translate|traduis|traduction|en français|in english|to french|to english/i.test(userText);
+
+      console.log("[ConversationalSpeaking] État du mode coach:", {
+        coachMode,
+        isTranslationRequest,
+        speakCorrections,
+        autoCorrect
+      });
 
       if (isTranslationRequest && coachMode) {
         // Extraire le texte à traduire
@@ -580,16 +592,17 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
         }
       }, 500);
     } else {
-      // Détection de pause : analyser si le transcript reste stable pendant 2 secondes
+      // Détection de pause : analyser si le transcript reste stable pendant 1 seconde
       pauseTimerRef.current = setTimeout(() => {
         if (
           transcript === lastTranscriptRef.current ||
           (transcript && transcript.trim().length >= 3 && !processingRef.current)
         ) {
           lastTranscriptRef.current = transcript;
+          console.log("[ConversationalSpeaking] 🎯 Pause détectée, analyse du transcript:", transcript.trim());
           analyzeAndCorrect(transcript.trim());
         }
-      }, 2000); // 2 secondes de pause
+      }, 1000); // 1 seconde de pause (réduit de 2s pour plus de réactivité)
     }
   }, [transcript, isConversing, analyzeAndCorrect]);
 

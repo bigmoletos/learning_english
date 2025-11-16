@@ -10,6 +10,8 @@
  * - Traduction français ↔ anglais
  */
 
+import { buildApiUrl } from "./apiConfig";
+
 interface ConversationMessage {
   role: "user" | "assistant" | "system";
   content: string;
@@ -36,8 +38,8 @@ interface TranslationResponse {
 }
 
 class ConversationService {
-  private apiEndpoint = "/api/conversation";
-  private translationEndpoint = "/api/translation";
+  private apiEndpoint = buildApiUrl("/api/conversation");
+  private translationEndpoint = buildApiUrl("/api/translation");
   private conversationHistory: ConversationMessage[] = [];
 
   /**

@@ -2,6 +2,7 @@
   "name": "ai-english-trainer-it",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://learning-english.iaproject.fr",
   "proxy": "http://localhost:5010",
   "description": "Outil d'entraînement en anglais technique (IA/DevOps) avec agent IA, reconnaissance vocale, et préparation TOEIC/TOEFL (B2→C1).",
   "dependencies": {

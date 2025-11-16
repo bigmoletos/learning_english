@@ -63,7 +63,7 @@ router.post("/", conversationRateLimiter, async (req, res) => {
           ? "Provide moderate explanations. Keep responses concise (2-3 sentences)."
           : "Provide detailed explanations with grammar rules, examples, and context. Responses can be longer (3-5 sentences).";
 
-        const systemPrompt = messages?.find((m: any) => m.role === "system")?.content ||
+        const systemPrompt = messages?.find((m) => m.role === "system")?.content ||
           `You are a friendly and supportive English teacher and conversation coach. Your student is at ${level} level.
 - Always respond in English
 - Be encouraging and patient
@@ -78,15 +78,15 @@ router.post("/", conversationRateLimiter, async (req, res) => {
         let conversationContext = "";
         if (messages && messages.length > 0) {
           conversationContext = messages
-            .filter((m: any) => m.role !== "system")
+            .filter(( m) => m.role !== "system")
             .slice(-5) // Derniers 5 messages pour le contexte
-            .map((m: any) => `${m.role === "user" ? "Student" : "Teacher"}: ${m.content}`)
+            .map(( m) => `${m.role === "user" ? "Student" : "Teacher"}: ${m.content}`)
             .join("\n");
         }
 
         // Éviter les répétitions en vérifiant les derniers messages
-        const recentMessages = messages?.filter((m: any) => m.role === "assistant").slice(-3) || [];
-        const isRepetitive = recentMessages.some((m: any) =>
+        const recentMessages = messages?.filter(( m) => m.role === "assistant").slice(-3) || [];
+        const isRepetitive = recentMessages.some(( m) =>
           m.content.toLowerCase().includes("keep going") &&
           m.content.toLowerCase().includes("excellent")
         );

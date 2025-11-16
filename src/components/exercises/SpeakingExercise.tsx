@@ -31,6 +31,7 @@ import {
 } from "@mui/icons-material";
 import { speechToTextService } from "../../services/speechToTextService";
 import { LanguageLevel } from "../../types";
+import { buildApiUrl } from "../../services/apiConfig";
 
 interface SpeakingExerciseProps {
   exercise: {
@@ -233,7 +234,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
       console.log("[SpeakingExercise] Transcription:", sttResult.transcript);
 
       // Étape 2 : Analyse avec l'agent IA
-      const analysisResponse = await fetch("/api/speaking-agent/analyze", {
+      const analysisResponse = await fetch(buildApiUrl("/api/speaking-agent/analyze"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

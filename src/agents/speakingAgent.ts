@@ -160,6 +160,28 @@ class SpeakingAgent {
       exceptions: []
     },
     {
+      pattern: /\b(call)\s+(provide|give|send|show|update)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[1];
+        return `please ${verb}`;
+      },
+      type: "sentence_structure",
+      explanation: "La structure est incorrecte. Utilisez \"please [verb]\" ou \"could you please [verb]\".",
+      exceptions: []
+    },
+    {
+      pattern: /\b(can you|could you)\s+(call)\s+(provide|give|send|show|update)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const verb = words[3]; // Le verbe après "call"
+        return `could you please ${verb}`;
+      },
+      type: "sentence_structure",
+      explanation: "La structure est incorrecte. Utilisez \"could you please [verb]\" sans \"call\".",
+      exceptions: []
+    },
+    {
       pattern: /\b(call)\s+(you)\b/gi,
       correction: () => "call me",
       type: "pronoun_error",
@@ -243,6 +265,44 @@ class SpeakingAgent {
       },
       type: "missing_preposition",
       explanation: "Il manque \"with\" après le pronom. Utilisez \"provide me with [something]\" (pas \"provide me and [something]\").",
+      exceptions: []
+    },
+    {
+      // Détecte "when the date" qui devrait être "an update" dans un contexte professionnel
+      pattern: /\b(with|for|about)\s+(when the date|when a date|when date|the date|a date)\s+(on|about|for)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const preposition1 = words[0];
+        const preposition2 = words[words.length - 1];
+        return `${preposition1} an update ${preposition2}`;
+      },
+      type: "word_choice",
+      explanation: "Dans un contexte professionnel, utilisez \"an update\" plutôt que \"the date\".",
+      exceptions: []
+    },
+    {
+      // Détecte "weave" qui devrait être "with" ou autre chose
+      pattern: /\b(remind|tell|ask)\s+(me|you|him|her|us|them)\s+(weave|wave|waive)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const pronoun = words[1];
+        return `please give ${pronoun}`;
+      },
+      type: "word_recognition",
+      explanation: "Il semble y avoir une erreur de reconnaissance vocale. Vérifiez la phrase.",
+      exceptions: []
+    },
+    {
+      // Détecte "on a" quand ça devrait être "on the" dans un contexte professionnel
+      pattern: /\b(on|about|for)\s+(a)\s+(project|task|work|job|meeting|call|update|progress|status|report)\b/gi,
+      correction: (match: string) => {
+        const words = match.toLowerCase().split(/\s+/);
+        const preposition = words[0];
+        const noun = words[2];
+        return `${preposition} the ${noun}`;
+      },
+      type: "article_error",
+      explanation: "Utilisez \"the\" plutôt que \"a\" pour parler d'un projet ou d'une tâche spécifique.",
       exceptions: []
     },
     {

@@ -74,7 +74,7 @@ Translation:`;
       sourceLanguage,
       targetLanguage,
     });
-  } catch (error: any) {
+  } catch (error) {
     logger.error("[Translation] Erreur:", error);
     res.status(500).json({
       success: false,
