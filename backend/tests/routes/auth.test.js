@@ -5,13 +5,63 @@
 
 const request = require('supertest');
 const express = require('express');
-const authRoutes = require('../../routes/auth');
 const User = require('../../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
+
+// Mock Sequelize before importing routes
+jest.mock('sequelize', () => {
+  const mockOp = {
+    gt: Symbol('gt'),
+    eq: Symbol('eq'),
+  };
+  const mockDataTypes = {
+    UUID: 'UUID',
+    UUIDV4: 'UUIDV4',
+    STRING: 'STRING',
+    BOOLEAN: 'BOOLEAN',
+    DATE: 'DATE',
+    INTEGER: 'INTEGER',
+    TEXT: 'TEXT',
+    ENUM: jest.fn((...values) => `ENUM(${values.join(',')})`),
+  };
+  return {
+    Op: mockOp,
+    DataTypes: mockDataTypes,
+    Sequelize: jest.fn().mockImplementation(() => ({
+      authenticate: jest.fn().mockResolvedValue(true),
+      define: jest.fn(),
+    })),
+  };
+});
+
+// Mock database connection before importing routes
+jest.mock('../../database/connection', () => {
+  const { Op } = require('sequelize');
+  const mockModel = {
+    findOne: jest.fn(),
+    findAll: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    destroy: jest.fn(),
+  };
+  return {
+    where: jest.fn((condition) => condition),
+    fn: jest.fn((fnName) => ({
+      fn: fnName,
+      col: jest.fn((colName) => colName),
+    })),
+    col: jest.fn((colName) => colName),
+    define: jest.fn(() => mockModel),
+    Op,
+  };
+});
 
 // Mock models and services
 jest.mock('../../models/User');
 jest.mock('../../utils/emailService');
+
+// Import routes after mocks
+const authRoutes = require('../../routes/auth');
 
 describe('Auth Routes', () => {
   let app;

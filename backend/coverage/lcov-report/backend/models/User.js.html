@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.1% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/19</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.1% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/19</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
@@ -178,11 +178,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,7 +254,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -268,31 +268,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Modèle Utilisateur
  * @version 1.0.0
  */
 &nbsp;
-const { DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
-const sequelize = require('../database/connection');
+const { DataTypes } = <span class="cstat-no" title="statement not covered" >require('sequelize');</span>
+const bcrypt = <span class="cstat-no" title="statement not covered" >require('bcryptjs');</span>
+const sequelize = <span class="cstat-no" title="statement not covered" >require('../database/connection');</span>
 &nbsp;
-const User = sequelize.define('User', {
+const User = <span class="cstat-no" title="statement not covered" >sequelize.define('User', {</span>
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -364,7 +364,7 @@ const User = sequelize.define('User', {
 });
 &nbsp;
 // Hook avant sauvegarde : hasher le mot de passe et normaliser l'email
-User.beforeSave(<span class="fstat-no" title="function not covered" >as</span>ync (user) =&gt; {
+<span class="cstat-no" title="statement not covered" >User.beforeSave(<span class="fstat-no" title="function not covered" >as</span>ync (user) =&gt; {</span>
   // Normaliser l'email en minuscules
 <span class="cstat-no" title="statement not covered" >  if (user.email) {</span>
 <span class="cstat-no" title="statement not covered" >    user.email = user.email.toLowerCase().trim();</span>
@@ -378,12 +378,12 @@ User.beforeSave(<span class="fstat-no" title="function not covered" >as</span>yn
 });
 &nbsp;
 // Méthode pour comparer les mots de passe
-User.prototype.comparePassword = <span class="fstat-no" title="function not covered" >as</span>ync function(candidatePassword) {
+<span class="cstat-no" title="statement not covered" >User.prototype.comparePassword = <span class="fstat-no" title="function not covered" >as</span>ync function(candidatePassword) {</span>
 <span class="cstat-no" title="statement not covered" >  return await bcrypt.compare(candidatePassword, this.password);</span>
 };
 &nbsp;
 // Méthode pour masquer le mot de passe dans les réponses JSON
-User.prototype.toJSON = <span class="fstat-no" title="function not covered" >fu</span>nction() {
+<span class="cstat-no" title="statement not covered" >User.prototype.toJSON = <span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
   const values = <span class="cstat-no" title="statement not covered" >Object.assign({}, this.get());</span>
 <span class="cstat-no" title="statement not covered" >  delete values.password;</span>
 <span class="cstat-no" title="statement not covered" >  delete values.emailVerificationToken;</span>
@@ -391,7 +391,7 @@ User.prototype.toJSON = <span class="fstat-no" title="function not covered" >fu<
 <span class="cstat-no" title="statement not covered" >  return values;</span>
 };
 &nbsp;
-module.exports = User;
+<span class="cstat-no" title="statement not covered" >module.exports = User;</span>
 &nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
@@ -400,7 +400,7 @@ module.exports = User;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-10T20:27:50.157Z
+                at 2025-11-17T20:43:27.392Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
