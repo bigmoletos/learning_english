@@ -685,8 +685,7 @@ describe("UserContext", () => {
       });
 
       await waitFor(() => {
-        expect(mockProgress.updateProgress).toHaveBeenCalled();
-      }, { timeout: 5000 });
+        expect(mockProgress.updateProgress).toHaveBeenCalledWith(
           expect.objectContaining({
             totalTests: expect.any(Number),
             averageScore: expect.any(Number),
@@ -695,7 +694,7 @@ describe("UserContext", () => {
             targetLevel: "C1",
           })
         );
-      });
+      }, { timeout: 5000 });
     });
 
     it("should use Firebase progress data when available", async () => {
