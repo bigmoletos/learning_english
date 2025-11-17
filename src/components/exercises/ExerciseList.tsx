@@ -27,10 +27,6 @@ export const ExerciseList: React.FC = () => {
   const [incompleteFiltered, setIncompleteFiltered] = useState<number>(0);
   const { addResponse } = useUser();
 
-  useEffect(() => {
-    loadExercises();
-  }, []);
-
   // Fonction pour valider si un exercice est complet (pas de placeholders)
   const isValidExercise = (exercise: Exercise): boolean => {
     if (!exercise.questions || exercise.questions.length === 0) {
@@ -147,7 +143,7 @@ export const ExerciseList: React.FC = () => {
     } as any;
   };
 
-  const loadExercises = async () => {
+  const loadExercises = useCallback(async () => {
     try {
       // Charger tous les QCM (200 exercices complets à 100%)
       const qcmResponse = await fetch("/data/exercises/all_qcm_200.json");
@@ -261,7 +257,11 @@ export const ExerciseList: React.FC = () => {
         setExercises([]);
       }
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]);
 
   const filteredExercises = exercises.filter(ex => {
     const levelMatch = filterLevel === "all" || ex.level === filterLevel;

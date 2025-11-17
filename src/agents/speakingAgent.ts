@@ -147,7 +147,6 @@ class SpeakingAgent {
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const verb1 = words[0];
-        const pronoun = words[1];
         const verb2 = words[2];
         // Corriger : "call you update" → "call me to update" ou "update me"
         if (verb1 === "call" && verb2 === "update") {

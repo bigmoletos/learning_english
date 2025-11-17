@@ -4,6 +4,8 @@
  * @date 08-11-2025
  */
 
+import { buildApiUrl } from "./apiConfig";
+
 interface TTSOptions {
   text: string;
   lang?: string;
@@ -11,8 +13,6 @@ interface TTSOptions {
   rate?: number;
   pitch?: number;
 }
-
-import { buildApiUrl } from "./apiConfig";
 
 interface CachedAudio {
   url: string;

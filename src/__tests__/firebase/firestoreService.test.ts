@@ -204,7 +204,6 @@ describe("Firestore Service", () => {
     it("should save test result and update progress", async () => {
       const mockCollectionRef = {};
       const mockDocRef = { id: "test-result-123" };
-      const mockProgressDocRef = {};
 
       (firestore.collection as jest.Mock).mockReturnValue(mockCollectionRef);
       (firestore.doc as jest.Mock).mockReturnValue(mockDocRef);

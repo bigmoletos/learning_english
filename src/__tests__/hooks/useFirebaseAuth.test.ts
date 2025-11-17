@@ -3,7 +3,7 @@
  * @version 1.0.0
  */
 
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { useFirebaseAuth } from "../../hooks/useFirebaseAuth";
 import * as authService from "../../firebase/authService";
 

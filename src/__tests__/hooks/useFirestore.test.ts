@@ -227,10 +227,8 @@ describe("useFirestore Hooks", () => {
 
     describe("Real-time mode", () => {
       it("should subscribe to progress updates", async () => {
-        let subscriptionCallback: any;
         (firestoreService.subscribeToProgress as jest.Mock).mockImplementation(
           (userId, callback) => {
-            subscriptionCallback = callback;
             callback(mockProgress);
             return jest.fn(); // Unsubscribe function
           }
@@ -286,10 +284,8 @@ describe("useFirestore Hooks", () => {
       });
 
       it("should not update local state when using real-time mode", async () => {
-        let subscriptionCallback: any;
         (firestoreService.subscribeToProgress as jest.Mock).mockImplementation(
           (userId, callback) => {
-            subscriptionCallback = callback;
             callback(mockProgress);
             return jest.fn();
           }
@@ -406,10 +402,8 @@ describe("useFirestore Hooks", () => {
 
     describe("Real-time mode", () => {
       it("should subscribe to test results updates", async () => {
-        let subscriptionCallback: any;
         (firestoreService.subscribeToTestResults as jest.Mock).mockImplementation(
           (userId, callback, limit) => {
-            subscriptionCallback = callback;
             callback(mockTestResults);
             return jest.fn();
           }

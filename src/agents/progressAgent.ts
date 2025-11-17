@@ -12,19 +12,11 @@
  */
 
 import { UserResponse, ProgressAnalysis, Exercise, LanguageLevel, UserProfile } from "../types";
-import * as _ from "lodash";
 
 // Simple tokenizer for browser (replaces natural.js tokenize)
 const tokenize = (text: string): string[] => {
   return text.toLowerCase().match(/\b\w+\b/g) || [];
 };
-
-interface WeaknessPattern {
-  type: "grammar" | "vocabulary" | "pronunciation";
-  category: string;
-  frequency: number;
-  severity: number;
-}
 
 export class ProgressAgent {
   private readonly GRAMMAR_KEYWORDS = [
