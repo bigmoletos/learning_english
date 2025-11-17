@@ -64,29 +64,67 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Sync Firebase user with local user state
   useEffect(() => {
     if (firebaseAuth.user) {
-      // User is authenticated with Firebase
-      const userProfile: UserProfile = {
-        id: firebaseAuth.user.uid,
-        name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
-        currentLevel: "B1",
-        targetLevel: "C1",
-        strengths: [],
-        weaknesses: [],
-        completedExercises: progress?.totalTests || 0,
-        totalScore: 0,
-        createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
-        lastActivity: new Date()
-      };
-      setUser(userProfile);
+      // Charger le profil utilisateur depuis Firebase
+      const loadUserProfile = async () => {
+        try {
+          const { getUserById } = await import("../services/firebase/userService");
+          const existingUser = await getUserById(firebaseAuth.user!.uid);
 
-      // Sync user profile to Firestore
-      createOrUpdateUserProfile(firebaseAuth.user.uid, {
-        email: firebaseAuth.user.email,
-        displayName: firebaseAuth.user.displayName,
-        currentLevel: "B1",
-        targetLevel: "C1",
-        emailVerified: firebaseAuth.user.emailVerified
-      }).catch(error => console.error("Error syncing user profile:", error));
+          if (existingUser) {
+            // Utiliser le profil existant depuis Firebase
+            setUser(existingUser);
+
+            // Synchroniser le statut d'évaluation dans localStorage
+            const { getUserAssessmentStatus } = await import("../services/firebase/userService");
+            const assessed = await getUserAssessmentStatus(firebaseAuth.user!.uid);
+            if (assessed) {
+              localStorage.setItem("levelAssessed", "true");
+            }
+          } else {
+            // Créer un nouveau profil si l'utilisateur n'existe pas encore
+            const userProfile: UserProfile = {
+              id: firebaseAuth.user.uid,
+              name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
+              currentLevel: "B1",
+              targetLevel: "C1",
+              strengths: [],
+              weaknesses: [],
+              completedExercises: progress?.totalTests || 0,
+              totalScore: 0,
+              createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
+              lastActivity: new Date()
+            };
+            setUser(userProfile);
+
+            // Sync user profile to Firestore
+            createOrUpdateUserProfile(firebaseAuth.user.uid, {
+              email: firebaseAuth.user.email,
+              displayName: firebaseAuth.user.displayName,
+              currentLevel: "B1",
+              targetLevel: "C1",
+              emailVerified: firebaseAuth.user.emailVerified
+            }).catch(error => console.error("Error syncing user profile:", error));
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement du profil utilisateur:", error);
+          // Fallback : créer un profil par défaut
+          const userProfile: UserProfile = {
+            id: firebaseAuth.user.uid,
+            name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
+            currentLevel: "B1",
+            targetLevel: "C1",
+            strengths: [],
+            weaknesses: [],
+            completedExercises: progress?.totalTests || 0,
+            totalScore: 0,
+            createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
+            lastActivity: new Date()
+          };
+          setUser(userProfile);
+        }
+      };
+
+      loadUserProfile();
 
     } else {
       // Fallback to localStorage for backward compatibility
@@ -229,7 +267,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setToken(newToken);
     localStorage.setItem("token", newToken);
     localStorage.setItem("user", JSON.stringify(userData));
-    
+
     const userProfile: UserProfile = {
       id: userData.id || `user_${Date.now()}`,
       name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",

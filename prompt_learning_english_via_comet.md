@@ -141,6 +141,9 @@ Here’s my plan to support your English improvement for your new AI architect m
 **EN:** Could you clarify when the problem first appeared?  
 **FR:** Pourriez-vous préciser quand le problème est apparu ?  
 
+**EN:**Have any network settings been changed in the update?
+**FR:**est-ce que des parametres réseau ont été  modifiés dans la mise à jour ?
+
 ---
 
 ### 3. Identifier la cause
@@ -295,3 +298,15 @@ Here’s my plan to support your English improvement for your new AI architect m
 
 **FR:** du coup / donc → **EN:** so / therefore  
 ➡️ *The API was down, so we couldn’t run the tests.* (L’API était hors service, donc nous n’avons pas pu lancer les tests.)  
+
+
+
+
+
+
+
+
+
+
+
+

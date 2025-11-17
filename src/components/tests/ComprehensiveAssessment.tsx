@@ -858,11 +858,24 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
     setCompleted(true);
 
     if (user) {
-      setUser({
+      const updatedUser = {
         ...user,
         currentLevel: level,
         lastActivity: new Date()
-      });
+      };
+      setUser(updatedUser);
+
+      // Sauvegarder dans localStorage
+      localStorage.setItem("levelAssessed", "true");
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      // Sauvegarder dans Firebase
+      try {
+        const { markAssessmentCompleted } = await import("../../services/firebase/userService");
+        await markAssessmentCompleted(user.id, level);
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde dans Firebase:", error);
+      }
     }
   };
 
@@ -1089,17 +1102,51 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
     );
   }
 
+  const handleSkip = async () => {
+    // Marquer le test comme complété sans résultat
+    if (user) {
+      try {
+        // Sauvegarder dans localStorage
+        localStorage.setItem("levelAssessed", "true");
+
+        // Sauvegarder dans Firebase si disponible
+        const { markAssessmentCompleted } = await import("../../services/firebase/userService");
+        await markAssessmentCompleted(user.id);
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde du statut d'évaluation:", error);
+        // Continuer même en cas d'erreur Firebase
+        localStorage.setItem("levelAssessed", "true");
+      }
+    } else {
+      localStorage.setItem("levelAssessed", "true");
+    }
+
+    onComplete();
+  };
+
   return (
     <Box sx={{ p: 3, maxWidth: 1000, mx: "auto" }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 2 }}>
-        Évaluation complète de niveau
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
+          Évaluation complète de niveau
+        </Typography>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleSkip}
+          sx={{ minWidth: 120 }}
+        >
+          Passer
+        </Button>
+      </Box>
 
       <Alert severity="info" sx={{ mb: 3 }}>
         Cette évaluation comporte 18 questions réparties en 3 sections :
         <strong> Listening (compréhension orale)</strong>,
         <strong> Reading (compréhension écrite)</strong>, et
         <strong> Writing (expression écrite)</strong>.
+        <br />
+        <strong>Note :</strong> Ce test est optionnel. Vous pouvez le passer plus tard depuis le tableau de bord.
       </Alert>
 
       <Box sx={{ mb: 3 }}>

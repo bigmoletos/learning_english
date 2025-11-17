@@ -26,6 +26,8 @@ export interface FirestoreUser {
   weaknesses?: string[];
   completedExercises?: number;
   totalScore?: number;
+  levelAssessed?: boolean; // Indique si l'utilisateur a complété le test d'évaluation
+  assessmentCompletedAt?: Date; // Date de complétion du test d'évaluation
   createdAt: Date;
   updatedAt: Date;
   lastActivity?: Date;
@@ -78,6 +80,14 @@ const toUserProfile = (firestoreUser: FirestoreUser): UserProfile => {
 export const getUserById = async (userId: string): Promise<UserProfile | null> => {
   const firestoreUser = await getDocument<FirestoreUser>(COLLECTION_NAME, userId);
   return firestoreUser ? toUserProfile(firestoreUser) : null;
+};
+
+/**
+ * Obtient le statut d'évaluation de niveau d'un utilisateur
+ */
+export const getUserAssessmentStatus = async (userId: string): Promise<boolean> => {
+  const firestoreUser = await getDocument<FirestoreUser>(COLLECTION_NAME, userId);
+  return firestoreUser?.levelAssessed || false;
 };
 
 /**
@@ -184,6 +194,22 @@ export const updateUser = async (userId: string, updates: Partial<UserProfile>):
   if (updates.lastActivity) partialUser.lastActivity = updates.lastActivity;
 
   await updateDocument<FirestoreUser>(COLLECTION_NAME, userId, partialUser);
+};
+
+/**
+ * Marque le test d'évaluation comme complété pour un utilisateur
+ */
+export const markAssessmentCompleted = async (userId: string, level?: "A1" | "A2" | "B1" | "B2" | "C1"): Promise<void> => {
+  const updates: Partial<FirestoreUser> = {
+    levelAssessed: true,
+    assessmentCompletedAt: new Date()
+  };
+
+  if (level) {
+    updates.currentLevel = level;
+  }
+
+  await updateDocument<FirestoreUser>(COLLECTION_NAME, userId, updates);
 };
 
 /**

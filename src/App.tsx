@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box, CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar,
   Typography, Drawer, List, ListItem, ListItemIcon, ListItemText,
@@ -165,9 +165,50 @@ const AppContent: React.FC = () => {
   const [selectedTestLevel, setSelectedTestLevel] = useState<LanguageLevel | null>(null);
   const [showSignup, setShowSignup] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showAssessment, setShowAssessment] = useState(() => {
-    return !localStorage.getItem("levelAssessed");
-  });
+  const [showAssessment, setShowAssessment] = useState(false);
+  const [assessmentChecked, setAssessmentChecked] = useState(false);
+
+  // Vérifier le statut d'évaluation depuis Firebase et localStorage
+  useEffect(() => {
+    if (isAuthenticated && user && !assessmentChecked) {
+      const checkAssessmentStatus = async () => {
+        try {
+          // Vérifier localStorage d'abord
+          const localAssessed = localStorage.getItem("levelAssessed");
+
+          if (localAssessed === "true") {
+            setAssessmentChecked(true);
+            return;
+          }
+
+          // Vérifier Firebase
+          const { getUserAssessmentStatus } = await import("./services/firebase/userService");
+          const firebaseAssessed = await getUserAssessmentStatus(user.id);
+
+          if (firebaseAssessed) {
+            localStorage.setItem("levelAssessed", "true");
+            setAssessmentChecked(true);
+          } else {
+            // Si ni localStorage ni Firebase n'indiquent que le test est fait, ne pas l'afficher automatiquement
+            // L'utilisateur peut le faire manuellement depuis le dashboard
+            setAssessmentChecked(true);
+          }
+        } catch (error) {
+          console.error("Erreur lors de la vérification du statut d'évaluation:", error);
+          // En cas d'erreur, vérifier localStorage uniquement
+          const localAssessed = localStorage.getItem("levelAssessed");
+          if (localAssessed === "true") {
+            setAssessmentChecked(true);
+          } else {
+            // Ne pas afficher le test automatiquement
+            setAssessmentChecked(true);
+          }
+        }
+      };
+
+      checkAssessmentStatus();
+    }
+  }, [isAuthenticated, user, assessmentChecked]);
 
   // Vérifier si on est sur une route de vérification d'email
   const path = window.location.pathname;
@@ -230,9 +271,22 @@ const AppContent: React.FC = () => {
     { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> }
   ];
 
-  const handleAssessmentComplete = () => {
+  const handleAssessmentComplete = async () => {
+    // Sauvegarder dans localStorage
     localStorage.setItem("levelAssessed", "true");
+
+    // Sauvegarder dans Firebase si l'utilisateur est connecté
+    if (user) {
+      try {
+        const { markAssessmentCompleted } = await import("./services/firebase/userService");
+        await markAssessmentCompleted(user.id, user.currentLevel);
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde dans Firebase:", error);
+      }
+    }
+
     setShowAssessment(false);
+    setAssessmentChecked(true);
     setCurrentView("learning");
   };
 
