@@ -6,8 +6,17 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, Typography, Radio, RadioGroup,
-  FormControlLabel, FormControl, Button, Alert, Chip
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Button,
+  Alert,
+  Chip,
 } from "@mui/material";
 import { CheckCircle, Cancel, Lightbulb } from "@mui/icons-material";
 import { Question } from "../../types";
@@ -21,7 +30,7 @@ interface QCMExerciseProps {
 export const QCMExercise: React.FC<QCMExerciseProps> = ({
   question,
   onAnswer,
-  showExplanation = true
+  showExplanation = true,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -62,10 +71,7 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
         </Box>
 
         <FormControl component="fieldset" fullWidth disabled={submitted}>
-          <RadioGroup
-            value={selectedAnswer}
-            onChange={(e) => setSelectedAnswer(e.target.value)}
-          >
+          <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
             {question.options?.map((option, index) => (
               <FormControlLabel
                 key={index}
@@ -77,26 +83,30 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
                     {submitted && option === question.correctAnswer && (
                       <CheckCircle color="success" fontSize="small" />
                     )}
-                    {submitted && option === selectedAnswer && option !== question.correctAnswer && (
-                      <Cancel color="error" fontSize="small" />
-                    )}
+                    {submitted &&
+                      option === selectedAnswer &&
+                      option !== question.correctAnswer && (
+                        <Cancel color="error" fontSize="small" />
+                      )}
                   </Box>
                 }
                 sx={{
                   p: 2,
                   mb: 1,
                   border: 1,
-                  borderColor: submitted && option === question.correctAnswer
-                    ? "success.main"
-                    : submitted && option === selectedAnswer
-                      ? "error.main"
-                      : "grey.300",
+                  borderColor:
+                    submitted && option === question.correctAnswer
+                      ? "success.main"
+                      : submitted && option === selectedAnswer
+                        ? "error.main"
+                        : "grey.300",
                   borderRadius: 2,
-                  bgcolor: submitted && option === question.correctAnswer
-                    ? "success.light"
-                    : submitted && option === selectedAnswer
-                      ? "error.light"
-                      : "transparent"
+                  bgcolor:
+                    submitted && option === question.correctAnswer
+                      ? "success.light"
+                      : submitted && option === selectedAnswer
+                        ? "error.light"
+                        : "transparent",
                 }}
               />
             ))}
@@ -132,9 +142,7 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
                 <Typography variant="subtitle2" color="primary" gutterBottom>
                   Explication :
                 </Typography>
-                <Typography variant="body2">
-                  {question.explanation}
-                </Typography>
+                <Typography variant="body2">{question.explanation}</Typography>
               </Box>
             )}
           </Box>
@@ -143,4 +151,3 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
     </Card>
   );
 };
-

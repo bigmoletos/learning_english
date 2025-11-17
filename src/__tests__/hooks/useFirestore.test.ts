@@ -21,13 +21,13 @@ describe("useFirestore Hooks", () => {
       email: "test@example.com",
       displayName: "Test User",
       currentLevel: "B1",
-      targetLevel: "C1"
+      targetLevel: "C1",
     };
 
     it("should fetch user profile on mount", async () => {
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        data: mockProfile
+        data: mockProfile,
       });
 
       const { result } = renderHook(() => useUserProfile("user-123"));
@@ -55,7 +55,7 @@ describe("useFirestore Hooks", () => {
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: false,
         error: "User not found",
-        message: "User not found"
+        message: "User not found",
       });
 
       const { result } = renderHook(() => useUserProfile("user-123"));
@@ -71,13 +71,12 @@ describe("useFirestore Hooks", () => {
     it("should refetch when userId changes", async () => {
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        data: mockProfile
+        data: mockProfile,
       });
 
-      const { result, rerender } = renderHook(
-        ({ userId }) => useUserProfile(userId),
-        { initialProps: { userId: "user-123" } }
-      );
+      const { result, rerender } = renderHook(({ userId }) => useUserProfile(userId), {
+        initialProps: { userId: "user-123" },
+      });
 
       await waitFor(() => {
         expect(result.current.profile).toEqual(mockProfile);
@@ -89,7 +88,7 @@ describe("useFirestore Hooks", () => {
       const newProfile = { ...mockProfile, id: "user-456" };
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        data: newProfile
+        data: newProfile,
       });
 
       rerender({ userId: "user-456" });
@@ -105,12 +104,12 @@ describe("useFirestore Hooks", () => {
     it("should update profile successfully", async () => {
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        data: mockProfile
+        data: mockProfile,
       });
 
       (firestoreService.createOrUpdateUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        message: "Profile updated"
+        message: "Profile updated",
       });
 
       const { result } = renderHook(() => useUserProfile("user-123"));
@@ -137,12 +136,12 @@ describe("useFirestore Hooks", () => {
     it("should handle update error", async () => {
       (firestoreService.getUserProfile as jest.Mock).mockResolvedValue({
         success: true,
-        data: mockProfile
+        data: mockProfile,
       });
 
       (firestoreService.createOrUpdateUserProfile as jest.Mock).mockResolvedValue({
         success: false,
-        error: "Update failed"
+        error: "Update failed",
       });
 
       const { result } = renderHook(() => useUserProfile("user-123"));
@@ -174,14 +173,14 @@ describe("useFirestore Hooks", () => {
       totalTests: 50,
       averageScore: 85,
       timeSpent: 3600,
-      streakDays: 7
+      streakDays: 7,
     };
 
     describe("One-time fetch mode", () => {
       it("should fetch progress on mount", async () => {
         (firestoreService.getProgress as jest.Mock).mockResolvedValue({
           success: true,
-          data: mockProgress
+          data: mockProgress,
         });
 
         const { result } = renderHook(() => useProgress("user-123", false));
@@ -200,12 +199,12 @@ describe("useFirestore Hooks", () => {
       it("should update progress and local state", async () => {
         (firestoreService.getProgress as jest.Mock).mockResolvedValue({
           success: true,
-          data: mockProgress
+          data: mockProgress,
         });
 
         (firestoreService.saveProgress as jest.Mock).mockResolvedValue({
           success: true,
-          message: "Progress saved"
+          message: "Progress saved",
         });
 
         const { result } = renderHook(() => useProgress("user-123", false));
@@ -292,7 +291,7 @@ describe("useFirestore Hooks", () => {
         );
 
         (firestoreService.saveProgress as jest.Mock).mockResolvedValue({
-          success: true
+          success: true,
         });
 
         const { result } = renderHook(() => useProgress("user-123", true));
@@ -334,22 +333,22 @@ describe("useFirestore Hooks", () => {
         exerciseId: "ex-1",
         score: 90,
         isCorrect: true,
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: "test-2",
         exerciseId: "ex-2",
         score: 85,
         isCorrect: true,
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ];
 
     describe("One-time fetch mode", () => {
       it("should fetch test results on mount", async () => {
         (firestoreService.getTestResults as jest.Mock).mockResolvedValue({
           success: true,
-          data: mockTestResults
+          data: mockTestResults,
         });
 
         const { result } = renderHook(() => useTestResults("user-123", 10, false));
@@ -368,12 +367,12 @@ describe("useFirestore Hooks", () => {
       it("should add test result and update local state", async () => {
         (firestoreService.getTestResults as jest.Mock).mockResolvedValue({
           success: true,
-          data: mockTestResults
+          data: mockTestResults,
         });
 
         (firestoreService.saveTestResult as jest.Mock).mockResolvedValue({
           success: true,
-          testId: "test-3"
+          testId: "test-3",
         });
 
         const { result } = renderHook(() => useTestResults("user-123", 10, false));
@@ -387,7 +386,7 @@ describe("useFirestore Hooks", () => {
           questionId: "q-1",
           answer: "answer",
           isCorrect: true,
-          timeSpent: 30
+          timeSpent: 30,
         };
 
         await act(async () => {
@@ -470,7 +469,7 @@ describe("useFirestore Hooks", () => {
     it("should handle fetch error", async () => {
       (firestoreService.getTestResults as jest.Mock).mockResolvedValue({
         success: false,
-        error: "Failed to fetch test results"
+        error: "Failed to fetch test results",
       });
 
       const { result } = renderHook(() => useTestResults("user-123", 10, false));
@@ -490,7 +489,7 @@ describe("useFirestore Hooks", () => {
         questionId: "q-1",
         answer: "test",
         isCorrect: true,
-        timeSpent: 20
+        timeSpent: 20,
       });
 
       expect(addResult.success).toBe(false);
@@ -500,12 +499,12 @@ describe("useFirestore Hooks", () => {
     it("should set error when save test result fails", async () => {
       (firestoreService.getTestResults as jest.Mock).mockResolvedValue({
         success: true,
-        data: []
+        data: [],
       });
 
       (firestoreService.saveTestResult as jest.Mock).mockResolvedValue({
         success: false,
-        error: "Save failed"
+        error: "Save failed",
       });
 
       const { result } = renderHook(() => useTestResults("user-123", 10, false));
@@ -520,7 +519,7 @@ describe("useFirestore Hooks", () => {
           questionId: "q-1",
           answer: "test",
           isCorrect: true,
-          timeSpent: 20
+          timeSpent: 20,
         });
       });
 

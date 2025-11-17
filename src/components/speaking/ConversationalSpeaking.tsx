@@ -86,7 +86,9 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
   const [isCoachSpeaking, setIsCoachSpeaking] = useState(false); // Indique si le coach est en train de parler
   const [currentAnalysis, setCurrentAnalysis] = useState<SpeakingAnalysis | null>(null);
   const [history, setHistory] = useState<AnalysisHistory[]>([]);
-  const [coachMessages, setCoachMessages] = useState<Array<{ role: "user" | "coach"; content: string; timestamp: number }>>([]);
+  const [coachMessages, setCoachMessages] = useState<
+    Array<{ role: "user" | "coach"; content: string; timestamp: number }>
+  >([]);
   const [autoCorrect, setAutoCorrect] = useState(true);
   const [speakCorrections, setSpeakCorrections] = useState(true);
   const [coachMode, setCoachMode] = useState(true); // Mode conversation avec coach activé par défaut
@@ -155,11 +157,13 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       // Ajouter le message du coach à l'historique (toujours en mode coach)
       if (coachMode) {
-        setCoachMessages([{
-          role: "coach",
-          content: welcomeMessage,
-          timestamp: Date.now(),
-        }]);
+        setCoachMessages([
+          {
+            role: "coach",
+            content: welcomeMessage,
+            timestamp: Date.now(),
+          },
+        ]);
       }
 
       // Démarrer l'écoute APRÈS que le coach ait fini de parler
@@ -170,7 +174,14 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
       setError(err.message || "Erreur lors du démarrage de la conversation");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [browserSupportsSpeechRecognition, startListening, resetTranscript, speakCorrections, coachMode, level]);
+  }, [
+    browserSupportsSpeechRecognition,
+    startListening,
+    resetTranscript,
+    speakCorrections,
+    coachMode,
+    level,
+  ]);
 
   /**
    * Met en pause / reprend la conversation
@@ -222,344 +233,386 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
   /**
    * Prononce un texte en anglais
    */
-  const speakText = useCallback(async (text: string, rate = 1.0) => {
-    try {
-      // Arrêter la reconnaissance vocale pendant que le coach parle
-      setIsCoachSpeaking(true);
-      if (listening) {
-        stopListening();
-      }
-
-      // Attendre 300ms pour s'assurer que le micro est bien arrêté
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // Réinitialiser le transcript pour éviter de capturer ce que dit le coach
-      resetTranscript();
-      lastTranscriptRef.current = "";
-
-      // Arrêter l'audio en cours
-      if (audioPlayerRef.current) {
-        audioPlayerRef.current.pause();
-      }
-
-      const audioUrl = await textToSpeechService.synthesize({
-        text,
-        lang: "en-US",
-        rate,
-      });
-
-      // Si le service TTS n'est pas disponible, ne pas bloquer
-      if (!audioUrl) {
-        console.warn("[ConversationalSpeaking] Service TTS non disponible, audio ignoré");
-        setIsCoachSpeaking(false);
-        // Reprendre l'écoute si on était en conversation
-        if (isConversing && !isPaused) {
-          await startListening();
+  const speakText = useCallback(
+    async (text: string, rate = 1.0) => {
+      try {
+        // Arrêter la reconnaissance vocale pendant que le coach parle
+        setIsCoachSpeaking(true);
+        if (listening) {
+          stopListening();
         }
-        return;
-      }
 
-      const audio = new Audio(audioUrl);
-      audioPlayerRef.current = audio;
+        // Attendre 300ms pour s'assurer que le micro est bien arrêté
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // Reprendre l'écoute après la fin de la lecture
-      audio.onended = async () => {
-        audioPlayerRef.current = null;
-        // Attendre 500ms après la fin du TTS avant de relancer l'écoute
-        // Cela évite de capturer les dernières millisecondes du son
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        setIsCoachSpeaking(false);
-        // Réinitialiser à nouveau le transcript avant de relancer l'écoute
+        // Réinitialiser le transcript pour éviter de capturer ce que dit le coach
         resetTranscript();
         lastTranscriptRef.current = "";
 
-        // Reprendre l'écoute si on était en conversation
-        if (isConversing && !isPaused) {
-          await startListening();
-          console.log("[ConversationalSpeaking] 🎤 Écoute relancée après TTS du coach");
+        // Arrêter l'audio en cours
+        if (audioPlayerRef.current) {
+          audioPlayerRef.current.pause();
         }
-      };
 
-      // Gérer les erreurs de lecture audio
-      audio.onerror = async () => {
-        console.error("[ConversationalSpeaking] Erreur de lecture audio");
-        audioPlayerRef.current = null;
+        const audioUrl = await textToSpeechService.synthesize({
+          text,
+          lang: "en-US",
+          rate,
+        });
+
+        // Si le service TTS n'est pas disponible, ne pas bloquer
+        if (!audioUrl) {
+          console.warn("[ConversationalSpeaking] Service TTS non disponible, audio ignoré");
+          setIsCoachSpeaking(false);
+          // Reprendre l'écoute si on était en conversation
+          if (isConversing && !isPaused) {
+            await startListening();
+          }
+          return;
+        }
+
+        const audio = new Audio(audioUrl);
+        audioPlayerRef.current = audio;
+
+        // Reprendre l'écoute après la fin de la lecture
+        audio.onended = async () => {
+          audioPlayerRef.current = null;
+          // Attendre 500ms après la fin du TTS avant de relancer l'écoute
+          // Cela évite de capturer les dernières millisecondes du son
+          await new Promise((resolve) => setTimeout(resolve, 500));
+
+          setIsCoachSpeaking(false);
+          // Réinitialiser à nouveau le transcript avant de relancer l'écoute
+          resetTranscript();
+          lastTranscriptRef.current = "";
+
+          // Reprendre l'écoute si on était en conversation
+          if (isConversing && !isPaused) {
+            await startListening();
+            console.log("[ConversationalSpeaking] 🎤 Écoute relancée après TTS du coach");
+          }
+        };
+
+        // Gérer les erreurs de lecture audio
+        audio.onerror = async () => {
+          console.error("[ConversationalSpeaking] Erreur de lecture audio");
+          audioPlayerRef.current = null;
+          setIsCoachSpeaking(false);
+          resetTranscript();
+          lastTranscriptRef.current = "";
+          if (isConversing && !isPaused) {
+            await startListening();
+          }
+        };
+
+        await audio.play();
+        console.log("[ConversationalSpeaking] 🔇 TTS du coach en cours, micro arrêté");
+      } catch (err) {
+        console.error("[ConversationalSpeaking] Erreur TTS:", err);
         setIsCoachSpeaking(false);
         resetTranscript();
         lastTranscriptRef.current = "";
+        // Reprendre l'écoute en cas d'erreur
         if (isConversing && !isPaused) {
           await startListening();
         }
-      };
-
-      await audio.play();
-      console.log("[ConversationalSpeaking] 🔇 TTS du coach en cours, micro arrêté");
-    } catch (err) {
-      console.error("[ConversationalSpeaking] Erreur TTS:", err);
-      setIsCoachSpeaking(false);
-      resetTranscript();
-      lastTranscriptRef.current = "";
-      // Reprendre l'écoute en cas d'erreur
-      if (isConversing && !isPaused) {
-        await startListening();
       }
-    }
-  }, [listening, stopListening, resetTranscript, startListening, isConversing, isPaused]);
+    },
+    [listening, stopListening, resetTranscript, startListening, isConversing, isPaused]
+  );
 
   /**
    * Analyse la parole et donne un feedback
    */
-  const analyzeAndCorrect = useCallback(async (text: string) => {
-    if (!text || text.trim().length < 3 || processingRef.current) {
-      return;
-    }
-
-    processingRef.current = true;
-    setIsAnalyzing(true);
-
-    try {
-      // STRATÉGIE DE FILTRAGE SIMPLIFIÉE
-      // Au lieu de patterns complexes, on vérifie si le transcript contient des fragments du coach
-      // et on les supprime de manière plus robuste
-
-      let userText = text.trim(); // Trim d'abord
-      const originalText = text.trim();
-
-      // Liste des fragments à supprimer (du plus long au plus court pour éviter les faux positifs)
-      const coachFragments = [
-        "in English and I will help you improve your pronunciation and grammar in Real-Time",
-        "in English and I will help you improve your pronunciation and grammar in real-time",
-        "in English and I will help you improve your pronunciation and grammar",
-        "start speaking in English and I will help you",
-        "I will help you improve your pronunciation and grammar",
-        "improve your pronunciation and grammar in real-time",
-        "improve your pronunciation and grammar in Real-Time",
-        "pronunciation and grammar in real-time",
-        "pronunciation and grammar in Real-Time",
-        "improve your pronunciation and grammar",
-        "help you improve your pronunciation",
-        "your pronunciation and grammar",
-        "I will help you improve",
-        "I will help you",
-        "in English and",
-        "Translation:",
-        "I've translated",
-        "The correct sentence is:",
-        "That's great",
-        "Good job",
-        "Well done",
-        "Keep practicing",
-        "Excellent! Keep going",
-        "Keep going! Excellent",
-        "I'm your English coach",
-        "Let's have a conversation",
-        "I'll help you improve",
-        "What would you like to talk about?",
-        "I'm listening",
-        "Go ahead",
-      ];
-
-      // Supprimer chaque fragment (case insensitive)
-      coachFragments.forEach(fragment => {
-        const regex = new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
-        userText = userText.replace(regex, " ");
-      });
-
-      // Nettoyer les espaces multiples et trim
-      userText = userText.replace(/\s+/g, " ").trim();
-
-      // Vérifier si le transcript ne contient que des phrases du coach
-      if (!userText || userText.length < 2) {
-        console.log("[ConversationalSpeaking] ❌ Transcript ignoré (contient uniquement des phrases du coach):", originalText);
-        resetTranscript();
-        lastTranscriptRef.current = "";
-        setIsAnalyzing(false);
-        processingRef.current = false;
+  const analyzeAndCorrect = useCallback(
+    async (text: string) => {
+      if (!text || text.trim().length < 3 || processingRef.current) {
         return;
       }
 
-      console.log("[ConversationalSpeaking] ✅ Transcript utilisateur filtré:", userText, "| ❌ Original (avec coach):", originalText);
+      processingRef.current = true;
+      setIsAnalyzing(true);
 
-      // Analyse avec le speaking agent
-      const analysis = await speakingAgent.analyzeSpeaking(
-        userText,
-        confidence,
-        level
-      );
+      try {
+        // STRATÉGIE DE FILTRAGE SIMPLIFIÉE
+        // Au lieu de patterns complexes, on vérifie si le transcript contient des fragments du coach
+        // et on les supprime de manière plus robuste
 
-      setCurrentAnalysis(analysis);
+        let userText = text.trim(); // Trim d'abord
+        const originalText = text.trim();
 
-      // Mettre à jour les statistiques
-      const totalErrors = conversationStats.totalErrors + analysis.errors.length;
-      const totalSentences = conversationStats.totalSentences + 1;
-      const averageScore = Math.round(
-        ((conversationStats.averageScore * conversationStats.totalSentences) + analysis.score) /
-        totalSentences
-      );
+        // Liste des fragments à supprimer (du plus long au plus court pour éviter les faux positifs)
+        const coachFragments = [
+          "in English and I will help you improve your pronunciation and grammar in Real-Time",
+          "in English and I will help you improve your pronunciation and grammar in real-time",
+          "in English and I will help you improve your pronunciation and grammar",
+          "start speaking in English and I will help you",
+          "I will help you improve your pronunciation and grammar",
+          "improve your pronunciation and grammar in real-time",
+          "improve your pronunciation and grammar in Real-Time",
+          "pronunciation and grammar in real-time",
+          "pronunciation and grammar in Real-Time",
+          "improve your pronunciation and grammar",
+          "help you improve your pronunciation",
+          "your pronunciation and grammar",
+          "I will help you improve",
+          "I will help you",
+          "in English and",
+          "Translation:",
+          "I've translated",
+          "The correct sentence is:",
+          "That's great",
+          "Good job",
+          "Well done",
+          "Keep practicing",
+          "Excellent! Keep going",
+          "Keep going! Excellent",
+          "I'm your English coach",
+          "Let's have a conversation",
+          "I'll help you improve",
+          "What would you like to talk about?",
+          "I'm listening",
+          "Go ahead",
+        ];
 
-      setConversationStats({
-        ...conversationStats,
-        totalSentences,
-        totalErrors,
-        averageScore,
-      });
+        // Supprimer chaque fragment (case insensitive)
+        coachFragments.forEach((fragment) => {
+          const regex = new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+          userText = userText.replace(regex, " ");
+        });
 
-      // Ajouter à l'historique
-      const historyEntry: AnalysisHistory = {
-        timestamp: Date.now(),
-        transcript: userText,
-        analysis,
-        correctionSpoken: false,
-      };
+        // Nettoyer les espaces multiples et trim
+        userText = userText.replace(/\s+/g, " ").trim();
 
-      setHistory(prev => [...prev, historyEntry]);
+        // Vérifier si le transcript ne contient que des phrases du coach
+        if (!userText || userText.length < 2) {
+          console.log(
+            "[ConversationalSpeaking] ❌ Transcript ignoré (contient uniquement des phrases du coach):",
+            originalText
+          );
+          resetTranscript();
+          lastTranscriptRef.current = "";
+          setIsAnalyzing(false);
+          processingRef.current = false;
+          return;
+        }
 
-      // Ajouter le message de l'utilisateur à l'historique de conversation
-      if (coachMode) {
-        setCoachMessages(prev => [...prev, {
-          role: "user",
-          content: userText,
+        console.log(
+          "[ConversationalSpeaking] ✅ Transcript utilisateur filtré:",
+          userText,
+          "| ❌ Original (avec coach):",
+          originalText
+        );
+
+        // Analyse avec le speaking agent
+        const analysis = await speakingAgent.analyzeSpeaking(userText, confidence, level);
+
+        setCurrentAnalysis(analysis);
+
+        // Mettre à jour les statistiques
+        const totalErrors = conversationStats.totalErrors + analysis.errors.length;
+        const totalSentences = conversationStats.totalSentences + 1;
+        const averageScore = Math.round(
+          (conversationStats.averageScore * conversationStats.totalSentences + analysis.score) /
+            totalSentences
+        );
+
+        setConversationStats({
+          ...conversationStats,
+          totalSentences,
+          totalErrors,
+          averageScore,
+        });
+
+        // Ajouter à l'historique
+        const historyEntry: AnalysisHistory = {
           timestamp: Date.now(),
-        }]);
-      }
+          transcript: userText,
+          analysis,
+          correctionSpoken: false,
+        };
 
-      // Vérifier si c'est une demande de traduction
-      const isTranslationRequest = /translate|traduis|traduction|en français|in english|to french|to english/i.test(userText);
+        setHistory((prev) => [...prev, historyEntry]);
 
-      console.log("[ConversationalSpeaking] État du mode coach:", {
-        coachMode,
-        isTranslationRequest,
-        speakCorrections,
-        autoCorrect
-      });
+        // Ajouter le message de l'utilisateur à l'historique de conversation
+        if (coachMode) {
+          setCoachMessages((prev) => [
+            ...prev,
+            {
+              role: "user",
+              content: userText,
+              timestamp: Date.now(),
+            },
+          ]);
+        }
 
-      if (isTranslationRequest && coachMode) {
-        // Extraire le texte à traduire
-        const textToTranslate = userText.replace(/translate|traduis|traduction|en français|in english|to french|to english/gi, "").trim();
-        if (textToTranslate) {
-          const targetLang = /en français|to french|français/i.test(userText) ? "fr" : "en";
+        // Vérifier si c'est une demande de traduction
+        const isTranslationRequest =
+          /translate|traduis|traduction|en français|in english|to french|to english/i.test(
+            userText
+          );
+
+        console.log("[ConversationalSpeaking] État du mode coach:", {
+          coachMode,
+          isTranslationRequest,
+          speakCorrections,
+          autoCorrect,
+        });
+
+        if (isTranslationRequest && coachMode) {
+          // Extraire le texte à traduire
+          const textToTranslate = userText
+            .replace(
+              /translate|traduis|traduction|en français|in english|to french|to english/gi,
+              ""
+            )
+            .trim();
+          if (textToTranslate) {
+            const targetLang = /en français|to french|français/i.test(userText) ? "fr" : "en";
+            setIsCoachResponding(true);
+
+            try {
+              const translationResult = await conversationService.translate(
+                textToTranslate,
+                targetLang
+              );
+              if (translationResult.success) {
+                const coachResponse = `Translation: "${translationResult.translatedText}"`;
+                setCoachMessages((prev) => [
+                  ...prev,
+                  {
+                    role: "coach",
+                    content: coachResponse,
+                    timestamp: Date.now(),
+                  },
+                ]);
+
+                if (speakCorrections) {
+                  await speakText(coachResponse, 0.9);
+                }
+              }
+            } catch (err) {
+              console.error("[ConversationalSpeaking] Erreur traduction:", err);
+            } finally {
+              setIsCoachResponding(false);
+            }
+          }
+        } else if (coachMode) {
+          // Mode conversation avec coach : obtenir une réponse du coach
+          // Le coach doit TOUJOURS répondre en mode coach, même s'il n'y a pas d'erreurs
+          console.log(
+            "[ConversationalSpeaking] Demande de réponse au coach pour:",
+            userText,
+            "| Erreurs:",
+            analysis.errors.length
+          );
+
+          // Arrêter la reconnaissance vocale et réinitialiser le transcript AVANT que le coach réponde
+          if (listening) {
+            stopListening();
+          }
+          resetTranscript();
+          lastTranscriptRef.current = "";
+
           setIsCoachResponding(true);
 
           try {
-            const translationResult = await conversationService.translate(textToTranslate, targetLang);
-            if (translationResult.success) {
-              const coachResponse = `Translation: "${translationResult.translatedText}"`;
-              setCoachMessages(prev => [...prev, {
-                role: "coach",
-                content: coachResponse,
-                timestamp: Date.now(),
-              }]);
+            const coachResponse = await conversationService.sendMessage(
+              userText,
+              level,
+              analysis.errors,
+              explanationLevel
+            );
+            console.log("[ConversationalSpeaking] Réponse du coach reçue:", coachResponse);
 
-              if (speakCorrections) {
-                await speakText(coachResponse, 0.9);
+            if (coachResponse.success && coachResponse.message) {
+              // Vérifier si le dernier message du coach est identique (éviter les répétitions exactes)
+              const lastCoachMessage =
+                coachMessages.length > 0 ? coachMessages[coachMessages.length - 1]?.content : "";
+
+              // Ne pas ajouter si c'est exactement le même message
+              if (coachResponse.message !== lastCoachMessage) {
+                // Ajouter la réponse du coach à l'historique
+                setCoachMessages((prev) => [
+                  ...prev,
+                  {
+                    role: "coach",
+                    content: coachResponse.message,
+                    timestamp: Date.now(),
+                  },
+                ]);
+
+                // Parler la réponse du coach à l'oral (TOUJOURS en mode coach, indépendamment de speakCorrections)
+                // En mode coach, le coach doit toujours parler pour avoir une vraie conversation
+                await speakText(coachResponse.message, 0.9);
+
+                // Si le coach a fourni des corrections, les afficher
+                if (coachResponse.explanation) {
+                  console.log(
+                    "[ConversationalSpeaking] Explication du coach:",
+                    coachResponse.explanation
+                  );
+                }
+              } else {
+                console.log("[ConversationalSpeaking] Message du coach ignoré (répétition exacte)");
               }
             }
           } catch (err) {
-            console.error("[ConversationalSpeaking] Erreur traduction:", err);
+            console.error("[ConversationalSpeaking] Erreur conversation coach:", err);
           } finally {
             setIsCoachResponding(false);
           }
-        }
-      } else if (coachMode) {
-        // Mode conversation avec coach : obtenir une réponse du coach
-        // Le coach doit TOUJOURS répondre en mode coach, même s'il n'y a pas d'erreurs
-        console.log("[ConversationalSpeaking] Demande de réponse au coach pour:", userText, "| Erreurs:", analysis.errors.length);
+        } else {
+          // Mode correction simple (sans coach)
+          if (speakCorrections && autoCorrect && analysis.errors.length > 0) {
+            let correctionText = "";
 
-        // Arrêter la reconnaissance vocale et réinitialiser le transcript AVANT que le coach réponde
-        if (listening) {
-          stopListening();
+            if (analysis.errors.length === 1) {
+              const err = analysis.errors[0];
+              correctionText = `You said "${err.original}", but the correct form is "${err.corrected}". ${err.explanation}`;
+            } else {
+              correctionText = `I found ${analysis.errors.length} mistakes. `;
+              correctionText += `The correct sentence is: ${analysis.correctedSentence}`;
+            }
+
+            await speakText(correctionText, 0.9);
+
+            // Marquer comme corrigé
+            historyEntry.correctionSpoken = true;
+            setHistory((prev) =>
+              prev.map((h) => (h.timestamp === historyEntry.timestamp ? historyEntry : h))
+            );
+          } else if (speakCorrections && analysis.score >= 90) {
+            await speakText("Excellent! Keep going.", 1.0);
+          }
         }
+
+        // Réinitialiser la transcription pour la prochaine phrase
         resetTranscript();
         lastTranscriptRef.current = "";
-
-        setIsCoachResponding(true);
-
-        try {
-          const coachResponse = await conversationService.sendMessage(userText, level, analysis.errors, explanationLevel);
-          console.log("[ConversationalSpeaking] Réponse du coach reçue:", coachResponse);
-
-          if (coachResponse.success && coachResponse.message) {
-            // Vérifier si le dernier message du coach est identique (éviter les répétitions exactes)
-            const lastCoachMessage = coachMessages.length > 0
-              ? coachMessages[coachMessages.length - 1]?.content
-              : "";
-
-            // Ne pas ajouter si c'est exactement le même message
-            if (coachResponse.message !== lastCoachMessage) {
-              // Ajouter la réponse du coach à l'historique
-              setCoachMessages(prev => [...prev, {
-                role: "coach",
-                content: coachResponse.message,
-                timestamp: Date.now(),
-              }]);
-
-              // Parler la réponse du coach à l'oral (TOUJOURS en mode coach, indépendamment de speakCorrections)
-              // En mode coach, le coach doit toujours parler pour avoir une vraie conversation
-              await speakText(coachResponse.message, 0.9);
-
-              // Si le coach a fourni des corrections, les afficher
-              if (coachResponse.explanation) {
-                console.log("[ConversationalSpeaking] Explication du coach:", coachResponse.explanation);
-              }
-            } else {
-              console.log("[ConversationalSpeaking] Message du coach ignoré (répétition exacte)");
-            }
-          }
-        } catch (err) {
-          console.error("[ConversationalSpeaking] Erreur conversation coach:", err);
-        } finally {
-          setIsCoachResponding(false);
-        }
-      } else {
-        // Mode correction simple (sans coach)
-        if (speakCorrections && autoCorrect && analysis.errors.length > 0) {
-          let correctionText = "";
-
-          if (analysis.errors.length === 1) {
-            const err = analysis.errors[0];
-            correctionText = `You said "${err.original}", but the correct form is "${err.corrected}". ${err.explanation}`;
-          } else {
-            correctionText = `I found ${analysis.errors.length} mistakes. `;
-            correctionText += `The correct sentence is: ${analysis.correctedSentence}`;
-          }
-
-          await speakText(correctionText, 0.9);
-
-          // Marquer comme corrigé
-          historyEntry.correctionSpoken = true;
-          setHistory(prev =>
-            prev.map(h => h.timestamp === historyEntry.timestamp ? historyEntry : h)
-          );
-        } else if (speakCorrections && analysis.score >= 90) {
-          await speakText("Excellent! Keep going.", 1.0);
-        }
+      } catch (err: any) {
+        console.error("[ConversationalSpeaking] Erreur analyse:", err);
+        setError(err.message || "Erreur lors de l'analyse");
+      } finally {
+        setIsAnalyzing(false);
+        processingRef.current = false;
       }
-
-      // Réinitialiser la transcription pour la prochaine phrase
-      resetTranscript();
-      lastTranscriptRef.current = "";
-    } catch (err: any) {
-      console.error("[ConversationalSpeaking] Erreur analyse:", err);
-      setError(err.message || "Erreur lors de l'analyse");
-    } finally {
-      setIsAnalyzing(false);
-      processingRef.current = false;
-    }
-  }, [
-    confidence,
-    level,
-    conversationStats,
-    speakCorrections,
-    autoCorrect,
-    resetTranscript,
-    speakText,
-    coachMode,
-    coachMessages,
-    explanationLevel,
-    listening,
-    stopListening,
-  ]);
+    },
+    [
+      confidence,
+      level,
+      conversationStats,
+      speakCorrections,
+      autoCorrect,
+      resetTranscript,
+      speakText,
+      coachMode,
+      coachMessages,
+      explanationLevel,
+      listening,
+      stopListening,
+    ]
+  );
 
   /**
    * Détecte une fin de phrase et analyse
@@ -603,7 +656,10 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
           (transcript && transcript.trim().length >= 3 && !processingRef.current)
         ) {
           lastTranscriptRef.current = transcript;
-          console.log("[ConversationalSpeaking] 🎯 Pause détectée, analyse du transcript:", transcript.trim());
+          console.log(
+            "[ConversationalSpeaking] 🎯 Pause détectée, analyse du transcript:",
+            transcript.trim()
+          );
           analyzeAndCorrect(transcript.trim());
         }
       }, 1000); // 1 seconde de pause (réduit de 2s pour plus de réactivité)
@@ -629,8 +685,8 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
       <Card>
         <CardContent>
           <Alert severity="error">
-            Votre navigateur ne supporte pas la reconnaissance vocale.
-            Veuillez utiliser Chrome, Edge ou Safari.
+            Votre navigateur ne supporte pas la reconnaissance vocale. Veuillez utiliser Chrome,
+            Edge ou Safari.
           </Alert>
         </CardContent>
       </Card>
@@ -646,20 +702,13 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
           </Typography>
           <Typography variant="body2" color="text.secondary" paragraph>
             Parlez en anglais et recevez des corrections instantanées de votre prononciation,
-            grammaire et orthographe. Le système vous corrige en temps réel et vous aide à vous améliorer.
+            grammaire et orthographe. Le système vous corrige en temps réel et vous aide à vous
+            améliorer.
           </Typography>
 
           <Box sx={{ display: "flex", gap: 2, mb: 2, flexWrap: "wrap" }}>
-            <Chip
-              icon={<TrendingUp />}
-              label={`Niveau ${level}`}
-              color="primary"
-              size="small"
-            />
-            <Chip
-              label={`${conversationStats.totalSentences} phrases`}
-              size="small"
-            />
+            <Chip icon={<TrendingUp />} label={`Niveau ${level}`} color="primary" size="small" />
+            <Chip label={`${conversationStats.totalSentences} phrases`} size="small" />
             <Chip
               label={`Score moyen: ${conversationStats.averageScore}%`}
               size="small"
@@ -782,9 +831,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             {isAnalyzing && (
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircularProgress size={20} />
-                <Typography variant="body2">
-                  Analyse...
-                </Typography>
+                <Typography variant="body2">Analyse...</Typography>
               </Box>
             )}
 
@@ -872,10 +919,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                   <Typography variant="body2" sx={{ mb: 0.5 }}>
                     Transcript en direct:
                   </Typography>
-                  <Paper
-                    variant="outlined"
-                    sx={{ p: 1, bgcolor: "background.paper" }}
-                  >
+                  <Paper variant="outlined" sx={{ p: 1, bgcolor: "background.paper" }}>
                     <Typography variant="body2" sx={{ fontStyle: "italic" }}>
                       {transcript || "(vide)"}
                     </Typography>
@@ -969,9 +1013,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
             {currentAnalysis.correctedSentence && (
               <Alert severity="info" sx={{ mb: 2 }}>
                 <Typography variant="subtitle2">Correction :</Typography>
-                <Typography variant="body2">
-                  {currentAnalysis.correctedSentence}
-                </Typography>
+                <Typography variant="body2">{currentAnalysis.correctedSentence}</Typography>
                 <IconButton
                   size="small"
                   onClick={() => speakText(currentAnalysis.correctedSentence || "", 0.8)}
@@ -1018,10 +1060,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
                             >
                               {err.original}
                             </Typography>
-                            <Typography
-                              component="span"
-                              sx={{ color: "success.main" }}
-                            >
+                            <Typography component="span" sx={{ color: "success.main" }}>
                               → {err.corrected}
                             </Typography>
                           </Box>
@@ -1101,39 +1140,41 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
               Historique de la conversation
             </Typography>
             <List>
-              {history.slice().reverse().map((item, idx) => (
-                <React.Fragment key={item.timestamp}>
-                  {idx > 0 && <Divider />}
-                  <ListItem alignItems="flex-start">
-                    <ListItemText
-                      primary={
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <Typography variant="body2">
-                            {item.transcript}
-                          </Typography>
-                          {item.analysis.errors.length === 0 ? (
-                            <CheckCircle color="success" fontSize="small" />
-                          ) : (
-                            <ErrorIcon color="error" fontSize="small" />
-                          )}
-                        </Box>
-                      }
-                      secondary={
-                        <Box>
-                          <Typography variant="caption" color="text.secondary">
-                            Score: {item.analysis.score}% | {item.analysis.errors.length} erreur(s)
-                          </Typography>
-                          {item.analysis.correctedSentence && (
-                            <Typography variant="body2" sx={{ mt: 0.5, fontStyle: "italic" }}>
-                              → {item.analysis.correctedSentence}
+              {history
+                .slice()
+                .reverse()
+                .map((item, idx) => (
+                  <React.Fragment key={item.timestamp}>
+                    {idx > 0 && <Divider />}
+                    <ListItem alignItems="flex-start">
+                      <ListItemText
+                        primary={
+                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            <Typography variant="body2">{item.transcript}</Typography>
+                            {item.analysis.errors.length === 0 ? (
+                              <CheckCircle color="success" fontSize="small" />
+                            ) : (
+                              <ErrorIcon color="error" fontSize="small" />
+                            )}
+                          </Box>
+                        }
+                        secondary={
+                          <Box>
+                            <Typography variant="caption" color="text.secondary">
+                              Score: {item.analysis.score}% | {item.analysis.errors.length}{" "}
+                              erreur(s)
                             </Typography>
-                          )}
-                        </Box>
-                      }
-                    />
-                  </ListItem>
-                </React.Fragment>
-              ))}
+                            {item.analysis.correctedSentence && (
+                              <Typography variant="body2" sx={{ mt: 0.5, fontStyle: "italic" }}>
+                                → {item.analysis.correctedSentence}
+                              </Typography>
+                            )}
+                          </Box>
+                        }
+                      />
+                    </ListItem>
+                  </React.Fragment>
+                ))}
             </List>
           </CardContent>
         </Card>

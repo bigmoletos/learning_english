@@ -6,9 +6,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import {
-  Box, Card, CardContent, Typography, Button, Alert, CircularProgress
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Button, Alert, CircularProgress } from "@mui/material";
 import { CheckCircle, Error as ErrorIcon } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { auth } from "../../firebase/config";
@@ -22,7 +20,7 @@ interface EmailVerificationProps {
 
 export const EmailVerification: React.FC<EmailVerificationProps> = ({
   onSuccess,
-  onSwitchToLogin
+  onSwitchToLogin,
 }) => {
   const { login } = useUser();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -56,7 +54,9 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             try {
               await sendEmailVerification(currentUser);
               setStatus("error");
-              setError("Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception.");
+              setError(
+                "Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception."
+              );
             } catch (error: any) {
               setStatus("error");
               setError("Erreur lors de l'envoi de l'email de vérification. Veuillez réessayer.");
@@ -64,7 +64,9 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             return;
           } else {
             setStatus("error");
-            setError("Lien de vérification invalide. Veuillez vous connecter ou demander un nouveau lien.");
+            setError(
+              "Lien de vérification invalide. Veuillez vous connecter ou demander un nouveau lien."
+            );
             return;
           }
         }
@@ -92,11 +94,12 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
                 const userData = pendingUser || {
                   id: currentUser.uid,
                   email: currentUser.email,
-                  name: currentUser.displayName || currentUser.email?.split("@")[0] || "Utilisateur",
+                  name:
+                    currentUser.displayName || currentUser.email?.split("@")[0] || "Utilisateur",
                   emailVerified: true,
                   currentLevel: "B1",
                   targetLevel: "C1",
-                  createdAt: new Date().toISOString()
+                  createdAt: new Date().toISOString(),
                 };
 
                 // Obtenir le token Firebase
@@ -109,8 +112,8 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
                   [StorageKeys.FIREBASE_USER]: {
                     uid: currentUser.uid,
                     email: currentUser.email,
-                    displayName: currentUser.displayName
-                  }
+                    displayName: currentUser.displayName,
+                  },
                 });
 
                 // Nettoyer le pending user
@@ -155,8 +158,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
         console.error("Erreur vérification email:", err);
         setStatus("error");
         setError(
-          err.message ||
-          "Une erreur est survenue lors de la vérification. Veuillez réessayer."
+          err.message || "Une erreur est survenue lors de la vérification. Veuillez réessayer."
         );
       } finally {
         setIsVerifying(false);
@@ -174,7 +176,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
-          bgcolor: "grey.100"
+          bgcolor: "grey.100",
         }}
       >
         <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
@@ -201,7 +203,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
           alignItems: "center",
           minHeight: "100vh",
           bgcolor: "grey.100",
-          py: 4
+          py: 4,
         }}
       >
         <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
@@ -211,15 +213,11 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
               ✅ Email vérifié !
             </Typography>
             <Alert severity="success" sx={{ mb: 3 }}>
-              {message || "Votre email a été vérifié avec succès. Vous pouvez maintenant utiliser toutes les fonctionnalités de l'application."}
+              {message ||
+                "Votre email a été vérifié avec succès. Vous pouvez maintenant utiliser toutes les fonctionnalités de l'application."}
             </Alert>
             {onSwitchToLogin && (
-              <Button
-                variant="contained"
-                size="large"
-                onClick={onSwitchToLogin}
-                sx={{ mt: 2 }}
-              >
+              <Button variant="contained" size="large" onClick={onSwitchToLogin} sx={{ mt: 2 }}>
                 Continuer
               </Button>
             )}
@@ -238,7 +236,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
         alignItems: "center",
         minHeight: "100vh",
         bgcolor: "grey.100",
-        py: 4
+        py: 4,
       }}
     >
       <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
@@ -255,17 +253,11 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {onSwitchToLogin && (
-              <Button
-                variant="contained"
-                onClick={onSwitchToLogin}
-              >
+              <Button variant="contained" onClick={onSwitchToLogin}>
                 Me connecter
               </Button>
             )}
-            <Button
-              variant="outlined"
-              onClick={() => window.location.href = "/signup"}
-            >
+            <Button variant="outlined" onClick={() => (window.location.href = "/signup")}>
               Réessayer l'inscription
             </Button>
           </Box>
@@ -274,4 +266,3 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
     </Box>
   );
 };
-

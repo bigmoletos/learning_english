@@ -19,13 +19,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import {
-  Groups,
-  Support,
-  Psychology,
-  Gavel,
-  Mic,
-} from "@mui/icons-material";
+import { Groups, Support, Psychology, Gavel, Mic } from "@mui/icons-material";
 import { SpeakingExercise } from "./SpeakingExercise";
 import { LanguageLevel } from "../../types";
 import {
@@ -36,21 +30,14 @@ import {
 export const MeetingSpeakingExerciseList: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState<LanguageLevel>("B1");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedExercise, setSelectedExercise] =
-    useState<MeetingSpeakingExercise | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<MeetingSpeakingExercise | null>(null);
 
-  const handleLevelChange = (
-    _event: React.SyntheticEvent,
-    newValue: LanguageLevel
-  ) => {
+  const handleLevelChange = (_event: React.SyntheticEvent, newValue: LanguageLevel) => {
     setSelectedLevel(newValue);
     setSelectedExercise(null);
   };
 
-  const handleCategoryChange = (
-    _event: React.MouseEvent<HTMLElement>,
-    newCategory: string
-  ) => {
+  const handleCategoryChange = (_event: React.MouseEvent<HTMLElement>, newCategory: string) => {
     if (newCategory !== null) {
       setSelectedCategory(newCategory);
     }
@@ -67,8 +54,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
   // Filtrer les exercices
   const filteredExercises = meetingSpeakingExercises.filter((ex) => {
     const levelMatch = ex.level === selectedLevel;
-    const categoryMatch =
-      selectedCategory === "all" || ex.category === selectedCategory;
+    const categoryMatch = selectedCategory === "all" || ex.category === selectedCategory;
     return levelMatch && categoryMatch;
   });
 
@@ -84,11 +70,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
   if (selectedExercise) {
     return (
       <Box>
-        <Button
-          onClick={() => setSelectedExercise(null)}
-          sx={{ mb: 2 }}
-          variant="outlined"
-        >
+        <Button onClick={() => setSelectedExercise(null)} sx={{ mb: 2 }} variant="outlined">
           ← Retour à la liste
         </Button>
         <SpeakingExercise
@@ -114,16 +96,14 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
         Exercices de Speaking - Réunions IT
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph>
-        Pratiquez votre anglais technique dans des situations réelles de
-        réunions : support client, réunions d'équipe, résolution de problèmes et
-        prises de décision.
+        Pratiquez votre anglais technique dans des situations réelles de réunions : support client,
+        réunions d'équipe, résolution de problèmes et prises de décision.
       </Typography>
 
       <Alert severity="info" sx={{ mb: 3 }}>
         <Typography variant="body2">
-          💡 <strong>Conseils</strong> : Écoutez votre enregistrement, notez les
-          phrases clés, et réessayez jusqu'à être à l'aise. Les phrases cibles
-          sont affichées après chaque exercice.
+          💡 <strong>Conseils</strong> : Écoutez votre enregistrement, notez les phrases clés, et
+          réessayez jusqu'à être à l'aise. Les phrases cibles sont affichées après chaque exercice.
         </Typography>
       </Alert>
 
@@ -165,8 +145,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
       {/* Liste des exercices */}
       {filteredExercises.length === 0 ? (
         <Alert severity="info">
-          Aucun exercice disponible pour le niveau {selectedLevel} dans cette
-          catégorie.
+          Aucun exercice disponible pour le niveau {selectedLevel} dans cette catégorie.
         </Alert>
       ) : (
         <Grid container spacing={3}>
@@ -198,11 +177,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
                     <Typography variant="h6" component="h3">
                       {exercise.title}
                     </Typography>
-                    <Chip
-                      label={exercise.level}
-                      color="primary"
-                      size="small"
-                    />
+                    <Chip label={exercise.level} color="primary" size="small" />
                   </Box>
 
                   <Box sx={{ mb: 2 }}>
@@ -220,11 +195,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
                       color="secondary"
                       sx={{ mr: 1 }}
                     />
-                    <Chip
-                      label={`${exercise.duration}s`}
-                      size="small"
-                      variant="outlined"
-                    />
+                    <Chip label={`${exercise.duration}s`} size="small" variant="outlined" />
                   </Box>
 
                   <Typography
@@ -261,12 +232,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
                         Phrases clés à utiliser :
                       </Typography>
                       {exercise.targetPhrases.slice(0, 2).map((phrase, idx) => (
-                        <Typography
-                          key={idx}
-                          variant="caption"
-                          display="block"
-                          sx={{ mt: 0.5 }}
-                        >
+                        <Typography key={idx} variant="caption" display="block" sx={{ mt: 0.5 }}>
                           • {phrase}
                         </Typography>
                       ))}
@@ -282,12 +248,7 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
                     </Box>
                   )}
 
-                  <Button
-                    variant="contained"
-                    startIcon={<Mic />}
-                    fullWidth
-                    sx={{ mt: 2 }}
-                  >
+                  <Button variant="contained" startIcon={<Mic />} fullWidth sx={{ mt: 2 }}>
                     Commencer l'exercice
                   </Button>
                 </CardContent>
@@ -299,4 +260,3 @@ export const MeetingSpeakingExerciseList: React.FC = () => {
     </Box>
   );
 };
-

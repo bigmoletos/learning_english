@@ -20,7 +20,7 @@ jest.mock("../../../components/auth/VerifyEmail", () => ({
       <div>Verify Email: {email}</div>
       <button onClick={onSwitchToLogin}>Back to Login</button>
     </div>
-  )
+  ),
 }));
 
 describe("Signup Component", () => {
@@ -29,7 +29,7 @@ describe("Signup Component", () => {
 
   const defaultProps = {
     onSuccess: mockOnSuccess,
-    onSwitchToLogin: mockOnSwitchToLogin
+    onSwitchToLogin: mockOnSwitchToLogin,
   };
 
   beforeEach(() => {
@@ -88,7 +88,9 @@ describe("Signup Component", () => {
       const lastNameInput = screen.getByLabelText(/^Nom$/i) as HTMLInputElement;
       const emailInput = screen.getByLabelText(/Email/i) as HTMLInputElement;
       const passwordInput = screen.getByLabelText(/^Mot de passe$/i) as HTMLInputElement;
-      const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i) as HTMLInputElement;
+      const confirmPasswordInput = screen.getByLabelText(
+        /Confirmer le mot de passe/i
+      ) as HTMLInputElement;
 
       await user.type(firstNameInput, "John");
       await user.type(lastNameInput, "Doe");
@@ -268,8 +270,8 @@ describe("Signup Component", () => {
         data: {
           success: true,
           email: "test@example.com",
-          requiresVerification: true
-        }
+          requiresVerification: true,
+        },
       };
 
       mockedAxios.post.mockResolvedValue(mockResponse);
@@ -297,7 +299,7 @@ describe("Signup Component", () => {
             email: "test@example.com",
             password: "Password123!",
             firstName: "John",
-            lastName: "Doe"
+            lastName: "Doe",
           }
         );
       });
@@ -321,9 +323,9 @@ describe("Signup Component", () => {
             id: "user-123",
             email: "test@example.com",
             firstName: "John",
-            lastName: "Doe"
-          }
-        }
+            lastName: "Doe",
+          },
+        },
       };
 
       mockedAxios.post.mockResolvedValue(mockResponse);
@@ -376,8 +378,8 @@ describe("Signup Component", () => {
         data: {
           success: true,
           email: "test@example.com",
-          requiresVerification: true
-        }
+          requiresVerification: true,
+        },
       });
 
       await waitFor(() => {
@@ -417,8 +419,8 @@ describe("Signup Component", () => {
         data: {
           success: true,
           email: "test@example.com",
-          requiresVerification: true
-        }
+          requiresVerification: true,
+        },
       });
     });
   });
@@ -429,9 +431,9 @@ describe("Signup Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Un utilisateur avec cet email existe déjà"
-          }
-        }
+            message: "Un utilisateur avec cet email existe déjà",
+          },
+        },
       });
 
       render(<Signup {...defaultProps} />);
@@ -456,9 +458,9 @@ describe("Signup Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Email invalide"
-          }
-        }
+            message: "Email invalide",
+          },
+        },
       });
 
       render(<Signup {...defaultProps} />);
@@ -483,11 +485,9 @@ describe("Signup Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            errors: [
-              { msg: "Email is required", param: "email", location: "body" }
-            ]
-          }
-        }
+            errors: [{ msg: "Email is required", param: "email", location: "body" }],
+          },
+        },
       });
 
       render(<Signup {...defaultProps} />);
@@ -512,9 +512,9 @@ describe("Signup Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Test error"
-          }
-        }
+            message: "Test error",
+          },
+        },
       });
 
       render(<Signup {...defaultProps} />);
@@ -558,8 +558,8 @@ describe("Signup Component", () => {
         data: {
           success: true,
           email: "test@example.com",
-          requiresVerification: true
-        }
+          requiresVerification: true,
+        },
       });
 
       render(<Signup {...defaultProps} />);

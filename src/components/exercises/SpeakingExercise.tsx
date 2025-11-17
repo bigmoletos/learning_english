@@ -22,10 +22,7 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import {
-  Mic,
-  Stop,
-} from "@mui/icons-material";
+import { Mic, Stop } from "@mui/icons-material";
 import { speechToTextService } from "../../services/speechToTextService";
 import { LanguageLevel } from "../../types";
 import { buildApiUrl } from "../../services/apiConfig";
@@ -65,10 +62,7 @@ interface AnalysisResult {
   suggestedExercises: any[];
 }
 
-export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
-  exercise,
-  onComplete,
-}) => {
+export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, onComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -115,9 +109,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
       });
 
       if (!sttResult.success || !sttResult.transcript) {
-        throw new Error(
-          sttResult.error || "Aucune transcription disponible. Réessayez."
-        );
+        throw new Error(sttResult.error || "Aucune transcription disponible. Réessayez.");
       }
 
       setTranscript(sttResult.transcript);
@@ -179,21 +171,19 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
       // Configuration adaptée pour Web et Android
       const audioConstraints = isNativePlatform
         ? {
-          // Configuration simplifiée pour Android
-          audio: true,
-        }
+            // Configuration simplifiée pour Android
+            audio: true,
+          }
         : {
-          // Configuration avancée pour Web
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            sampleRate: 48000,
-          },
-        };
+            // Configuration avancée pour Web
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              sampleRate: 48000,
+            },
+          };
 
-      const stream = await navigator.mediaDevices.getUserMedia(
-        audioConstraints
-      );
+      const stream = await navigator.mediaDevices.getUserMedia(audioConstraints);
 
       streamRef.current = stream;
 
@@ -270,7 +260,6 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
     }
   }, [isRecording]);
 
-
   /**
    * Réinitialise l'exercice
    */
@@ -325,26 +314,10 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
         </Typography>
 
         <Box sx={{ mb: 2 }}>
-          <Chip
-            label={`Niveau ${exercise.level}`}
-            color="primary"
-            size="small"
-            sx={{ mr: 1 }}
-          />
-          <Chip
-            label={exercise.type}
-            color="secondary"
-            size="small"
-            sx={{ mr: 1 }}
-          />
+          <Chip label={`Niveau ${exercise.level}`} color="primary" size="small" sx={{ mr: 1 }} />
+          <Chip label={exercise.type} color="secondary" size="small" sx={{ mr: 1 }} />
           {exercise.focusAreas.map((area, idx) => (
-            <Chip
-              key={idx}
-              label={area}
-              size="small"
-              variant="outlined"
-              sx={{ mr: 1, mb: 1 }}
-            />
+            <Chip key={idx} label={area} size="small" variant="outlined" sx={{ mr: 1, mb: 1 }} />
           ))}
         </Box>
 
@@ -450,9 +423,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                     color="primary"
                     sx={{ height: 8, borderRadius: 1 }}
                   />
-                  <Typography variant="body2">
-                    {analysis.grammarScore}%
-                  </Typography>
+                  <Typography variant="body2">{analysis.grammarScore}%</Typography>
                 </Box>
                 <Box sx={{ flex: 1, minWidth: 150 }}>
                   <Typography variant="caption">Prononciation</Typography>
@@ -462,9 +433,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                     color="secondary"
                     sx={{ height: 8, borderRadius: 1 }}
                   />
-                  <Typography variant="body2">
-                    {analysis.pronunciationScore}%
-                  </Typography>
+                  <Typography variant="body2">{analysis.pronunciationScore}%</Typography>
                 </Box>
                 <Box sx={{ flex: 1, minWidth: 150 }}>
                   <Typography variant="caption">Fluidité</Typography>
@@ -474,9 +443,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                     color="success"
                     sx={{ height: 8, borderRadius: 1 }}
                   />
-                  <Typography variant="body2">
-                    {analysis.fluencyScore}%
-                  </Typography>
+                  <Typography variant="body2">{analysis.fluencyScore}%</Typography>
                 </Box>
               </Box>
             </Box>
@@ -487,20 +454,14 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                 <Typography variant="subtitle2" gutterBottom>
                   Phrase corrigée :
                 </Typography>
-                <Typography variant="body1">
-                  {analysis.correctedSentence}
-                </Typography>
+                <Typography variant="body1">{analysis.correctedSentence}</Typography>
               </Alert>
             )}
 
             {/* Feedback */}
             <Alert
               severity={
-                analysis.score >= 75
-                  ? "success"
-                  : analysis.score >= 50
-                    ? "warning"
-                    : "error"
+                analysis.score >= 75 ? "success" : analysis.score >= 50 ? "warning" : "error"
               }
               sx={{ mb: 2 }}
             >
@@ -554,9 +515,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                         primaryTypographyProps={{ component: "div" }}
                         secondary={
                           <Box sx={{ mt: 1 }}>
-                            <Typography variant="body2">
-                              {err.explanation}
-                            </Typography>
+                            <Typography variant="body2">{err.explanation}</Typography>
                             {err.exceptions && err.exceptions.length > 0 && (
                               <Box sx={{ mt: 1 }}>
                                 <Typography variant="caption" color="text.secondary">
@@ -565,9 +524,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                                 <List dense>
                                   {err.exceptions.map((exc, excIdx) => (
                                     <ListItem key={excIdx}>
-                                      <Typography variant="caption">
-                                        • {exc}
-                                      </Typography>
+                                      <Typography variant="caption">• {exc}</Typography>
                                     </ListItem>
                                   ))}
                                 </List>
@@ -616,11 +573,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
                               {ex.prompt}
                             </Typography>
                             <Box sx={{ mt: 1 }}>
-                              <Chip
-                                label={ex.level}
-                                size="small"
-                                sx={{ mr: 1 }}
-                              />
+                              <Chip label={ex.level} size="small" sx={{ mr: 1 }} />
                               <Chip label={ex.type} size="small" />
                             </Box>
                           </Box>
@@ -638,4 +591,3 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
     </Card>
   );
 };
-

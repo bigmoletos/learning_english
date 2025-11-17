@@ -48,7 +48,6 @@ export const runInitializationChecks = () => {
 
   return {
     firebase: fbStatus,
-    capacitor: capStatus
+    capacitor: capStatus,
   };
 };
-

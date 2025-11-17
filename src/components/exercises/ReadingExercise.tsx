@@ -6,8 +6,17 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, Typography, Radio, RadioGroup,
-  FormControlLabel, FormControl, Button, Alert, Chip
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Button,
+  Alert,
+  Chip,
 } from "@mui/material";
 import { CheckCircle, Cancel } from "@mui/icons-material";
 import { Question } from "../../types";
@@ -23,7 +32,7 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
   question,
   onAnswer,
   text,
-  showExplanation = true
+  showExplanation = true,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -59,23 +68,14 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "wrap" }}>
               {question.grammarFocus.map((focus, idx) => (
-                <Chip
-                  key={idx}
-                  label={focus}
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                />
+                <Chip key={idx} label={focus} size="small" color="primary" variant="outlined" />
               ))}
             </Box>
           )}
         </Box>
 
         <FormControl component="fieldset" fullWidth disabled={submitted}>
-          <RadioGroup
-            value={selectedAnswer}
-            onChange={(e) => setSelectedAnswer(e.target.value)}
-          >
+          <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
             {question.options?.map((option, index) => (
               <FormControlLabel
                 key={index}
@@ -87,26 +87,30 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
                     {submitted && option === question.correctAnswer && (
                       <CheckCircle color="success" fontSize="small" />
                     )}
-                    {submitted && option === selectedAnswer && option !== question.correctAnswer && (
-                      <Cancel color="error" fontSize="small" />
-                    )}
+                    {submitted &&
+                      option === selectedAnswer &&
+                      option !== question.correctAnswer && (
+                        <Cancel color="error" fontSize="small" />
+                      )}
                   </Box>
                 }
                 sx={{
                   p: 2,
                   mb: 1,
                   border: 1,
-                  borderColor: submitted && option === question.correctAnswer
-                    ? "success.main"
-                    : submitted && option === selectedAnswer
-                      ? "error.main"
-                      : "grey.300",
+                  borderColor:
+                    submitted && option === question.correctAnswer
+                      ? "success.main"
+                      : submitted && option === selectedAnswer
+                        ? "error.main"
+                        : "grey.300",
                   borderRadius: 2,
-                  bgcolor: submitted && option === question.correctAnswer
-                    ? "success.light"
-                    : submitted && option === selectedAnswer
-                      ? "error.light"
-                      : "transparent"
+                  bgcolor:
+                    submitted && option === question.correctAnswer
+                      ? "success.light"
+                      : submitted && option === selectedAnswer
+                        ? "error.light"
+                        : "transparent",
                 }}
               />
             ))}
@@ -142,9 +146,7 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
                 <Typography variant="subtitle2" color="primary" gutterBottom>
                   Explication :
                 </Typography>
-                <Typography variant="body2">
-                  {question.explanation}
-                </Typography>
+                <Typography variant="body2">{question.explanation}</Typography>
               </Box>
             )}
           </Box>
@@ -153,4 +155,3 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
     </Card>
   );
 };
-

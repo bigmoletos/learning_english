@@ -6,8 +6,18 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, TextField, Button, Typography,
-  Alert, Link, InputAdornment, IconButton, CircularProgress, Grid
+  Box,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Link,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
+  Grid,
 } from "@mui/material";
 import { Email, Lock, Person, Visibility, VisibilityOff } from "@mui/icons-material";
 import { registerUser } from "../../firebase/authService";
@@ -102,15 +112,18 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
           emailVerified: false,
           currentLevel: "B1",
           targetLevel: "C1",
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         };
 
         localStorage.setItem("pendingUser", JSON.stringify(userData));
-        localStorage.setItem("firebaseUser", JSON.stringify({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName
-        }));
+        localStorage.setItem(
+          "firebaseUser",
+          JSON.stringify({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName,
+          })
+        );
       } else {
         setError(result.message || "Erreur d'inscription");
       }
@@ -122,23 +135,24 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-        case "auth/email-already-in-use":
-          errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter.";
-          break;
-        case "auth/invalid-email":
-          errorMessage = "Adresse email invalide.";
-          break;
-        case "auth/weak-password":
-          errorMessage = "Le mot de passe est trop faible. Utilisez au moins 6 caractères.";
-          break;
-        case "auth/operation-not-allowed":
-          errorMessage = "L'inscription par email/mot de passe n'est pas activée. Contactez l'administrateur.";
-          break;
-        case "auth/network-request-failed":
-          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-          break;
-        default:
-          errorMessage = err.message || "Erreur d'inscription. Veuillez réessayer.";
+          case "auth/email-already-in-use":
+            errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Adresse email invalide.";
+            break;
+          case "auth/weak-password":
+            errorMessage = "Le mot de passe est trop faible. Utilisez au moins 6 caractères.";
+            break;
+          case "auth/operation-not-allowed":
+            errorMessage =
+              "L'inscription par email/mot de passe n'est pas activée. Contactez l'administrateur.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+            break;
+          default:
+            errorMessage = err.message || "Erreur d'inscription. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;
@@ -172,7 +186,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
         alignItems: "center",
         minHeight: "100vh",
         bgcolor: "grey.100",
-        py: 4
+        py: 4,
       }}
     >
       <Card sx={{ maxWidth: 600, width: "100%", m: 2 }}>
@@ -192,7 +206,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                   mb: 2,
                   width: "100%",
                   visibility: "visible",
-                  opacity: 1
+                  opacity: 1,
                 }}
                 onClose={() => setError("")}
               >
@@ -215,7 +229,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                       <InputAdornment position="start">
                         <Person />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                 />
               </Grid>
@@ -231,7 +245,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                       <InputAdornment position="start">
                         <Person />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                 />
               </Grid>
@@ -250,7 +264,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                   <InputAdornment position="start">
                     <Email />
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -271,14 +285,11 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -305,7 +316,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -339,4 +350,3 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
     </Box>
   );
 };
-

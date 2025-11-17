@@ -6,13 +6,34 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Box, CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar,
-  Typography, Drawer, List, ListItem, ListItemIcon, ListItemText,
-  Container, IconButton, Grid, Card, CardContent, Button
+  Box,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Container,
+  IconButton,
+  Grid,
+  Card,
+  CardContent,
+  Button,
 } from "@mui/material";
 import {
-  Dashboard as DashboardIcon, School, Psychology, Assessment,
-  Menu as MenuIcon, VolumeUp, ExitToApp, RecordVoiceOver
+  Dashboard as DashboardIcon,
+  School,
+  Psychology,
+  Assessment,
+  Menu as MenuIcon,
+  VolumeUp,
+  ExitToApp,
+  RecordVoiceOver,
 } from "@mui/icons-material";
 import { UserProvider, useUser } from "./contexts/UserContext";
 import { Dashboard } from "./components/layout/Dashboard";
@@ -34,36 +55,36 @@ import { LanguageLevel } from "./types";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2"
+      main: "#1976d2",
     },
     secondary: {
-      main: "#dc004e"
+      main: "#dc004e",
     },
     success: {
-      main: "#2e7d32"
-    }
+      main: "#2e7d32",
+    },
   },
   typography: {
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
-      fontSize: "clamp(1.5rem, 5vw, 2.125rem)" // Responsive
+      fontSize: "clamp(1.5rem, 5vw, 2.125rem)", // Responsive
     },
     h5: {
       fontWeight: 600,
-      fontSize: "clamp(1.25rem, 4vw, 1.5rem)" // Responsive
+      fontSize: "clamp(1.25rem, 4vw, 1.5rem)", // Responsive
     },
     h6: {
       fontWeight: 500,
-      fontSize: "clamp(1rem, 3vw, 1.25rem)" // Responsive
+      fontSize: "clamp(1rem, 3vw, 1.25rem)", // Responsive
     },
     body1: {
-      fontSize: "clamp(0.875rem, 2vw, 1rem)" // Responsive
+      fontSize: "clamp(0.875rem, 2vw, 1rem)", // Responsive
     },
     button: {
       textTransform: "none", // Pas de majuscules automatiques
-      fontSize: "clamp(0.875rem, 2.5vw, 1rem)" // Responsive
-    }
+      fontSize: "clamp(0.875rem, 2.5vw, 1rem)", // Responsive
+    },
   },
   components: {
     MuiButton: {
@@ -78,16 +99,16 @@ const theme = createTheme({
           "@media (hover: none)": {
             "&:active": {
               transform: "scale(0.98)",
-              transition: "transform 0.1s"
-            }
-          }
+              transition: "transform 0.1s",
+            },
+          },
         },
         sizeLarge: {
           minHeight: 56,
           padding: "14px 28px",
-          fontSize: "1.1rem"
-        }
-      }
+          fontSize: "1.1rem",
+        },
+      },
     },
     MuiIconButton: {
       styleOverrides: {
@@ -95,23 +116,23 @@ const theme = createTheme({
           // Taille minimale pour zones tactiles
           minHeight: 44,
           minWidth: 44,
-          padding: 12
-        }
-      }
+          padding: 12,
+        },
+      },
     },
     MuiTextField: {
       defaultProps: {
-        variant: "outlined"
+        variant: "outlined",
       },
       styleOverrides: {
         root: {
           // Zones de saisie plus grandes sur mobile
           "& .MuiInputBase-input": {
             fontSize: "clamp(0.875rem, 2vw, 1rem)",
-            padding: "14px"
-          }
-        }
-      }
+            padding: "14px",
+          },
+        },
+      },
     },
     MuiCard: {
       styleOverrides: {
@@ -119,18 +140,18 @@ const theme = createTheme({
           borderRadius: 12,
           // Pas d'ombre excessive sur mobile
           "@media (max-width: 600px)": {
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-          }
-        }
-      }
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          },
+        },
+      },
     },
     MuiChip: {
       styleOverrides: {
         root: {
           minHeight: 32,
-          fontSize: "clamp(0.75rem, 2vw, 0.875rem)"
-        }
-      }
+          fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
+        },
+      },
     },
     MuiDrawer: {
       styleOverrides: {
@@ -138,11 +159,11 @@ const theme = createTheme({
           // Meilleure gestion sur mobile
           "@media (max-width: 600px)": {
             width: "75vw",
-            maxWidth: 280
-          }
-        }
-      }
-    }
+            maxWidth: 280,
+          },
+        },
+      },
+    },
   },
   breakpoints: {
     values: {
@@ -150,18 +171,29 @@ const theme = createTheme({
       sm: 600,
       md: 960,
       lg: 1280,
-      xl: 1920
-    }
-  }
+      xl: 1920,
+    },
+  },
 });
 
-type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset" | "speaking";
+type ViewType =
+  | "dashboard"
+  | "exercises"
+  | "progress"
+  | "tests"
+  | "learning"
+  | "toeic"
+  | "toefl"
+  | "efset"
+  | "speaking";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, login, logout, firebaseLogout, user } = useUser();
   const [currentView, setCurrentView] = useState<ViewType>("dashboard");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedTestType, setSelectedTestType] = useState<"efset" | "toeic" | "toefl" | null>(null);
+  const [selectedTestType, setSelectedTestType] = useState<"efset" | "toeic" | "toefl" | null>(
+    null
+  );
   const [selectedTestLevel, setSelectedTestLevel] = useState<LanguageLevel | null>(null);
   const [showSignup, setShowSignup] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -268,7 +300,7 @@ const AppContent: React.FC = () => {
     { id: "exercises" as ViewType, label: "Exercices", icon: <School /> },
     { id: "speaking" as ViewType, label: "Mode Conversationnel", icon: <RecordVoiceOver /> },
     { id: "progress" as ViewType, label: "Progression", icon: <Assessment /> },
-    { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> }
+    { id: "tests" as ViewType, label: "Tests TOEIC/TOEFL", icon: <Psychology /> },
   ];
 
   const handleAssessmentComplete = async () => {
@@ -336,206 +368,187 @@ const AppContent: React.FC = () => {
     }
 
     switch (currentView) {
-    case "dashboard":
-      return (
-        <Dashboard
-          onStartAssessment={handleStartAssessment}
-          onNavigate={handleNavigate}
-        />
-      );
-    case "learning":
-      return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
-    case "progress":
-      return <ProgressTracker />;
-    case "exercises":
-      return <ExerciseList />;
-    case "speaking":
-      return (
-        <Box sx={{ p: 3 }}>
-          <ConversationalSpeaking
-            level={user?.currentLevel || "B1"}
-            onComplete={(stats) => {
-              console.log("[App] Conversation terminée:", stats);
-            }}
-          />
-        </Box>
-      );
-    case "tests":
-      return (
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+      case "dashboard":
+        return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
+      case "learning":
+        return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
+      case "progress":
+        return <ProgressTracker />;
+      case "exercises":
+        return <ExerciseList />;
+      case "speaking":
+        return (
+          <Box sx={{ p: 3 }}>
+            <ConversationalSpeaking
+              level={user?.currentLevel || "B1"}
+              onComplete={(stats) => {
+                console.log("[App] Conversation terminée:", stats);
+              }}
+            />
+          </Box>
+        );
+      case "tests":
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
               Tests d'Évaluation
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+            </Typography>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       EF SET - 4 Skills
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                      Test adaptatif complet inspiré d'EF SET : Reading, Listening, Writing, Speaking (90 min).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    color="primary"
-                    onClick={() => setSelectedTestType("efset")}
-                  >
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
+                      Test adaptatif complet inspiré d'EF SET : Reading, Listening, Writing,
+                      Speaking (90 min).
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      color="primary"
+                      onClick={() => setSelectedTestType("efset")}
+                    >
                       Passer le test EF SET
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       Test TOEIC
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                      Testez votre niveau d'anglais avec un test TOEIC complet (Grammaire + Compréhension audio).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => setSelectedTestType("toeic")}
-                  >
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
+                      Testez votre niveau d'anglais avec un test TOEIC complet (Grammaire +
+                      Compréhension audio).
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => setSelectedTestType("toeic")}
+                    >
                       Passer le test TOEIC
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       Test TOEFL
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                      Testez votre niveau d'anglais avec un test TOEFL avancé (Reading + Listening + Writing).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => setSelectedTestType("toefl")}
-                  >
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
+                      Testez votre niveau d'anglais avec un test TOEFL avancé (Reading + Listening +
+                      Writing).
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => setSelectedTestType("toefl")}
+                    >
                       Passer le test TOEFL
-                  </Button>
-                </CardContent>
-              </Card>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      );
-    case "efset":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button
-            variant="text"
-            onClick={() => setCurrentView("tests")}
-            sx={{ mb: 2 }}
-          >
+          </Box>
+        );
+      case "efset":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <EFSETTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date()
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("efsetResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "efset");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    case "toeic":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button
-            variant="text"
-            onClick={() => setCurrentView("tests")}
-            sx={{ mb: 2 }}
-          >
+            </Button>
+            <EFSETTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("efsetResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "efset");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      case "toeic":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <TOEICTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date()
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("toeicResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "toeic");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    case "toefl":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button
-            variant="text"
-            onClick={() => setCurrentView("tests")}
-            sx={{ mb: 2 }}
-          >
+            </Button>
+            <TOEICTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("toeicResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "toeic");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setSelectedTestLevel(null);
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      case "toefl":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <TOEFLTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date()
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("toeflResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "toefl");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    default:
-      return (
-        <Dashboard
-          onStartAssessment={handleStartAssessment}
-          onNavigate={handleNavigate}
-        />
-      );
+            </Button>
+            <TOEFLTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("toeflResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "toefl");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setSelectedTestLevel(null);
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      default:
+        return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
     }
   };
 
@@ -553,7 +566,7 @@ const AppContent: React.FC = () => {
           </IconButton>
           <VolumeUp sx={{ mr: 2 }} />
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                AI English Trainer for IT Professionals
+            AI English Trainer for IT Professionals
           </Typography>
           {user && (
             <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
@@ -561,7 +574,7 @@ const AppContent: React.FC = () => {
             </Typography>
           )}
           <Typography variant="body2" sx={{ mr: 2, fontStyle: "italic" }}>
-                B2 → C1
+            B2 → C1
           </Typography>
           <IconButton
             color="inherit"
@@ -591,8 +604,8 @@ const AppContent: React.FC = () => {
           "& .MuiDrawer-paper": {
             width: 240,
             boxSizing: "border-box",
-            mt: 8
-          }
+            mt: 8,
+          },
         }}
       >
         <List>
@@ -607,9 +620,9 @@ const AppContent: React.FC = () => {
                   bgcolor: "primary.light",
                   color: "primary.main",
                   "&:hover": {
-                    bgcolor: "primary.light"
-                  }
-                }
+                    bgcolor: "primary.light",
+                  },
+                },
               }}
             >
               <ListItemIcon sx={{ color: currentView === item.id ? "primary.main" : "inherit" }}>
@@ -627,7 +640,7 @@ const AppContent: React.FC = () => {
         onClose={() => setDrawerOpen(false)}
         sx={{
           display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", mt: 8 }
+          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", mt: 8 },
         }}
       >
         <List>
@@ -649,9 +662,7 @@ const AppContent: React.FC = () => {
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, mt: 8, bgcolor: "grey.50" }}>
-        <Container maxWidth="xl">
-          {renderView()}
-        </Container>
+        <Container maxWidth="xl">{renderView()}</Container>
       </Box>
     </Box>
   );
@@ -669,4 +680,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

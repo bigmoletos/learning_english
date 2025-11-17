@@ -59,7 +59,10 @@ class SpeakingAgent {
       },
       type: "subject_verb_agreement",
       explanation: "Avec he/she/it, il faut ajouter -s/-es au verbe au présent simple.",
-      exceptions: ["Verbes modaux (can, must, should) ne prennent jamais de -s", "Verbe \"to be\" : he is, she is, it is"]
+      exceptions: [
+        "Verbes modaux (can, must, should) ne prennent jamais de -s",
+        'Verbe "to be" : he is, she is, it is',
+      ],
     },
     {
       pattern: /\b(I|you|we|they)\s+(goes|has|does|says)\b/gi,
@@ -69,35 +72,39 @@ class SpeakingAgent {
       },
       type: "subject_verb_agreement",
       explanation: "Avec I/you/we/they, le verbe ne prend pas de -s au présent simple.",
-      exceptions: ["Sauf avec \"have\" qui devient \"have\" pour I/you/we/they"]
+      exceptions: ['Sauf avec "have" qui devient "have" pour I/you/we/they'],
     },
     {
       pattern: /\b(a)\s+([aeiou]\w+)\b/gi,
       correction: (match: string) => match.replace(/^a\s+/i, "an "),
       type: "article",
-      explanation: "Utilisez \"an\" devant un mot commençant par une voyelle (a, e, i, o, u).",
-      exceptions: ["Exception : \"a university\" (son de \"you\"), \"a European\" (son de \"eu\")"]
+      explanation: 'Utilisez "an" devant un mot commençant par une voyelle (a, e, i, o, u).',
+      exceptions: ['Exception : "a university" (son de "you"), "a European" (son de "eu")'],
     },
     {
       pattern: /\b(an)\s+([bcdfghjklmnpqrstvwxyz]\w+)\b/gi,
       correction: (match: string) => match.replace(/^an\s+/i, "a "),
       type: "article",
-      explanation: "Utilisez \"a\" devant un mot commençant par une consonne.",
-      exceptions: ["Exception : \"an hour\" (h muet), \"an honest person\""]
+      explanation: 'Utilisez "a" devant un mot commençant par une consonne.',
+      exceptions: ['Exception : "an hour" (h muet), "an honest person"'],
     },
     {
       pattern: /\bmuch\s+(people|things|cars|books)\b/gi,
       correction: (match: string) => match.replace(/much/i, "many"),
       type: "quantifier",
-      explanation: "\"Much\" s'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez \"many\".",
-      exceptions: ["Much water, much time (indénombrables) vs many cars, many people (dénombrables)"]
+      explanation:
+        '"Much" s\'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez "many".',
+      exceptions: [
+        "Much water, much time (indénombrables) vs many cars, many people (dénombrables)",
+      ],
     },
     {
       pattern: /\bmany\s+(water|money|information|time)\b/gi,
       correction: (match: string) => match.replace(/many/i, "much"),
       type: "quantifier",
-      explanation: "\"Many\" s'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez \"much\".",
-      exceptions: []
+      explanation:
+        '"Many" s\'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez "much".',
+      exceptions: [],
     },
     {
       pattern: /\bdidn't\s+(went|had|was|were|did)\b/gi,
@@ -106,14 +113,17 @@ class SpeakingAgent {
         return `didn't ${this.getBaseForm(verb)}`;
       },
       type: "double_negative",
-      explanation: "Après \"didn't\", utilisez la forme de base du verbe (infinitif sans \"to\").",
-      exceptions: ["didn't go (pas \"didn't went\")", "didn't have (pas \"didn't had\")"]
+      explanation: 'Après "didn\'t", utilisez la forme de base du verbe (infinitif sans "to").',
+      exceptions: ["didn't go (pas \"didn't went\")", "didn't have (pas \"didn't had\")"],
     },
     {
       // Détecte les répétitions de mots (ex: "me with me", "the the", "and and")
       pattern: /\b(\w+)\s+(\w+\s+)?\1\b/gi,
       correction: (match: string) => {
-        const words = match.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+        const words = match
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((w) => w.length > 0);
         if (words.length < 2) return match;
         const repeated = words[0];
         // Retirer la répétition si elle existe
@@ -122,7 +132,7 @@ class SpeakingAgent {
       },
       type: "word_repetition",
       explanation: "Vous avez répété le même mot. Vérifiez votre phrase.",
-      exceptions: []
+      exceptions: [],
     },
     {
       pattern: /\b(me|you|him|her|us|them|it)\s+\w+\s+\1\b/gi,
@@ -133,14 +143,14 @@ class SpeakingAgent {
       },
       type: "pronoun_repetition",
       explanation: "Vous avez répété le même pronom. Vérifiez votre phrase.",
-      exceptions: []
+      exceptions: [],
     },
     {
       pattern: /\b(projek|projec|proj|projeckt)\b/gi,
       correction: () => "project",
       type: "spelling",
-      explanation: "L'orthographe correcte est \"project\".",
-      exceptions: []
+      explanation: 'L\'orthographe correcte est "project".',
+      exceptions: [],
     },
     {
       pattern: /\b(call|ask|tell|give)\s+(you|he|she|it|they)\s+(update|provide|give|send)\b/gi,
@@ -155,8 +165,9 @@ class SpeakingAgent {
         return `${verb1} me to ${verb2}`;
       },
       type: "sentence_structure",
-      explanation: "La structure de la phrase est incorrecte. Utilisez \"call me to update\" ou \"update me\".",
-      exceptions: []
+      explanation:
+        'La structure de la phrase est incorrecte. Utilisez "call me to update" ou "update me".',
+      exceptions: [],
     },
     {
       pattern: /\b(call)\s+(provide|give|send|show|update)\b/gi,
@@ -166,8 +177,9 @@ class SpeakingAgent {
         return `please ${verb}`;
       },
       type: "sentence_structure",
-      explanation: "La structure est incorrecte. Utilisez \"please [verb]\" ou \"could you please [verb]\".",
-      exceptions: []
+      explanation:
+        'La structure est incorrecte. Utilisez "please [verb]" ou "could you please [verb]".',
+      exceptions: [],
     },
     {
       pattern: /\b(can you|could you)\s+(call)\s+(provide|give|send|show|update)\b/gi,
@@ -177,15 +189,16 @@ class SpeakingAgent {
         return `could you please ${verb}`;
       },
       type: "sentence_structure",
-      explanation: "La structure est incorrecte. Utilisez \"could you please [verb]\" sans \"call\".",
-      exceptions: []
+      explanation: 'La structure est incorrecte. Utilisez "could you please [verb]" sans "call".',
+      exceptions: [],
     },
     {
       pattern: /\b(call)\s+(you)\b/gi,
       correction: () => "call me",
       type: "pronoun_error",
-      explanation: "Utilisez \"call me\" pour dire que vous allez appeler quelqu'un, ou \"I'll call you\" pour dire que vous allez l'appeler.",
-      exceptions: []
+      explanation:
+        'Utilisez "call me" pour dire que vous allez appeler quelqu\'un, ou "I\'ll call you" pour dire que vous allez l\'appeler.',
+      exceptions: [],
     },
     {
       pattern: /\b(call)\s+(you)\s+\w+/gi,
@@ -195,8 +208,9 @@ class SpeakingAgent {
         return `call me to ${verb}`;
       },
       type: "sentence_structure",
-      explanation: "La structure est incorrecte. Utilisez \"call me to [verb]\" ou \"I'll call you to [verb]\".",
-      exceptions: []
+      explanation:
+        'La structure est incorrecte. Utilisez "call me to [verb]" ou "I\'ll call you to [verb]".',
+      exceptions: [],
     },
     {
       pattern: /\b(provide|give|send|show)\s+with\s+(me|you|him|her|us|them|it)\b/gi,
@@ -207,8 +221,8 @@ class SpeakingAgent {
         return `${verb} ${pronoun}`;
       },
       type: "preposition_error",
-      explanation: "Utilisez \"provide me\" ou \"provide me with\" (pas \"provide with me\").",
-      exceptions: []
+      explanation: 'Utilisez "provide me" ou "provide me with" (pas "provide with me").',
+      exceptions: [],
     },
     {
       pattern: /\b(provide|give|send|show)\s+(with)\s+(me|you|him|her|us|them|it)\b/gi,
@@ -219,11 +233,12 @@ class SpeakingAgent {
         return `${verb} ${pronoun}`;
       },
       type: "preposition_error",
-      explanation: "L'ordre est incorrect. Utilisez \"provide me\" ou \"provide me with\".",
-      exceptions: []
+      explanation: 'L\'ordre est incorrect. Utilisez "provide me" ou "provide me with".',
+      exceptions: [],
     },
     {
-      pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+with\s+(me|you|him|her|us|them|it)\b/gi,
+      pattern:
+        /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+with\s+(me|you|him|her|us|them|it)\b/gi,
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const verb = words[0];
@@ -236,11 +251,13 @@ class SpeakingAgent {
         return match; // Sinon, ne pas modifier
       },
       type: "redundant_preposition",
-      explanation: "Vous avez répété le pronom après \"with\". Utilisez simplement \"provide me\" ou \"give me\".",
-      exceptions: []
+      explanation:
+        'Vous avez répété le pronom après "with". Utilisez simplement "provide me" ou "give me".',
+      exceptions: [],
     },
     {
-      pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+and\s+(a|an|the)\s+\w+/gi,
+      pattern:
+        /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+and\s+(a|an|the)\s+\w+/gi,
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const verb = words[0];
@@ -250,8 +267,9 @@ class SpeakingAgent {
         return `${verb} ${pronoun} with ${article} ${noun}`;
       },
       type: "missing_preposition",
-      explanation: "Il manque \"with\" après le pronom. Utilisez \"provide me with a date\" (pas \"provide me and a date\").",
-      exceptions: []
+      explanation:
+        'Il manque "with" après le pronom. Utilisez "provide me with a date" (pas "provide me and a date").',
+      exceptions: [],
     },
     {
       pattern: /\b(provide|give|send|show)\s+(me|you|him|her|us|them|it)\s+and\s+\w+/gi,
@@ -263,12 +281,14 @@ class SpeakingAgent {
         return `${verb} ${pronoun} with ${rest}`;
       },
       type: "missing_preposition",
-      explanation: "Il manque \"with\" après le pronom. Utilisez \"provide me with [something]\" (pas \"provide me and [something]\").",
-      exceptions: []
+      explanation:
+        'Il manque "with" après le pronom. Utilisez "provide me with [something]" (pas "provide me and [something]").',
+      exceptions: [],
     },
     {
       // Détecte "when the date" qui devrait être "an update" dans un contexte professionnel
-      pattern: /\b(with|for|about)\s+(when the date|when a date|when date|the date|a date)\s+(on|about|for)\b/gi,
+      pattern:
+        /\b(with|for|about)\s+(when the date|when a date|when date|the date|a date)\s+(on|about|for)\b/gi,
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const preposition1 = words[0];
@@ -276,8 +296,8 @@ class SpeakingAgent {
         return `${preposition1} an update ${preposition2}`;
       },
       type: "word_choice",
-      explanation: "Dans un contexte professionnel, utilisez \"an update\" plutôt que \"the date\".",
-      exceptions: []
+      explanation: 'Dans un contexte professionnel, utilisez "an update" plutôt que "the date".',
+      exceptions: [],
     },
     {
       // Détecte "weave" qui devrait être "with" ou autre chose
@@ -289,11 +309,12 @@ class SpeakingAgent {
       },
       type: "word_recognition",
       explanation: "Il semble y avoir une erreur de reconnaissance vocale. Vérifiez la phrase.",
-      exceptions: []
+      exceptions: [],
     },
     {
       // Détecte "on a" quand ça devrait être "on the" dans un contexte professionnel
-      pattern: /\b(on|about|for)\s+(a)\s+(project|task|work|job|meeting|call|update|progress|status|report)\b/gi,
+      pattern:
+        /\b(on|about|for)\s+(a)\s+(project|task|work|job|meeting|call|update|progress|status|report)\b/gi,
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const preposition = words[0];
@@ -301,12 +322,14 @@ class SpeakingAgent {
         return `${preposition} the ${noun}`;
       },
       type: "article_error",
-      explanation: "Utilisez \"the\" plutôt que \"a\" pour parler d'un projet ou d'une tâche spécifique.",
-      exceptions: []
+      explanation:
+        'Utilisez "the" plutôt que "a" pour parler d\'un projet ou d\'une tâche spécifique.',
+      exceptions: [],
     },
     {
       // Détecte "on project progress", "about task update", etc. (manque l'article "the")
-      pattern: /\b(on|about|for)\s+(project|task|work|job|meeting|call|update)\s+(progress|update|status|report|information|details)/gi,
+      pattern:
+        /\b(on|about|for)\s+(project|task|work|job|meeting|call|update)\s+(progress|update|status|report|information|details)/gi,
       correction: (match: string) => {
         const words = match.toLowerCase().split(/\s+/);
         const preposition = words[0];
@@ -316,8 +339,9 @@ class SpeakingAgent {
         return `${preposition} the ${noun} ${rest}`;
       },
       type: "missing_article",
-      explanation: "Il manque l'article \"the\" avant le nom. Utilisez \"on the project progress\" ou \"about the project progress\".",
-      exceptions: []
+      explanation:
+        'Il manque l\'article "the" avant le nom. Utilisez "on the project progress" ou "about the project progress".',
+      exceptions: [],
     },
     {
       pattern: /\b(to|for|with|at|in|on)\s+\1\b/gi,
@@ -327,7 +351,7 @@ class SpeakingAgent {
       },
       type: "preposition_repetition",
       explanation: "Vous avez répété la même préposition. Vérifiez votre phrase.",
-      exceptions: []
+      exceptions: [],
     },
     {
       pattern: /\b(and|or|but)\s+\1\b/gi,
@@ -337,7 +361,7 @@ class SpeakingAgent {
       },
       type: "conjunction_repetition",
       explanation: "Vous avez répété la même conjonction. Utilisez-la une seule fois.",
-      exceptions: []
+      exceptions: [],
     },
     {
       pattern: /\b(the|a|an)\s+\1\b/gi,
@@ -347,36 +371,45 @@ class SpeakingAgent {
       },
       type: "article_repetition",
       explanation: "Vous avez répété le même article. Utilisez-le une seule fois.",
-      exceptions: []
+      exceptions: [],
     },
     {
       pattern: /\b(recieve|recieved|recieving)\b/gi,
-      correction: (match: string) => match.replace(/recieve/gi, "receive").replace(/recieved/gi, "received").replace(/recieving/gi, "receiving"),
+      correction: (match: string) =>
+        match
+          .replace(/recieve/gi, "receive")
+          .replace(/recieved/gi, "received")
+          .replace(/recieving/gi, "receiving"),
       type: "spelling",
-      explanation: "L'orthographe correcte est \"receive\" (i avant e sauf après c).",
-      exceptions: []
+      explanation: 'L\'orthographe correcte est "receive" (i avant e sauf après c).',
+      exceptions: [],
     },
     {
       pattern: /\b(seperate|seperated|seperating)\b/gi,
-      correction: (match: string) => match.replace(/seperate/gi, "separate").replace(/seperated/gi, "separated").replace(/seperating/gi, "separating"),
+      correction: (match: string) =>
+        match
+          .replace(/seperate/gi, "separate")
+          .replace(/seperated/gi, "separated")
+          .replace(/seperating/gi, "separating"),
       type: "spelling",
-      explanation: "L'orthographe correcte est \"separate\" (a, pas e).",
-      exceptions: []
+      explanation: 'L\'orthographe correcte est "separate" (a, pas e).',
+      exceptions: [],
     },
     {
       pattern: /\b(definately|definately|definetly)\b/gi,
       correction: () => "definitely",
       type: "spelling",
-      explanation: "L'orthographe correcte est \"definitely\".",
-      exceptions: []
+      explanation: 'L\'orthographe correcte est "definitely".',
+      exceptions: [],
     },
     {
       pattern: /\b(accomodate|accomodation)\b/gi,
-      correction: (match: string) => match.replace(/accomodate/gi, "accommodate").replace(/accomodation/gi, "accommodation"),
+      correction: (match: string) =>
+        match.replace(/accomodate/gi, "accommodate").replace(/accomodation/gi, "accommodation"),
       type: "spelling",
-      explanation: "L'orthographe correcte est \"accommodate\" (double m et double c).",
-      exceptions: []
-    }
+      explanation: 'L\'orthographe correcte est "accommodate" (double m et double c).',
+      exceptions: [],
+    },
   ];
 
   /**
@@ -398,7 +431,7 @@ class SpeakingAgent {
         pronunciationScore: 0,
         feedback: "Aucune parole détectée. Veuillez réessayer.",
         recommendations: ["Parlez plus fort et plus clairement", "Vérifiez votre microphone"],
-        suggestedExercises: []
+        suggestedExercises: [],
       };
     }
 
@@ -433,7 +466,7 @@ class SpeakingAgent {
       pronunciationScore: Math.round(pronunciationScore),
       feedback,
       recommendations,
-      suggestedExercises
+      suggestedExercises,
     };
   }
 
@@ -451,7 +484,7 @@ class SpeakingAgent {
       return bSpecificity - aSpecificity; // Plus spécifique en premier
     });
 
-    sortedPatterns.forEach(pattern => {
+    sortedPatterns.forEach((pattern) => {
       const regex = new RegExp(pattern.pattern);
       let match;
       const tempText = text;
@@ -484,7 +517,7 @@ class SpeakingAgent {
             explanation: pattern.explanation,
             exceptions: pattern.exceptions,
             severity: this.determineSeverity(pattern.type),
-            position: { start: match.index, end: match.index + original.length }
+            position: { start: match.index, end: match.index + original.length },
           });
 
           // Marquer cette position comme traitée
@@ -505,10 +538,11 @@ class SpeakingAgent {
     // Trier les erreurs par position (de la fin vers le début pour ne pas décaler les indices)
     const sortedErrors = [...errors].sort((a, b) => b.position.start - a.position.start);
 
-    sortedErrors.forEach(error => {
-      corrected = corrected.substring(0, error.position.start) +
-                 error.corrected +
-                 corrected.substring(error.position.end);
+    sortedErrors.forEach((error) => {
+      corrected =
+        corrected.substring(0, error.position.start) +
+        error.corrected +
+        corrected.substring(error.position.end);
     });
 
     return corrected;
@@ -522,9 +556,9 @@ class SpeakingAgent {
 
     const wordCount = text.split(/\s+/).length;
     const severityWeight = {
-      high: 20,    // Augmenté pour être plus sévère avec les erreurs importantes
-      medium: 12,  // Augmenté pour les erreurs moyennes
-      low: 6       // Augmenté pour les erreurs mineures
+      high: 20, // Augmenté pour être plus sévère avec les erreurs importantes
+      medium: 12, // Augmenté pour les erreurs moyennes
+      low: 6, // Augmenté pour les erreurs mineures
     };
 
     const totalPenalty = errors.reduce((sum, error) => sum + severityWeight[error.severity], 0);
@@ -555,7 +589,7 @@ class SpeakingAgent {
     const confidenceScore = confidence;
     const complexityScore = this.calculateComplexity(text);
 
-    return (lengthScore * 0.3 + confidenceScore * 0.4 + complexityScore * 0.3);
+    return lengthScore * 0.3 + confidenceScore * 0.4 + complexityScore * 0.3;
   }
 
   /**
@@ -595,12 +629,16 @@ class SpeakingAgent {
   /**
    * Génère des recommandations personnalisées
    */
-  private generateRecommendations(errors: GrammarError[], fluency: number, pronunciation: number): string[] {
+  private generateRecommendations(
+    errors: GrammarError[],
+    fluency: number,
+    pronunciation: number
+  ): string[] {
     const recommendations: string[] = [];
 
     if (errors.length > 0) {
-      const errorTypes = new Set(errors.map(e => e.type));
-      errorTypes.forEach(type => {
+      const errorTypes = new Set(errors.map((e) => e.type));
+      errorTypes.forEach((type) => {
         recommendations.push(`Révisez les règles de : ${type.replace(/_/g, " ")}`);
       });
     }
@@ -623,9 +661,12 @@ class SpeakingAgent {
   /**
    * Génère des exercices de speaking personnalisés
    */
-  private generateSpeakingExercises(errors: GrammarError[], level: LanguageLevel): SpeakingExercise[] {
+  private generateSpeakingExercises(
+    errors: GrammarError[],
+    level: LanguageLevel
+  ): SpeakingExercise[] {
     const exercises: SpeakingExercise[] = [];
-    const errorTypes = new Set(errors.map(e => e.type));
+    const errorTypes = new Set(errors.map((e) => e.type));
 
     // Exercices basés sur les erreurs détectées
     let exerciseIndex = 0;
@@ -648,32 +689,40 @@ class SpeakingAgent {
   /**
    * Crée un exercice pour un type d'erreur spécifique
    */
-  private createExerciseForErrorType(errorType: string, level: LanguageLevel, index: number): SpeakingExercise | null {
+  private createExerciseForErrorType(
+    errorType: string,
+    level: LanguageLevel,
+    index: number
+  ): SpeakingExercise | null {
     const exerciseTemplates: { [key: string]: any } = {
       subject_verb_agreement: {
         type: "grammar",
         title: "Concordance sujet-verbe",
-        prompt: "Décrivez votre routine quotidienne en utilisant he/she pour parler d'une personne. Exemple: \"She works from 9 to 5.\"",
-        focusAreas: ["third person singular", "present simple"]
+        prompt:
+          'Décrivez votre routine quotidienne en utilisant he/she pour parler d\'une personne. Exemple: "She works from 9 to 5."',
+        focusAreas: ["third person singular", "present simple"],
       },
       article: {
         type: "grammar",
         title: "Articles a/an",
-        prompt: "Énumérez 5 objets dans votre pièce en utilisant \"a\" ou \"an\". Exemple: \"I see an apple and a book.\"",
-        focusAreas: ["indefinite articles", "pronunciation"]
+        prompt:
+          'Énumérez 5 objets dans votre pièce en utilisant "a" ou "an". Exemple: "I see an apple and a book."',
+        focusAreas: ["indefinite articles", "pronunciation"],
       },
       quantifier: {
         type: "grammar",
         title: "Quantificateurs much/many",
-        prompt: "Décrivez ce que vous avez dans votre cuisine en utilisant \"much\" et \"many\". Exemple: \"I have many apples but not much milk.\"",
-        focusAreas: ["countable/uncountable nouns", "quantifiers"]
+        prompt:
+          'Décrivez ce que vous avez dans votre cuisine en utilisant "much" et "many". Exemple: "I have many apples but not much milk."',
+        focusAreas: ["countable/uncountable nouns", "quantifiers"],
       },
       double_negative: {
         type: "grammar",
         title: "Négation au passé",
-        prompt: "Racontez ce que vous n'avez pas fait hier en utilisant \"didn't\". Exemple: \"I didn't go to the gym yesterday.\"",
-        focusAreas: ["past simple negative", "base form"]
-      }
+        prompt:
+          'Racontez ce que vous n\'avez pas fait hier en utilisant "didn\'t". Exemple: "I didn\'t go to the gym yesterday."',
+        focusAreas: ["past simple negative", "base form"],
+      },
     };
 
     const template = exerciseTemplates[errorType];
@@ -687,7 +736,7 @@ class SpeakingAgent {
       prompt: template.prompt,
       duration: this.getDurationForLevel(level),
       difficulty: this.getDifficultyForLevel(level),
-      focusAreas: template.focusAreas
+      focusAreas: template.focusAreas,
     };
   }
 
@@ -700,20 +749,21 @@ class SpeakingAgent {
         type: "fluency" as const,
         title: "Description libre",
         prompt: "Décrivez votre journée idéale en détail. Parlez pendant au moins 30 secondes.",
-        focusAreas: ["fluency", "vocabulary", "present simple"]
+        focusAreas: ["fluency", "vocabulary", "present simple"],
       },
       {
         type: "pronunciation" as const,
         title: "Prononciation des verbes irréguliers",
         prompt: "Conjuguez ces verbes au passé à voix haute: go, see, eat, take, make",
-        focusAreas: ["irregular verbs", "past simple", "pronunciation"]
+        focusAreas: ["irregular verbs", "past simple", "pronunciation"],
       },
       {
         type: "vocabulary" as const,
         title: "Vocabulaire technique IT",
-        prompt: "Expliquez ce qu'est le cloud computing comme si vous parliez à quelqu'un qui ne connaît pas l'informatique.",
-        focusAreas: ["technical vocabulary", "explanation skills"]
-      }
+        prompt:
+          "Expliquez ce qu'est le cloud computing comme si vous parliez à quelqu'un qui ne connaît pas l'informatique.",
+        focusAreas: ["technical vocabulary", "explanation skills"],
+      },
     ];
 
     const exercise = generalExercises[index % generalExercises.length];
@@ -723,7 +773,7 @@ class SpeakingAgent {
       level,
       ...exercise,
       duration: this.getDurationForLevel(level),
-      difficulty: this.getDifficultyForLevel(level)
+      difficulty: this.getDifficultyForLevel(level),
     };
   }
 
@@ -734,8 +784,13 @@ class SpeakingAgent {
     if (lowerVerb.endsWith("y") && !/[aeiou]y$/.test(lowerVerb)) {
       return lowerVerb.slice(0, -1) + "ies";
     }
-    if (lowerVerb.endsWith("s") || lowerVerb.endsWith("sh") || lowerVerb.endsWith("ch") ||
-        lowerVerb.endsWith("x") || lowerVerb.endsWith("o")) {
+    if (
+      lowerVerb.endsWith("s") ||
+      lowerVerb.endsWith("sh") ||
+      lowerVerb.endsWith("ch") ||
+      lowerVerb.endsWith("x") ||
+      lowerVerb.endsWith("o")
+    ) {
       return lowerVerb + "es";
     }
     return lowerVerb + "s";
@@ -757,18 +812,24 @@ class SpeakingAgent {
 
   private getBaseForm(verb: string): string {
     const irregularVerbs: { [key: string]: string } = {
-      "went": "go",
-      "had": "have",
-      "was": "be",
-      "were": "be",
-      "did": "do"
+      went: "go",
+      had: "have",
+      was: "be",
+      were: "be",
+      did: "do",
     };
 
     return irregularVerbs[verb.toLowerCase()] || verb;
   }
 
   private determineSeverity(type: string): "low" | "medium" | "high" {
-    const highSeverity = ["subject_verb_agreement", "double_negative", "sentence_structure", "pronoun_repetition", "word_repetition"];
+    const highSeverity = [
+      "subject_verb_agreement",
+      "double_negative",
+      "sentence_structure",
+      "pronoun_repetition",
+      "word_repetition",
+    ];
     const mediumSeverity = ["article", "quantifier", "redundant_preposition", "spelling"];
     const lowSeverity = ["preposition_repetition", "conjunction_repetition", "article_repetition"];
 
@@ -780,22 +841,22 @@ class SpeakingAgent {
 
   private getDurationForLevel(level: LanguageLevel): number {
     const durations: { [key in LanguageLevel]: number } = {
-      "A1": 20,
-      "A2": 30,
-      "B1": 45,
-      "B2": 60,
-      "C1": 90
+      A1: 20,
+      A2: 30,
+      B1: 45,
+      B2: 60,
+      C1: 90,
     };
     return durations[level] || 30;
   }
 
   private getDifficultyForLevel(level: LanguageLevel): number {
     const difficulties: { [key in LanguageLevel]: number } = {
-      "A1": 1,
-      "A2": 2,
-      "B1": 3,
-      "B2": 4,
-      "C1": 5
+      A1: 1,
+      A2: 2,
+      B1: 3,
+      B2: 4,
+      C1: 5,
     };
     return difficulties[level] || 3;
   }

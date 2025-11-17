@@ -5,9 +5,7 @@
  */
 
 import React, { useMemo } from "react";
-import {
-  Box, Card, CardContent, Typography, LinearProgress, Grid, Chip
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, LinearProgress, Grid, Chip } from "@mui/material";
 import { TrendingUp, Psychology, CheckCircle } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { progressAgent } from "../../agents/progressAgent";
@@ -107,13 +105,7 @@ export const ProgressTracker: React.FC = () => {
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                 {analysis.weakAreas.length > 0 ? (
                   analysis.weakAreas.map((area, index) => (
-                    <Chip
-                      key={index}
-                      label={area}
-                      color="error"
-                      variant="outlined"
-                      size="medium"
-                    />
+                    <Chip key={index} label={area} color="error" variant="outlined" size="medium" />
                   ))
                 ) : (
                   <Typography variant="body2" color="text.secondary">
@@ -186,8 +178,8 @@ export const ProgressTracker: React.FC = () => {
                   🎉 Félicitations !
                 </Typography>
                 <Typography variant="body1" sx={{ color: "success.contrastText" }}>
-                  Votre niveau actuel vous permet de passer au niveau <strong>{analysis.nextLevel}</strong>.
-                  Continuez votre excellent travail !
+                  Votre niveau actuel vous permet de passer au niveau{" "}
+                  <strong>{analysis.nextLevel}</strong>. Continuez votre excellent travail !
                 </Typography>
               </CardContent>
             </Card>
@@ -197,4 +189,3 @@ export const ProgressTracker: React.FC = () => {
     </Box>
   );
 };
-

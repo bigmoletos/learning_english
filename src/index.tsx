@@ -57,8 +57,10 @@ const isFirestoreAuthError = (error: any): boolean => {
 
 const isMUITooltipWarning = (error: any): boolean => {
   const errorMessage = typeof error === "string" ? error : error?.message || "";
-  return /MUI.*disabled.*button.*Tooltip/i.test(errorMessage) ||
-         /Tooltip.*disabled.*element/i.test(errorMessage);
+  return (
+    /MUI.*disabled.*button.*Tooltip/i.test(errorMessage) ||
+    /Tooltip.*disabled.*element/i.test(errorMessage)
+  );
 };
 
 const isSpeechSynthesisInterruptedError = (error: any): boolean => {
@@ -97,8 +99,7 @@ window.addEventListener("unhandledrejection", (event) => {
   const reason = event.reason;
   if (
     reason &&
-    (isExtensionError(reason) ||
-      (typeof reason === "string" && isExtensionError(reason)))
+    (isExtensionError(reason) || (typeof reason === "string" && isExtensionError(reason)))
   ) {
     // Ignorer silencieusement les erreurs d'extensions tierces
     event.preventDefault();
@@ -134,9 +135,7 @@ if (process.env.NODE_ENV === "development") {
   };
 }
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   <React.StrictMode>
@@ -150,4 +149,3 @@ root.render(
 if (process.env.NODE_ENV === "development") {
   console.log(`🔄 App chargée à ${new Date().toISOString()}`);
 }
-

@@ -5,9 +5,7 @@
  */
 
 import React from "react";
-import {
-  Box, Card, CardContent, Typography, Button, Alert
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Button, Alert } from "@mui/material";
 import { Email } from "@mui/icons-material";
 
 interface VerifyEmailProps {
@@ -16,10 +14,10 @@ interface VerifyEmailProps {
   onResendEmail?: () => void;
 }
 
-export const VerifyEmail: React.FC<VerifyEmailProps> = ({ 
-  email, 
+export const VerifyEmail: React.FC<VerifyEmailProps> = ({
+  email,
   onSwitchToLogin,
-  onResendEmail 
+  onResendEmail,
 }) => {
   return (
     <Box
@@ -29,7 +27,7 @@ export const VerifyEmail: React.FC<VerifyEmailProps> = ({
         alignItems: "center",
         minHeight: "100vh",
         bgcolor: "grey.100",
-        py: 4
+        py: 4,
       }}
     >
       <Card sx={{ maxWidth: 600, width: "100%", m: 2 }}>
@@ -78,11 +76,7 @@ export const VerifyEmail: React.FC<VerifyEmailProps> = ({
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Vous n'avez pas reçu l'email ?
               </Typography>
-              <Button
-                variant="outlined"
-                onClick={onResendEmail}
-                sx={{ mb: 2 }}
-              >
+              <Button variant="outlined" onClick={onResendEmail} sx={{ mb: 2 }}>
                 Renvoyer l'email de vérification
               </Button>
             </Box>
@@ -92,11 +86,7 @@ export const VerifyEmail: React.FC<VerifyEmailProps> = ({
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
               Déjà vérifié votre email ?
             </Typography>
-            <Button
-              variant="text"
-              onClick={onSwitchToLogin}
-              sx={{ textTransform: "none" }}
-            >
+            <Button variant="text" onClick={onSwitchToLogin} sx={{ textTransform: "none" }}>
               Me connecter
             </Button>
           </Box>
@@ -111,4 +101,3 @@ export const VerifyEmail: React.FC<VerifyEmailProps> = ({
     </Box>
   );
 };
-

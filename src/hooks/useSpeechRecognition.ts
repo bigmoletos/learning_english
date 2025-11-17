@@ -34,8 +34,12 @@ const isAndroid = (): boolean => {
 
 // Vérification HTTPS (requis pour Web Speech API)
 const isSecureContext = (): boolean => {
-  return window.isSecureContext || window.location.protocol === "https:" ||
-         window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  return (
+    window.isSecureContext ||
+    window.location.protocol === "https:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  );
 };
 
 export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
@@ -58,7 +62,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       // Pour Android, on doit demander explicitement la permission via getUserMedia
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       // Arrêter le stream immédiatement
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setPermissionGranted(true);
       setError(null);
       return true;
@@ -81,7 +85,9 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       // Use setTimeout to avoid synchronous setState in effect
       const timer = setTimeout(() => {
         if (!isSecureContext()) {
-          setError("HTTPS requis pour la reconnaissance vocale. Veuillez utiliser une connexion sécurisée.");
+          setError(
+            "HTTPS requis pour la reconnaissance vocale. Veuillez utiliser une connexion sécurisée."
+          );
         } else {
           setError("Votre navigateur ne supporte pas la reconnaissance vocale.");
         }
@@ -111,7 +117,12 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       // Parcourir TOUS les résultats pour reconstruire le transcript complet
       for (let i = 0; i < event.results.length; i++) {
         const transcriptPart = event.results[i][0].transcript;
-        console.log("[SpeechRecognition] Transcript part:", transcriptPart, "isFinal:", event.results[i].isFinal);
+        console.log(
+          "[SpeechRecognition] Transcript part:",
+          transcriptPart,
+          "isFinal:",
+          event.results[i].isFinal
+        );
         if (event.results[i].isFinal) {
           finalTranscript += transcriptPart + " ";
           const conf = event.results[i][0].confidence;
@@ -122,7 +133,12 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
         }
       }
 
-      console.log("[SpeechRecognition] Final transcript:", finalTranscript, "Interim:", interimTranscript);
+      console.log(
+        "[SpeechRecognition] Final transcript:",
+        finalTranscript,
+        "Interim:",
+        interimTranscript
+      );
 
       // Mise à jour du transcript: final + interim (sans accumuler avec prev)
       const fullTranscript = finalTranscript + interimTranscript;
@@ -149,31 +165,31 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
 
       // Gestion des erreurs spécifiques Android
       switch (event.error) {
-      case "network":
-        setError("Erreur réseau. Vérifiez votre connexion Internet.");
-        setListening(false);
-        break;
-      case "not-allowed":
-        setError("Permission microphone refusée.");
-        setPermissionGranted(false);
-        setListening(false);
-        break;
-      case "no-speech":
-        // Ne pas afficher d'erreur pour "no-speech", juste logger
-        console.log("[SpeechRecognition] Aucune parole détectée, en attente...");
-        // Ne pas arrêter l'écoute
-        break;
-      case "audio-capture":
-        setError("Impossible d'accéder au microphone.");
-        setListening(false);
-        break;
-      case "aborted":
-        // Ignore, c'est un arrêt volontaire
-        console.log("[SpeechRecognition] Reconnaissance arrêtée (aborted)");
-        break;
-      default:
-        setError(`Erreur de reconnaissance: ${event.error}`);
-        setListening(false);
+        case "network":
+          setError("Erreur réseau. Vérifiez votre connexion Internet.");
+          setListening(false);
+          break;
+        case "not-allowed":
+          setError("Permission microphone refusée.");
+          setPermissionGranted(false);
+          setListening(false);
+          break;
+        case "no-speech":
+          // Ne pas afficher d'erreur pour "no-speech", juste logger
+          console.log("[SpeechRecognition] Aucune parole détectée, en attente...");
+          // Ne pas arrêter l'écoute
+          break;
+        case "audio-capture":
+          setError("Impossible d'accéder au microphone.");
+          setListening(false);
+          break;
+        case "aborted":
+          // Ignore, c'est un arrêt volontaire
+          console.log("[SpeechRecognition] Reconnaissance arrêtée (aborted)");
+          break;
+        default:
+          setError(`Erreur de reconnaissance: ${event.error}`);
+          setListening(false);
       }
     };
 
@@ -209,12 +225,12 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   const startListening = useCallback(async () => {
     console.log("[SpeechRecognition] startListening called", {
       hasRecognition: !!recognitionRef.current,
-      isListening: listening
+      isListening: listening,
     });
 
     if (!recognitionRef.current || listening) {
       console.log("[SpeechRecognition] startListening skipped", {
-        reason: !recognitionRef.current ? "no recognition" : "already listening"
+        reason: !recognitionRef.current ? "no recognition" : "already listening",
       });
       return;
     }
@@ -234,7 +250,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       }
 
       // Petit délai pour Android
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       console.log("[SpeechRecognition] Starting recognition...");
       recognitionRef.current.start();
@@ -290,6 +306,6 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     browserSupportsSpeechRecognition,
     confidence,
     error,
-    permissionGranted
+    permissionGranted,
   };
 };

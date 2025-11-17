@@ -6,15 +6,15 @@ export const mockUser = {
   emailVerified: true,
   metadata: {
     creationTime: new Date().toISOString(),
-    lastSignInTime: new Date().toISOString()
-  }
+    lastSignInTime: new Date().toISOString(),
+  },
 };
 
 // Mock auth instance
 const mockAuth = {
   currentUser: null,
   app: { name: "[DEFAULT]" },
-  name: "auth"
+  name: "auth",
 };
 
 export const getAuth = jest.fn(() => mockAuth);
@@ -22,14 +22,14 @@ export const getAuth = jest.fn(() => mockAuth);
 export const createUserWithEmailAndPassword = jest.fn((auth, email, password) =>
   Promise.resolve({
     user: { ...mockUser, email },
-    providerId: "password"
+    providerId: "password",
   })
 );
 
 export const signInWithEmailAndPassword = jest.fn((auth, email, password) =>
   Promise.resolve({
     user: { ...mockUser, email },
-    providerId: "password"
+    providerId: "password",
   })
 );
 
@@ -53,7 +53,7 @@ export const signInWithPopup = jest.fn((auth, provider) =>
   Promise.resolve({
     user: mockUser,
     providerId: "google.com",
-    operationType: "signIn"
+    operationType: "signIn",
   })
 );
 

@@ -6,8 +6,19 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
-  FormControlLabel, FormControl, Stepper, Step, StepLabel, Alert
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Stepper,
+  Step,
+  StepLabel,
+  Alert,
 } from "@mui/material";
 import { CheckCircle, School } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
@@ -27,43 +38,43 @@ const assessmentQuestions: AssessmentQuestion[] = [
     question: "What ___ you do yesterday?",
     options: ["do", "did", "does", "doing"],
     correctAnswer: "did",
-    level: "A2"
+    level: "A2",
   },
   {
     id: "q2",
     question: "I ___ English for 5 years.",
     options: ["study", "studied", "have studied", "am studying"],
     correctAnswer: "have studied",
-    level: "B1"
+    level: "B1",
   },
   {
     id: "q3",
     question: "The application ___ by the development team last week.",
     options: ["deployed", "was deployed", "has deployed", "is deploying"],
     correctAnswer: "was deployed",
-    level: "B2"
+    level: "B2",
   },
   {
     id: "q4",
     question: "Technical debt accumulates when teams choose quick solutions ___ better approaches.",
     options: ["instead of", "instead", "rather", "than"],
     correctAnswer: "instead of",
-    level: "B2"
+    level: "B2",
   },
   {
     id: "q5",
     question: "Had I known about the vulnerability earlier, I ___ the patch immediately.",
     options: ["would apply", "will apply", "would have applied", "applied"],
     correctAnswer: "would have applied",
-    level: "C1"
+    level: "C1",
   },
   {
     id: "q6",
     question: "Not only ___ the system more secure, but it also improved performance.",
     options: ["it made", "made it", "did it make", "it did make"],
     correctAnswer: "did it make",
-    level: "C1"
-  }
+    level: "C1",
+  },
 ];
 
 export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
@@ -74,12 +85,12 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
   const { user, setUser } = useUser();
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   const handleNext = () => {
     if (currentStep < assessmentQuestions.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     } else {
       calculateLevel();
     }
@@ -87,7 +98,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
 
   const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
@@ -95,7 +106,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
     let score = 0;
     let maxScore = 0;
 
-    assessmentQuestions.forEach(q => {
+    assessmentQuestions.forEach((q) => {
       maxScore++;
       if (answers[q.id] === q.correctAnswer) {
         score++;
@@ -103,7 +114,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
     });
 
     const percentage = (score / maxScore) * 100;
-    
+
     let level: LanguageLevel;
     if (percentage >= 85) level = "C1";
     else if (percentage >= 70) level = "B2";
@@ -117,7 +128,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
       setUser({
         ...user,
         currentLevel: level,
-        lastActivity: new Date()
+        lastActivity: new Date(),
       });
     }
   };
@@ -131,7 +142,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
         <Card elevation={3}>
           <CardContent sx={{ textAlign: "center", py: 6 }}>
             <CheckCircle sx={{ fontSize: 80, color: "success.main", mb: 3 }} />
-            
+
             <Typography variant="h4" gutterBottom>
               Évaluation terminée !
             </Typography>
@@ -147,9 +158,13 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
 
             <Alert severity="info" sx={{ mb: 3, textAlign: "left" }}>
               <Typography variant="body2">
-                <strong>Résultats :</strong> {Object.values(answers).filter((a, i) => 
-                  a === assessmentQuestions[i].correctAnswer
-                ).length} / {assessmentQuestions.length} bonnes réponses
+                <strong>Résultats :</strong>{" "}
+                {
+                  Object.values(answers).filter(
+                    (a, i) => a === assessmentQuestions[i].correctAnswer
+                  ).length
+                }{" "}
+                / {assessmentQuestions.length} bonnes réponses
               </Typography>
             </Alert>
 
@@ -157,12 +172,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
               Les exercices seront adaptés à votre niveau. Vous pouvez commencer dès maintenant !
             </Typography>
 
-            <Button 
-              variant="contained" 
-              size="large"
-              onClick={onComplete}
-              startIcon={<School />}
-            >
+            <Button variant="contained" size="large" onClick={onComplete} startIcon={<School />}>
               Commencer les exercices
             </Button>
           </CardContent>
@@ -217,7 +227,7 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
                       border: 1,
                       borderColor: "grey.300",
                       borderRadius: 2,
-                      "&:hover": { bgcolor: "grey.50" }
+                      "&:hover": { bgcolor: "grey.50" },
                     }}
                   />
                 ))}
@@ -226,18 +236,11 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-            <Button
-              onClick={handleBack}
-              disabled={currentStep === 0}
-            >
+            <Button onClick={handleBack} disabled={currentStep === 0}>
               Précédent
             </Button>
 
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={!isAnswered}
-            >
+            <Button variant="contained" onClick={handleNext} disabled={!isAnswered}>
               {currentStep === assessmentQuestions.length - 1 ? "Terminer" : "Suivant"}
             </Button>
           </Box>
@@ -246,4 +249,3 @@ export const LevelAssessment: React.FC<{ onComplete: () => void }> = ({ onComple
     </Box>
   );
 };
-

@@ -18,7 +18,7 @@ import {
   limit,
   Timestamp,
   QueryConstraint,
-  DocumentData
+  DocumentData,
 } from "firebase/firestore";
 import { db, auth } from "./config";
 
@@ -44,7 +44,11 @@ export const convertTimestamps = (data: any): any => {
   Object.keys(converted).forEach((key) => {
     if (converted[key] instanceof Timestamp) {
       converted[key] = converted[key].toDate();
-    } else if (converted[key] && typeof converted[key] === "object" && !Array.isArray(converted[key])) {
+    } else if (
+      converted[key] &&
+      typeof converted[key] === "object" &&
+      !Array.isArray(converted[key])
+    ) {
       converted[key] = convertTimestamps(converted[key]);
     }
   });
@@ -76,15 +80,24 @@ export const getDocument = async <T = DocumentData>(
     return null;
   } catch (error: any) {
     // Gérer silencieusement les erreurs offline, d'authentification ou de permission
-    if (error.code === "unavailable" || error.code === "failed-precondition" ||
-        error.code === "permission-denied" || error.code === "unauthenticated" ||
-        error.message?.includes("offline") || error.message?.includes("network") ||
-        error.message?.includes("permission") || error.message?.includes("authenticated")) {
+    if (
+      error.code === "unavailable" ||
+      error.code === "failed-precondition" ||
+      error.code === "permission-denied" ||
+      error.code === "unauthenticated" ||
+      error.message?.includes("offline") ||
+      error.message?.includes("network") ||
+      error.message?.includes("permission") ||
+      error.message?.includes("authenticated")
+    ) {
       // Client offline ou non authentifié - retourner null silencieusement
       return null;
     }
     // Ne logger que les autres erreurs
-    console.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}:`, error);
+    console.error(
+      `Erreur lors de la récupération du document ${collectionName}/${documentId}:`,
+      error
+    );
     throw error;
   }
 };
@@ -103,9 +116,7 @@ export const getDocuments = async <T = DocumentData>(
 
   try {
     const collectionRef = collection(db, collectionName);
-    const q = constraints.length > 0
-      ? query(collectionRef, ...constraints)
-      : query(collectionRef);
+    const q = constraints.length > 0 ? query(collectionRef, ...constraints) : query(collectionRef);
 
     const querySnapshot = await getDocs(q);
     const documents: T[] = [];
@@ -118,10 +129,16 @@ export const getDocuments = async <T = DocumentData>(
     return documents;
   } catch (error: any) {
     // Gérer silencieusement les erreurs offline, d'authentification ou de permission
-    if (error.code === "unavailable" || error.code === "failed-precondition" ||
-        error.code === "permission-denied" || error.code === "unauthenticated" ||
-        error.message?.includes("offline") || error.message?.includes("network") ||
-        error.message?.includes("permission") || error.message?.includes("authenticated")) {
+    if (
+      error.code === "unavailable" ||
+      error.code === "failed-precondition" ||
+      error.code === "permission-denied" ||
+      error.code === "unauthenticated" ||
+      error.message?.includes("offline") ||
+      error.message?.includes("network") ||
+      error.message?.includes("permission") ||
+      error.message?.includes("authenticated")
+    ) {
       // Client offline ou non authentifié - retourner un tableau vide silencieusement
       return [];
     }
@@ -159,7 +176,7 @@ export const setDocument = async <T = DocumentData>(
     console.log(`📝 [setDocument] Préparation sauvegarde: ${collectionName}/${documentId}`, {
       authUid: auth.currentUser?.uid,
       dataKeys: Object.keys(data || {}),
-      dataSize: JSON.stringify(data).length
+      dataSize: JSON.stringify(data).length,
     });
 
     const docRef = doc(db, collectionName, documentId);
@@ -172,13 +189,20 @@ export const setDocument = async <T = DocumentData>(
       if (firestoreData[key] instanceof Date) {
         firestoreData[key] = Timestamp.fromDate(firestoreData[key]);
         convertedDates++;
-      } else if (firestoreData[key] && typeof firestoreData[key] === "string" && firestoreData[key].match(/^\d{4}-\d{2}-\d{2}T/)) {
+      } else if (
+        firestoreData[key] &&
+        typeof firestoreData[key] === "string" &&
+        firestoreData[key].match(/^\d{4}-\d{2}-\d{2}T/)
+      ) {
         // Convertir les chaînes ISO en Timestamp
         try {
           firestoreData[key] = Timestamp.fromDate(new Date(firestoreData[key]));
           convertedDates++;
         } catch (e) {
-          console.warn(`⚠️ [setDocument] Impossible de convertir la date pour ${key}:`, firestoreData[key]);
+          console.warn(
+            `⚠️ [setDocument] Impossible de convertir la date pour ${key}:`,
+            firestoreData[key]
+          );
         }
       }
     });
@@ -189,7 +213,7 @@ export const setDocument = async <T = DocumentData>(
       if (!firestoreData.email) {
         console.warn("⚠️ [setDocument] Tentative de sauvegarde utilisateur sans email:", {
           id: firestoreData.id,
-          keys: Object.keys(firestoreData)
+          keys: Object.keys(firestoreData),
         });
       } else {
         console.log("✅ [setDocument] Email présent:", firestoreData.email);
@@ -197,12 +221,18 @@ export const setDocument = async <T = DocumentData>(
     }
 
     console.log("💾 [setDocument] Écriture dans Firestore...");
-    await setDoc(docRef, {
-      ...firestoreData,
-      updatedAt: Timestamp.now()
-    }, { merge: true });
+    await setDoc(
+      docRef,
+      {
+        ...firestoreData,
+        updatedAt: Timestamp.now(),
+      },
+      { merge: true }
+    );
 
-    console.log(`✅ [setDocument] Document sauvegardé avec succès: ${collectionName}/${documentId}`);
+    console.log(
+      `✅ [setDocument] Document sauvegardé avec succès: ${collectionName}/${documentId}`
+    );
   } catch (error: any) {
     // Logger l'erreur complète pour diagnostic
     const errorDetails = {
@@ -214,15 +244,21 @@ export const setDocument = async <T = DocumentData>(
       authUid: auth.currentUser?.uid || "non authentifié",
       authEmail: auth.currentUser?.email || "non défini",
       dataKeys: Object.keys(data || {}),
-      dataSample: collectionName === "users" ? {
-        id: (data as any)?.id,
-        email: (data as any)?.email,
-        currentLevel: (data as any)?.currentLevel
-      } : "N/A",
-      errorObject: error
+      dataSample:
+        collectionName === "users"
+          ? {
+              id: (data as any)?.id,
+              email: (data as any)?.email,
+              currentLevel: (data as any)?.currentLevel,
+            }
+          : "N/A",
+      errorObject: error,
     };
 
-    console.error(`❌ [setDocument] Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`, errorDetails);
+    console.error(
+      `❌ [setDocument] Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`,
+      errorDetails
+    );
 
     // Si c'est une erreur de permission, donner plus de détails
     if (error.code === "permission-denied") {
@@ -265,7 +301,7 @@ export const updateDocument = async <T = DocumentData>(
     console.log(`📝 [updateDocument] Préparation mise à jour: ${collectionName}/${documentId}`, {
       authUid: auth?.currentUser?.uid,
       dataKeys: Object.keys(data || {}),
-      dataSize: JSON.stringify(data).length
+      dataSize: JSON.stringify(data).length,
     });
 
     const docRef = doc(db, collectionName, documentId);
@@ -278,12 +314,19 @@ export const updateDocument = async <T = DocumentData>(
       if (firestoreData[key] instanceof Date) {
         firestoreData[key] = Timestamp.fromDate(firestoreData[key]);
         convertedDates++;
-      } else if (firestoreData[key] && typeof firestoreData[key] === "string" && firestoreData[key].match(/^\d{4}-\d{2}-\d{2}T/)) {
+      } else if (
+        firestoreData[key] &&
+        typeof firestoreData[key] === "string" &&
+        firestoreData[key].match(/^\d{4}-\d{2}-\d{2}T/)
+      ) {
         try {
           firestoreData[key] = Timestamp.fromDate(new Date(firestoreData[key]));
           convertedDates++;
         } catch (e) {
-          console.warn(`⚠️ [updateDocument] Impossible de convertir la date pour ${key}:`, firestoreData[key]);
+          console.warn(
+            `⚠️ [updateDocument] Impossible de convertir la date pour ${key}:`,
+            firestoreData[key]
+          );
         }
       }
     });
@@ -292,22 +335,27 @@ export const updateDocument = async <T = DocumentData>(
     console.log("💾 [updateDocument] Mise à jour dans Firestore...");
     await updateDoc(docRef, {
       ...firestoreData,
-      updatedAt: Timestamp.now()
+      updatedAt: Timestamp.now(),
     });
 
-    console.log(`✅ [updateDocument] Document mis à jour avec succès: ${collectionName}/${documentId}`);
+    console.log(
+      `✅ [updateDocument] Document mis à jour avec succès: ${collectionName}/${documentId}`
+    );
   } catch (error: any) {
     // Logger l'erreur complète pour diagnostic
-    console.error(`❌ [updateDocument] Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`, {
-      code: error.code,
-      message: error.message,
-      stack: error.stack,
-      collection: collectionName,
-      documentId: documentId,
-      authUid: auth.currentUser?.uid || "non authentifié",
-      dataKeys: Object.keys(data || {}),
-      error: error
-    });
+    console.error(
+      `❌ [updateDocument] Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`,
+      {
+        code: error.code,
+        message: error.message,
+        stack: error.stack,
+        collection: collectionName,
+        documentId: documentId,
+        authUid: auth.currentUser?.uid || "non authentifié",
+        dataKeys: Object.keys(data || {}),
+        error: error,
+      }
+    );
     throw error;
   }
 };
@@ -315,10 +363,7 @@ export const updateDocument = async <T = DocumentData>(
 /**
  * Supprime un document
  */
-export const deleteDocument = async (
-  collectionName: string,
-  documentId: string
-): Promise<void> => {
+export const deleteDocument = async (collectionName: string, documentId: string): Promise<void> => {
   if (!db) {
     console.warn("Firestore n'est pas initialisé");
     return;
@@ -331,24 +376,29 @@ export const deleteDocument = async (
 
   try {
     console.log(`🗑️ [deleteDocument] Suppression: ${collectionName}/${documentId}`, {
-      authUid: auth?.currentUser?.uid
+      authUid: auth?.currentUser?.uid,
     });
 
     const docRef = doc(db, collectionName, documentId);
     await deleteDoc(docRef);
 
-    console.log(`✅ [deleteDocument] Document supprimé avec succès: ${collectionName}/${documentId}`);
+    console.log(
+      `✅ [deleteDocument] Document supprimé avec succès: ${collectionName}/${documentId}`
+    );
   } catch (error: any) {
     // Logger l'erreur complète pour diagnostic
-    console.error(`❌ [deleteDocument] Erreur lors de la suppression du document ${collectionName}/${documentId}:`, {
-      code: error.code,
-      message: error.message,
-      stack: error.stack,
-      collection: collectionName,
-      documentId: documentId,
-      authUid: auth.currentUser?.uid || "non authentifié",
-      error: error
-    });
+    console.error(
+      `❌ [deleteDocument] Erreur lors de la suppression du document ${collectionName}/${documentId}:`,
+      {
+        code: error.code,
+        message: error.message,
+        stack: error.stack,
+        collection: collectionName,
+        documentId: documentId,
+        authUid: auth.currentUser?.uid || "non authentifié",
+        error: error,
+      }
+    );
     throw error;
   }
 };
@@ -411,14 +461,10 @@ export const documentExists = async (
     const docSnap = await getDoc(docRef);
     return docSnap.exists();
   } catch (error) {
-    console.error(`Erreur lors de la vérification de l'existence du document ${collectionName}/${documentId}:`, error);
+    console.error(
+      `Erreur lors de la vérification de l'existence du document ${collectionName}/${documentId}:`,
+      error
+    );
     return false;
   }
 };
-
-
-
-
-
-
-

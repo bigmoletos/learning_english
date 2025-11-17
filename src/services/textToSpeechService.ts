@@ -64,7 +64,7 @@ class TextToSpeechService {
     try {
       const data: CachedAudio = {
         url: audioUrl,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       localStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (err) {
@@ -81,7 +81,7 @@ class TextToSpeechService {
       const keys = Object.keys(localStorage);
       const now = Date.now();
 
-      keys.forEach(key => {
+      keys.forEach((key) => {
         if (key.startsWith(CACHE_KEY_PREFIX)) {
           const cached = localStorage.getItem(key);
           if (cached) {
@@ -118,7 +118,7 @@ class TextToSpeechService {
       lang,
       voice: voice || "défaut (sélection automatique)",
       rate,
-      pitch
+      pitch,
     });
 
     try {

@@ -2,7 +2,7 @@
 const mockStorage = {
   app: { name: "[DEFAULT]" },
   maxOperationRetryTime: 120000,
-  maxUploadRetryTime: 600000
+  maxUploadRetryTime: 600000,
 };
 
 export const getStorage = jest.fn(() => mockStorage);
@@ -14,7 +14,7 @@ export const ref = jest.fn((storage, path) => ({
   parent: null,
   root: { fullPath: "", name: "" },
   storage: mockStorage,
-  toString: () => `gs://mock-bucket/${path || ""}`
+  toString: () => `gs://mock-bucket/${path || ""}`,
 }));
 
 export const uploadBytes = jest.fn(() =>
@@ -27,13 +27,13 @@ export const uploadBytes = jest.fn(() =>
       name: "mock-file",
       size: 1024,
       timeCreated: new Date().toISOString(),
-      updated: new Date().toISOString()
+      updated: new Date().toISOString(),
     },
     ref: {
       bucket: "mock-bucket",
       fullPath: "mock-path",
-      name: "mock-file"
-    }
+      name: "mock-file",
+    },
   })
 );
 
@@ -44,7 +44,7 @@ export const uploadBytesResumable = jest.fn(() => {
       totalBytes: 0,
       state: "running",
       metadata: {},
-      ref: {}
+      ref: {},
     },
     on: jest.fn(),
     cancel: jest.fn(),
@@ -54,11 +54,11 @@ export const uploadBytesResumable = jest.fn(() => {
       resolve({
         bytesTransferred: 1024,
         totalBytes: 1024,
-        state: "success"
+        state: "success",
       });
       return task;
     }),
-    catch: jest.fn()
+    catch: jest.fn(),
   };
   return task;
 });
@@ -72,7 +72,7 @@ export const deleteObject = jest.fn(() => Promise.resolve());
 export const listAll = jest.fn(() =>
   Promise.resolve({
     items: [],
-    prefixes: []
+    prefixes: [],
   })
 );
 
@@ -83,7 +83,7 @@ export const getMetadata = jest.fn(() =>
     name: "mock-file",
     size: 1024,
     timeCreated: new Date().toISOString(),
-    updated: new Date().toISOString()
+    updated: new Date().toISOString(),
   })
 );
 
@@ -92,6 +92,6 @@ export const updateMetadata = jest.fn(() =>
     bucket: "mock-bucket",
     fullPath: "mock-path",
     name: "mock-file",
-    size: 1024
+    size: 1024,
   })
 );

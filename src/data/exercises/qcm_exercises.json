@@ -178,12 +178,7 @@
         {
           "id": "q1",
           "text": "Which GDPR principle requires collecting only necessary data?",
-          "options": [
-            "Lawfulness",
-            "Data minimization",
-            "Storage limitation",
-            "Transparency"
-          ],
+          "options": ["Lawfulness", "Data minimization", "Storage limitation", "Transparency"],
           "correctAnswer": "Data minimization",
           "explanation": "The data minimization principle requires that personal data be adequate, relevant, and limited to what is necessary for the purposes for which it is processed.",
           "grammarFocus": ["present_simple", "relative_clauses"],
@@ -248,4 +243,3 @@
     }
   ]
 }
-

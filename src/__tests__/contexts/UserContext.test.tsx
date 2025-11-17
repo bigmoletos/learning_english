@@ -30,12 +30,12 @@ describe("UserContext", () => {
       },
       clear: () => {
         store = {};
-      }
+      },
     };
   })();
 
   Object.defineProperty(window, "localStorage", {
-    value: localStorageMock
+    value: localStorageMock,
   });
 
   // Default mock implementations
@@ -49,21 +49,21 @@ describe("UserContext", () => {
     resetPassword: jest.fn(),
     signInWithGoogle: jest.fn(),
     clearError: jest.fn(),
-    isAuthenticated: false
+    isAuthenticated: false,
   };
 
   const mockProgress = {
     progress: null,
     loading: false,
     error: null,
-    updateProgress: jest.fn()
+    updateProgress: jest.fn(),
   };
 
   const mockTestResults = {
     testResults: [],
     loading: false,
     error: null,
-    addTestResult: jest.fn()
+    addTestResult: jest.fn(),
   };
 
   beforeEach(() => {
@@ -76,7 +76,7 @@ describe("UserContext", () => {
     (useFirestoreModule.useTestResults as jest.Mock).mockReturnValue(mockTestResults);
     (firestoreService.createOrUpdateUserProfile as jest.Mock).mockResolvedValue({
       success: true,
-      message: "Profile updated"
+      message: "Profile updated",
     });
   });
 
@@ -94,7 +94,7 @@ describe("UserContext", () => {
 
     it("should initialize with default values", () => {
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       expect(result.current.user).toBeNull();
@@ -110,7 +110,7 @@ describe("UserContext", () => {
         timeSpent: 0,
         streakDays: 0,
         levelProgress: {},
-        domainProgress: {}
+        domainProgress: {},
       });
     });
   });
@@ -124,18 +124,18 @@ describe("UserContext", () => {
         emailVerified: true,
         metadata: {
           creationTime: new Date("2025-01-01").toISOString(),
-          lastSignInTime: new Date().toISOString()
-        }
+          lastSignInTime: new Date().toISOString(),
+        },
       };
 
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,
-        isAuthenticated: true
+        isAuthenticated: true,
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
@@ -151,7 +151,7 @@ describe("UserContext", () => {
         expect.objectContaining({
           email: "test@example.com",
           displayName: "Test User",
-          emailVerified: true
+          emailVerified: true,
         })
       );
     });
@@ -162,14 +162,14 @@ describe("UserContext", () => {
         email: "local@example.com",
         firstName: "Local",
         lastName: "User",
-        currentLevel: "B2"
+        currentLevel: "B2",
       };
 
       localStorage.setItem("token", "test-token-123");
       localStorage.setItem("user", JSON.stringify(userData));
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       expect(result.current.token).toBe("test-token-123");
@@ -185,7 +185,7 @@ describe("UserContext", () => {
       const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       expect(result.current.user).toBeNull();
@@ -200,13 +200,13 @@ describe("UserContext", () => {
     it("should call firebaseLogin successfully", async () => {
       const mockLoginResult = {
         success: true,
-        user: { uid: "user-123", email: "test@example.com" }
+        user: { uid: "user-123", email: "test@example.com" },
       };
 
       mockFirebaseAuth.login.mockResolvedValue(mockLoginResult);
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const loginResult = await result.current.firebaseLogin("test@example.com", "password123");
@@ -218,13 +218,13 @@ describe("UserContext", () => {
     it("should call firebaseRegister successfully", async () => {
       const mockRegisterResult = {
         success: true,
-        user: { uid: "user-456", email: "new@example.com", displayName: "New User" }
+        user: { uid: "user-456", email: "new@example.com", displayName: "New User" },
       };
 
       mockFirebaseAuth.register.mockResolvedValue(mockRegisterResult);
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const registerResult = await result.current.firebaseRegister(
@@ -244,13 +244,13 @@ describe("UserContext", () => {
     it("should call googleSignIn successfully", async () => {
       const mockGoogleResult = {
         success: true,
-        user: { uid: "google-user", email: "google@example.com" }
+        user: { uid: "google-user", email: "google@example.com" },
       };
 
       mockFirebaseAuth.signInWithGoogle.mockResolvedValue(mockGoogleResult);
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const googleResult = await result.current.googleSignIn();
@@ -270,7 +270,7 @@ describe("UserContext", () => {
       mockFirebaseAuth.logout.mockResolvedValue({ success: true, message: "Logged out" });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await act(async () => {
@@ -290,11 +290,11 @@ describe("UserContext", () => {
     it("should handle firebaseLogout failure", async () => {
       mockFirebaseAuth.logout.mockResolvedValue({
         success: false,
-        error: "Network error"
+        error: "Network error",
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const logoutResult = await result.current.firebaseLogout();
@@ -312,11 +312,11 @@ describe("UserContext", () => {
         email: "legacy@example.com",
         firstName: "Legacy",
         lastName: "User",
-        currentLevel: "A2"
+        currentLevel: "A2",
       };
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       act(() => {
@@ -335,7 +335,7 @@ describe("UserContext", () => {
       localStorage.setItem("user", JSON.stringify({ id: "123" }));
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       act(() => {
@@ -357,23 +357,23 @@ describe("UserContext", () => {
         emailVerified: true,
         metadata: {
           creationTime: new Date().toISOString(),
-          lastSignInTime: new Date().toISOString()
-        }
+          lastSignInTime: new Date().toISOString(),
+        },
       };
 
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,
-        isAuthenticated: true
+        isAuthenticated: true,
       });
 
       mockTestResults.addTestResult.mockResolvedValue({
         success: true,
-        testId: "test-result-123"
+        testId: "test-result-123",
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
@@ -386,7 +386,7 @@ describe("UserContext", () => {
         answer: "test answer",
         isCorrect: true,
         timeSpent: 30,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       await act(async () => {
@@ -407,14 +407,14 @@ describe("UserContext", () => {
           exerciseId: "ex-123",
           questionId: "q-456",
           answer: "test answer",
-          isCorrect: true
+          isCorrect: true,
         })
       );
     });
 
     it("should calculate stats correctly", async () => {
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const responses: UserResponse[] = [
@@ -424,7 +424,7 @@ describe("UserContext", () => {
           answer: "answer1",
           isCorrect: true,
           timeSpent: 20,
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         {
           exerciseId: "ex-1",
@@ -432,7 +432,7 @@ describe("UserContext", () => {
           answer: "answer2",
           isCorrect: true,
           timeSpent: 25,
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         {
           exerciseId: "ex-2",
@@ -440,8 +440,8 @@ describe("UserContext", () => {
           answer: "answer3",
           isCorrect: false,
           timeSpent: 15,
-          timestamp: new Date()
-        }
+          timestamp: new Date(),
+        },
       ];
 
       for (const response of responses) {
@@ -460,7 +460,7 @@ describe("UserContext", () => {
 
     it("should calculate streak correctly", async () => {
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const today = new Date();
@@ -476,7 +476,7 @@ describe("UserContext", () => {
           answer: "a1",
           isCorrect: true,
           timeSpent: 10,
-          timestamp: today
+          timestamp: today,
         },
         {
           exerciseId: "ex-2",
@@ -484,7 +484,7 @@ describe("UserContext", () => {
           answer: "a2",
           isCorrect: true,
           timeSpent: 10,
-          timestamp: yesterday
+          timestamp: yesterday,
         },
         {
           exerciseId: "ex-3",
@@ -492,8 +492,8 @@ describe("UserContext", () => {
           answer: "a3",
           isCorrect: true,
           timeSpent: 10,
-          timestamp: twoDaysAgo
-        }
+          timestamp: twoDaysAgo,
+        },
       ];
 
       for (const response of responses) {
@@ -509,7 +509,7 @@ describe("UserContext", () => {
 
     it("should persist responses to localStorage", async () => {
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       const response: UserResponse = {
@@ -518,7 +518,7 @@ describe("UserContext", () => {
         answer: "persist answer",
         isCorrect: true,
         timeSpent: 40,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       await act(async () => {
@@ -543,14 +543,14 @@ describe("UserContext", () => {
           answer: "stored answer",
           isCorrect: true,
           timeSpent: 25,
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       ];
 
       localStorage.setItem("userResponses", JSON.stringify(existingResponses));
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       expect(result.current.responses).toHaveLength(1);
@@ -567,23 +567,23 @@ describe("UserContext", () => {
         emailVerified: true,
         metadata: {
           creationTime: new Date().toISOString(),
-          lastSignInTime: new Date().toISOString()
-        }
+          lastSignInTime: new Date().toISOString(),
+        },
       };
 
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,
-        isAuthenticated: true
+        isAuthenticated: true,
       });
 
       mockProgress.updateProgress.mockResolvedValue({
         success: true,
-        message: "Progress updated"
+        message: "Progress updated",
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
@@ -596,7 +596,7 @@ describe("UserContext", () => {
         answer: "sync answer",
         isCorrect: true,
         timeSpent: 35,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       await act(async () => {
@@ -610,7 +610,7 @@ describe("UserContext", () => {
             averageScore: expect.any(Number),
             timeSpent: expect.any(Number),
             currentLevel: "B1",
-            targetLevel: "C1"
+            targetLevel: "C1",
           })
         );
       });
@@ -621,14 +621,14 @@ describe("UserContext", () => {
         totalTests: 50,
         averageScore: 85,
         timeSpent: 3600,
-        streakDays: 7
+        streakDays: 7,
       };
 
       (useFirestoreModule.useProgress as jest.Mock).mockReturnValue({
         progress: mockProgressData,
         loading: false,
         error: null,
-        updateProgress: jest.fn()
+        updateProgress: jest.fn(),
       });
 
       const mockUser = {
@@ -638,18 +638,18 @@ describe("UserContext", () => {
         emailVerified: true,
         metadata: {
           creationTime: new Date().toISOString(),
-          lastSignInTime: new Date().toISOString()
-        }
+          lastSignInTime: new Date().toISOString(),
+        },
       };
 
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,
-        isAuthenticated: true
+        isAuthenticated: true,
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
@@ -663,11 +663,11 @@ describe("UserContext", () => {
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         loading: false,
-        error: "Authentication failed"
+        error: "Authentication failed",
       });
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       expect(result.current.error).toBe("Authentication failed");
@@ -681,14 +681,14 @@ describe("UserContext", () => {
         emailVerified: true,
         metadata: {
           creationTime: new Date().toISOString(),
-          lastSignInTime: new Date().toISOString()
-        }
+          lastSignInTime: new Date().toISOString(),
+        },
       };
 
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,
-        isAuthenticated: true
+        isAuthenticated: true,
       });
 
       mockTestResults.addTestResult.mockRejectedValue(new Error("Firebase error"));
@@ -696,7 +696,7 @@ describe("UserContext", () => {
       const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
       const { result } = renderHook(() => useUser(), {
-        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>
+        wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
@@ -709,7 +709,7 @@ describe("UserContext", () => {
         answer: "error answer",
         isCorrect: true,
         timeSpent: 20,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       await act(async () => {

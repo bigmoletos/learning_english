@@ -6,14 +6,28 @@
 
 import React, { useState, useMemo, useCallback } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Chip, LinearProgress,
-  Alert, Grid, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Select, MenuItem, FormControl, InputLabel, Tooltip
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  LinearProgress,
+  Alert,
+  Grid,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Tooltip,
 } from "@mui/material";
-import {
-  Edit, Refresh, Warning,
-  Timeline, PlayArrow, Remove
-} from "@mui/icons-material";
+import { Edit, Refresh, Warning, Timeline, PlayArrow, Remove } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel, ExerciseType, TechnicalDomain } from "../../types";
 import { analyzeUserProgress } from "../../agents/progressAgent";
@@ -80,7 +94,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       area,
       severity: "moderate" as const,
       occurrences: responses.filter((r: any) => !r.isCorrect).length,
-      recommendedExercises: 10
+      recommendedExercises: 10,
     }));
   }, [user, responses]);
 
@@ -103,7 +117,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       progress: calculateProgress(currentLevel, responses),
       exerciseTypes: ["qcm", "cloze"],
       domains: getPriorityDomains(responses),
-      completed: false
+      completed: false,
     });
 
     // Objectif 2 : Améliorer les points faibles
@@ -111,14 +125,14 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       goals.push({
         id: "weaknesses",
         title: "Améliorer les points faibles",
-        description: `Travailler sur : ${weaknesses.map(w => w.area).join(", ")}`,
+        description: `Travailler sur : ${weaknesses.map((w) => w.area).join(", ")}`,
         priority: "high",
         targetLevel: currentLevel,
         estimatedWeeks: 3,
         progress: 0,
         exerciseTypes: ["cloze", "writing"],
         domains: ["ai", "devops"],
-        completed: false
+        completed: false,
       });
     }
 
@@ -135,7 +149,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
         progress: 0,
         exerciseTypes: ["qcm", "reading"],
         domains: ["ai", "cybersecurity"],
-        completed: false
+        completed: false,
       });
     }
 
@@ -150,14 +164,14 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       progress: 0,
       exerciseTypes: ["listening", "reading"],
       domains: ["ai", "devops", "cybersecurity"],
-      completed: false
+      completed: false,
     });
 
     // Fusionner avec les objectifs modifiés manuellement et filtrer les supprimés
     return goals
-      .filter(goal => !removedGoalIds.has(goal.id))
-      .map(goal => {
-        const manual = manualGoals.find(m => m.id === goal.id);
+      .filter((goal) => !removedGoalIds.has(goal.id))
+      .map((goal) => {
+        const manual = manualGoals.find((m) => m.id === goal.id);
         return manual || goal;
       });
   }, [user, responses, weaknesses, manualGoals, removedGoalIds]);
@@ -170,10 +184,10 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
   const handleSaveGoal = () => {
     if (!selectedGoal) return;
 
-    setManualGoals(prev => {
-      const existing = prev.find(g => g.id === selectedGoal.id);
+    setManualGoals((prev) => {
+      const existing = prev.find((g) => g.id === selectedGoal.id);
       if (existing) {
-        return prev.map(g => (g.id === selectedGoal.id ? selectedGoal : g));
+        return prev.map((g) => (g.id === selectedGoal.id ? selectedGoal : g));
       }
       return [...prev, selectedGoal];
     });
@@ -182,7 +196,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
   };
 
   const handleRemoveGoal = (goalId: string) => {
-    setRemovedGoalIds(prev => new Set(prev).add(goalId));
+    setRemovedGoalIds((prev) => new Set(prev).add(goalId));
   };
 
   const handleRefreshPlan = () => {
@@ -190,78 +204,82 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
     setRemovedGoalIds(new Set());
   };
 
-  const handleStartGoal = useCallback((goal: LearningGoal) => {
-    console.log("🔄 Clic sur 'Commencer' pour l'objectif:", goal.id, goal.title);
-    console.log("📋 Objectif complet:", goal);
+  const handleStartGoal = useCallback(
+    (goal: LearningGoal) => {
+      console.log("🔄 Clic sur 'Commencer' pour l'objectif:", goal.id, goal.title);
+      console.log("📋 Objectif complet:", goal);
 
-    if (goal.completed) {
-      console.warn("⚠️ Objectif déjà complété");
-      return;
-    }
+      if (goal.completed) {
+        console.warn("⚠️ Objectif déjà complété");
+        return;
+      }
 
-    // Rediriger vers la vue des exercices avec filtres basés sur l'objectif
-    if (onNavigate) {
-      console.log("✅ Navigation vers la vue exercices avec filtres:", {
-        level: goal.targetLevel,
-        types: goal.exerciseTypes,
-        domains: goal.domains
-      });
+      // Rediriger vers la vue des exercices avec filtres basés sur l'objectif
+      if (onNavigate) {
+        console.log("✅ Navigation vers la vue exercices avec filtres:", {
+          level: goal.targetLevel,
+          types: goal.exerciseTypes,
+          domains: goal.domains,
+        });
 
-      // Sauvegarder les filtres dans localStorage pour les appliquer dans ExerciseList
-      localStorage.setItem("goalFilters", JSON.stringify({
-        level: goal.targetLevel,
-        types: goal.exerciseTypes,
-        domains: goal.domains,
-        goalId: goal.id
-      }));
+        // Sauvegarder les filtres dans localStorage pour les appliquer dans ExerciseList
+        localStorage.setItem(
+          "goalFilters",
+          JSON.stringify({
+            level: goal.targetLevel,
+            types: goal.exerciseTypes,
+            domains: goal.domains,
+            goalId: goal.id,
+          })
+        );
 
-      onNavigate("exercises");
-    } else {
-      console.error("❌ Erreur: onNavigate non défini");
-      // Fallback: redirection par hash ou window.location
-      window.location.hash = "#exercises";
-    }
-  }, [onNavigate]);
+        onNavigate("exercises");
+      } else {
+        console.error("❌ Erreur: onNavigate non défini");
+        // Fallback: redirection par hash ou window.location
+        window.location.hash = "#exercises";
+      }
+    },
+    [onNavigate]
+  );
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-    case "critical": return "error";
-    case "moderate": return "warning";
-    case "minor": return "info";
-    default: return "default";
+      case "critical":
+        return "error";
+      case "moderate":
+        return "warning";
+      case "minor":
+        return "info";
+      default:
+        return "default";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-    case "high": return "error";
-    case "medium": return "warning";
-    case "low": return "info";
-    default: return "default";
+      case "high":
+        return "error";
+      case "medium":
+        return "warning";
+      case "low":
+        return "info";
+      default:
+        return "default";
     }
   };
 
   if (!user) {
-    return (
-      <Alert severity="info">
-        Veuillez d'abord compléter l'évaluation de niveau.
-      </Alert>
-    );
+    return <Alert severity="info">Veuillez d'abord compléter l'évaluation de niveau.</Alert>;
   }
 
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-        <Typography variant="h4">
-          Programme d'apprentissage adaptatif
-        </Typography>
+        <Typography variant="h4">Programme d'apprentissage adaptatif</Typography>
         <Box sx={{ display: "flex", gap: 2 }}>
           <Tooltip title="Réactualiser le programme">
-            <Button
-              startIcon={<Refresh />}
-              onClick={handleRefreshPlan}
-              variant="outlined"
-            >
+            <Button startIcon={<Refresh />} onClick={handleRefreshPlan} variant="outlined">
               Actualiser
             </Button>
           </Tooltip>
@@ -276,8 +294,8 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
 
       <Alert severity="info" sx={{ mb: 3 }}>
         <Typography variant="body2">
-          Ce programme s'adapte automatiquement en fonction de vos réponses aux exercices.
-          Vous pouvez le modifier à tout moment en cliquant sur les boutons d'édition.
+          Ce programme s'adapte automatiquement en fonction de vos réponses aux exercices. Vous
+          pouvez le modifier à tout moment en cliquant sur les boutons d'édition.
         </Typography>
       </Alert>
 
@@ -307,7 +325,11 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       {weaknesses.length > 0 && (
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+            >
               <Warning color="warning" />
               Points à améliorer
             </Typography>
@@ -326,7 +348,8 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                         {weakness.area}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        {weakness.occurrences} erreurs • {weakness.recommendedExercises} exercices recommandés
+                        {weakness.occurrences} erreurs • {weakness.recommendedExercises} exercices
+                        recommandés
                       </Typography>
                     </CardContent>
                   </Card>
@@ -389,7 +412,11 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
 
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
                   <Chip label={`Niveau ${goal.targetLevel}`} size="small" variant="outlined" />
-                  <Chip label={`~${goal.estimatedWeeks} semaines`} size="small" variant="outlined" />
+                  <Chip
+                    label={`~${goal.estimatedWeeks} semaines`}
+                    size="small"
+                    variant="outlined"
+                  />
                 </Box>
 
                 <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
@@ -417,8 +444,8 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                   sx={{
                     cursor: goal.completed ? "not-allowed" : "pointer",
                     "&:hover": {
-                      backgroundColor: goal.completed ? "action.disabled" : "primary.dark"
-                    }
+                      backgroundColor: goal.completed ? "action.disabled" : "primary.dark",
+                    },
                   }}
                 >
                   {goal.completed ? "Complété" : "Commencer"}
@@ -430,7 +457,12 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       </Grid>
 
       {/* Dialog d'édition */}
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Modifier l'objectif</DialogTitle>
         <DialogContent>
           {selectedGoal && (
@@ -439,9 +471,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                 label="Titre"
                 fullWidth
                 value={selectedGoal.title}
-                onChange={(e) =>
-                  setSelectedGoal({ ...selectedGoal, title: e.target.value })
-                }
+                onChange={(e) => setSelectedGoal({ ...selectedGoal, title: e.target.value })}
               />
               <TextField
                 label="Description"
@@ -449,9 +479,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                 multiline
                 rows={3}
                 value={selectedGoal.description}
-                onChange={(e) =>
-                  setSelectedGoal({ ...selectedGoal, description: e.target.value })
-                }
+                onChange={(e) => setSelectedGoal({ ...selectedGoal, description: e.target.value })}
               />
               <FormControl fullWidth>
                 <InputLabel>Priorité</InputLabel>
@@ -461,7 +489,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                   onChange={(e) =>
                     setSelectedGoal({
                       ...selectedGoal,
-                      priority: e.target.value as "high" | "medium" | "low"
+                      priority: e.target.value as "high" | "medium" | "low",
                     })
                   }
                 >
@@ -478,7 +506,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
                 onChange={(e) =>
                   setSelectedGoal({
                     ...selectedGoal,
-                    estimatedWeeks: parseInt(e.target.value) || 0
+                    estimatedWeeks: parseInt(e.target.value) || 0,
                   })
                 }
               />
@@ -495,4 +523,3 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
     </Box>
   );
 };
-

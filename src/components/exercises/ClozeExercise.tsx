@@ -5,9 +5,7 @@
  */
 
 import React, { useState } from "react";
-import {
-  Box, Card, CardContent, Typography, TextField, Button, Alert, Chip
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, TextField, Button, Alert, Chip } from "@mui/material";
 import { CheckCircle, Cancel, Lightbulb } from "@mui/icons-material";
 import { Question } from "../../types";
 
@@ -20,7 +18,7 @@ interface ClozeExerciseProps {
 export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
   question,
   onAnswer,
-  showExplanation = true
+  showExplanation = true,
 }) => {
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -38,11 +36,13 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
     onAnswer(userAnswer, isCorrect, timeSpent);
   };
 
-  const isCorrect = submitted && userAnswer.trim().toLowerCase() ===
-    (Array.isArray(question.correctAnswer)
-      ? question.correctAnswer[0]
-      : question.correctAnswer
-    ).toLowerCase();
+  const isCorrect =
+    submitted &&
+    userAnswer.trim().toLowerCase() ===
+      (Array.isArray(question.correctAnswer)
+        ? question.correctAnswer[0]
+        : question.correctAnswer
+      ).toLowerCase();
 
   const renderTextWithBlanks = (text: string) => {
     const parts = text.split("___");
@@ -61,12 +61,8 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
               mx: 1,
               minWidth: 150,
               "& .MuiOutlinedInput-root": {
-                bgcolor: submitted
-                  ? isCorrect
-                    ? "success.light"
-                    : "error.light"
-                  : "white"
-              }
+                bgcolor: submitted ? (isCorrect ? "success.light" : "error.light") : "white",
+              },
             }}
           />
         )}
@@ -103,7 +99,7 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
               bgcolor: "grey.50",
               borderRadius: 2,
               fontSize: "1.1rem",
-              lineHeight: 2
+              lineHeight: 2,
             }}
           >
             <Typography component="div" variant="body1">
@@ -146,9 +142,7 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
                 <Typography variant="subtitle2" color="primary" gutterBottom>
                   Explication :
                 </Typography>
-                <Typography variant="body2">
-                  {question.explanation}
-                </Typography>
+                <Typography variant="body2">{question.explanation}</Typography>
               </Box>
             )}
           </Box>
@@ -157,4 +151,3 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
     </Card>
   );
 };
-

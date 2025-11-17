@@ -6,8 +6,19 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Box, Grid, Card, CardContent, Typography, Button, Chip, FormControl,
-  InputLabel, Select, MenuItem, SelectChangeEvent, Alert
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  Alert,
 } from "@mui/material";
 import { School, Timer, TrendingUp } from "@mui/icons-material";
 import { Exercise, LanguageLevel, ExerciseType } from "../../types";
@@ -43,11 +54,11 @@ export const ExerciseList: React.FC = () => {
           /^incorrect statement [a-z]$/i,
           /^correct statement about/i,
           /^explanation about/i,
-          /^other \d+$/i  // Ajout du pattern pour "Other 1", "Other 2", etc.
+          /^other \d+$/i, // Ajout du pattern pour "Other 1", "Other 2", etc.
         ];
 
         for (const option of question.options) {
-          if (placeholderPatterns.some(pattern => pattern.test(option))) {
+          if (placeholderPatterns.some((pattern) => pattern.test(option))) {
             return false; // Exercice incomplet trouvé
           }
         }
@@ -55,13 +66,20 @@ export const ExerciseList: React.FC = () => {
 
       // Vérifier si la bonne réponse est un placeholder
       if (typeof question.correctAnswer === "string") {
-        if (/^primary use of|^correct statement about|^explanation about/i.test(question.correctAnswer)) {
+        if (
+          /^primary use of|^correct statement about|^explanation about/i.test(
+            question.correctAnswer
+          )
+        ) {
           return false;
         }
       }
 
       // Vérifier si l'explication est un placeholder
-      if (question.explanation && /^explanation about|^this is correct because/i.test(question.explanation)) {
+      if (
+        question.explanation &&
+        /^explanation about|^this is correct because/i.test(question.explanation)
+      ) {
         return false;
       }
 
@@ -88,7 +106,7 @@ export const ExerciseList: React.FC = () => {
       correctAnswer: q.correctAnswer,
       explanation: `This question tests your understanding of: ${listeningText.topic || "the listening text"}.`,
       grammarFocus: [],
-      vocabularyFocus: []
+      vocabularyFocus: [],
     }));
 
     return {
@@ -103,9 +121,11 @@ export const ExerciseList: React.FC = () => {
       estimatedTime: Math.ceil((listeningText.duration || 120) / 60),
       difficulty: 3,
       // Métadonnées supplémentaires pour listening
-      audioUrl: listeningText.audioFile ? `/corpus/listening/${listeningText.audioFile}` : undefined,
+      audioUrl: listeningText.audioFile
+        ? `/corpus/listening/${listeningText.audioFile}`
+        : undefined,
       transcript: listeningText.transcript,
-      listeningData: listeningText
+      listeningData: listeningText,
     } as any;
   };
 
@@ -123,7 +143,7 @@ export const ExerciseList: React.FC = () => {
       correctAnswer: q.correctAnswer,
       explanation: `This question tests your understanding of: ${readingText.topic || "the reading text"}.`,
       grammarFocus: [],
-      vocabularyFocus: []
+      vocabularyFocus: [],
     }));
 
     return {
@@ -139,7 +159,7 @@ export const ExerciseList: React.FC = () => {
       difficulty: 3,
       // Métadonnées supplémentaires pour reading
       readingText: readingText.text,
-      readingData: readingText
+      readingData: readingText,
     } as any;
   };
 
@@ -192,17 +212,19 @@ export const ExerciseList: React.FC = () => {
       }
 
       // Gérer différents formats de fichiers JSON
-      const qcmExercises = Array.isArray(qcmData) ? qcmData : (qcmData.exercises || []);
-      const clozeExercises = Array.isArray(clozeData) ? clozeData : (clozeData.exercises || []);
+      const qcmExercises = Array.isArray(qcmData) ? qcmData : qcmData.exercises || [];
+      const clozeExercises = Array.isArray(clozeData) ? clozeData : clozeData.exercises || [];
 
       const allExercises = [
         ...qcmExercises,
         ...clozeExercises,
         ...listeningExercises,
-        ...readingExercises
+        ...readingExercises,
       ];
 
-      console.log(`📚 Total exercices chargés: ${allExercises.length} (${qcmExercises.length} QCM + ${clozeExercises.length} Cloze + ${listeningExercises.length} Listening + ${readingExercises.length} Reading)`);
+      console.log(
+        `📚 Total exercices chargés: ${allExercises.length} (${qcmExercises.length} QCM + ${clozeExercises.length} Cloze + ${listeningExercises.length} Listening + ${readingExercises.length} Reading)`
+      );
 
       // Double validation : s'assurer que tous les exercices sont complets à 100%
       // Filtrer les exercices avec des options de placeholder (comme "Other 1", "Other 2", etc.)
@@ -218,7 +240,9 @@ export const ExerciseList: React.FC = () => {
                 /^other \d+$/i.test(opt.trim())
               );
               if (hasPlaceholder) {
-                console.warn(`⚠️ Exercice ${ex.id} filtré : contient des options placeholder "Other X"`);
+                console.warn(
+                  `⚠️ Exercice ${ex.id} filtré : contient des options placeholder "Other X"`
+                );
                 return false;
               }
             }
@@ -229,11 +253,15 @@ export const ExerciseList: React.FC = () => {
       const invalidCount = allExercises.length - validExercises.length;
 
       if (invalidCount > 0) {
-        console.warn(`⚠️ ${invalidCount} exercices incomplets filtrés (contiennent des placeholders)`);
+        console.warn(
+          `⚠️ ${invalidCount} exercices incomplets filtrés (contiennent des placeholders)`
+        );
         setIncompleteFiltered(invalidCount);
       }
 
-      console.log(`✅ Chargé ${validExercises.length} exercices complets à 100% (${invalidCount} incomplets filtrés)`);
+      console.log(
+        `✅ Chargé ${validExercises.length} exercices complets à 100% (${invalidCount} incomplets filtrés)`
+      );
       setExercises(validExercises);
     } catch (error) {
       console.error("Erreur chargement exercices:", error);
@@ -245,11 +273,13 @@ export const ExerciseList: React.FC = () => {
         const clozeSmallData = await clozeSmall.json();
         const fallbackExercises = [
           ...(qcmSmallData.exercises || []),
-          ...(clozeSmallData.exercises || [])
+          ...(clozeSmallData.exercises || []),
         ];
 
         // Filtrer aussi les exercices incomplets dans le fallback
-        const validFallbackExercises = fallbackExercises.filter((ex: Exercise) => isValidExercise(ex));
+        const validFallbackExercises = fallbackExercises.filter((ex: Exercise) =>
+          isValidExercise(ex)
+        );
         console.log(`✅ Chargé ${validFallbackExercises.length} exercices fallback complets`);
         setExercises(validFallbackExercises);
       } catch (fallbackError) {
@@ -263,7 +293,7 @@ export const ExerciseList: React.FC = () => {
     loadExercises();
   }, [loadExercises]);
 
-  const filteredExercises = exercises.filter(ex => {
+  const filteredExercises = exercises.filter((ex) => {
     const levelMatch = filterLevel === "all" || ex.level === filterLevel;
     const typeMatch = filterType === "all" || ex.type === filterType;
     return levelMatch && typeMatch;
@@ -289,14 +319,19 @@ export const ExerciseList: React.FC = () => {
     // Créer une copie de l'exercice pour éviter les problèmes de référence
     const exerciseCopy = {
       ...exercise,
-      questions: [...exercise.questions]
+      questions: [...exercise.questions],
     };
 
     console.log("✅ Définition de l'exercice sélectionné:", exerciseCopy.id);
     setSelectedExercise(exerciseCopy);
   }, []);
 
-  const handleAnswer = (questionId: string, answer: string, isCorrect: boolean, timeSpent: number) => {
+  const handleAnswer = (
+    questionId: string,
+    answer: string,
+    isCorrect: boolean,
+    timeSpent: number
+  ) => {
     if (selectedExercise) {
       addResponse({
         exerciseId: selectedExercise.id,
@@ -304,7 +339,7 @@ export const ExerciseList: React.FC = () => {
         answer,
         isCorrect,
         timeSpent,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
     }
   };
@@ -323,7 +358,9 @@ export const ExerciseList: React.FC = () => {
 
         {selectedExercise.type === "qcm" ? (
           <Box>
-            <Typography variant="h5" gutterBottom>{selectedExercise.title}</Typography>
+            <Typography variant="h5" gutterBottom>
+              {selectedExercise.title}
+            </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
@@ -338,14 +375,14 @@ export const ExerciseList: React.FC = () => {
                 />
               ))
             ) : (
-              <Alert severity="error">
-                Aucune question disponible pour cet exercice.
-              </Alert>
+              <Alert severity="error">Aucune question disponible pour cet exercice.</Alert>
             )}
           </Box>
         ) : selectedExercise.type === "cloze" ? (
           <Box>
-            <Typography variant="h5" gutterBottom>{selectedExercise.title}</Typography>
+            <Typography variant="h5" gutterBottom>
+              {selectedExercise.title}
+            </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
@@ -360,14 +397,14 @@ export const ExerciseList: React.FC = () => {
                 />
               ))
             ) : (
-              <Alert severity="error">
-                Aucune question disponible pour cet exercice.
-              </Alert>
+              <Alert severity="error">Aucune question disponible pour cet exercice.</Alert>
             )}
           </Box>
         ) : selectedExercise.type === "listening" ? (
           <Box>
-            <Typography variant="h5" gutterBottom>{selectedExercise.title}</Typography>
+            <Typography variant="h5" gutterBottom>
+              {selectedExercise.title}
+            </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
@@ -385,8 +422,9 @@ export const ExerciseList: React.FC = () => {
                 />
                 <Alert severity="info" sx={{ mt: 2 }}>
                   <Typography variant="body2">
-                    <strong>Conseil :</strong> Cliquez sur le bouton lecture dans le lecteur audio ci-dessus pour écouter la transcription.
-                    La transcription complète sera disponible après avoir répondu aux questions.
+                    <strong>Conseil :</strong> Cliquez sur le bouton lecture dans le lecteur audio
+                    ci-dessus pour écouter la transcription. La transcription complète sera
+                    disponible après avoir répondu aux questions.
                   </Typography>
                 </Alert>
               </Box>
@@ -422,14 +460,14 @@ export const ExerciseList: React.FC = () => {
                 )}
               </>
             ) : (
-              <Alert severity="error">
-                Aucune question disponible pour cet exercice.
-              </Alert>
+              <Alert severity="error">Aucune question disponible pour cet exercice.</Alert>
             )}
           </Box>
         ) : selectedExercise.type === "reading" ? (
           <Box>
-            <Typography variant="h5" gutterBottom>{selectedExercise.title}</Typography>
+            <Typography variant="h5" gutterBottom>
+              {selectedExercise.title}
+            </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               {selectedExercise.description}
             </Typography>
@@ -437,7 +475,9 @@ export const ExerciseList: React.FC = () => {
             {/* Afficher le texte de lecture une seule fois en haut */}
             {(selectedExercise as any).readingText || selectedExercise.content ? (
               <Box sx={{ mb: 3, p: 3, bgcolor: "grey.50", borderRadius: 2 }}>
-                <Typography variant="h6" gutterBottom>Texte à lire :</Typography>
+                <Typography variant="h6" gutterBottom>
+                  Texte à lire :
+                </Typography>
                 <Typography variant="body1" sx={{ whiteSpace: "pre-wrap", lineHeight: 1.8 }}>
                   {(selectedExercise as any).readingText || selectedExercise.content}
                 </Typography>
@@ -456,15 +496,11 @@ export const ExerciseList: React.FC = () => {
                 />
               ))
             ) : (
-              <Alert severity="error">
-                Aucune question disponible pour cet exercice.
-              </Alert>
+              <Alert severity="error">Aucune question disponible pour cet exercice.</Alert>
             )}
           </Box>
         ) : (
-          <Alert severity="error">
-            Type d'exercice non supporté: {selectedExercise.type}
-          </Alert>
+          <Alert severity="error">Type d'exercice non supporté: {selectedExercise.type}</Alert>
         )}
       </Box>
     );
@@ -473,35 +509,29 @@ export const ExerciseList: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       {/* <VoiceTester /> */} {/* Commenté - testeur de voix désactivé */}
-
       {incompleteFiltered > 0 && (
         <Alert severity="warning" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            <strong>Note :</strong> {incompleteFiltered} exercice(s) incomplet(s) ont été automatiquement filtrés
-            car ils contiennent des placeholders au lieu de contenu réel. Seuls les exercices complets sont affichés.
+            <strong>Note :</strong> {incompleteFiltered} exercice(s) incomplet(s) ont été
+            automatiquement filtrés car ils contiennent des placeholders au lieu de contenu réel.
+            Seuls les exercices complets sont affichés.
           </Typography>
         </Alert>
       )}
-
       {exercises.length === 0 && (
         <Alert severity="error" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            <strong>Erreur :</strong> Aucun exercice n'a pu être chargé. Vérifiez la console pour plus de détails.
+            <strong>Erreur :</strong> Aucun exercice n'a pu être chargé. Vérifiez la console pour
+            plus de détails.
           </Typography>
         </Alert>
       )}
-
       <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
         Exercices disponibles
         {exercises.length > 0 && (
-          <Chip
-            label={`${exercises.length} exercice(s) au total`}
-            color="primary"
-            sx={{ ml: 2 }}
-          />
+          <Chip label={`${exercises.length} exercice(s) au total`} color="primary" sx={{ ml: 2 }} />
         )}
       </Typography>
-
       <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Niveau</InputLabel>
@@ -539,7 +569,6 @@ export const ExerciseList: React.FC = () => {
           sx={{ ml: "auto", alignSelf: "center" }}
         />
       </Box>
-
       <Grid container spacing={3}>
         {filteredExercises.map((exercise) => (
           <Grid item xs={12} sm={6} md={4} key={exercise.id}>
@@ -549,9 +578,13 @@ export const ExerciseList: React.FC = () => {
                   <Chip
                     label={exercise.level}
                     color={
-                      exercise.level === "C1" ? "error" :
-                        exercise.level === "B2" ? "warning" :
-                          exercise.level === "B1" ? "info" : "success"
+                      exercise.level === "C1"
+                        ? "error"
+                        : exercise.level === "B2"
+                          ? "warning"
+                          : exercise.level === "B1"
+                            ? "info"
+                            : "success"
                     }
                     size="small"
                   />
@@ -579,23 +612,15 @@ export const ExerciseList: React.FC = () => {
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                     <Timer fontSize="small" color="action" />
-                    <Typography variant="caption">
-                      ~{exercise.estimatedTime} min
-                    </Typography>
+                    <Typography variant="caption">~{exercise.estimatedTime} min</Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                     <TrendingUp fontSize="small" color="action" />
-                    <Typography variant="caption">
-                      Niveau {exercise.difficulty}/5
-                    </Typography>
+                    <Typography variant="caption">Niveau {exercise.difficulty}/5</Typography>
                   </Box>
                 </Box>
 
-                <Chip
-                  label={exercise.domain}
-                  size="small"
-                  sx={{ mt: 1 }}
-                />
+                <Chip label={exercise.domain} size="small" sx={{ mt: 1 }} />
               </CardContent>
 
               <Box sx={{ p: 2, pt: 0 }}>
@@ -611,7 +636,7 @@ export const ExerciseList: React.FC = () => {
                       id: exercise.id,
                       title: exercise.title,
                       questionsCount: exercise.questions?.length || 0,
-                      type: exercise.type
+                      type: exercise.type,
                     });
                     handleExerciseClick(exercise);
                   }}
@@ -621,20 +646,27 @@ export const ExerciseList: React.FC = () => {
                   }}
                   disabled={!exercise.questions || exercise.questions.length === 0}
                   sx={{
-                    cursor: exercise.questions && exercise.questions.length > 0 ? "pointer" : "not-allowed",
+                    cursor:
+                      exercise.questions && exercise.questions.length > 0
+                        ? "pointer"
+                        : "not-allowed",
                     "&:hover": {
-                      backgroundColor: exercise.questions && exercise.questions.length > 0 ? "primary.dark" : "action.disabled"
-                    }
+                      backgroundColor:
+                        exercise.questions && exercise.questions.length > 0
+                          ? "primary.dark"
+                          : "action.disabled",
+                    },
                   }}
                 >
-                  {exercise.questions && exercise.questions.length > 0 ? "Commencer" : "Indisponible"}
+                  {exercise.questions && exercise.questions.length > 0
+                    ? "Commencer"
+                    : "Indisponible"}
                 </Button>
               </Box>
             </Card>
           </Grid>
         ))}
       </Grid>
-
       {filteredExercises.length === 0 && (
         <Box sx={{ textAlign: "center", py: 8 }}>
           <Typography variant="h6" color="text.secondary">
@@ -648,4 +680,3 @@ export const ExerciseList: React.FC = () => {
     </Box>
   );
 };
-

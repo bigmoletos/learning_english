@@ -6,8 +6,15 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, TextField, Button, Typography,
-  Alert, Link, CircularProgress
+  Box,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Link,
+  CircularProgress,
 } from "@mui/material";
 import { Email, CheckCircle } from "@mui/icons-material";
 import { resetPassword } from "../../firebase/authService";
@@ -34,7 +41,9 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
       const result = await resetPassword(email);
 
       if (result.success) {
-        setMessage("Un email de réinitialisation a été envoyé. Vérifiez votre boîte de réception et cliquez sur le lien pour réinitialiser votre mot de passe.");
+        setMessage(
+          "Un email de réinitialisation a été envoyé. Vérifiez votre boîte de réception et cliquez sur le lien pour réinitialiser votre mot de passe."
+        );
         setEmailSent(true);
       } else {
         setError(result.message || "Erreur lors de la demande de réinitialisation");
@@ -47,20 +56,22 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-        case "auth/user-not-found":
-          // Ne pas révéler si l'email existe (sécurité)
-          setMessage("Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception.");
-          setEmailSent(true);
-          setLoading(false);
-          return;
-        case "auth/invalid-email":
-          errorMessage = "Adresse email invalide.";
-          break;
-        case "auth/network-request-failed":
-          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-          break;
-        default:
-          errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
+          case "auth/user-not-found":
+            // Ne pas révéler si l'email existe (sécurité)
+            setMessage(
+              "Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception."
+            );
+            setEmailSent(true);
+            setLoading(false);
+            return;
+          case "auth/invalid-email":
+            errorMessage = "Adresse email invalide.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+            break;
+          default:
+            errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
         }
       } else if (err.message) {
         errorMessage = err.message;
@@ -80,7 +91,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
         alignItems: "center",
         minHeight: "100vh",
         bgcolor: "grey.100",
-        py: 4
+        py: 4,
       }}
     >
       <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
@@ -104,7 +115,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
           {!emailSent ? (
             <Box component="form" onSubmit={handleRequestReset}>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Entrez votre adresse email. Nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                Entrez votre adresse email. Nous vous enverrons un lien pour réinitialiser votre mot
+                de passe.
               </Typography>
 
               <TextField
@@ -117,7 +129,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
                 required
                 disabled={loading}
                 InputProps={{
-                  startAdornment: <Email sx={{ mr: 1, color: "text.secondary" }} />
+                  startAdornment: <Email sx={{ mr: 1, color: "text.secondary" }} />,
                 }}
               />
 
@@ -150,8 +162,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
                 Un email de réinitialisation a été envoyé à <strong>{email}</strong>
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Cliquez sur le lien dans l&apos;email pour réinitialiser votre mot de passe.
-                Le lien est valide pendant 1 heure.
+                Cliquez sur le lien dans l&apos;email pour réinitialiser votre mot de passe. Le lien
+                est valide pendant 1 heure.
               </Typography>
               <Button
                 fullWidth
@@ -165,11 +177,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
               >
                 Envoyer un autre email
               </Button>
-              <Button
-                fullWidth
-                variant="text"
-                onClick={onSwitchToLogin}
-              >
+              <Button fullWidth variant="text" onClick={onSwitchToLogin}>
                 Retour à la connexion
               </Button>
             </Box>
@@ -179,4 +187,3 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
     </Box>
   );
 };
-

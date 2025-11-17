@@ -7,7 +7,14 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Box, Button, Card, CardContent, Typography, Alert, CircularProgress, Chip
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Alert,
+  CircularProgress,
+  Chip,
 } from "@mui/material";
 import { Mic, Stop, Replay, VolumeUp, Warning } from "@mui/icons-material";
 import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
@@ -20,7 +27,7 @@ interface VoiceRecorderProps {
 
 export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   expectedText,
-  onTranscriptComplete
+  onTranscriptComplete,
 }) => {
   const {
     transcript,
@@ -31,14 +38,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     browserSupportsSpeechRecognition,
     confidence,
     error: recognitionError,
-    permissionGranted
+    permissionGranted,
   } = useSpeechRecognition();
 
-  const {
-    speak,
-    isSpeaking,
-    error: speechError
-  } = useTextToSpeech();
+  const { speak, isSpeaking, error: speechError } = useTextToSpeech();
 
   const [hasRecorded, setHasRecorded] = useState(false);
 
@@ -110,14 +113,16 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
         {expectedText && (
           <Box sx={{ mb: 3, p: 2, bgcolor: "grey.100", borderRadius: 2 }}>
-            <Box sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 1,
-              flexWrap: "wrap",
-              gap: 1
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 1,
+                flexWrap: "wrap",
+                gap: 1,
+              }}
+            >
               <Typography variant="subtitle2" color="text.secondary">
                 Texte à lire :
               </Typography>
@@ -130,7 +135,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 sx={{
                   minHeight: 44,
                   minWidth: 44,
-                  px: 2
+                  px: 2,
                 }}
               >
                 {isSpeaking ? "Lecture..." : "Écouter"}
@@ -142,13 +147,15 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
           </Box>
         )}
 
-        <Box sx={{
-          display: "flex",
-          gap: 2,
-          mb: 3,
-          justifyContent: "center",
-          flexWrap: "wrap"
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            mb: 3,
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
           {!listening ? (
             <Button
               variant="contained"
@@ -161,7 +168,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
               }}
             >
               Commencer l'enregistrement
@@ -178,7 +185,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
               }}
             >
               Arrêter
@@ -196,7 +203,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 minWidth: { xs: "100%", sm: "auto" },
                 px: 4,
                 py: 1.5,
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
               }}
             >
               Réessayer
@@ -205,15 +212,17 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         </Box>
 
         {listening && (
-          <Box sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mb: 2,
-            p: 2,
-            bgcolor: "primary.light",
-            borderRadius: 2
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 2,
+              p: 2,
+              bgcolor: "primary.light",
+              borderRadius: 2,
+            }}
+          >
             <CircularProgress size={28} sx={{ mr: 2, color: "white" }} />
             <Typography variant="body1" sx={{ color: "white", fontWeight: 500 }}>
               Enregistrement en cours... Parlez maintenant !
@@ -223,14 +232,16 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
         {transcript && (
           <Box sx={{ mt: 3 }}>
-            <Box sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 1,
-              flexWrap: "wrap",
-              gap: 1
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 1,
+                flexWrap: "wrap",
+                gap: 1,
+              }}
+            >
               <Typography variant="subtitle2" color="text.secondary">
                 Votre transcription :
               </Typography>
@@ -243,13 +254,15 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
                 />
               )}
             </Box>
-            <Box sx={{
-              p: 2,
-              bgcolor: "primary.light",
-              borderRadius: 2,
-              color: "white",
-              minHeight: 60
-            }}>
+            <Box
+              sx={{
+                p: 2,
+                bgcolor: "primary.light",
+                borderRadius: 2,
+                color: "white",
+                minHeight: 60,
+              }}
+            >
               <Typography variant="body1" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
                 {transcript}
               </Typography>
@@ -260,4 +273,3 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     </Card>
   );
 };
-

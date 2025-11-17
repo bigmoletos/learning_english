@@ -10,7 +10,7 @@ import {
   updateDocument,
   deleteDocument,
   getDocumentsByField,
-  getDocumentsOrdered
+  getDocumentsOrdered,
 } from "./firestoreService";
 import { LanguageLevel } from "../../types";
 
@@ -61,9 +61,7 @@ export interface AssessmentResultData {
 /**
  * Convertit un AssessmentResultData en FirestoreAssessmentResult
  */
-const toFirestoreAssessment = (
-  data: AssessmentResultData
-): Partial<FirestoreAssessmentResult> => {
+const toFirestoreAssessment = (data: AssessmentResultData): Partial<FirestoreAssessmentResult> => {
   return {
     userId: data.userId,
     assessmentType: data.assessmentType,
@@ -80,7 +78,7 @@ const toFirestoreAssessment = (
     weakAreas: data.weakAreas,
     strongAreas: data.strongAreas,
     answers: data.answers,
-    completedAt: new Date()
+    completedAt: new Date(),
   };
 };
 
@@ -119,7 +117,7 @@ export const getUserAssessmentsByType = async (
   limitResults?: number
 ): Promise<FirestoreAssessmentResult[]> => {
   const assessments = await getUserAssessments(userId, limitResults);
-  return assessments.filter(a => a.assessmentType === assessmentType);
+  return assessments.filter((a) => a.assessmentType === assessmentType);
 };
 
 /**
@@ -135,16 +133,14 @@ export const getLatestUserAssessment = async (
 /**
  * Sauvegarde un résultat d'évaluation
  */
-export const saveAssessment = async (
-  data: AssessmentResultData
-): Promise<string> => {
+export const saveAssessment = async (data: AssessmentResultData): Promise<string> => {
   const assessmentId = `${data.userId}_${data.assessmentType}_${Date.now()}`;
   const firestoreAssessment = toFirestoreAssessment(data);
 
   await setDocument<FirestoreAssessmentResult>(COLLECTION_NAME, assessmentId, {
     ...firestoreAssessment,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   } as Partial<FirestoreAssessmentResult>);
 
   return assessmentId;
@@ -159,9 +155,12 @@ export const updateAssessment = async (
 ): Promise<void> => {
   const partialAssessment: Partial<FirestoreAssessmentResult> = {};
 
-  if (updates.totalQuestions !== undefined) partialAssessment.totalQuestions = updates.totalQuestions;
-  if (updates.correctAnswers !== undefined) partialAssessment.correctAnswers = updates.correctAnswers;
-  if (updates.listeningScore !== undefined) partialAssessment.listeningScore = updates.listeningScore;
+  if (updates.totalQuestions !== undefined)
+    partialAssessment.totalQuestions = updates.totalQuestions;
+  if (updates.correctAnswers !== undefined)
+    partialAssessment.correctAnswers = updates.correctAnswers;
+  if (updates.listeningScore !== undefined)
+    partialAssessment.listeningScore = updates.listeningScore;
   if (updates.readingScore !== undefined) partialAssessment.readingScore = updates.readingScore;
   if (updates.writingScore !== undefined) partialAssessment.writingScore = updates.writingScore;
   if (updates.speakingScore !== undefined) partialAssessment.speakingScore = updates.speakingScore;
@@ -191,29 +190,5 @@ export const getUserAssessmentHistory = async (
     COLLECTION_NAME,
     "completedAt",
     "desc"
-  ).then(assessments =>
-    assessments.filter(a => a.userId === userId)
-  );
+  ).then((assessments) => assessments.filter((a) => a.userId === userId));
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

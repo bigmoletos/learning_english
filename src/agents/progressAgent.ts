@@ -20,15 +20,31 @@ const tokenize = (text: string): string[] => {
 
 export class ProgressAgent {
   private readonly GRAMMAR_KEYWORDS = [
-    "present_perfect", "past_simple", "future_continuous",
-    "conditional", "passive_voice", "relative_clauses",
-    "prepositions", "articles", "modal_verbs"
+    "present_perfect",
+    "past_simple",
+    "future_continuous",
+    "conditional",
+    "passive_voice",
+    "relative_clauses",
+    "prepositions",
+    "articles",
+    "modal_verbs",
   ];
 
   private readonly TECH_VOCAB = [
-    "technical_debt", "memory_leak", "ci_cd", "mlops",
-    "rag_system", "gdpr", "ai_act", "angular", "devops",
-    "cybersecurity", "vibe_coding", "cursor", "pipeline"
+    "technical_debt",
+    "memory_leak",
+    "ci_cd",
+    "mlops",
+    "rag_system",
+    "gdpr",
+    "ai_act",
+    "angular",
+    "devops",
+    "cybersecurity",
+    "vibe_coding",
+    "cursor",
+    "pipeline",
   ];
 
   /**
@@ -55,7 +71,7 @@ export class ProgressAgent {
       weakAreas,
       strongAreas,
       recommendedExercises,
-      nextLevel
+      nextLevel,
     };
   }
 
@@ -63,14 +79,14 @@ export class ProgressAgent {
    * Calcule le score grammatical basé sur les réponses
    */
   private calculateGrammarScore(responses: UserResponse[], exercises: Exercise[]): number {
-    const grammarResponses = responses.filter(r => {
-      const exercise = exercises.find(e => e.id === r.exerciseId);
-      return exercise?.questions.some(q => q.grammarFocus && q.grammarFocus.length > 0);
+    const grammarResponses = responses.filter((r) => {
+      const exercise = exercises.find((e) => e.id === r.exerciseId);
+      return exercise?.questions.some((q) => q.grammarFocus && q.grammarFocus.length > 0);
     });
 
     if (grammarResponses.length === 0) return 0;
 
-    const correctCount = grammarResponses.filter(r => r.isCorrect).length;
+    const correctCount = grammarResponses.filter((r) => r.isCorrect).length;
     return (correctCount / grammarResponses.length) * 100;
   }
 
@@ -78,14 +94,14 @@ export class ProgressAgent {
    * Calcule le score de vocabulaire technique
    */
   private calculateVocabularyScore(responses: UserResponse[], exercises: Exercise[]): number {
-    const vocabResponses = responses.filter(r => {
-      const exercise = exercises.find(e => e.id === r.exerciseId);
-      return exercise?.questions.some(q => q.vocabularyFocus && q.vocabularyFocus.length > 0);
+    const vocabResponses = responses.filter((r) => {
+      const exercise = exercises.find((e) => e.id === r.exerciseId);
+      return exercise?.questions.some((q) => q.vocabularyFocus && q.vocabularyFocus.length > 0);
     });
 
     if (vocabResponses.length === 0) return 0;
 
-    const correctCount = vocabResponses.filter(r => r.isCorrect).length;
+    const correctCount = vocabResponses.filter((r) => r.isCorrect).length;
     return (correctCount / vocabResponses.length) * 100;
   }
 
@@ -95,19 +111,19 @@ export class ProgressAgent {
   private identifyWeakAreas(responses: UserResponse[], exercises: Exercise[]): string[] {
     const weaknessMap = new Map<string, number>();
 
-    responses.forEach(response => {
+    responses.forEach((response) => {
       if (!response.isCorrect) {
-        const exercise = exercises.find(e => e.id === response.exerciseId);
-        const question = exercise?.questions.find(q => q.id === response.questionId);
+        const exercise = exercises.find((e) => e.id === response.exerciseId);
+        const question = exercise?.questions.find((q) => q.id === response.questionId);
 
         if (question?.grammarFocus) {
-          question.grammarFocus.forEach(focus => {
+          question.grammarFocus.forEach((focus) => {
             weaknessMap.set(focus, (weaknessMap.get(focus) || 0) + 1);
           });
         }
 
         if (question?.vocabularyFocus) {
-          question.vocabularyFocus.forEach(focus => {
+          question.vocabularyFocus.forEach((focus) => {
             weaknessMap.set(focus, (weaknessMap.get(focus) || 0) + 1);
           });
         }
@@ -130,17 +146,17 @@ export class ProgressAgent {
   private identifyStrongAreas(responses: UserResponse[], exercises: Exercise[]): string[] {
     const strengthMap = new Map<string, { correct: number; total: number }>();
 
-    responses.forEach(response => {
-      const exercise = exercises.find(e => e.id === response.exerciseId);
-      const question = exercise?.questions.find(q => q.id === response.questionId);
+    responses.forEach((response) => {
+      const exercise = exercises.find((e) => e.id === response.exerciseId);
+      const question = exercise?.questions.find((q) => q.id === response.questionId);
 
       const areas = [
         ...(question?.grammarFocus || []),
         ...(question?.vocabularyFocus || []),
-        exercise?.domain
+        exercise?.domain,
       ].filter(Boolean) as string[];
 
-      areas.forEach(area => {
+      areas.forEach((area) => {
         const stats = strengthMap.get(area) || { correct: 0, total: 0 };
         stats.total += 1;
         if (response.isCorrect) stats.correct += 1;
@@ -149,8 +165,8 @@ export class ProgressAgent {
     });
 
     return Array.from(strengthMap.entries())
-      .filter(([, stats]) => stats.total >= 3 && (stats.correct / stats.total) >= 0.8)
-      .sort((a, b) => (b[1].correct / b[1].total) - (a[1].correct / a[1].total))
+      .filter(([, stats]) => stats.total >= 3 && stats.correct / stats.total >= 0.8)
+      .sort((a, b) => b[1].correct / b[1].total - a[1].correct / a[1].total)
       .slice(0, 5)
       .map(([area]) => area);
   }
@@ -161,10 +177,10 @@ export class ProgressAgent {
   private recommendExercises(weakAreas: string[], userProfile: UserProfile): string[] {
     const recommendations: string[] = [];
 
-    weakAreas.forEach(area => {
+    weakAreas.forEach((area) => {
       if (this.GRAMMAR_KEYWORDS.includes(area)) {
         recommendations.push(`grammar_${area}_${userProfile.currentLevel}`);
-      } else if (this.TECH_VOCAB.some(vocab => area.includes(vocab))) {
+      } else if (this.TECH_VOCAB.some((vocab) => area.includes(vocab))) {
         recommendations.push(`vocab_${area}_${userProfile.currentLevel}`);
       } else {
         recommendations.push(`mixed_${area}_${userProfile.currentLevel}`);
@@ -177,7 +193,10 @@ export class ProgressAgent {
   /**
    * Détermine le niveau suivant recommandé basé sur les performances
    */
-  private determineNextLevel(score: number, currentLevel: LanguageLevel): LanguageLevel | undefined {
+  private determineNextLevel(
+    score: number,
+    currentLevel: LanguageLevel
+  ): LanguageLevel | undefined {
     const levelProgression: LanguageLevel[] = ["A2", "B1", "B2", "C1"];
     const currentIndex = levelProgression.indexOf(currentLevel);
 
@@ -214,7 +233,7 @@ export class ProgressAgent {
   private calculateSimilarity(tokens1: string[], tokens2: string[]): number {
     const set1 = new Set(tokens1);
     const set2 = new Set(tokens2);
-    const intersection = new Set([...set1].filter(x => set2.has(x)));
+    const intersection = new Set([...set1].filter((x) => set2.has(x)));
     const union = new Set([...set1, ...set2]);
 
     return intersection.size / union.size;
@@ -253,7 +272,7 @@ export class ProgressAgent {
       suggestions.push("N'oubliez pas la ponctuation pour structurer vos phrases.");
     }
 
-    grammarFocus.forEach(focus => {
+    grammarFocus.forEach((focus) => {
       suggestions.push(`Révisez les règles de : ${focus}`);
     });
 
@@ -275,15 +294,15 @@ export const analyzeUserProgress = (responses: UserResponse[]): ProgressAnalysis
       vocabularyScore: 0,
       weakAreas: [],
       strongAreas: [],
-      recommendedExercises: []
+      recommendedExercises: [],
     };
   }
 
-  const correctAnswers = responses.filter(r => r.isCorrect).length;
+  const correctAnswers = responses.filter((r) => r.isCorrect).length;
   const overallScore = Math.round((correctAnswers / responses.length) * 100);
 
   // Analyser les patterns d'erreurs
-  const incorrectResponses = responses.filter(r => !r.isCorrect);
+  const incorrectResponses = responses.filter((r) => !r.isCorrect);
   const weakAreas: string[] = [];
 
   // Détecter les domaines faibles
@@ -311,7 +330,6 @@ export const analyzeUserProgress = (responses: UserResponse[]): ProgressAnalysis
     vocabularyScore: overallScore,
     weakAreas,
     strongAreas,
-    recommendedExercises: ["qcm_001", "cloze_001"]
+    recommendedExercises: ["qcm_001", "cloze_001"],
   };
 };
-

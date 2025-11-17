@@ -10,7 +10,7 @@ import {
   updateDocument,
   deleteDocument,
   getDocumentsByField,
-  documentExists
+  documentExists,
 } from "./firestoreService";
 import { UserProfile } from "../../types";
 
@@ -50,9 +50,15 @@ const toFirestoreUser = (user: UserProfile): Partial<FirestoreUser> => {
     weaknesses: user.weaknesses,
     completedExercises: user.completedExercises,
     totalScore: user.totalScore,
-    createdAt: user.createdAt instanceof Date ? user.createdAt : new Date(user.createdAt || Date.now()),
+    createdAt:
+      user.createdAt instanceof Date ? user.createdAt : new Date(user.createdAt || Date.now()),
     updatedAt: new Date(),
-    lastActivity: user.lastActivity instanceof Date ? user.lastActivity : (user.lastActivity ? new Date(user.lastActivity) : undefined)
+    lastActivity:
+      user.lastActivity instanceof Date
+        ? user.lastActivity
+        : user.lastActivity
+          ? new Date(user.lastActivity)
+          : undefined,
   };
 };
 
@@ -62,7 +68,10 @@ const toFirestoreUser = (user: UserProfile): Partial<FirestoreUser> => {
 const toUserProfile = (firestoreUser: FirestoreUser): UserProfile => {
   return {
     id: firestoreUser.id,
-    name: firestoreUser.email || `${firestoreUser.firstName || ""} ${firestoreUser.lastName || ""}`.trim() || "Utilisateur",
+    name:
+      firestoreUser.email ||
+      `${firestoreUser.firstName || ""} ${firestoreUser.lastName || ""}`.trim() ||
+      "Utilisateur",
     currentLevel: firestoreUser.currentLevel,
     targetLevel: firestoreUser.targetLevel,
     strengths: [],
@@ -70,7 +79,7 @@ const toUserProfile = (firestoreUser: FirestoreUser): UserProfile => {
     completedExercises: firestoreUser.completedExercises || 0,
     totalScore: firestoreUser.totalScore || 0,
     createdAt: firestoreUser.createdAt,
-    lastActivity: firestoreUser.lastActivity || firestoreUser.updatedAt
+    lastActivity: firestoreUser.lastActivity || firestoreUser.updatedAt,
   };
 };
 
@@ -105,7 +114,7 @@ export const saveUser = async (user: UserProfile): Promise<void> => {
   console.log("💾 [saveUser] Début sauvegarde utilisateur:", {
     userId: user.id,
     email: (user as any).email,
-    name: user.name
+    name: user.name,
   });
 
   try {
@@ -122,19 +131,21 @@ export const saveUser = async (user: UserProfile): Promise<void> => {
       id: firestoreUser.id,
       email: firestoreUser.email,
       hasFirstName: !!firestoreUser.firstName,
-      hasLastName: !!firestoreUser.lastName
+      hasLastName: !!firestoreUser.lastName,
     });
 
     // Extraire l'email - c'est obligatoire pour Firestore
     const userEmail = firestoreUser.email || (user as any).email || "";
     if (!userEmail) {
-      const error = new Error("L'utilisateur doit avoir un email pour être sauvegardé dans Firestore");
+      const error = new Error(
+        "L'utilisateur doit avoir un email pour être sauvegardé dans Firestore"
+      );
       console.error("❌ [saveUser]", error.message, {
         userData: {
           id: user.id,
           name: user.name,
-          hasEmail: !!(user as any).email
-        }
+          hasEmail: !!(user as any).email,
+        },
       });
       throw error;
     }
@@ -146,14 +157,22 @@ export const saveUser = async (user: UserProfile): Promise<void> => {
       email: userEmail,
       currentLevel: user.currentLevel,
       targetLevel: user.targetLevel,
-      createdAt: firestoreUser.createdAt instanceof Date ? firestoreUser.createdAt : new Date(firestoreUser.createdAt || Date.now()),
+      createdAt:
+        firestoreUser.createdAt instanceof Date
+          ? firestoreUser.createdAt
+          : new Date(firestoreUser.createdAt || Date.now()),
       updatedAt: new Date(),
       ...(firestoreUser.firstName && { firstName: firestoreUser.firstName }),
       ...(firestoreUser.lastName && { lastName: firestoreUser.lastName }),
       ...(user.weaknesses && user.weaknesses.length > 0 && { weaknesses: user.weaknesses }),
       ...(user.completedExercises !== undefined && { completedExercises: user.completedExercises }),
       ...(user.totalScore !== undefined && { totalScore: user.totalScore }),
-      ...(firestoreUser.lastActivity && { lastActivity: firestoreUser.lastActivity instanceof Date ? firestoreUser.lastActivity : new Date(firestoreUser.lastActivity) })
+      ...(firestoreUser.lastActivity && {
+        lastActivity:
+          firestoreUser.lastActivity instanceof Date
+            ? firestoreUser.lastActivity
+            : new Date(firestoreUser.lastActivity),
+      }),
     };
 
     console.log("💾 [saveUser] Données préparées:", {
@@ -161,7 +180,7 @@ export const saveUser = async (user: UserProfile): Promise<void> => {
       email: userEmail,
       currentLevel: userData.currentLevel,
       targetLevel: userData.targetLevel,
-      dataKeys: Object.keys(userData)
+      dataKeys: Object.keys(userData),
     });
 
     console.log("🌐 [saveUser] Appel setDocument...");
@@ -174,7 +193,7 @@ export const saveUser = async (user: UserProfile): Promise<void> => {
       stack: error.stack,
       userId: user.id,
       email: (user as any).email,
-      error: error
+      error: error,
     });
     throw error;
   }
@@ -189,7 +208,8 @@ export const updateUser = async (userId: string, updates: Partial<UserProfile>):
   if (updates.currentLevel) partialUser.currentLevel = updates.currentLevel;
   if (updates.targetLevel) partialUser.targetLevel = updates.targetLevel;
   if (updates.weaknesses) partialUser.weaknesses = updates.weaknesses;
-  if (updates.completedExercises !== undefined) partialUser.completedExercises = updates.completedExercises;
+  if (updates.completedExercises !== undefined)
+    partialUser.completedExercises = updates.completedExercises;
   if (updates.totalScore !== undefined) partialUser.totalScore = updates.totalScore;
   if (updates.lastActivity) partialUser.lastActivity = updates.lastActivity;
 
@@ -199,10 +219,13 @@ export const updateUser = async (userId: string, updates: Partial<UserProfile>):
 /**
  * Marque le test d'évaluation comme complété pour un utilisateur
  */
-export const markAssessmentCompleted = async (userId: string, level?: "A1" | "A2" | "B1" | "B2" | "C1"): Promise<void> => {
+export const markAssessmentCompleted = async (
+  userId: string,
+  level?: "A1" | "A2" | "B1" | "B2" | "C1"
+): Promise<void> => {
   const updates: Partial<FirestoreUser> = {
     levelAssessed: true,
-    assessmentCompletedAt: new Date()
+    assessmentCompletedAt: new Date(),
   };
 
   if (level) {
@@ -225,12 +248,3 @@ export const deleteUser = async (userId: string): Promise<void> => {
 export const userExists = async (userId: string): Promise<boolean> => {
   return documentExists(COLLECTION_NAME, userId);
 };
-
-
-
-
-
-
-
-
-

@@ -6,9 +6,24 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
-  FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid, TextField, Divider
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  LinearProgress,
+  Alert,
+  Stepper,
+  Step,
+  StepLabel,
+  Chip,
+  Grid,
+  TextField,
+  Divider,
 } from "@mui/material";
 import { Headphones, MenuBook, Edit, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
@@ -58,7 +73,13 @@ interface TOEFLQuestion {
 interface TOEFLTestProps {
   testId?: string;
   level?: LanguageLevel;
-  onComplete?: (scores: { reading: number; listening: number; writing: number; total: number; level: LanguageLevel }) => void;
+  onComplete?: (scores: {
+    reading: number;
+    listening: number;
+    writing: number;
+    total: number;
+    level: LanguageLevel;
+  }) => void;
 }
 
 export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level, onComplete }) => {
@@ -66,11 +87,16 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [scores, setScores] = useState<{ reading: number; listening: number; writing: number; total: number }>({
+  const [scores, setScores] = useState<{
+    reading: number;
+    listening: number;
+    writing: number;
+    total: number;
+  }>({
     reading: 0,
     listening: 0,
     writing: 0,
-    total: 0
+    total: 0,
   });
   const [completed, setCompleted] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
@@ -116,19 +142,20 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
 
   const currentSection = testData?.sections[currentSectionIndex];
   const currentQuestion = currentSection?.questions[currentQuestionIndex];
-  const totalQuestions = testData?.sections.reduce((sum, section) => sum + section.questions.length, 0) || 0;
+  const totalQuestions =
+    testData?.sections.reduce((sum, section) => sum + section.questions.length, 0) || 0;
   const answeredQuestions = Object.keys(answers).length;
   const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   const handleNext = () => {
     if (currentQuestion && currentQuestionIndex < currentSection!.questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else if (currentSectionIndex < testData!.sections.length - 1) {
-      setCurrentSectionIndex(prev => prev + 1);
+      setCurrentSectionIndex((prev) => prev + 1);
       setCurrentQuestionIndex(0);
     } else {
       calculateScores();
@@ -137,9 +164,9 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
     } else if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(prev => prev - 1);
+      setCurrentSectionIndex((prev) => prev - 1);
       const prevSection = testData!.sections[currentSectionIndex - 1];
       setCurrentQuestionIndex(prevSection.questions.length - 1);
     }
@@ -152,8 +179,8 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
     let listeningScore = 0;
     let writingScore = 0;
 
-    testData.sections.forEach(section => {
-      section.questions.forEach(question => {
+    testData.sections.forEach((section) => {
+      section.questions.forEach((question) => {
         const userAnswer = answers[question.id];
         if (question.type === "essay") {
           // Pour les questions d'essai, on donne une note basée sur la longueur et la présence de mots-clés
@@ -174,7 +201,12 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
     });
 
     const totalScore = readingScore + listeningScore + writingScore;
-    const newScores = { reading: readingScore, listening: listeningScore, writing: writingScore, total: totalScore };
+    const newScores = {
+      reading: readingScore,
+      listening: listeningScore,
+      writing: writingScore,
+      total: totalScore,
+    };
     setScores(newScores);
     setCompleted(true);
 
@@ -326,11 +358,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
   if (showAnalysis && testData) {
     return (
       <Box sx={{ p: 3 }}>
-        <Button
-          variant="text"
-          onClick={() => setShowAnalysis(false)}
-          sx={{ mb: 2 }}
-        >
+        <Button variant="text" onClick={() => setShowAnalysis(false)} sx={{ mb: 2 }}>
           ← Retour aux résultats
         </Button>
         <Card elevation={3}>
@@ -351,9 +379,15 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
 
                 {section.questions.map((question, qIdx) => {
                   const userAnswer = answers[question.id];
-                  const isCorrect: boolean = question.type === "essay"
-                    ? !!(userAnswer && userAnswer.length > 50)
-                    : !!(userAnswer && question.correctAnswer && userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim());
+                  const isCorrect: boolean =
+                    question.type === "essay"
+                      ? !!(userAnswer && userAnswer.length > 50)
+                      : !!(
+                          userAnswer &&
+                          question.correctAnswer &&
+                          userAnswer.toLowerCase().trim() ===
+                            question.correctAnswer.toLowerCase().trim()
+                        );
 
                   return (
                     <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>
@@ -364,10 +398,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                             color={isCorrect ? "success" : "error"}
                             variant={isCorrect ? "filled" : "outlined"}
                           />
-                          <Chip
-                            label={`${question.points} points`}
-                            variant="outlined"
-                          />
+                          <Chip label={`${question.points} points`} variant="outlined" />
                         </Box>
 
                         <Typography variant="h6" gutterBottom>
@@ -394,9 +425,13 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                                 sx={{
                                   p: 1,
                                   mb: 0.5,
-                                  bgcolor: option === question.correctAnswer ? "success.light" :
-                                    option === userAnswer && !isCorrect ? "error.light" : "grey.50",
-                                  borderRadius: 1
+                                  bgcolor:
+                                    option === question.correctAnswer
+                                      ? "success.light"
+                                      : option === userAnswer && !isCorrect
+                                        ? "error.light"
+                                        : "grey.50",
+                                  borderRadius: 1,
                                 }}
                               >
                                 {option === question.correctAnswer && "✅ "}
@@ -408,7 +443,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                         )}
 
                         {/* Toujours afficher les corrections détaillées pour les questions non-essay */}
-                        {question.type !== "essay" && (
+                        {question.type !== "essay" &&
                           generateComprehensionAnalysis({
                             questionId: question.id,
                             level: question.level || testData.level || "C1",
@@ -418,16 +453,18 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                             correctAnswer: question.correctAnswer || "",
                             grammarFocus: question.grammarFocus,
                             vocabularyFocus: question.vocabularyFocus,
-                            customExplanation: question.explanation
-                          })
-                        )}
+                            customExplanation: question.explanation,
+                          })}
 
                         {question.type === "essay" && userAnswer && (
                           <Box sx={{ mt: 2 }}>
                             <Typography variant="subtitle2" gutterBottom>
                               <strong>Votre réponse :</strong>
                             </Typography>
-                            <Typography variant="body2" sx={{ mb: 2, p: 2, bgcolor: "grey.50", borderRadius: 1 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{ mb: 2, p: 2, bgcolor: "grey.50", borderRadius: 1 }}
+                            >
                               {userAnswer}
                             </Typography>
                             <Alert severity="info">
@@ -449,11 +486,11 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
     );
   }
 
-  const isAnswered = currentQuestion && (
-    currentQuestion.type === "essay"
+  const isAnswered =
+    currentQuestion &&
+    (currentQuestion.type === "essay"
       ? answers[currentQuestion.id] && answers[currentQuestion.id].length > 50
-      : answers[currentQuestion.id] !== undefined
-  );
+      : answers[currentQuestion.id] !== undefined);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -498,16 +535,18 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                   <Chip
                     icon={
-                      currentSection?.type === "listening" ? <Headphones /> :
-                        currentSection?.type === "writing" ? <Edit /> : <MenuBook />
+                      currentSection?.type === "listening" ? (
+                        <Headphones />
+                      ) : currentSection?.type === "writing" ? (
+                        <Edit />
+                      ) : (
+                        <MenuBook />
+                      )
                     }
                     label={`Question ${currentQuestionIndex + 1} / ${currentSection!.questions.length}`}
                     color="primary"
                   />
-                  <Chip
-                    label={`${currentQuestion.points} points`}
-                    variant="outlined"
-                  />
+                  <Chip label={`${currentQuestion.points} points`} variant="outlined" />
                 </Box>
 
                 {currentSection?.type === "listening" && currentQuestion.audioText && (
@@ -563,8 +602,8 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                             borderColor: "grey.300",
                             borderRadius: 2,
                             "&:hover": {
-                              bgcolor: "grey.50"
-                            }
+                              bgcolor: "grey.50",
+                            },
                           }}
                         />
                       ))}
@@ -583,11 +622,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
             >
               Précédent
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={!isAnswered}
-            >
+            <Button variant="contained" onClick={handleNext} disabled={!isAnswered}>
               {answeredQuestions === totalQuestions ? "Terminer le test" : "Suivant"}
             </Button>
           </Box>
@@ -596,4 +631,3 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
     </Box>
   );
 };
-

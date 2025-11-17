@@ -65,27 +65,30 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
         }
 
         voicesLoadedRef.current = true;
-        const formattedVoices = availableVoices.map(v => ({
+        const formattedVoices = availableVoices.map((v) => ({
           name: v.name,
           lang: v.lang,
-          default: v.default
+          default: v.default,
         }));
         setVoices(formattedVoices);
 
         // Sélectionner une voix anglaise par défaut
         // Sur Android, privilégier les voix locales Google
-        let englishVoice = availableVoices.find(v =>
-          v.lang.startsWith("en-") && v.localService && v.name.toLowerCase().includes("google")
+        let englishVoice = availableVoices.find(
+          (v) =>
+            v.lang.startsWith("en-") && v.localService && v.name.toLowerCase().includes("google")
         );
 
         if (!englishVoice) {
-          englishVoice = availableVoices.find(v =>
-            v.lang.startsWith("en-") && (v.name.includes("Google") || v.name.includes("Microsoft"))
+          englishVoice = availableVoices.find(
+            (v) =>
+              v.lang.startsWith("en-") &&
+              (v.name.includes("Google") || v.name.includes("Microsoft"))
           );
         }
 
         if (!englishVoice) {
-          englishVoice = availableVoices.find(v => v.lang.startsWith("en-"));
+          englishVoice = availableVoices.find((v) => v.lang.startsWith("en-"));
         }
 
         if (englishVoice) {
@@ -127,130 +130,133 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
     }
   }, []);
 
-  const speak = useCallback(async (text: string, lang = "en-US"): Promise<void> => {
-    if (!isSupported || !text) {
-      setError("Synthèse vocale non supportée ou texte vide.");
-      return;
-    }
+  const speak = useCallback(
+    async (text: string, lang = "en-US"): Promise<void> => {
+      if (!isSupported || !text) {
+        setError("Synthèse vocale non supportée ou texte vide.");
+        return;
+      }
 
-    // Arrêter toute lecture en cours
-    window.speechSynthesis.cancel();
+      // Arrêter toute lecture en cours
+      window.speechSynthesis.cancel();
 
-    // Petit délai pour Android pour s'assurer que cancel() est effectif
-    if (isAndroid()) {
-      await new Promise(resolve => setTimeout(resolve, 50));
-    }
+      // Petit délai pour Android pour s'assurer que cancel() est effectif
+      if (isAndroid()) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
 
-    // Créer une nouvelle utterance (énoncé)
-    const utterance = new SpeechSynthesisUtterance(text);
-    utteranceRef.current = utterance;
+      // Créer une nouvelle utterance (énoncé)
+      const utterance = new SpeechSynthesisUtterance(text);
+      utteranceRef.current = utterance;
 
-    // Configurer la voix
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
+      // Configurer la voix
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
 
-    utterance.lang = lang;
-    utterance.rate = rate;
-    utterance.pitch = pitch;
-    utterance.volume = volume;
+      utterance.lang = lang;
+      utterance.rate = rate;
+      utterance.pitch = pitch;
+      utterance.volume = volume;
 
-    // Sur Android, découper les textes longs en morceaux plus petits
-    // Android peut avoir des problèmes avec les textes > 200 caractères
-    if (isAndroid() && text.length > 200) {
-      // Diviser en phrases
-      const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+      // Sur Android, découper les textes longs en morceaux plus petits
+      // Android peut avoir des problèmes avec les textes > 200 caractères
+      if (isAndroid() && text.length > 200) {
+        // Diviser en phrases
+        const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
 
-      for (let i = 0; i < sentences.length; i++) {
-        const sentenceUtterance = new SpeechSynthesisUtterance(sentences[i]);
-        sentenceUtterance.voice = selectedVoice;
-        sentenceUtterance.lang = lang;
-        sentenceUtterance.rate = rate;
-        sentenceUtterance.pitch = pitch;
-        sentenceUtterance.volume = volume;
+        for (let i = 0; i < sentences.length; i++) {
+          const sentenceUtterance = new SpeechSynthesisUtterance(sentences[i]);
+          sentenceUtterance.voice = selectedVoice;
+          sentenceUtterance.lang = lang;
+          sentenceUtterance.rate = rate;
+          sentenceUtterance.pitch = pitch;
+          sentenceUtterance.volume = volume;
 
-        if (i === 0) {
-          sentenceUtterance.onstart = () => {
-            setIsSpeaking(true);
-            setIsPaused(false);
-            setError(null);
-          };
-        }
+          if (i === 0) {
+            sentenceUtterance.onstart = () => {
+              setIsSpeaking(true);
+              setIsPaused(false);
+              setError(null);
+            };
+          }
 
-        if (i === sentences.length - 1) {
-          sentenceUtterance.onend = () => {
+          if (i === sentences.length - 1) {
+            sentenceUtterance.onend = () => {
+              setIsSpeaking(false);
+              setIsPaused(false);
+            };
+          }
+
+          sentenceUtterance.onerror = (event) => {
+            console.error("Erreur de synthèse vocale:", event);
+            setError(`Erreur de synthèse: ${event.error}`);
             setIsSpeaking(false);
             setIsPaused(false);
           };
+
+          window.speechSynthesis.speak(sentenceUtterance);
         }
 
-        sentenceUtterance.onerror = (event) => {
-          console.error("Erreur de synthèse vocale:", event);
-          setError(`Erreur de synthèse: ${event.error}`);
-          setIsSpeaking(false);
-          setIsPaused(false);
-        };
-
-        window.speechSynthesis.speak(sentenceUtterance);
+        return;
       }
 
-      return;
-    }
+      // Événements
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        setIsPaused(false);
+        setError(null);
+      };
 
-    // Événements
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-      setIsPaused(false);
-      setError(null);
-    };
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        setIsPaused(false);
+      };
 
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
+      utterance.onerror = (event) => {
+        console.error("Erreur de synthèse vocale:", event);
 
-    utterance.onerror = (event) => {
-      console.error("Erreur de synthèse vocale:", event);
+        // Gestion des erreurs spécifiques
+        switch (event.error) {
+          case "network":
+            setError("Erreur réseau lors de la synthèse vocale.");
+            break;
+          case "synthesis-failed":
+            setError("Échec de la synthèse vocale.");
+            break;
+          case "audio-busy":
+            setError("Audio occupé. Réessayez.");
+            break;
+          case "not-allowed":
+            setError("Permission audio refusée.");
+            break;
+          default:
+            setError(`Erreur: ${event.error}`);
+        }
 
-      // Gestion des erreurs spécifiques
-      switch (event.error) {
-      case "network":
-        setError("Erreur réseau lors de la synthèse vocale.");
-        break;
-      case "synthesis-failed":
-        setError("Échec de la synthèse vocale.");
-        break;
-      case "audio-busy":
-        setError("Audio occupé. Réessayez.");
-        break;
-      case "not-allowed":
-        setError("Permission audio refusée.");
-        break;
-      default:
-        setError(`Erreur: ${event.error}`);
+        setIsSpeaking(false);
+        setIsPaused(false);
+      };
+
+      utterance.onpause = () => {
+        setIsPaused(true);
+      };
+
+      utterance.onresume = () => {
+        setIsPaused(false);
+      };
+
+      // Lancer la lecture
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (err: any) {
+        console.error("Error speaking:", err);
+        setError("Impossible de lancer la synthèse vocale.");
+        setIsSpeaking(false);
       }
-
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-
-    utterance.onpause = () => {
-      setIsPaused(true);
-    };
-
-    utterance.onresume = () => {
-      setIsPaused(false);
-    };
-
-    // Lancer la lecture
-    try {
-      window.speechSynthesis.speak(utterance);
-    } catch (err: any) {
-      console.error("Error speaking:", err);
-      setError("Impossible de lancer la synthèse vocale.");
-      setIsSpeaking(false);
-    }
-  }, [isSupported, selectedVoice, rate, pitch, volume]);
+    },
+    [isSupported, selectedVoice, rate, pitch, volume]
+  );
 
   const stop = useCallback(() => {
     if (!isSupported) return;
@@ -285,7 +291,7 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
   }, [isSupported]);
 
   const setVoice = useCallback((voiceName: string) => {
-    const voice = window.speechSynthesis.getVoices().find(v => v.name === voiceName);
+    const voice = window.speechSynthesis.getVoices().find((v) => v.name === voiceName);
     if (voice) {
       setSelectedVoice(voice);
       setError(null);
@@ -307,7 +313,6 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
     setRate,
     setPitch,
     setVolume,
-    error
+    error,
   };
 };
-

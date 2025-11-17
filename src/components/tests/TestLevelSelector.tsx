@@ -6,9 +6,20 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Chip,
-  Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
-  InputLabel, Select, MenuItem
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Psychology } from "@mui/icons-material";
 import { LanguageLevel } from "../../types";
@@ -25,19 +36,19 @@ const LEVEL_DESCRIPTIONS: Record<LanguageLevel, string> = {
   A2: "Élémentaire - Communication simple sur des sujets familiers",
   B1: "Intermédiaire - Communication dans des situations quotidiennes",
   B2: "Intermédiaire supérieur - Communication fluide sur des sujets complexes",
-  C1: "Avancé - Expression fluide et précise sur des sujets techniques"
+  C1: "Avancé - Expression fluide et précise sur des sujets techniques",
 };
 
 const TEST_TYPE_NAMES = {
   efset: "EF SET",
   toeic: "TOEIC",
-  toefl: "TOEFL"
+  toefl: "TOEFL",
 };
 
 export const TestLevelSelector: React.FC<TestLevelSelectorProps> = ({
   testType,
   onSelectLevel,
-  onCancel
+  onCancel,
 }) => {
   const [selectedLevel, setSelectedLevel] = useState<LanguageLevel | "">("");
 
@@ -60,8 +71,8 @@ export const TestLevelSelector: React.FC<TestLevelSelectorProps> = ({
       <DialogContent>
         <Box sx={{ mb: 3 }}>
           <Typography variant="body1" color="text.secondary" paragraph>
-            Sélectionnez le niveau CECR pour le test {TEST_TYPE_NAMES[testType]}.
-            Le test sera adapté à ce niveau.
+            Sélectionnez le niveau CECR pour le test {TEST_TYPE_NAMES[testType]}. Le test sera
+            adapté à ce niveau.
           </Typography>
         </Box>
 
@@ -125,15 +136,10 @@ export const TestLevelSelector: React.FC<TestLevelSelectorProps> = ({
             Annuler
           </Button>
         )}
-        <Button
-          onClick={handleStartTest}
-          variant="contained"
-          disabled={!selectedLevel}
-        >
+        <Button onClick={handleStartTest} variant="contained" disabled={!selectedLevel}>
           Commencer le test niveau {selectedLevel}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
-

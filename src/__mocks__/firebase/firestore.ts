@@ -4,14 +4,14 @@ export const mockDoc = {
   exists: () => true,
   data: () => ({
     email: "test@example.com",
-    displayName: "Test User"
-  })
+    displayName: "Test User",
+  }),
 };
 
 // Mock Firestore instance
 const mockFirestore = {
   app: { name: "[DEFAULT]" },
-  type: "firestore"
+  type: "firestore",
 };
 
 export const getFirestore = jest.fn(() => mockFirestore);
@@ -19,13 +19,13 @@ export const getFirestore = jest.fn(() => mockFirestore);
 export const collection = jest.fn((db, path) => ({
   id: path,
   path: path,
-  type: "collection"
+  type: "collection",
 }));
 
 export const doc = jest.fn((db, path, ...segments) => ({
   id: segments.length > 0 ? segments[segments.length - 1] : path,
   path: path,
-  type: "document"
+  type: "document",
 }));
 
 export const getDoc = jest.fn(() =>
@@ -34,9 +34,9 @@ export const getDoc = jest.fn(() =>
     id: "test-doc-id",
     data: () => ({
       email: "test@example.com",
-      displayName: "Test User"
+      displayName: "Test User",
     }),
-    ref: { id: "test-doc-id", path: "users/test-doc-id" }
+    ref: { id: "test-doc-id", path: "users/test-doc-id" },
   })
 );
 
@@ -49,35 +49,37 @@ export const deleteDoc = jest.fn(() => Promise.resolve());
 export const query = jest.fn((collection, ...constraints) => ({
   type: "query",
   firestore: mockFirestore,
-  converter: null
+  converter: null,
 }));
 
 export const where = jest.fn((field, op, value) => ({
   type: "where",
   field,
   op,
-  value
+  value,
 }));
 
 export const orderBy = jest.fn((field, direction = "asc") => ({
   type: "orderBy",
   field,
-  direction
+  direction,
 }));
 
 export const limit = jest.fn((count) => ({
   type: "limit",
-  count
+  count,
 }));
 
 export const getDocs = jest.fn(() =>
   Promise.resolve({
-    docs: [{
-      id: "test-doc-1",
-      exists: () => true,
-      data: () => ({ test: "data" }),
-      ref: { id: "test-doc-1", path: "collection/test-doc-1" }
-    }],
+    docs: [
+      {
+        id: "test-doc-1",
+        exists: () => true,
+        data: () => ({ test: "data" }),
+        ref: { id: "test-doc-1", path: "collection/test-doc-1" },
+      },
+    ],
     empty: false,
     size: 1,
     forEach: (callback: any) => {
@@ -85,16 +87,16 @@ export const getDocs = jest.fn(() =>
         id: "test-doc-1",
         exists: () => true,
         data: () => ({ test: "data" }),
-        ref: { id: "test-doc-1", path: "collection/test-doc-1" }
+        ref: { id: "test-doc-1", path: "collection/test-doc-1" },
       });
-    }
+    },
   })
 );
 
 export const addDoc = jest.fn(() =>
   Promise.resolve({
     id: "new-doc-id",
-    path: "collection/new-doc-id"
+    path: "collection/new-doc-id",
   })
 );
 
@@ -105,7 +107,7 @@ export const onSnapshot = jest.fn((docRef, callback) => {
       exists: () => true,
       id: "test-doc-id",
       data: () => ({ test: "data" }),
-      ref: { id: "test-doc-id", path: "collection/test-doc-id" }
+      ref: { id: "test-doc-id", path: "collection/test-doc-id" },
     });
   }, 0);
 
@@ -117,13 +119,13 @@ export const Timestamp = {
   now: () => ({
     seconds: Math.floor(Date.now() / 1000),
     nanoseconds: 0,
-    toDate: () => new Date()
+    toDate: () => new Date(),
   }),
   fromDate: (date: Date) => ({
     seconds: Math.floor(date.getTime() / 1000),
     nanoseconds: 0,
-    toDate: () => date
-  })
+    toDate: () => date,
+  }),
 };
 
 export const serverTimestamp = jest.fn(() => Timestamp.now());
@@ -133,5 +135,5 @@ export const FieldValue = {
   delete: () => ({ type: "delete" }),
   increment: (n: number) => ({ type: "increment", operand: n }),
   arrayUnion: (...elements: any[]) => ({ type: "arrayUnion", elements }),
-  arrayRemove: (...elements: any[]) => ({ type: "arrayRemove", elements })
+  arrayRemove: (...elements: any[]) => ({ type: "arrayRemove", elements }),
 };

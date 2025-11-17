@@ -6,8 +6,17 @@
 
 import React, { useState, useRef } from "react";
 import {
-  Box, Card, CardContent, Typography, Radio, RadioGroup,
-  FormControlLabel, FormControl, Button, Alert, Chip
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Button,
+  Alert,
+  Chip,
 } from "@mui/material";
 import { CheckCircle, Cancel } from "@mui/icons-material";
 import { Question } from "../../types";
@@ -25,7 +34,7 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
   onAnswer,
   audioUrl,
   transcript,
-  showExplanation = true
+  showExplanation = true,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -53,19 +62,23 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "wrap" }}>
               {question.grammarFocus.map((focus, idx) => (
-                <Chip
-                  key={idx}
-                  label={focus}
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                />
+                <Chip key={idx} label={focus} size="small" color="primary" variant="outlined" />
               ))}
             </Box>
           )}
 
           {audioUrl && (
-            <Box sx={{ mt: 3, mb: 2, p: 2, bgcolor: "primary.light", borderRadius: 2, border: 2, borderColor: "primary.main" }}>
+            <Box
+              sx={{
+                mt: 3,
+                mb: 2,
+                p: 2,
+                bgcolor: "primary.light",
+                borderRadius: 2,
+                border: 2,
+                borderColor: "primary.main",
+              }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Typography variant="h6" sx={{ color: "white", flexGrow: 1 }}>
                   Audio
@@ -86,7 +99,8 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
           {transcript && !submitted && (
             <Alert severity="info" sx={{ mt: 2 }}>
               <Typography variant="body2">
-                <strong>Conseil :</strong> Écoutez l'audio attentivement. La transcription sera disponible après avoir répondu.
+                <strong>Conseil :</strong> Écoutez l'audio attentivement. La transcription sera
+                disponible après avoir répondu.
               </Typography>
             </Alert>
           )}
@@ -104,10 +118,7 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
         </Box>
 
         <FormControl component="fieldset" fullWidth disabled={submitted}>
-          <RadioGroup
-            value={selectedAnswer}
-            onChange={(e) => setSelectedAnswer(e.target.value)}
-          >
+          <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
             {question.options?.map((option, index) => (
               <FormControlLabel
                 key={index}
@@ -119,26 +130,30 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
                     {submitted && option === question.correctAnswer && (
                       <CheckCircle color="success" fontSize="small" />
                     )}
-                    {submitted && option === selectedAnswer && option !== question.correctAnswer && (
-                      <Cancel color="error" fontSize="small" />
-                    )}
+                    {submitted &&
+                      option === selectedAnswer &&
+                      option !== question.correctAnswer && (
+                        <Cancel color="error" fontSize="small" />
+                      )}
                   </Box>
                 }
                 sx={{
                   p: 2,
                   mb: 1,
                   border: 1,
-                  borderColor: submitted && option === question.correctAnswer
-                    ? "success.main"
-                    : submitted && option === selectedAnswer
-                      ? "error.main"
-                      : "grey.300",
+                  borderColor:
+                    submitted && option === question.correctAnswer
+                      ? "success.main"
+                      : submitted && option === selectedAnswer
+                        ? "error.main"
+                        : "grey.300",
                   borderRadius: 2,
-                  bgcolor: submitted && option === question.correctAnswer
-                    ? "success.light"
-                    : submitted && option === selectedAnswer
-                      ? "error.light"
-                      : "transparent"
+                  bgcolor:
+                    submitted && option === question.correctAnswer
+                      ? "success.light"
+                      : submitted && option === selectedAnswer
+                        ? "error.light"
+                        : "transparent",
                 }}
               />
             ))}
@@ -174,9 +189,7 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
                 <Typography variant="subtitle2" color="primary" gutterBottom>
                   Explication :
                 </Typography>
-                <Typography variant="body2">
-                  {question.explanation}
-                </Typography>
+                <Typography variant="body2">{question.explanation}</Typography>
               </Box>
             )}
           </Box>
@@ -185,4 +198,3 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
     </Card>
   );
 };
-

@@ -47,7 +47,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     timeSpent: 0,
     streakDays: 0,
     levelProgress: {},
-    domainProgress: {}
+    domainProgress: {},
   });
 
   // Firebase data hooks (only active when user is authenticated)
@@ -99,7 +99,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               completedExercises: progress?.totalTests || 0,
               totalScore: 0,
               createdAt: new Date(currentUser.metadata.creationTime || Date.now()),
-              lastActivity: new Date()
+              lastActivity: new Date(),
             };
             setUser(userProfile);
 
@@ -109,8 +109,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               displayName: currentUser.displayName,
               currentLevel: "B1",
               targetLevel: "C1",
-              emailVerified: currentUser.emailVerified
-            }).catch(error => console.error("Error syncing user profile:", error));
+              emailVerified: currentUser.emailVerified,
+            }).catch((error) => console.error("Error syncing user profile:", error));
           }
         } catch (error) {
           console.error("Erreur lors du chargement du profil utilisateur:", error);
@@ -127,15 +127,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             completedExercises: progress?.totalTests || 0,
             totalScore: 0,
             createdAt: new Date(currentUser.metadata.creationTime || Date.now()),
-            lastActivity: new Date()
+            lastActivity: new Date(),
           };
           setUser(userProfile);
         }
       };
 
       loadUserProfile();
-
-    } else if (firebaseAuth.user === null && !firebaseAuth.loading && (token || user) && !logoutInProgressRef.current) {
+    } else if (
+      firebaseAuth.user === null &&
+      !firebaseAuth.loading &&
+      (token || user) &&
+      !logoutInProgressRef.current
+    ) {
       // IMPORTANT: Nettoyer l'état local quand Firebase user devient null (déconnexion)
       // Vérifier qu'il y a un état local à nettoyer et qu'on n'est pas déjà en train de nettoyer
       // Cela garantit que l'utilisateur est bien déconnecté même si logout() n'a pas été appelé explicitement
@@ -153,7 +157,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
           const userProfile: UserProfile = {
             id: userData.id || `user_${Date.now()}`,
-            name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
+            name:
+              `${userData.firstName || ""} ${userData.lastName || ""}`.trim() ||
+              userData.email ||
+              "Utilisateur",
             currentLevel: userData.currentLevel || "B1",
             targetLevel: userData.targetLevel || "C1",
             strengths: [],
@@ -161,7 +168,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             completedExercises: 0,
             totalScore: 0,
             createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
-            lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date()
+            lastActivity: userData.lastLogin ? new Date(userData.lastLogin) : new Date(),
           };
           setUser(userProfile);
         } catch (error) {
@@ -196,13 +203,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [responses]);
 
   const addResponse = (response: UserResponse) => {
-    setResponses(prev => [...prev, response]);
+    setResponses((prev) => [...prev, response]);
 
     if (user) {
       const updatedUser = {
         ...user,
         completedExercises: user.completedExercises + 1,
-        lastActivity: new Date()
+        lastActivity: new Date(),
       };
       setUser(updatedUser);
 
@@ -214,15 +221,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           answer: response.answer,
           isCorrect: response.isCorrect,
           timeSpent: response.timeSpent,
-          timestamp: response.timestamp
-        }).catch(error => console.error("Error saving test result to Firebase:", error));
+          timestamp: response.timestamp,
+        }).catch((error) => console.error("Error saving test result to Firebase:", error));
       }
     }
   };
 
   const updateStats = () => {
-    const uniqueExercises = new Set(responses.map(r => r.exerciseId));
-    const correctResponses = responses.filter(r => r.isCorrect).length;
+    const uniqueExercises = new Set(responses.map((r) => r.exerciseId));
+    const correctResponses = responses.filter((r) => r.isCorrect).length;
     const averageScore = responses.length > 0 ? (correctResponses / responses.length) * 100 : 0;
     const timeSpent = responses.reduce((acc, r) => acc + r.timeSpent, 0);
 
@@ -233,7 +240,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       timeSpent,
       streakDays: calculateStreak(),
       levelProgress: {},
-      domainProgress: {}
+      domainProgress: {},
     };
 
     setStats(newStats);
@@ -246,8 +253,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         timeSpent: newStats.timeSpent,
         streakDays: newStats.streakDays,
         currentLevel: user.currentLevel,
-        targetLevel: user.targetLevel
-      }).catch(error => console.error("Error updating progress in Firebase:", error));
+        targetLevel: user.targetLevel,
+      }).catch((error) => console.error("Error updating progress in Firebase:", error));
     }
   };
 
@@ -255,7 +262,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (responses.length === 0) return 0;
 
     const sortedDates = responses
-      .map(r => new Date(r.timestamp).toDateString())
+      .map((r) => new Date(r.timestamp).toDateString())
       .filter((date, index, self) => self.indexOf(date) === index)
       .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
@@ -285,7 +292,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const userProfile: UserProfile = {
       id: userData.id || `user_${Date.now()}`,
-      name: `${userData.firstName || ""} ${userData.lastName || ""}`.trim() || userData.email || "Utilisateur",
+      name:
+        `${userData.firstName || ""} ${userData.lastName || ""}`.trim() ||
+        userData.email ||
+        "Utilisateur",
       currentLevel: userData.currentLevel || "B1",
       targetLevel: userData.targetLevel || "C1",
       strengths: [],
@@ -293,7 +303,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       completedExercises: 0,
       totalScore: 0,
       createdAt: userData.createdAt ? new Date(userData.createdAt) : new Date(),
-      lastActivity: new Date()
+      lastActivity: new Date(),
     };
     setUser(userProfile);
   };
@@ -310,7 +320,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       timeSpent: 0,
       streakDays: 0,
       levelProgress: {},
-      domainProgress: {}
+      domainProgress: {},
     });
 
     // Nettoyer localStorage
@@ -354,7 +364,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return {
         success: false,
         error: "logout_failed",
-        message: "Erreur lors de la déconnexion Firebase, mais l'état local a été nettoyé"
+        message: "Erreur lors de la déconnexion Firebase, mais l'état local a été nettoyé",
       };
     } finally {
       // Réinitialiser le flag après un court délai pour permettre au useEffect de se stabiliser
@@ -374,24 +384,26 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const isAuthenticated = firebaseAuth.isAuthenticated || (!!token && !!user && !firebaseAuth.user);
 
   return (
-    <UserContext.Provider value={{
-      user,
-      token,
-      isAuthenticated,
-      loading: firebaseAuth.loading,
-      error: firebaseAuth.error,
-      login,
-      firebaseLogin,
-      firebaseRegister,
-      firebaseLogout,
-      googleSignIn,
-      logout,
-      setUser,
-      responses,
-      addResponse,
-      stats,
-      updateStats
-    }}>
+    <UserContext.Provider
+      value={{
+        user,
+        token,
+        isAuthenticated,
+        loading: firebaseAuth.loading,
+        error: firebaseAuth.error,
+        login,
+        firebaseLogin,
+        firebaseRegister,
+        firebaseLogout,
+        googleSignIn,
+        logout,
+        setUser,
+        responses,
+        addResponse,
+        stats,
+        updateStats,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
@@ -404,4 +416,3 @@ export const useUser = (): UserContextType => {
   }
   return context;
 };
-

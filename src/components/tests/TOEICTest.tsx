@@ -6,9 +6,23 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
-  FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid, Divider
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  LinearProgress,
+  Alert,
+  Stepper,
+  Step,
+  StepLabel,
+  Chip,
+  Grid,
+  Divider,
 } from "@mui/material";
 import { Headphones, MenuBook, CheckCircle, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
@@ -51,7 +65,12 @@ interface TOEICQuestion {
 interface TOEICTestProps {
   testId?: string;
   level?: LanguageLevel;
-  onComplete?: (scores: { grammar: number; listening: number; total: number; level: LanguageLevel }) => void;
+  onComplete?: (scores: {
+    grammar: number;
+    listening: number;
+    total: number;
+    level: LanguageLevel;
+  }) => void;
 }
 
 export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level, onComplete }) => {
@@ -59,7 +78,11 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [scores, setScores] = useState<{ grammar: number; listening: number; total: number }>({ grammar: 0, listening: 0, total: 0 });
+  const [scores, setScores] = useState<{ grammar: number; listening: number; total: number }>({
+    grammar: 0,
+    listening: 0,
+    total: 0,
+  });
   const [completed, setCompleted] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [startTime] = useState(() => Date.now());
@@ -104,19 +127,20 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
 
   const currentSection = testData?.sections[currentSectionIndex];
   const currentQuestion = currentSection?.questions[currentQuestionIndex];
-  const totalQuestions = testData?.sections.reduce((sum, section) => sum + section.questions.length, 0) || 0;
+  const totalQuestions =
+    testData?.sections.reduce((sum, section) => sum + section.questions.length, 0) || 0;
   const answeredQuestions = Object.keys(answers).length;
   const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   const handleNext = () => {
     if (currentQuestion && currentQuestionIndex < currentSection!.questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else if (currentSectionIndex < testData!.sections.length - 1) {
-      setCurrentSectionIndex(prev => prev + 1);
+      setCurrentSectionIndex((prev) => prev + 1);
       setCurrentQuestionIndex(0);
     } else {
       calculateScores();
@@ -125,9 +149,9 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
     } else if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(prev => prev - 1);
+      setCurrentSectionIndex((prev) => prev - 1);
       const prevSection = testData!.sections[currentSectionIndex - 1];
       setCurrentQuestionIndex(prevSection.questions.length - 1);
     }
@@ -139,10 +163,13 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
     let grammarScore = 0;
     let listeningScore = 0;
 
-    testData.sections.forEach(section => {
-      section.questions.forEach(question => {
+    testData.sections.forEach((section) => {
+      section.questions.forEach((question) => {
         const userAnswer = answers[question.id];
-        if (userAnswer && userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()) {
+        if (
+          userAnswer &&
+          userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
+        ) {
           if (section.id === "grammar") {
             grammarScore += question.points;
           } else if (section.id === "listening") {
@@ -306,11 +333,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
   if (showAnalysis && testData) {
     return (
       <Box sx={{ p: 3 }}>
-        <Button
-          variant="text"
-          onClick={() => setShowAnalysis(false)}
-          sx={{ mb: 2 }}
-        >
+        <Button variant="text" onClick={() => setShowAnalysis(false)} sx={{ mb: 2 }}>
           ← Retour aux résultats
         </Button>
         <Card elevation={3}>
@@ -331,9 +354,11 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
 
                 {section.questions.map((question, qIdx) => {
                   const userAnswer = answers[question.id];
-                  const isCorrect = userAnswer && question.correctAnswer
-                    ? userAnswer.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim()
-                    : false;
+                  const isCorrect =
+                    userAnswer && question.correctAnswer
+                      ? userAnswer.toLowerCase().trim() ===
+                        question.correctAnswer.toLowerCase().trim()
+                      : false;
 
                   return (
                     <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>
@@ -344,10 +369,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                             color={isCorrect ? "success" : "error"}
                             variant={isCorrect ? "filled" : "outlined"}
                           />
-                          <Chip
-                            label={`${question.points} points`}
-                            variant="outlined"
-                          />
+                          <Chip label={`${question.points} points`} variant="outlined" />
                         </Box>
 
                         <Typography variant="h6" gutterBottom>
@@ -374,9 +396,13 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                                 sx={{
                                   p: 1,
                                   mb: 0.5,
-                                  bgcolor: option === question.correctAnswer ? "success.light" :
-                                    option === userAnswer && !isCorrect ? "error.light" : "grey.50",
-                                  borderRadius: 1
+                                  bgcolor:
+                                    option === question.correctAnswer
+                                      ? "success.light"
+                                      : option === userAnswer && !isCorrect
+                                        ? "error.light"
+                                        : "grey.50",
+                                  borderRadius: 1,
                                 }}
                               >
                                 {option === question.correctAnswer && "✅ "}
@@ -397,7 +423,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                           correctAnswer: question.correctAnswer,
                           grammarFocus: question.grammarFocus,
                           vocabularyFocus: question.vocabularyFocus,
-                          customExplanation: question.explanation
+                          customExplanation: question.explanation,
                         })}
                       </CardContent>
                     </Card>
@@ -459,10 +485,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                     label={`Question ${currentQuestionIndex + 1} / ${currentSection!.questions.length}`}
                     color="primary"
                   />
-                  <Chip
-                    label={`${currentQuestion.points} points`}
-                    variant="outlined"
-                  />
+                  <Chip label={`${currentQuestion.points} points`} variant="outlined" />
                 </Box>
 
                 {currentSection?.type === "listening" && currentQuestion.audioText && (
@@ -507,8 +530,8 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                           borderColor: "grey.300",
                           borderRadius: 2,
                           "&:hover": {
-                            bgcolor: "grey.50"
-                          }
+                            bgcolor: "grey.50",
+                          },
                         }}
                       />
                     ))}
@@ -540,4 +563,3 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
     </Box>
   );
 };
-

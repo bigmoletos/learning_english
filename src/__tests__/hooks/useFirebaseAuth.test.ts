@@ -18,8 +18,8 @@ describe("useFirebaseAuth Hook", () => {
     emailVerified: true,
     metadata: {
       creationTime: new Date().toISOString(),
-      lastSignInTime: new Date().toISOString()
-    }
+      lastSignInTime: new Date().toISOString(),
+    },
   };
 
   let unsubscribeCallback: any;
@@ -81,7 +81,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: "User registered successfully"
+        message: "User registered successfully",
       };
 
       (authService.registerUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -111,7 +111,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: false,
         message: "Email already in use",
-        error: "auth/email-already-in-use"
+        error: "auth/email-already-in-use",
       };
 
       (authService.registerUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -157,7 +157,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: "Login successful"
+        message: "Login successful",
       };
 
       (authService.loginUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -179,7 +179,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: false,
         message: "Invalid credentials",
-        error: "auth/wrong-password"
+        error: "auth/wrong-password",
       };
 
       (authService.loginUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -197,7 +197,7 @@ describe("useFirebaseAuth Hook", () => {
       // First attempt - failure
       (authService.loginUser as jest.Mock).mockResolvedValueOnce({
         success: false,
-        message: "First error"
+        message: "First error",
       });
 
       const { result } = renderHook(() => useFirebaseAuth());
@@ -211,7 +211,7 @@ describe("useFirebaseAuth Hook", () => {
       // Second attempt - success
       (authService.loginUser as jest.Mock).mockResolvedValueOnce({
         success: true,
-        user: mockUser
+        user: mockUser,
       });
 
       await act(async () => {
@@ -226,7 +226,7 @@ describe("useFirebaseAuth Hook", () => {
     it("should logout user successfully", async () => {
       const mockResponse = {
         success: true,
-        message: "Logged out successfully"
+        message: "Logged out successfully",
       };
 
       (authService.logoutUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -247,7 +247,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: false,
         message: "Network error",
-        error: "network-error"
+        error: "network-error",
       };
 
       (authService.logoutUser as jest.Mock).mockResolvedValue(mockResponse);
@@ -266,7 +266,7 @@ describe("useFirebaseAuth Hook", () => {
     it("should send password reset email successfully", async () => {
       const mockResponse = {
         success: true,
-        message: "Password reset email sent"
+        message: "Password reset email sent",
       };
 
       (authService.resetPassword as jest.Mock).mockResolvedValue(mockResponse);
@@ -287,7 +287,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: false,
         message: "User not found",
-        error: "auth/user-not-found"
+        error: "auth/user-not-found",
       };
 
       (authService.resetPassword as jest.Mock).mockResolvedValue(mockResponse);
@@ -307,7 +307,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: true,
         user: mockUser,
-        message: "Google sign-in successful"
+        message: "Google sign-in successful",
       };
 
       (authService.signInWithGoogle as jest.Mock).mockResolvedValue(mockResponse);
@@ -328,7 +328,7 @@ describe("useFirebaseAuth Hook", () => {
       const mockResponse = {
         success: false,
         message: "Popup closed by user",
-        error: "auth/popup-closed-by-user"
+        error: "auth/popup-closed-by-user",
       };
 
       (authService.signInWithGoogle as jest.Mock).mockResolvedValue(mockResponse);
@@ -347,7 +347,7 @@ describe("useFirebaseAuth Hook", () => {
     it("should clear error state", async () => {
       (authService.loginUser as jest.Mock).mockResolvedValue({
         success: false,
-        message: "Test error"
+        message: "Test error",
       });
 
       const { result } = renderHook(() => useFirebaseAuth());

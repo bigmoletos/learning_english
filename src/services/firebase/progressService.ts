@@ -9,7 +9,7 @@ import {
   setDocument,
   updateDocument,
   deleteDocument,
-  getDocumentsByField
+  getDocumentsByField,
 } from "./firestoreService";
 import { UserResponse, ExerciseType, LanguageLevel } from "../../types";
 
@@ -54,7 +54,7 @@ const toFirestoreProgress = (
     score: progress.isCorrect ? 100 : 0,
     level,
     domain,
-    completedAt: progress.timestamp
+    completedAt: progress.timestamp,
   };
 };
 
@@ -68,7 +68,7 @@ const toUserResponse = (firestoreProgress: FirestoreUserProgress): UserResponse 
     answer: firestoreProgress.userAnswer,
     isCorrect: firestoreProgress.isCorrect,
     timeSpent: firestoreProgress.timeSpent,
-    timestamp: firestoreProgress.completedAt
+    timestamp: firestoreProgress.completedAt,
   };
 };
 
@@ -110,9 +110,7 @@ export const getUserProgressByExercise = async (
     "userId",
     userId
   );
-  return progressList
-    .filter(p => p.exerciseId === exerciseId)
-    .map(toUserResponse);
+  return progressList.filter((p) => p.exerciseId === exerciseId).map(toUserResponse);
 };
 
 /**
@@ -127,12 +125,19 @@ export const saveProgress = async (
   domain?: string
 ): Promise<string> => {
   const progressId = `${userId}_${exerciseId}_${progress.questionId}_${Date.now()}`;
-  const firestoreProgress = toFirestoreProgress(userId, progress, exerciseId, exerciseType, level, domain);
+  const firestoreProgress = toFirestoreProgress(
+    userId,
+    progress,
+    exerciseId,
+    exerciseType,
+    level,
+    domain
+  );
 
   await setDocument<FirestoreUserProgress>(COLLECTION_NAME, progressId, {
     ...firestoreProgress,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   } as Partial<FirestoreUserProgress>);
 
   return progressId;
@@ -169,7 +174,9 @@ export const deleteProgress = async (progressId: string): Promise<void> => {
 /**
  * Obtient les statistiques de progression d'un utilisateur
  */
-export const getUserProgressStats = async (userId: string): Promise<{
+export const getUserProgressStats = async (
+  userId: string
+): Promise<{
   totalExercises: number;
   completedExercises: number;
   averageScore: number;
@@ -179,9 +186,9 @@ export const getUserProgressStats = async (userId: string): Promise<{
 }> => {
   const allProgress = await getUserProgress(userId);
 
-  const totalExercises = new Set(allProgress.map(p => p.exerciseId)).size;
+  const totalExercises = new Set(allProgress.map((p) => p.exerciseId)).size;
   const completedExercises = totalExercises;
-  const correctResponses = allProgress.filter(p => p.isCorrect).length;
+  const correctResponses = allProgress.filter((p) => p.isCorrect).length;
   const averageScore = allProgress.length > 0 ? (correctResponses / allProgress.length) * 100 : 0;
   const timeSpent = allProgress.reduce((acc, p) => acc + p.timeSpent, 0);
 
@@ -195,7 +202,7 @@ export const getUserProgressStats = async (userId: string): Promise<{
     userId
   );
 
-  progressList.forEach(p => {
+  progressList.forEach((p) => {
     levelProgress[p.level] = (levelProgress[p.level] || 0) + 1;
     if (p.domain) {
       domainProgress[p.domain] = (domainProgress[p.domain] || 0) + 1;
@@ -208,28 +215,6 @@ export const getUserProgressStats = async (userId: string): Promise<{
     averageScore: Math.round(averageScore * 100) / 100,
     timeSpent,
     levelProgress,
-    domainProgress
+    domainProgress,
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

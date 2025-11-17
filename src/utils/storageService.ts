@@ -77,7 +77,7 @@ const capacitorStorage: StorageService = {
       console.error("Erreur lors de la récupération des clés:", error);
       return [];
     }
-  }
+  },
 };
 
 /**
@@ -131,7 +131,7 @@ const webStorage: StorageService = {
       console.error("Erreur lors de la récupération des clés:", error);
       return [];
     }
-  }
+  },
 };
 
 // Sélectionner l'implémentation selon la plateforme
@@ -161,7 +161,7 @@ export const StorageKeys = {
   // Synchronisation
   SYNC_QUEUE: "syncQueue",
   LAST_SYNC: "lastSync",
-  FIREBASE_AUTH_PERSISTENCE: "firebaseAuthPersistence"
+  FIREBASE_AUTH_PERSISTENCE: "firebaseAuthPersistence",
 } as const;
 
 /**
@@ -235,9 +235,7 @@ export const storageService = {
    * Écrire plusieurs valeurs en une fois
    */
   setMultiple: async <T = any>(items: Record<string, T>): Promise<void> => {
-    await Promise.all(
-      Object.entries(items).map(([key, value]) => storageService.set(key, value))
-    );
+    await Promise.all(Object.entries(items).map(([key, value]) => storageService.set(key, value)));
   },
 
   /**
@@ -277,7 +275,7 @@ export const storageService = {
       }
       return totalSize;
     }
-  }
+  },
 };
 
 /**
@@ -304,7 +302,9 @@ export const migrateFromLocalStorage = async (): Promise<void> => {
     }
 
     if (migratedCount > 0) {
-      console.log(`✅ Migration réussie : ${migratedCount} éléments migrés vers Capacitor Preferences`);
+      console.log(
+        `✅ Migration réussie : ${migratedCount} éléments migrés vers Capacitor Preferences`
+      );
     }
   } catch (error) {
     console.error("Erreur lors de la migration:", error);
@@ -312,4 +312,3 @@ export const migrateFromLocalStorage = async (): Promise<void> => {
 };
 
 export default storageService;
-

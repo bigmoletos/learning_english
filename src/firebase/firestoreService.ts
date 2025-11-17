@@ -18,7 +18,7 @@ import {
   limit,
   onSnapshot,
   serverTimestamp,
-  increment
+  increment,
 } from "firebase/firestore";
 import { db } from "./config";
 
@@ -36,7 +36,7 @@ const COLLECTIONS = {
   USERS: "users",
   PROGRESS: "progress",
   TEST_RESULTS: "test_results",
-  CONVERSATIONS: "conversations"
+  CONVERSATIONS: "conversations",
 };
 
 /**
@@ -45,7 +45,10 @@ const COLLECTIONS = {
  * @param userData - User data
  * @returns Result
  */
-export const createOrUpdateUserProfile = async (userId: string, userData: any): Promise<FirestoreResult> => {
+export const createOrUpdateUserProfile = async (
+  userId: string,
+  userData: any
+): Promise<FirestoreResult> => {
   try {
     const userRef = doc(db, COLLECTIONS.USERS, userId);
     const userDoc = await getDoc(userRef);
@@ -54,14 +57,14 @@ export const createOrUpdateUserProfile = async (userId: string, userData: any): 
       // Update existing user
       await updateDoc(userRef, {
         ...userData,
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       });
     } else {
       // Create new user
       await setDoc(userRef, {
         ...userData,
         createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       });
     }
 
@@ -108,7 +111,7 @@ export const saveProgress = async (userId: string, progressData: any): Promise<F
       // Update existing progress
       await updateDoc(progressRef, {
         ...progressData,
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       });
     } else {
       // Create new progress
@@ -116,7 +119,7 @@ export const saveProgress = async (userId: string, progressData: any): Promise<F
         userId,
         ...progressData,
         createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       });
     }
 
@@ -160,14 +163,14 @@ export const saveTestResult = async (userId: string, testData: any): Promise<Fir
     await setDoc(testRef, {
       userId,
       ...testData,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
     });
 
     // Update user's total tests count
     const progressRef = doc(db, COLLECTIONS.PROGRESS, userId);
     await updateDoc(progressRef, {
       totalTests: increment(1),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
     });
 
     return { success: true, message: "Test result saved successfully", testId: testRef.id };
@@ -211,16 +214,23 @@ export const getTestResults = async (userId: string, limitCount = 10): Promise<F
  * @param {Object} conversationData - Conversation data
  * @returns {Promise<Object>} Result
  */
-export const saveConversation = async (userId: string, conversationData: any): Promise<FirestoreResult> => {
+export const saveConversation = async (
+  userId: string,
+  conversationData: any
+): Promise<FirestoreResult> => {
   try {
     const conversationRef = doc(collection(db, COLLECTIONS.CONVERSATIONS));
     await setDoc(conversationRef, {
       userId,
       ...conversationData,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
     });
 
-    return { success: true, message: "Conversation saved successfully", conversationId: conversationRef.id };
+    return {
+      success: true,
+      message: "Conversation saved successfully",
+      conversationId: conversationRef.id,
+    };
   } catch (error: any) {
     console.error("Error saving conversation:", error);
     return { success: false, error: error.message };
@@ -233,7 +243,10 @@ export const saveConversation = async (userId: string, conversationData: any): P
  * @param {number} limitCount - Number of conversations to fetch
  * @returns {Promise<Object>} Conversations array
  */
-export const getConversations = async (userId: string, limitCount = 20): Promise<FirestoreResult> => {
+export const getConversations = async (
+  userId: string,
+  limitCount = 20
+): Promise<FirestoreResult> => {
   try {
     const conversationsQuery = query(
       collection(db, COLLECTIONS.CONVERSATIONS),
@@ -261,7 +274,10 @@ export const getConversations = async (userId: string, limitCount = 20): Promise
  * @param {Function} callback - Callback function
  * @returns {Function} Unsubscribe function
  */
-export const subscribeToProgress = (userId: string, callback: (data: any) => void): (() => void) => {
+export const subscribeToProgress = (
+  userId: string,
+  callback: (data: any) => void
+): (() => void) => {
   const progressRef = doc(db, COLLECTIONS.PROGRESS, userId);
   return onSnapshot(progressRef, (doc) => {
     if (doc.exists()) {
@@ -279,7 +295,11 @@ export const subscribeToProgress = (userId: string, callback: (data: any) => voi
  * @param {number} limitCount - Number of results to fetch
  * @returns {Function} Unsubscribe function
  */
-export const subscribeToTestResults = (userId: string, callback: (data: any[]) => void, limitCount = 10): (() => void) => {
+export const subscribeToTestResults = (
+  userId: string,
+  callback: (data: any[]) => void,
+  limitCount = 10
+): (() => void) => {
   const testsQuery = query(
     collection(db, COLLECTIONS.TEST_RESULTS),
     where("userId", "==", userId),
@@ -351,7 +371,7 @@ const firestoreService = {
   getConversations,
   subscribeToProgress,
   subscribeToTestResults,
-  deleteUserData
+  deleteUserData,
 };
 
 export default firestoreService;

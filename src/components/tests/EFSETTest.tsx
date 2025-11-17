@@ -7,9 +7,23 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
-  FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid, TextField
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  LinearProgress,
+  Alert,
+  Stepper,
+  Step,
+  StepLabel,
+  Chip,
+  Grid,
+  TextField,
 } from "@mui/material";
 import { Headphones, MenuBook, Edit, Mic, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
@@ -65,7 +79,14 @@ interface EFSETQuestion {
 interface EFSETTestProps {
   testId?: string;
   level?: LanguageLevel;
-  onComplete?: (scores: { reading: number; listening: number; writing: number; speaking: number; total: number; level: LanguageLevel }) => void;
+  onComplete?: (scores: {
+    reading: number;
+    listening: number;
+    writing: number;
+    speaking: number;
+    total: number;
+    level: LanguageLevel;
+  }) => void;
 }
 
 export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level, onComplete }) => {
@@ -74,12 +95,18 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState<LanguageLevel>("B2");
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [scores, setScores] = useState<{ reading: number; listening: number; writing: number; speaking: number; total: number }>({
+  const [scores, setScores] = useState<{
+    reading: number;
+    listening: number;
+    writing: number;
+    speaking: number;
+    total: number;
+  }>({
     reading: 0,
     listening: 0,
     writing: 0,
     speaking: 0,
-    total: 0
+    total: 0,
   });
   const [completed, setCompleted] = useState(false);
   const [startTime] = useState(() => Date.now());
@@ -137,28 +164,30 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     }
 
     // Test adaptatif : filtrer les questions par niveau actuel
-    return section.questions.filter(q => q.level === currentLevel);
+    return section.questions.filter((q) => q.level === currentLevel);
   };
 
   const availableQuestions = getAvailableQuestions();
   const currentSection = testData?.sections[currentSectionIndex];
   const currentQuestion = availableQuestions[currentQuestionIndex];
-  const totalQuestions = testData?.sections.reduce((sum, section) => {
-    if (section.adaptive) {
-      // Pour les sections adaptatives, on estime le nombre de questions
-      return sum + (section.questions.length / 2);
-    }
-    return sum + section.questions.length;
-  }, 0) || 0;
+  const totalQuestions =
+    testData?.sections.reduce((sum, section) => {
+      if (section.adaptive) {
+        // Pour les sections adaptatives, on estime le nombre de questions
+        return sum + section.questions.length / 2;
+      }
+      return sum + section.questions.length;
+    }, 0) || 0;
   const answeredQuestions = Object.keys(answers).length;
   const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
 
     // Test adaptatif : ajuster le niveau selon la réponse
     if (currentQuestion && currentQuestion.options) {
-      const isCorrect = answer.toLowerCase().trim() === currentQuestion.correctAnswer?.toLowerCase().trim();
+      const isCorrect =
+        answer.toLowerCase().trim() === currentQuestion.correctAnswer?.toLowerCase().trim();
       if (currentSection?.adaptive) {
         if (isCorrect && currentQuestion.nextLevel) {
           // Augmenter le niveau si la réponse est correcte
@@ -173,10 +202,10 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
 
   const handleNext = () => {
     if (currentQuestion && currentQuestionIndex < availableQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else if (currentSectionIndex < testData!.sections.length - 1) {
       // Passer à la section suivante et réinitialiser le niveau si adaptatif
-      setCurrentSectionIndex(prev => prev + 1);
+      setCurrentSectionIndex((prev) => prev + 1);
       setCurrentQuestionIndex(0);
       const nextSection = testData!.sections[currentSectionIndex + 1];
       if (nextSection.initialLevel) {
@@ -189,12 +218,12 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
     } else if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(prev => prev - 1);
+      setCurrentSectionIndex((prev) => prev - 1);
       const prevSection = testData!.sections[currentSectionIndex - 1];
       const prevQuestions = prevSection.adaptive
-        ? prevSection.questions.filter(q => q.level === currentLevel)
+        ? prevSection.questions.filter((q) => q.level === currentLevel)
         : prevSection.questions;
       setCurrentQuestionIndex(prevQuestions.length - 1);
     }
@@ -208,8 +237,8 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     let writingScore = 0;
     let speakingScore = 0;
 
-    testData.sections.forEach(section => {
-      section.questions.forEach(question => {
+    testData.sections.forEach((section) => {
+      section.questions.forEach((question) => {
         const userAnswer = answers[question.id];
         if (question.type === "essay" || question.type === "speaking") {
           // Pour les questions d'essai/speaking, on donne une note basique
@@ -233,7 +262,13 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     });
 
     const totalScore = readingScore + listeningScore + writingScore + speakingScore;
-    const newScores = { reading: readingScore, listening: listeningScore, writing: writingScore, speaking: speakingScore, total: totalScore };
+    const newScores = {
+      reading: readingScore,
+      listening: listeningScore,
+      writing: writingScore,
+      speaking: speakingScore,
+      total: totalScore,
+    };
     setScores(newScores);
     setCompleted(true);
 
@@ -392,7 +427,8 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                   sx={{ fontSize: "2rem", height: "auto", py: 2, px: 3 }}
                 />
                 <Typography variant="h6" sx={{ mt: 2 }}>
-                  Total: {scores.total.toFixed(1)} / {testData.totalPoints} pts ({totalPercentage.toFixed(1)}%)
+                  Total: {scores.total.toFixed(1)} / {testData.totalPoints} pts (
+                  {totalPercentage.toFixed(1)}%)
                 </Typography>
               </CardContent>
             </Card>
@@ -408,11 +444,11 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     );
   }
 
-  const isAnswered = currentQuestion && (
-    currentQuestion.type === "essay" || currentQuestion.type === "speaking"
+  const isAnswered =
+    currentQuestion &&
+    (currentQuestion.type === "essay" || currentQuestion.type === "speaking"
       ? answers[currentQuestion.id] && answers[currentQuestion.id].length > 50
-      : answers[currentQuestion.id] !== undefined
-  );
+      : answers[currentQuestion.id] !== undefined);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -426,11 +462,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
               {testData.description}
             </Typography>
             {currentSection?.adaptive && (
-              <Chip
-                label={`Niveau actuel: ${currentLevel}`}
-                color="info"
-                sx={{ mt: 1 }}
-              />
+              <Chip label={`Niveau actuel: ${currentLevel}`} color="info" sx={{ mt: 1 }} />
             )}
           </Box>
 
@@ -464,9 +496,15 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                   <Chip
                     icon={
-                      currentSection?.type === "listening" ? <Headphones /> :
-                        currentSection?.type === "writing" ? <Edit /> :
-                          currentSection?.type === "speaking" ? <Mic /> : <MenuBook />
+                      currentSection?.type === "listening" ? (
+                        <Headphones />
+                      ) : currentSection?.type === "writing" ? (
+                        <Edit />
+                      ) : currentSection?.type === "speaking" ? (
+                        <Mic />
+                      ) : (
+                        <MenuBook />
+                      )
                     }
                     label={`Question ${currentQuestionIndex + 1} / ${availableQuestions.length}`}
                     color="primary"
@@ -556,8 +594,8 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                             borderColor: "grey.300",
                             borderRadius: 2,
                             "&:hover": {
-                              bgcolor: "grey.50"
-                            }
+                              bgcolor: "grey.50",
+                            },
                           }}
                         />
                       ))}
@@ -576,11 +614,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
             >
               Précédent
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={!isAnswered}
-            >
+            <Button variant="contained" onClick={handleNext} disabled={!isAnswered}>
               {answeredQuestions >= totalQuestions ? "Terminer le test" : "Suivant"}
             </Button>
           </Box>
@@ -589,4 +623,3 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     </Box>
   );
 };
-

@@ -15,7 +15,7 @@ import {
   getConversations,
   saveConversation,
   subscribeToProgress,
-  subscribeToTestResults
+  subscribeToTestResults,
 } from "../firebase/firestoreService";
 
 /**
@@ -74,7 +74,7 @@ export const useUserProfile = (userId: string | null) => {
     profile,
     loading,
     error,
-    updateProfile
+    updateProfile,
   };
 };
 
@@ -147,7 +147,7 @@ export const useProgress = (userId: string | null, realtime = false) => {
     progress,
     loading,
     error,
-    updateProgress
+    updateProgress,
   };
 };
 
@@ -175,10 +175,14 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
 
     if (realtime) {
       // Real-time subscription
-      const unsubscribe = subscribeToTestResults(userId, (data) => {
-        setTestResults(data);
-        setLoading(false);
-      }, limit);
+      const unsubscribe = subscribeToTestResults(
+        userId,
+        (data) => {
+          setTestResults(data);
+          setLoading(false);
+        },
+        limit
+      );
 
       return () => unsubscribe();
     } else {
@@ -221,7 +225,7 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
     testResults,
     loading,
     error,
-    addTestResult
+    addTestResult,
   };
 };
 
@@ -282,7 +286,7 @@ export const useConversations = (userId: string | null, limit = 20) => {
     conversations,
     loading,
     error,
-    addConversation
+    addConversation,
   };
 };
 
@@ -290,7 +294,7 @@ const useFirestoreHooks = {
   useUserProfile,
   useProgress,
   useTestResults,
-  useConversations
+  useConversations,
 };
 
 export default useFirestoreHooks;

@@ -70,7 +70,7 @@ class SpeechToTextService {
       blobSize: audioBlob.size,
       mimeType: audioBlob.type,
       lang,
-      sampleRate
+      sampleRate,
     });
 
     try {
@@ -84,14 +84,14 @@ class SpeechToTextService {
         audioContent,
         languageCode: lang,
         sampleRateHertz: sampleRate,
-        encoding
+        encoding,
       };
 
       console.log("[STT] Requête envoyée au backend:", {
         languageCode: lang,
         sampleRateHertz: sampleRate,
         encoding,
-        audioSize: audioContent.length
+        audioSize: audioContent.length,
       });
 
       const response = await fetch(this.apiEndpoint, {
@@ -111,14 +111,14 @@ class SpeechToTextService {
 
       console.log("[STT] Transcription réussie:", {
         transcript: data.transcript,
-        confidence: data.confidence
+        confidence: data.confidence,
       });
 
       return {
         success: true,
         transcript: data.transcript || "",
         confidence: data.confidence || 0,
-        words: data.words || []
+        words: data.words || [],
       };
     } catch (error) {
       console.error("[STT] Erreur lors de la transcription:", error);
@@ -126,7 +126,7 @@ class SpeechToTextService {
         success: false,
         transcript: "",
         confidence: 0,
-        error: error instanceof Error ? error.message : "Erreur inconnue"
+        error: error instanceof Error ? error.message : "Erreur inconnue",
       };
     }
   }
@@ -156,7 +156,7 @@ class SpeechToTextService {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "audio/webm;codecs=opus"
+        mimeType: "audio/webm;codecs=opus",
       });
 
       const audioChunks: Blob[] = [];
@@ -170,12 +170,12 @@ class SpeechToTextService {
 
         mediaRecorder.onstop = () => {
           const audioBlob = new Blob(audioChunks, { type: "audio/webm;codecs=opus" });
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().forEach((track) => track.stop());
           resolve(audioBlob);
         };
 
         mediaRecorder.onerror = (event) => {
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().forEach((track) => track.stop());
           reject(event);
         };
 

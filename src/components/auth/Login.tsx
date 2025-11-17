@@ -6,8 +6,17 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, TextField, Button, Typography,
-  Alert, Link, InputAdornment, IconButton, CircularProgress
+  Box,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Link,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import { loginUser } from "../../firebase/authService";
@@ -18,7 +27,11 @@ interface LoginProps {
   onSwitchToForgotPassword: () => void;
 }
 
-export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwitchToForgotPassword }) => {
+export const Login: React.FC<LoginProps> = ({
+  onSuccess,
+  onSwitchToSignup,
+  onSwitchToForgotPassword,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +57,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
           currentLevel: "B1", // Niveau par défaut
           targetLevel: "C1",
           createdAt: new Date().toISOString(),
-          lastLogin: new Date().toISOString()
+          lastLogin: new Date().toISOString(),
         };
 
         // Utiliser l'ID token Firebase comme token
@@ -52,11 +65,14 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
 
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem("firebaseUser", JSON.stringify({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName
-        }));
+        localStorage.setItem(
+          "firebaseUser",
+          JSON.stringify({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+          })
+        );
 
         onSuccess(token, userData);
       } else {
@@ -70,29 +86,30 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-        case "auth/user-not-found":
-          errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
-          break;
-        case "auth/wrong-password":
-          errorMessage = "Mot de passe incorrect.";
-          break;
-        case "auth/invalid-credential":
-          errorMessage = "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.";
-          break;
-        case "auth/invalid-email":
-          errorMessage = "Adresse email invalide.";
-          break;
-        case "auth/user-disabled":
-          errorMessage = "Ce compte a été désactivé.";
-          break;
-        case "auth/too-many-requests":
-          errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
-          break;
-        case "auth/network-request-failed":
-          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-          break;
-        default:
-          errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
+          case "auth/user-not-found":
+            errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
+            break;
+          case "auth/wrong-password":
+            errorMessage = "Mot de passe incorrect.";
+            break;
+          case "auth/invalid-credential":
+            errorMessage =
+              "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Adresse email invalide.";
+            break;
+          case "auth/user-disabled":
+            errorMessage = "Ce compte a été désactivé.";
+            break;
+          case "auth/too-many-requests":
+            errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+            break;
+          default:
+            errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;
@@ -111,7 +128,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        bgcolor: "grey.100"
+        bgcolor: "grey.100",
       }}
     >
       <Card sx={{ maxWidth: 450, width: "100%", m: 2 }}>
@@ -144,7 +161,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
                   <InputAdornment position="start">
                     <Email />
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -165,14 +182,11 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -216,4 +230,3 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup, onSwi
     </Box>
   );
 };
-

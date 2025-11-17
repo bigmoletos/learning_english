@@ -14,7 +14,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
-  User
+  User,
 } from "firebase/auth";
 import { auth } from "./config";
 
@@ -32,7 +32,11 @@ interface AuthResult {
  * @param displayName - User display name
  * @returns User credential
  */
-export const registerUser = async (email: string, password: string, displayName: string): Promise<AuthResult> => {
+export const registerUser = async (
+  email: string,
+  password: string,
+  displayName: string
+): Promise<AuthResult> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -47,14 +51,14 @@ export const registerUser = async (email: string, password: string, displayName:
     return {
       success: true,
       user: userCredential.user,
-      message: "Registration successful. Please check your email for verification."
+      message: "Registration successful. Please check your email for verification.",
     };
   } catch (error: any) {
     console.error("Registration error:", error);
     return {
       success: false,
       error: error.code,
-      message: getAuthErrorMessage(error.code)
+      message: getAuthErrorMessage(error.code),
     };
   }
 };
@@ -70,14 +74,14 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return {
       success: true,
-      user: userCredential.user
+      user: userCredential.user,
     };
   } catch (error: any) {
     console.error("Login error:", error);
     return {
       success: false,
       error: error.code,
-      message: getAuthErrorMessage(error.code)
+      message: getAuthErrorMessage(error.code),
     };
   }
 };
@@ -91,14 +95,14 @@ export const logoutUser = async (): Promise<AuthResult> => {
     await signOut(auth);
     return {
       success: true,
-      message: "Logout successful"
+      message: "Logout successful",
     };
   } catch (error: any) {
     console.error("Logout error:", error);
     return {
       success: false,
       error: error.code,
-      message: getAuthErrorMessage(error.code)
+      message: getAuthErrorMessage(error.code),
     };
   }
 };
@@ -113,14 +117,14 @@ export const resetPassword = async (email: string): Promise<AuthResult> => {
     await sendPasswordResetEmail(auth, email);
     return {
       success: true,
-      message: "Password reset email sent. Please check your inbox."
+      message: "Password reset email sent. Please check your inbox.",
     };
   } catch (error: any) {
     console.error("Password reset error:", error);
     return {
       success: false,
       error: error.code,
-      message: getAuthErrorMessage(error.code)
+      message: getAuthErrorMessage(error.code),
     };
   }
 };
@@ -135,14 +139,14 @@ export const signInWithGoogle = async (): Promise<AuthResult> => {
     const userCredential = await signInWithPopup(auth, provider);
     return {
       success: true,
-      user: userCredential.user
+      user: userCredential.user,
     };
   } catch (error: any) {
     console.error("Google sign-in error:", error);
     return {
       success: false,
       error: error.code,
-      message: getAuthErrorMessage(error.code)
+      message: getAuthErrorMessage(error.code),
     };
   }
 };
@@ -181,7 +185,7 @@ const getAuthErrorMessage = (errorCode: string): string => {
     "auth/too-many-requests": "Too many failed attempts. Please try again later.",
     "auth/network-request-failed": "Network error. Please check your connection.",
     "auth/popup-closed-by-user": "Sign-in popup was closed before completion.",
-    "auth/cancelled-popup-request": "Only one popup request is allowed at a time."
+    "auth/cancelled-popup-request": "Only one popup request is allowed at a time.",
   };
 
   return errorMessages[errorCode] || "An error occurred. Please try again.";
@@ -194,7 +198,7 @@ const authService = {
   resetPassword,
   signInWithGoogle,
   getCurrentUser,
-  onAuthStateChange
+  onAuthStateChange,
 };
 
 export default authService;

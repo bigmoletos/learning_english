@@ -38,8 +38,7 @@ interface SpeakingExerciseData {
 export const SpeakingExerciseList: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState<LanguageLevel>("B1");
   const [exercises, setExercises] = useState<SpeakingExerciseData[]>([]);
-  const [selectedExercise, setSelectedExercise] =
-    useState<SpeakingExerciseData | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<SpeakingExerciseData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,10 +84,7 @@ export const SpeakingExerciseList: React.FC = () => {
     loadExercises(selectedLevel);
   }, [selectedLevel]);
 
-  const handleLevelChange = (
-    _event: React.SyntheticEvent,
-    newValue: LanguageLevel
-  ) => {
+  const handleLevelChange = (_event: React.SyntheticEvent, newValue: LanguageLevel) => {
     setSelectedLevel(newValue);
     setSelectedExercise(null);
   };
@@ -105,17 +101,10 @@ export const SpeakingExerciseList: React.FC = () => {
   if (selectedExercise) {
     return (
       <Box>
-        <Button
-          onClick={() => setSelectedExercise(null)}
-          sx={{ mb: 2 }}
-          variant="outlined"
-        >
+        <Button onClick={() => setSelectedExercise(null)} sx={{ mb: 2 }} variant="outlined">
           ← Retour à la liste
         </Button>
-        <SpeakingExercise
-          exercise={selectedExercise}
-          onComplete={handleExerciseComplete}
-        />
+        <SpeakingExercise exercise={selectedExercise} onComplete={handleExerciseComplete} />
       </Box>
     );
   }
@@ -126,8 +115,8 @@ export const SpeakingExerciseList: React.FC = () => {
         Exercices de Speaking
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph>
-        Pratiquez votre expression orale avec des exercices adaptés à votre
-        niveau. L'agent IA analysera votre prononciation, grammaire et fluidité.
+        Pratiquez votre expression orale avec des exercices adaptés à votre niveau. L'agent IA
+        analysera votre prononciation, grammaire et fluidité.
       </Typography>
 
       {/* Sélecteur de niveau */}
@@ -158,8 +147,7 @@ export const SpeakingExerciseList: React.FC = () => {
         </Box>
       ) : exercises.length === 0 ? (
         <Alert severity="info">
-          Aucun exercice disponible pour le niveau {selectedLevel}. Veuillez
-          réessayer plus tard.
+          Aucun exercice disponible pour le niveau {selectedLevel}. Veuillez réessayer plus tard.
         </Alert>
       ) : (
         <Grid container spacing={3}>
@@ -191,25 +179,12 @@ export const SpeakingExerciseList: React.FC = () => {
                     <Typography variant="h6" component="h3">
                       {exercise.title}
                     </Typography>
-                    <Chip
-                      label={exercise.level}
-                      color="primary"
-                      size="small"
-                    />
+                    <Chip label={exercise.level} color="primary" size="small" />
                   </Box>
 
                   <Box sx={{ mb: 2 }}>
-                    <Chip
-                      label={exercise.type}
-                      size="small"
-                      color="secondary"
-                      sx={{ mr: 1 }}
-                    />
-                    <Chip
-                      label={`${exercise.duration}s`}
-                      size="small"
-                      variant="outlined"
-                    />
+                    <Chip label={exercise.type} size="small" color="secondary" sx={{ mr: 1 }} />
+                    <Chip label={`${exercise.duration}s`} size="small" variant="outlined" />
                   </Box>
 
                   <Typography variant="body2" color="text.secondary" paragraph>
@@ -230,12 +205,7 @@ export const SpeakingExerciseList: React.FC = () => {
                     </Box>
                   )}
 
-                  <Button
-                    variant="contained"
-                    startIcon={<Mic />}
-                    fullWidth
-                    sx={{ mt: 2 }}
-                  >
+                  <Button variant="contained" startIcon={<Mic />} fullWidth sx={{ mt: 2 }}>
                     Commencer l'exercice
                   </Button>
                 </CardContent>
@@ -247,4 +217,3 @@ export const SpeakingExerciseList: React.FC = () => {
     </Box>
   );
 };
-

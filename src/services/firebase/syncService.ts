@@ -61,7 +61,7 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
   console.log("🔄 [syncUser] Début synchronisation utilisateur:", {
     userId: user.id,
     email: (user as any).email || "non défini",
-    name: user.name
+    name: user.name,
   });
 
   try {
@@ -69,7 +69,7 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
     console.log("💾 [syncUser] Sauvegarde locale...");
     await storageService.setMultiple({
       [StorageKeys.USER]: user,
-      [StorageKeys.USER_PROFILE]: user
+      [StorageKeys.USER_PROFILE]: user,
     });
     console.log("✅ [syncUser] Sauvegarde locale réussie");
 
@@ -79,7 +79,7 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
       type: "user",
       action: "create",
       data: user,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
     console.log("✅ [syncUser] Ajouté à la queue");
 
@@ -92,10 +92,12 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
 
     console.log("🔍 [syncUser] Vérification UID...", {
       authUid: auth.currentUser.uid,
-      userUid: user.id
+      userUid: user.id,
     });
     if (auth.currentUser.uid !== user.id) {
-      console.warn(`⚠️ [syncUser] UID mismatch: auth.uid=${auth.currentUser.uid}, user.id=${user.id}. Synchronisation reportée.`);
+      console.warn(
+        `⚠️ [syncUser] UID mismatch: auth.uid=${auth.currentUser.uid}, user.id=${user.id}. Synchronisation reportée.`
+      );
       return;
     }
 
@@ -120,7 +122,7 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
         userId: user.id,
         authUid: auth.currentUser?.uid,
         email: (user as any).email,
-        errorDetails: error
+        errorDetails: error,
       });
       // Les données restent dans le stockage local et seront synchronisées plus tard via la queue
     }
@@ -129,7 +131,7 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
       message: error.message,
       stack: error.stack,
       userId: user.id,
-      error: error
+      error: error,
     });
     throw error;
   }
@@ -138,7 +140,10 @@ export const syncUser = async (user: UserProfile): Promise<void> => {
 /**
  * Met à jour l'utilisateur localement et le synchronise avec Firestore
  */
-export const syncUserUpdate = async (userId: string, updates: Partial<UserProfile>): Promise<void> => {
+export const syncUserUpdate = async (
+  userId: string,
+  updates: Partial<UserProfile>
+): Promise<void> => {
   try {
     // Mettre à jour localement dans le service de stockage unifié
     const user = await storageService.get<UserProfile>(StorageKeys.USER);
@@ -146,7 +151,7 @@ export const syncUserUpdate = async (userId: string, updates: Partial<UserProfil
       const updatedUser = { ...user, ...updates };
       await storageService.setMultiple({
         [StorageKeys.USER]: updatedUser,
-        [StorageKeys.USER_PROFILE]: updatedUser
+        [StorageKeys.USER_PROFILE]: updatedUser,
       });
     }
 
@@ -155,7 +160,7 @@ export const syncUserUpdate = async (userId: string, updates: Partial<UserProfil
       type: "user",
       action: "update",
       data: { userId, updates },
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
@@ -164,9 +169,14 @@ export const syncUserUpdate = async (userId: string, updates: Partial<UserProfil
     } catch (error: any) {
       // Ignorer les erreurs d'authentification
       if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
-        console.debug("Synchronisation mise à jour utilisateur reportée (utilisateur non authentifié)");
+        console.debug(
+          "Synchronisation mise à jour utilisateur reportée (utilisateur non authentifié)"
+        );
       } else {
-        console.warn("Erreur lors de la synchronisation mise à jour utilisateur avec Firestore:", error);
+        console.warn(
+          "Erreur lors de la synchronisation mise à jour utilisateur avec Firestore:",
+          error
+        );
       }
     }
   } catch (error) {
@@ -188,7 +198,7 @@ export const syncProgress = async (
 ): Promise<void> => {
   try {
     // Sauvegarder localement dans le service de stockage unifié
-    const responses = await storageService.get<UserResponse[]>(StorageKeys.USER_RESPONSES) || [];
+    const responses = (await storageService.get<UserResponse[]>(StorageKeys.USER_RESPONSES)) || [];
     responses.push(progress);
     await storageService.set(StorageKeys.USER_RESPONSES, responses);
 
@@ -197,19 +207,12 @@ export const syncProgress = async (
       type: "progress",
       action: "create",
       data: { userId, progress, exerciseId, exerciseType, level, domain },
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
     try {
-      await saveProgress(
-        userId,
-        progress,
-        exerciseId,
-        exerciseType as any,
-        level as any,
-        domain
-      );
+      await saveProgress(userId, progress, exerciseId, exerciseType as any, level as any, domain);
     } catch (error: any) {
       // Ignorer les erreurs d'authentification
       if (error.message?.includes("non authentifié") || error.code === "permission-denied") {
@@ -231,13 +234,14 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
   try {
     // Sauvegarder localement selon le type dans le service de stockage unifié
     const testType = assessmentData.testType || assessmentData.assessmentType;
-    const storageKey = testType === "efset"
-      ? StorageKeys.EFSET_RESULTS
-      : testType === "toeic"
-        ? StorageKeys.TOEIC_RESULTS
-        : testType === "toefl"
-          ? StorageKeys.TOEFL_RESULTS
-          : `${testType}Results`;
+    const storageKey =
+      testType === "efset"
+        ? StorageKeys.EFSET_RESULTS
+        : testType === "toeic"
+          ? StorageKeys.TOEIC_RESULTS
+          : testType === "toefl"
+            ? StorageKeys.TOEFL_RESULTS
+            : `${testType}Results`;
 
     await storageService.set(storageKey, assessmentData);
 
@@ -246,7 +250,7 @@ export const syncAssessment = async (assessmentData: any): Promise<void> => {
       type: "assessment",
       action: "create",
       data: assessmentData,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // Synchroniser immédiatement si Firebase est disponible et utilisateur authentifié
@@ -279,7 +283,7 @@ export const processSyncQueue = async (): Promise<void> => {
   }
 
   console.log("🔍 [processSyncQueue] Récupération de la queue...", {
-    authUid: auth.currentUser.uid
+    authUid: auth.currentUser.uid,
   });
   const queue = await getSyncQueue();
   console.log(`📋 [processSyncQueue] Queue récupérée: ${queue.length} élément(s)`);
@@ -297,46 +301,48 @@ export const processSyncQueue = async (): Promise<void> => {
     console.log("🔄 [processSyncQueue] Traitement élément:", {
       type: item.type,
       action: item.action,
-      timestamp: item.timestamp
+      timestamp: item.timestamp,
     });
 
     try {
       switch (item.type) {
-      case "user":
-        console.log("👤 [processSyncQueue] Synchronisation utilisateur...");
-        if (item.action === "create") {
-          await saveUser(item.data);
-          console.log("✅ [processSyncQueue] Utilisateur créé");
-        } else if (item.action === "update") {
-          await updateUser(item.data.userId, item.data.updates);
-          console.log("✅ [processSyncQueue] Utilisateur mis à jour");
-        }
-        break;
-      case "progress":
-        console.log("📊 [processSyncQueue] Synchronisation progression...");
-        if (item.action === "create") {
-          await saveProgress(
-            item.data.userId,
-            item.data.progress,
-            item.data.exerciseId,
-            item.data.exerciseType,
-            item.data.level,
-            item.data.domain
-          );
-          console.log("✅ [processSyncQueue] Progression sauvegardée");
-        }
-        break;
-      case "assessment":
-        console.log("📝 [processSyncQueue] Synchronisation évaluation...");
-        if (item.action === "create") {
-          await saveAssessment(item.data);
-          console.log("✅ [processSyncQueue] Évaluation sauvegardée");
-        }
-        break;
+        case "user":
+          console.log("👤 [processSyncQueue] Synchronisation utilisateur...");
+          if (item.action === "create") {
+            await saveUser(item.data);
+            console.log("✅ [processSyncQueue] Utilisateur créé");
+          } else if (item.action === "update") {
+            await updateUser(item.data.userId, item.data.updates);
+            console.log("✅ [processSyncQueue] Utilisateur mis à jour");
+          }
+          break;
+        case "progress":
+          console.log("📊 [processSyncQueue] Synchronisation progression...");
+          if (item.action === "create") {
+            await saveProgress(
+              item.data.userId,
+              item.data.progress,
+              item.data.exerciseId,
+              item.data.exerciseType,
+              item.data.level,
+              item.data.domain
+            );
+            console.log("✅ [processSyncQueue] Progression sauvegardée");
+          }
+          break;
+        case "assessment":
+          console.log("📝 [processSyncQueue] Synchronisation évaluation...");
+          if (item.action === "create") {
+            await saveAssessment(item.data);
+            console.log("✅ [processSyncQueue] Évaluation sauvegardée");
+          }
+          break;
       }
       processed.push(item.timestamp);
       successCount++;
-      console.log(`✅ [processSyncQueue] Élément traité avec succès (${successCount}/${queue.length})`);
+      console.log(
+        `✅ [processSyncQueue] Élément traité avec succès (${successCount}/${queue.length})`
+      );
     } catch (error: any) {
       errorCount++;
       console.error("❌ [processSyncQueue] Erreur lors du traitement de l'élément:", {
@@ -346,13 +352,19 @@ export const processSyncQueue = async (): Promise<void> => {
         code: error.code,
         message: error.message,
         stack: error.stack,
-        error: error
+        error: error,
       });
 
       // Si c'est une erreur d'authentification/permission, garder dans la queue
-      if (error.code === "permission-denied" || error.code === "unauthenticated" ||
-          error.message?.includes("permission") || error.message?.includes("authenticated")) {
-        console.warn("⚠️ [processSyncQueue] Erreur d'authentification. L'élément reste dans la queue.");
+      if (
+        error.code === "permission-denied" ||
+        error.code === "unauthenticated" ||
+        error.message?.includes("permission") ||
+        error.message?.includes("authenticated")
+      ) {
+        console.warn(
+          "⚠️ [processSyncQueue] Erreur d'authentification. L'élément reste dans la queue."
+        );
         continue;
       }
       // Garder l'élément dans la queue pour réessayer plus tard
@@ -360,18 +372,24 @@ export const processSyncQueue = async (): Promise<void> => {
     }
   }
 
-  console.log(`📊 [processSyncQueue] Traitement terminé: ${successCount} succès, ${errorCount} erreurs`);
+  console.log(
+    `📊 [processSyncQueue] Traitement terminé: ${successCount} succès, ${errorCount} erreurs`
+  );
 
   // Retirer les éléments traités de la queue
   if (processed.length > 0) {
-    console.log(`🧹 [processSyncQueue] Nettoyage de la queue: ${processed.length} élément(s) traité(s)`);
-    const remainingQueue = queue.filter(item => !processed.includes(item.timestamp));
+    console.log(
+      `🧹 [processSyncQueue] Nettoyage de la queue: ${processed.length} élément(s) traité(s)`
+    );
+    const remainingQueue = queue.filter((item) => !processed.includes(item.timestamp));
     if (remainingQueue.length === 0) {
       await clearSyncQueue();
       console.log("✅ [processSyncQueue] Queue vidée");
     } else {
       await storageService.set(StorageKeys.SYNC_QUEUE, remainingQueue);
-      console.log(`✅ [processSyncQueue] Queue mise à jour: ${remainingQueue.length} élément(s) restant(s)`);
+      console.log(
+        `✅ [processSyncQueue] Queue mise à jour: ${remainingQueue.length} élément(s) restant(s)`
+      );
     }
   } else {
     console.log("ℹ️ [processSyncQueue] Aucun élément traité, queue inchangée");
@@ -380,14 +398,18 @@ export const processSyncQueue = async (): Promise<void> => {
   // Marquer la dernière synchronisation
   const syncTime = Date.now();
   await storageService.set(StorageKeys.LAST_SYNC, syncTime);
-  console.log(`✅ [processSyncQueue] Dernière synchronisation marquée: ${new Date(syncTime).toISOString()}`);
+  console.log(
+    `✅ [processSyncQueue] Dernière synchronisation marquée: ${new Date(syncTime).toISOString()}`
+  );
 };
 
 /**
  * Synchronise toutes les données depuis Firestore vers le service de stockage
  */
 export const syncFromFirestore = async (userId: string): Promise<void> => {
-  console.log(`🔄 [syncFromFirestore] Début synchronisation depuis Firestore pour userId: ${userId}`);
+  console.log(
+    `🔄 [syncFromFirestore] Début synchronisation depuis Firestore pour userId: ${userId}`
+  );
 
   // Vérifier que l'utilisateur est authentifié
   if (!auth.currentUser) {
@@ -396,7 +418,9 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
   }
 
   if (auth.currentUser.uid !== userId) {
-    console.warn(`⚠️ [syncFromFirestore] UID mismatch: auth.uid=${auth.currentUser.uid}, userId=${userId}. Synchronisation annulée.`);
+    console.warn(
+      `⚠️ [syncFromFirestore] UID mismatch: auth.uid=${auth.currentUser.uid}, userId=${userId}. Synchronisation annulée.`
+    );
     return;
   }
 
@@ -408,11 +432,11 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
       console.log("✅ [syncFromFirestore] Utilisateur récupéré:", {
         id: user.id,
         name: user.name,
-        level: user.currentLevel
+        level: user.currentLevel,
       });
       await storageService.setMultiple({
         [StorageKeys.USER]: user,
-        [StorageKeys.USER_PROFILE]: user
+        [StorageKeys.USER_PROFILE]: user,
       });
       console.log("✅ [syncFromFirestore] Utilisateur sauvegardé localement");
     } else {
@@ -433,15 +457,16 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
     const assessments = await getUserAssessments(userId);
     console.log(`📝 [syncFromFirestore] ${assessments.length} évaluation(s) récupérée(s)`);
     const assessmentUpdates: Record<string, any> = {};
-    assessments.forEach(assessment => {
+    assessments.forEach((assessment) => {
       const testType = assessment.testType || assessment.assessmentType;
-      const storageKey = testType === "efset"
-        ? StorageKeys.EFSET_RESULTS
-        : testType === "toeic"
-          ? StorageKeys.TOEIC_RESULTS
-          : testType === "toefl"
-            ? StorageKeys.TOEFL_RESULTS
-            : `${testType}Results`;
+      const storageKey =
+        testType === "efset"
+          ? StorageKeys.EFSET_RESULTS
+          : testType === "toeic"
+            ? StorageKeys.TOEIC_RESULTS
+            : testType === "toefl"
+              ? StorageKeys.TOEFL_RESULTS
+              : `${testType}Results`;
       assessmentUpdates[storageKey] = assessment;
     });
     if (Object.keys(assessmentUpdates).length > 0) {
@@ -452,7 +477,9 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
     // Marquer la dernière synchronisation
     const syncTime = Date.now();
     await storageService.set(StorageKeys.LAST_SYNC, syncTime);
-    console.log(`✅ [syncFromFirestore] Synchronisation terminée à ${new Date(syncTime).toISOString()}`);
+    console.log(
+      `✅ [syncFromFirestore] Synchronisation terminée à ${new Date(syncTime).toISOString()}`
+    );
   } catch (error: any) {
     console.error("❌ [syncFromFirestore] Erreur lors de la synchronisation depuis Firestore:", {
       code: error.code,
@@ -460,12 +487,16 @@ export const syncFromFirestore = async (userId: string): Promise<void> => {
       stack: error.stack,
       userId: userId,
       authUid: auth.currentUser?.uid,
-      error: error
+      error: error,
     });
 
     // Gérer silencieusement les erreurs offline ou réseau
-    if (error.code === "unavailable" || error.code === "failed-precondition" ||
-        error.message?.includes("offline") || error.message?.includes("network")) {
+    if (
+      error.code === "unavailable" ||
+      error.code === "failed-precondition" ||
+      error.message?.includes("offline") ||
+      error.message?.includes("network")
+    ) {
       console.warn("⚠️ [syncFromFirestore] Client offline. Synchronisation reportée.");
       return;
     }
@@ -489,9 +520,9 @@ export const needsSync = async (): Promise<boolean> => {
 /**
  * Démarre la synchronisation automatique périodique
  */
-export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL): () => void => {
+export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL): (() => void) => {
   console.log(`🔄 [startAutoSync] Démarrage synchronisation automatique pour userId: ${userId}`, {
-    interval: interval / 1000 + "s"
+    interval: interval / 1000 + "s",
   });
 
   const syncInterval = setInterval(async () => {
@@ -505,7 +536,9 @@ export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL):
       }
 
       if (auth.currentUser.uid !== userId) {
-        console.warn(`⚠️ [startAutoSync] UID mismatch: auth.uid=${auth.currentUser.uid}, userId=${userId}. Synchronisation annulée.`);
+        console.warn(
+          `⚠️ [startAutoSync] UID mismatch: auth.uid=${auth.currentUser.uid}, userId=${userId}. Synchronisation annulée.`
+        );
         return;
       }
 
@@ -531,7 +564,7 @@ export const startAutoSync = (userId: string, interval: number = SYNC_INTERVAL):
         stack: error.stack,
         userId: userId,
         authUid: auth.currentUser?.uid,
-        error: error
+        error: error,
       });
     }
   }, interval);
@@ -549,10 +582,3 @@ export const forceSync = async (userId: string): Promise<void> => {
   await processSyncQueue();
   await syncFromFirestore(userId);
 };
-
-
-
-
-
-
-

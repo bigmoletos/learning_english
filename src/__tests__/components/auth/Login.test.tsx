@@ -21,7 +21,7 @@ describe("Login Component", () => {
   const defaultProps = {
     onSuccess: mockOnSuccess,
     onSwitchToSignup: mockOnSwitchToSignup,
-    onSwitchToForgotPassword: mockOnSwitchToForgotPassword
+    onSwitchToForgotPassword: mockOnSwitchToForgotPassword,
   };
 
   beforeEach(() => {
@@ -136,9 +136,9 @@ describe("Login Component", () => {
             id: "user-123",
             email: "test@example.com",
             firstName: "Test",
-            lastName: "User"
-          }
-        }
+            lastName: "User",
+          },
+        },
       };
 
       mockedAxios.post.mockResolvedValue(mockResponse);
@@ -154,13 +154,10 @@ describe("Login Component", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockedAxios.post).toHaveBeenCalledWith(
-          expect.stringContaining("/api/auth/login"),
-          {
-            email: "test@example.com",
-            password: "password123"
-          }
-        );
+        expect(mockedAxios.post).toHaveBeenCalledWith(expect.stringContaining("/api/auth/login"), {
+          email: "test@example.com",
+          password: "password123",
+        });
       });
 
       expect(localStorage.getItem("token")).toBe("test-token-123");
@@ -196,8 +193,8 @@ describe("Login Component", () => {
         data: {
           success: true,
           token: "token",
-          user: { id: "1", email: "test@example.com" }
-        }
+          user: { id: "1", email: "test@example.com" },
+        },
       });
 
       await waitFor(() => {
@@ -212,9 +209,9 @@ describe("Login Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Email ou mot de passe incorrect"
-          }
-        }
+            message: "Email ou mot de passe incorrect",
+          },
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -240,9 +237,9 @@ describe("Login Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Email invalide"
-          }
-        }
+            message: "Email invalide",
+          },
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -265,9 +262,9 @@ describe("Login Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            message: "Ce compte a ete desactive"
-          }
-        }
+            message: "Ce compte a ete desactive",
+          },
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -290,11 +287,9 @@ describe("Login Component", () => {
       mockedAxios.post.mockRejectedValue({
         response: {
           data: {
-            errors: [
-              { msg: "Invalid email format" }
-            ]
-          }
-        }
+            errors: [{ msg: "Invalid email format" }],
+          },
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -315,7 +310,7 @@ describe("Login Component", () => {
     it("should handle network errors", async () => {
       const user = userEvent.setup();
       mockedAxios.post.mockRejectedValue({
-        message: "Network Error"
+        message: "Network Error",
       });
 
       render(<Login {...defaultProps} />);
@@ -338,8 +333,8 @@ describe("Login Component", () => {
       mockedAxios.post.mockResolvedValue({
         data: {
           success: false,
-          message: "Authentication failed"
-        }
+          message: "Authentication failed",
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -367,8 +362,8 @@ describe("Login Component", () => {
       // First submission with error
       mockedAxios.post.mockRejectedValueOnce({
         response: {
-          data: { message: "Wrong password" }
-        }
+          data: { message: "Wrong password" },
+        },
       });
 
       render(<Login {...defaultProps} />);
@@ -390,8 +385,8 @@ describe("Login Component", () => {
         data: {
           success: true,
           token: "token",
-          user: { id: "1", email: "test@example.com" }
-        }
+          user: { id: "1", email: "test@example.com" },
+        },
       });
 
       await user.clear(passwordInput);
@@ -418,8 +413,8 @@ describe("Login Component", () => {
         data: {
           success: true,
           token: "token",
-          user: { id: "1", email: "test@example.com" }
-        }
+          user: { id: "1", email: "test@example.com" },
+        },
       });
 
       render(<Login {...defaultProps} />);

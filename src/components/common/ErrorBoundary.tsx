@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.state = {
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
     };
   }
 
@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return {
       hasError: true,
       error,
-      errorInfo: null
+      errorInfo: null,
     };
   }
 
@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
 
     // Sur mobile, essayer d'afficher une alerte native si disponible
@@ -73,7 +73,7 @@ export class ErrorBoundary extends Component<Props, State> {
             justifyContent: "center",
             minHeight: "100vh",
             p: 3,
-            bgcolor: "#f5f5f5"
+            bgcolor: "#f5f5f5",
           }}
         >
           <Paper
@@ -81,14 +81,14 @@ export class ErrorBoundary extends Component<Props, State> {
             sx={{
               p: 4,
               maxWidth: 600,
-              textAlign: "center"
+              textAlign: "center",
             }}
           >
             <ErrorIcon
               sx={{
                 fontSize: 64,
                 color: "error.main",
-                mb: 2
+                mb: 2,
               }}
             />
 
@@ -109,7 +109,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   bgcolor: "#fff3f3",
                   textAlign: "left",
                   maxHeight: 200,
-                  overflow: "auto"
+                  overflow: "auto",
                 }}
               >
                 <Typography variant="caption" component="pre" sx={{ whiteSpace: "pre-wrap" }}>
@@ -119,12 +119,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </Paper>
             )}
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleReload}
-              size="large"
-            >
+            <Button variant="contained" color="primary" onClick={this.handleReload} size="large">
               Recharger l&apos;application
             </Button>
           </Paper>
@@ -135,4 +130,3 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
-

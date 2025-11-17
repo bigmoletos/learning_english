@@ -6,10 +6,25 @@
 
 import React from "react";
 import {
-  Box, Grid, Card, CardContent, Typography, LinearProgress, Chip, Button, Alert
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  LinearProgress,
+  Chip,
+  Button,
+  Alert,
 } from "@mui/material";
 import {
-  TrendingUp, School, Timer, EmojiEvents, MenuBook, Psychology, Refresh, Assessment
+  TrendingUp,
+  School,
+  Timer,
+  EmojiEvents,
+  MenuBook,
+  Psychology,
+  Refresh,
+  Assessment,
 } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 
@@ -42,20 +57,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
       <Alert
         severity="info"
         action={
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={<Refresh />}
-            onClick={onStartAssessment}
-          >
+          <Button color="inherit" size="small" startIcon={<Refresh />} onClick={onStartAssessment}>
             Refaire
           </Button>
         }
         sx={{ mb: 3 }}
       >
         <Typography variant="body2">
-          <strong>Conseil :</strong> Vous pouvez refaire l'évaluation de niveau à tout moment 
-          pour ajuster votre programme d'apprentissage en fonction de vos progrès.
+          <strong>Conseil :</strong> Vous pouvez refaire l'évaluation de niveau à tout moment pour
+          ajuster votre programme d'apprentissage en fonction de vos progrès.
         </Typography>
       </Alert>
 
@@ -142,8 +152,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
                 <Typography variant="h6">Exercices</Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" paragraph>
-                Accédez à plus de 400 exercices (QCM et textes à trous) pour pratiquer 
-                votre anglais technique dans les domaines IT, IA, DevOps et Cybersécurité.
+                Accédez à plus de 400 exercices (QCM et textes à trous) pour pratiquer votre anglais
+                technique dans les domaines IT, IA, DevOps et Cybersécurité.
               </Typography>
               <Button
                 variant="contained"
@@ -167,8 +177,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
                 <Typography variant="h6">Évaluation de niveau</Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" paragraph>
-                Refaites l'évaluation complète (18 questions - Listening, Reading, Writing) 
-                pour mettre à jour votre niveau et adapter votre programme.
+                Refaites l'évaluation complète (18 questions - Listening, Reading, Writing) pour
+                mettre à jour votre niveau et adapter votre programme.
               </Typography>
               <Button
                 variant="outlined"
@@ -191,8 +201,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartAssessment, onNavig
                 <Typography variant="h6">Programme adaptatif</Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" paragraph>
-                Consultez votre programme d'apprentissage personnalisé qui s'adapte 
-                automatiquement en fonction de vos performances et points faibles.
+                Consultez votre programme d'apprentissage personnalisé qui s'adapte automatiquement
+                en fonction de vos performances et points faibles.
               </Typography>
               <Button
                 variant="contained"

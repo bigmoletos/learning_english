@@ -12,7 +12,7 @@ import {
   logoutUser,
   resetPassword,
   signInWithGoogle,
-  onAuthStateChange
+  onAuthStateChange,
 } from "../firebase/authService";
 
 /**
@@ -148,7 +148,7 @@ export const useFirebaseAuth = () => {
     resetPassword: resetPass,
     signInWithGoogle: googleSignIn,
     clearError,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
   };
 };
 

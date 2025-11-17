@@ -109,4 +109,3 @@ export interface ProgressStats {
   levelProgress: { [key in LanguageLevel]?: number };
   domainProgress: { [key in TechnicalDomain]?: number };
 }
-
