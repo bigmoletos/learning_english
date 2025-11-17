@@ -9,14 +9,12 @@ import React, { useState, useEffect } from "react";
 import {
   Box, Card, CardContent, Typography, Button, Radio, RadioGroup,
   FormControlLabel, FormControl, LinearProgress, Alert, Stepper,
-  Step, StepLabel, Chip, Grid, TextField, Divider
+  Step, StepLabel, Chip, Grid, TextField
 } from "@mui/material";
 import { Headphones, MenuBook, Edit, Mic, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
 import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
-import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
-import { generateComprehensionAnalysis } from "../../utils/comprehensionAnalysis";
 
 interface EFSETTestData {
   id: string;
@@ -84,12 +82,10 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
     total: 0
   });
   const [completed, setCompleted] = useState(false);
-  const [showAnalysis, setShowAnalysis] = useState(false);
   const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
   const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
-  const { addResponse } = useUser();
 
   useEffect(() => {
     const loadTestData = async () => {

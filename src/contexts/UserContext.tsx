@@ -55,7 +55,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     firebaseAuth.user?.uid || null,
     true // Enable real-time updates
   );
-  const { testResults, addTestResult } = useTestResults(
+  const { addTestResult } = useTestResults(
     firebaseAuth.user?.uid || null,
     20,
     true // Enable real-time updates
@@ -181,7 +181,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.error("Erreur chargement réponses:", error);
       }
     }
-  }, [firebaseAuth.user, progress]);
+  }, [firebaseAuth.user, firebaseAuth.loading, progress, token, user]);
 
   useEffect(() => {
     if (user) {

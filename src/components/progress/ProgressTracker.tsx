@@ -11,7 +11,6 @@ import {
 import { TrendingUp, Psychology, CheckCircle } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { progressAgent } from "../../agents/progressAgent";
-import { ProgressAnalysis } from "../../types";
 
 export const ProgressTracker: React.FC = () => {
   const { user, responses } = useUser();

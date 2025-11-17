@@ -12,7 +12,6 @@ import {
   logoutUser,
   resetPassword,
   signInWithGoogle,
-  getCurrentUser,
   onAuthStateChange
 } from "../firebase/authService";
 

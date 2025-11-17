@@ -78,7 +78,6 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
   const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
-  const { addResponse } = useUser();
 
   useEffect(() => {
     const loadTestData = async () => {

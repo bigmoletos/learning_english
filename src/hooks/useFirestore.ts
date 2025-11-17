@@ -286,9 +286,11 @@ export const useConversations = (userId: string | null, limit = 20) => {
   };
 };
 
-export default {
+const useFirestoreHooks = {
   useUserProfile,
   useProgress,
   useTestResults,
   useConversations
 };
+
+export default useFirestoreHooks;

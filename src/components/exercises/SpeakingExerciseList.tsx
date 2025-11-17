@@ -18,7 +18,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-import { Mic, PlayArrow } from "@mui/icons-material";
+import { Mic } from "@mui/icons-material";
 import { SpeakingExercise } from "./SpeakingExercise";
 import { LanguageLevel } from "../../types";
 import { buildApiUrl } from "../../services/apiConfig";

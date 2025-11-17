@@ -6,11 +6,11 @@
 
 import React, { useState } from "react";
 import {
-  Box, Card, CardContent, Typography, Button, Grid, Chip,
+  Box, Card, CardContent, Typography, Button, Chip,
   Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
   InputLabel, Select, MenuItem
 } from "@mui/material";
-import { School, Psychology, Assessment } from "@mui/icons-material";
+import { Psychology } from "@mui/icons-material";
 import { LanguageLevel } from "../../types";
 
 interface TestLevelSelectorProps {

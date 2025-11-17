@@ -18,9 +18,7 @@ import {
   limit,
   Timestamp,
   QueryConstraint,
-  DocumentData,
-  QuerySnapshot,
-  DocumentSnapshot
+  DocumentData
 } from "firebase/firestore";
 import { db, auth } from "./config";
 

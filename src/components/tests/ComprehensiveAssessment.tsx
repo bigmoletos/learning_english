@@ -10,7 +10,7 @@ import {
   FormControlLabel, FormControl, Alert,
   TextField, LinearProgress, Chip, IconButton, Tooltip, Grid
 } from "@mui/material";
-import { CheckCircle, Headphones, MenuBook, Edit, PlayArrow, Stop, VolumeUp, CheckCircleOutline } from "@mui/icons-material";
+import { CheckCircle, Headphones, MenuBook, Edit, PlayArrow, Stop, VolumeUp } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";

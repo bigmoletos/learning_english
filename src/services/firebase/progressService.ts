@@ -9,9 +9,7 @@ import {
   setDocument,
   updateDocument,
   deleteDocument,
-  getDocumentsByField,
-  getDocumentsOrdered,
-  documentExists
+  getDocumentsByField
 } from "./firestoreService";
 import { UserResponse, ExerciseType, LanguageLevel } from "../../types";
 

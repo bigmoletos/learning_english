@@ -8,14 +8,6 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { textToSpeechService } from "../services/textToSpeechService";
 import { Capacitor } from "@capacitor/core";
 
-interface GoogleTTSOptions {
-  text: string;
-  lang?: string;
-  voice?: string;
-  rate?: number;
-  pitch?: number;
-}
-
 interface UseGoogleTTSReturn {
   speak: (text: string, lang?: string, voice?: string) => Promise<void>;
   stop: () => void;

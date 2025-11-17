@@ -39,4 +39,5 @@ try {
 }
 
 export { app, db, auth, storage };
-export default { app, db, auth, storage };
+const firebaseConfig = { app, db, auth, storage };
+export default firebaseConfig;

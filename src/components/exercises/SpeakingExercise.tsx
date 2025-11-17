@@ -25,9 +25,6 @@ import {
 import {
   Mic,
   Stop,
-  PlayArrow,
-  CheckCircle,
-  Error as ErrorIcon,
 } from "@mui/icons-material";
 import { speechToTextService } from "../../services/speechToTextService";
 import { LanguageLevel } from "../../types";
@@ -83,6 +80,89 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const isNativePlatform = Capacitor.isNativePlatform();
+
+  /**
+   * Traite l'enregistrement : transcription + analyse
+   */
+  const processRecording = useCallback(async () => {
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      // Vérifier qu'il y a des chunks
+      if (audioChunksRef.current.length === 0) {
+        throw new Error("Aucune donnée audio enregistrée");
+      }
+
+      // Créer le blob audio avec le bon type MIME
+      const firstChunk = audioChunksRef.current[0];
+      const mimeType = firstChunk?.type || "audio/webm;codecs=opus";
+
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: mimeType,
+      });
+
+      console.log("[SpeakingExercise] Audio enregistré:", {
+        size: audioBlob.size,
+        type: audioBlob.type,
+      });
+
+      // Étape 1 : Transcription avec Google STT
+      const sttResult = await speechToTextService.transcribe({
+        audioBlob,
+        lang: "en-US",
+        sampleRate: 48000,
+      });
+
+      if (!sttResult.success || !sttResult.transcript) {
+        throw new Error(
+          sttResult.error || "Aucune transcription disponible. Réessayez."
+        );
+      }
+
+      setTranscript(sttResult.transcript);
+
+      console.log("[SpeakingExercise] Transcription:", sttResult.transcript);
+
+      // Étape 2 : Analyse avec l'agent IA
+      const analysisResponse = await fetch(buildApiUrl("/api/speaking-agent/analyze"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: sttResult.transcript,
+          confidence: sttResult.confidence / 100, // Convertir en 0-1
+          targetLevel: exercise.level,
+          expectedSentence: exercise.targetSentence,
+        }),
+      });
+
+      if (!analysisResponse.ok) {
+        throw new Error("Erreur lors de l'analyse");
+      }
+
+      const analysisData = await analysisResponse.json();
+
+      if (!analysisData.success) {
+        throw new Error(analysisData.message || "Erreur lors de l'analyse");
+      }
+
+      setAnalysis(analysisData);
+
+      // Appeler le callback si fourni
+      if (onComplete) {
+        onComplete(analysisData);
+      }
+
+      console.log("[SpeakingExercise] Analyse complète:", analysisData);
+    } catch (err: any) {
+      console.error("[SpeakingExercise] Erreur traitement:", err);
+      setError(err.message || "Erreur lors du traitement de l'audio");
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [exercise.level, exercise.targetSentence, onComplete]);
 
   /**
    * Démarre l'enregistrement audio
@@ -173,7 +253,7 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
           : "Erreur lors du démarrage de l'enregistrement."
       );
     }
-  }, []);
+  }, [isNativePlatform, processRecording]);
 
   /**
    * Arrête l'enregistrement
@@ -190,88 +270,6 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({
     }
   }, [isRecording]);
 
-  /**
-   * Traite l'enregistrement : transcription + analyse
-   */
-  const processRecording = useCallback(async () => {
-    setIsProcessing(true);
-    setError(null);
-
-    try {
-      // Vérifier qu'il y a des chunks
-      if (audioChunksRef.current.length === 0) {
-        throw new Error("Aucune donnée audio enregistrée");
-      }
-
-      // Créer le blob audio avec le bon type MIME
-      const firstChunk = audioChunksRef.current[0];
-      const mimeType = firstChunk?.type || "audio/webm;codecs=opus";
-
-      const audioBlob = new Blob(audioChunksRef.current, {
-        type: mimeType,
-      });
-
-      console.log("[SpeakingExercise] Audio enregistré:", {
-        size: audioBlob.size,
-        type: audioBlob.type,
-      });
-
-      // Étape 1 : Transcription avec Google STT
-      const sttResult = await speechToTextService.transcribe({
-        audioBlob,
-        lang: "en-US",
-        sampleRate: 48000,
-      });
-
-      if (!sttResult.success || !sttResult.transcript) {
-        throw new Error(
-          sttResult.error || "Aucune transcription disponible. Réessayez."
-        );
-      }
-
-      setTranscript(sttResult.transcript);
-
-      console.log("[SpeakingExercise] Transcription:", sttResult.transcript);
-
-      // Étape 2 : Analyse avec l'agent IA
-      const analysisResponse = await fetch(buildApiUrl("/api/speaking-agent/analyze"), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: sttResult.transcript,
-          confidence: sttResult.confidence / 100, // Convertir en 0-1
-          targetLevel: exercise.level,
-          expectedSentence: exercise.targetSentence,
-        }),
-      });
-
-      if (!analysisResponse.ok) {
-        throw new Error("Erreur lors de l'analyse");
-      }
-
-      const analysisData = await analysisResponse.json();
-
-      if (!analysisData.success) {
-        throw new Error(analysisData.message || "Erreur lors de l'analyse");
-      }
-
-      setAnalysis(analysisData);
-
-      // Appeler le callback si fourni
-      if (onComplete) {
-        onComplete(analysisData);
-      }
-
-      console.log("[SpeakingExercise] Analyse complète:", analysisData);
-    } catch (err: any) {
-      console.error("[SpeakingExercise] Erreur traitement:", err);
-      setError(err.message || "Erreur lors du traitement de l'audio");
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [exercise.level, exercise.targetSentence, onComplete]);
 
   /**
    * Réinitialise l'exercice

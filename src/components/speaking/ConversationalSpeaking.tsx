@@ -555,6 +555,10 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
     resetTranscript,
     speakText,
     coachMode,
+    coachMessages,
+    explanationLevel,
+    listening,
+    stopListening,
   ]);
 
   /**
@@ -604,7 +608,7 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
         }
       }, 1000); // 1 seconde de pause (réduit de 2s pour plus de réactivité)
     }
-  }, [transcript, isConversing, analyzeAndCorrect]);
+  }, [transcript, isConversing, analyzeAndCorrect, isPaused, isCoachSpeaking]);
 
   /**
    * Nettoyage

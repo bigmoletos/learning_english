@@ -6,7 +6,7 @@
  */
 
 import { saveUser, getUserById, updateUser } from "./userService";
-import { saveProgress, getUserProgress, getUserProgressStats } from "./progressService";
+import { saveProgress, getUserProgress } from "./progressService";
 import { saveAssessment, getUserAssessments } from "./assessmentService";
 import { UserProfile, UserResponse } from "../../types";
 import { storageService, StorageKeys } from "../../utils/storageService";

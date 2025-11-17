@@ -340,7 +340,7 @@ export const deleteUserData = async (userId: string): Promise<FirestoreResult> =
   }
 };
 
-export default {
+const firestoreService = {
   createOrUpdateUserProfile,
   getUserProfile,
   saveProgress,
@@ -353,3 +353,5 @@ export default {
   subscribeToTestResults,
   deleteUserData
 };
+
+export default firestoreService;

@@ -9,7 +9,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Button,
   Select,
   MenuItem,
   FormControl,
@@ -18,7 +17,7 @@ import {
   Alert,
   Chip
 } from "@mui/material";
-import { VolumeUp, PlayArrow, Stop } from "@mui/icons-material";
+import { VolumeUp } from "@mui/icons-material";
 import { AudioPlayer } from "./AudioPlayer";
 
 const TEST_SENTENCES = [
@@ -58,16 +57,6 @@ export const VoiceTester: React.FC = () => {
 
   const handleSentenceChange = (event: any) => {
     setSelectedSentence(event.target.value);
-    setIsPlaying(false);
-  };
-
-  const handlePlayStart = () => {
-    console.log("[VoiceTester] Démarrage lecture avec voix:", selectedVoice);
-    setIsPlaying(true);
-  };
-
-  const handlePlayStop = () => {
-    console.log("[VoiceTester] Arrêt lecture");
     setIsPlaying(false);
   };
 

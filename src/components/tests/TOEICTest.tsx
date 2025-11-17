@@ -66,7 +66,6 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
   const [startTime] = useState(() => Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const { speak, isSpeaking, stop } = useTextToSpeech();
-  const { addResponse } = useUser();
 
   useEffect(() => {
     const loadTestData = async () => {

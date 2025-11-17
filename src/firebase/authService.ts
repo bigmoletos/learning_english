@@ -187,7 +187,7 @@ const getAuthErrorMessage = (errorCode: string): string => {
   return errorMessages[errorCode] || "An error occurred. Please try again.";
 };
 
-export default {
+const authService = {
   registerUser,
   loginUser,
   logoutUser,
@@ -196,3 +196,5 @@ export default {
   getCurrentUser,
   onAuthStateChange
 };
+
+export default authService;

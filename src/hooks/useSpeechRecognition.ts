@@ -204,7 +204,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
         clearTimeout(restartTimeoutRef.current);
       }
     };
-  }, [browserSupportsSpeechRecognition]);
+  }, [browserSupportsSpeechRecognition, listening]);
 
   const startListening = useCallback(async () => {
     console.log("[SpeechRecognition] startListening called", {

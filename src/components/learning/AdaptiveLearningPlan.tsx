@@ -11,8 +11,8 @@ import {
   TextField, Select, MenuItem, FormControl, InputLabel, Tooltip
 } from "@mui/material";
 import {
-  School, TrendingUp, Edit, Refresh, CheckCircle, Warning,
-  Timeline, PlayArrow, Remove, Add
+  Edit, Refresh, Warning,
+  Timeline, PlayArrow, Remove
 } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel, ExerciseType, TechnicalDomain } from "../../types";
@@ -83,7 +83,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
       occurrences: responses.filter((r: any) => !r.isCorrect).length,
       recommendedExercises: 10
     }));
-  }, [user, responses, refreshTrigger]);
+  }, [user, responses]);
 
   // Calculer les objectifs d'apprentissage avec useMemo
   const learningGoals = useMemo((): LearningGoal[] => {
@@ -161,7 +161,7 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
         const manual = manualGoals.find(m => m.id === goal.id);
         return manual || goal;
       });
-  }, [user, responses, refreshTrigger, weaknesses, manualGoals, removedGoalIds]);
+  }, [user, responses, weaknesses, manualGoals, removedGoalIds]);
 
   const handleEditGoal = (goal: LearningGoal) => {
     setSelectedGoal(goal);

@@ -38,7 +38,6 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
   };
 
   const isCorrect = submitted && selectedAnswer === question.correctAnswer;
-  const isIncorrect = submitted && selectedAnswer !== question.correctAnswer;
 
   return (
     <Card elevation={3} sx={{ mb: 3 }}>
