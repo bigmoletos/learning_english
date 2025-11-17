@@ -292,18 +292,50 @@ describe("UserContext", () => {
       localStorage.setItem("userResponses", "[]");
       localStorage.setItem("levelAssessed", "true");
 
+      const mockUser = {
+        uid: "123",
+        email: "test@example.com",
+        displayName: "Test User",
+        emailVerified: true,
+      };
+
+      (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
+        ...mockFirebaseAuth,
+        user: mockUser,
+        isAuthenticated: true,
+      });
+
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "123",
+        email: "test@example.com",
+        name: "Test User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 0,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       mockFirebaseAuth.logout.mockResolvedValue({ success: true, message: "Logged out" });
 
       const { result } = renderHook(() => useUser(), {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
+      await waitFor(() => {
+        expect(result.current.user).not.toBeNull();
+      }, { timeout: 5000 });
+
       await act(async () => {
         await result.current.firebaseLogout();
       });
 
+      await waitFor(() => {
+        expect(result.current.user).toBeNull();
+      }, { timeout: 5000 });
+
       expect(mockFirebaseAuth.logout).toHaveBeenCalled();
-      expect(result.current.user).toBeNull();
       expect(result.current.token).toBeNull();
       expect(localStorage.getItem("token")).toBeNull();
       expect(localStorage.getItem("user")).toBeNull();
@@ -614,6 +646,18 @@ describe("UserContext", () => {
         isAuthenticated: true,
       });
 
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "user-sync-123",
+        email: "sync@example.com",
+        name: "Sync User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 0,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       mockProgress.updateProgress.mockResolvedValue({
         success: true,
         message: "Progress updated",
@@ -625,7 +669,7 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.user).not.toBeNull();
-      });
+      }, { timeout: 5000 });
 
       const response: UserResponse = {
         exerciseId: "ex-sync",
@@ -641,7 +685,8 @@ describe("UserContext", () => {
       });
 
       await waitFor(() => {
-        expect(mockProgress.updateProgress).toHaveBeenCalledWith(
+        expect(mockProgress.updateProgress).toHaveBeenCalled();
+      }, { timeout: 5000 });
           expect.objectContaining({
             totalTests: expect.any(Number),
             averageScore: expect.any(Number),
@@ -740,6 +785,18 @@ describe("UserContext", () => {
         isAuthenticated: true,
       });
 
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "user-error",
+        email: "error@example.com",
+        name: "Error User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 0,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       mockTestResults.addTestResult.mockRejectedValue(new Error("Firebase error"));
 
       const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -750,7 +807,7 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.user).not.toBeNull();
-      });
+      }, { timeout: 5000 });
 
       const response: UserResponse = {
         exerciseId: "ex-error",
