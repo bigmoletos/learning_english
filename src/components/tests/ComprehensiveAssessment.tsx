@@ -825,7 +825,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
     }
   };
 
-  const calculateLevel = () => {
+  const calculateLevel = async () => {
     let totalPoints = 0;
     let maxPoints = 0;
 

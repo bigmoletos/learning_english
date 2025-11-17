@@ -362,12 +362,12 @@ export const ConversationalSpeaking: React.FC<ConversationalSpeakingProps> = ({
 
       // Supprimer chaque fragment (case insensitive)
       coachFragments.forEach(fragment => {
-        const regex = new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-        userText = userText.replace(regex, ' ');
+        const regex = new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+        userText = userText.replace(regex, " ");
       });
 
       // Nettoyer les espaces multiples et trim
-      userText = userText.replace(/\s+/g, ' ').trim();
+      userText = userText.replace(/\s+/g, " ").trim();
 
       // Vérifier si le transcript ne contient que des phrases du coach
       if (!userText || userText.length < 2) {

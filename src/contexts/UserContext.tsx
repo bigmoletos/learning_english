@@ -61,9 +61,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     true // Enable real-time updates
   );
 
+  // Référence pour éviter les appels répétés à logout() lors de la déconnexion Firebase
+  const logoutInProgressRef = React.useRef(false);
+
   // Sync Firebase user with local user state
   useEffect(() => {
     if (firebaseAuth.user) {
+      // Réinitialiser le flag quand un utilisateur est connecté
+      logoutInProgressRef.current = false;
       // Charger le profil utilisateur depuis Firebase
       const loadUserProfile = async () => {
         try {
@@ -82,42 +87,46 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
           } else {
             // Créer un nouveau profil si l'utilisateur n'existe pas encore
+            // firebaseAuth.user est garanti non-null ici car on est dans le if (firebaseAuth.user)
+            const currentUser = firebaseAuth.user!;
             const userProfile: UserProfile = {
-              id: firebaseAuth.user.uid,
-              name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
+              id: currentUser.uid,
+              name: currentUser.displayName || currentUser.email || "Utilisateur",
               currentLevel: "B1",
               targetLevel: "C1",
               strengths: [],
               weaknesses: [],
               completedExercises: progress?.totalTests || 0,
               totalScore: 0,
-              createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
+              createdAt: new Date(currentUser.metadata.creationTime || Date.now()),
               lastActivity: new Date()
             };
             setUser(userProfile);
 
             // Sync user profile to Firestore
-            createOrUpdateUserProfile(firebaseAuth.user.uid, {
-              email: firebaseAuth.user.email,
-              displayName: firebaseAuth.user.displayName,
+            createOrUpdateUserProfile(currentUser.uid, {
+              email: currentUser.email,
+              displayName: currentUser.displayName,
               currentLevel: "B1",
               targetLevel: "C1",
-              emailVerified: firebaseAuth.user.emailVerified
+              emailVerified: currentUser.emailVerified
             }).catch(error => console.error("Error syncing user profile:", error));
           }
         } catch (error) {
           console.error("Erreur lors du chargement du profil utilisateur:", error);
           // Fallback : créer un profil par défaut
+          // firebaseAuth.user est garanti non-null ici car on est dans le if (firebaseAuth.user)
+          const currentUser = firebaseAuth.user!;
           const userProfile: UserProfile = {
-            id: firebaseAuth.user.uid,
-            name: firebaseAuth.user.displayName || firebaseAuth.user.email || "Utilisateur",
+            id: currentUser.uid,
+            name: currentUser.displayName || currentUser.email || "Utilisateur",
             currentLevel: "B1",
             targetLevel: "C1",
             strengths: [],
             weaknesses: [],
             completedExercises: progress?.totalTests || 0,
             totalScore: 0,
-            createdAt: new Date(firebaseAuth.user.metadata.creationTime || Date.now()),
+            createdAt: new Date(currentUser.metadata.creationTime || Date.now()),
             lastActivity: new Date()
           };
           setUser(userProfile);
@@ -126,6 +135,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       loadUserProfile();
 
+    } else if (firebaseAuth.user === null && !firebaseAuth.loading && (token || user) && !logoutInProgressRef.current) {
+      // IMPORTANT: Nettoyer l'état local quand Firebase user devient null (déconnexion)
+      // Vérifier qu'il y a un état local à nettoyer et qu'on n'est pas déjà en train de nettoyer
+      // Cela garantit que l'utilisateur est bien déconnecté même si logout() n'a pas été appelé explicitement
+      logoutInProgressRef.current = true;
+      logout();
     } else {
       // Fallback to localStorage for backward compatibility
       const storedToken = localStorage.getItem("token");
@@ -321,20 +336,31 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const firebaseLogout = async () => {
+    // Marquer que la déconnexion est en cours pour éviter les appels répétés
+    logoutInProgressRef.current = true;
+    
+    // Nettoyer l'état local IMMÉDIATEMENT avant d'appeler Firebase logout
+    // Cela garantit que l'UI se met à jour même si Firebase logout échoue
+    logout();
+    
     try {
       const result = await firebaseAuth.logout();
-      // Toujours nettoyer l'état local même si Firebase logout échoue
-      logout(); // Clear local state
+      // Firebase logout devrait déclencher onAuthStateChange qui va maintenir l'état nettoyé
+      // Le useEffect détectera que firebaseAuth.user est null et ne fera rien car logoutInProgressRef.current est true
       return result;
     } catch (error) {
       console.error("Erreur lors de la déconnexion Firebase:", error);
-      // Nettoyer l'état local même en cas d'erreur
-      logout();
+      // L'état local est déjà nettoyé par logout() appelé au début
       return {
         success: false,
         error: "logout_failed",
-        message: "Erreur lors de la déconnexion"
+        message: "Erreur lors de la déconnexion Firebase, mais l'état local a été nettoyé"
       };
+    } finally {
+      // Réinitialiser le flag après un court délai pour permettre au useEffect de se stabiliser
+      setTimeout(() => {
+        logoutInProgressRef.current = false;
+      }, 1000);
     }
   };
 
@@ -343,7 +369,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return result;
   };
 
-  const isAuthenticated = !!token && !!user || firebaseAuth.isAuthenticated;
+  // Si Firebase est utilisé, on se fie uniquement à firebaseAuth.isAuthenticated
+  // Sinon, on utilise l'authentification legacy (token + user)
+  const isAuthenticated = firebaseAuth.isAuthenticated || (!!token && !!user && !firebaseAuth.user);
 
   return (
     <UserContext.Provider value={{
