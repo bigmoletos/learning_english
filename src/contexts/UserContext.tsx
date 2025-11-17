@@ -297,14 +297,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       levelProgress: {},
       domainProgress: {}
     });
-    
+
     // Nettoyer localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("userProfile");
     localStorage.removeItem("userResponses");
     localStorage.removeItem("levelAssessed");
-    
+
     // Note: On garde levelAssessed pour permettre de ne pas refaire le test
     // mais on pourrait aussi le supprimer si nécessaire
   };
