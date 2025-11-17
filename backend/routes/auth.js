@@ -416,8 +416,13 @@ router.post('/forgot-password',
       user.passwordResetExpires = resetExpires;
       await user.save();
 
-      // Envoyer l'email
-      await sendPasswordResetEmail(user.email, resetToken);
+      // Envoyer l'email (ne pas bloquer si l'envoi échoue)
+      try {
+        await sendPasswordResetEmail(user.email, resetToken);
+      } catch (emailError) {
+        console.error('Erreur envoi email reset password:', emailError);
+        // Continuer même si l'email échoue (le token est déjà sauvegardé)
+      }
 
       res.status(200).json({
         success: true,
