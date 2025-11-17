@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { Headphones, MenuBook, Edit, Timer, Stop } from "@mui/icons-material";
 import { useTextToSpeech } from "../../hooks/useTextToSpeech";
-import { useUser } from "../../contexts/UserContext";
 import { LanguageLevel } from "../../types";
 import { generateComprehensionAnalysis } from "../../utils/comprehensionAnalysis";
 

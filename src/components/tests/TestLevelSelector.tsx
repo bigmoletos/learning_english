@@ -60,7 +60,7 @@ export const TestLevelSelector: React.FC<TestLevelSelectorProps> = ({
       <DialogContent>
         <Box sx={{ mb: 3 }}>
           <Typography variant="body1" color="text.secondary" paragraph>
-            Sélectionnez le niveau CECR pour le test {TEST_TYPE_NAMES[testType]}. 
+            Sélectionnez le niveau CECR pour le test {TEST_TYPE_NAMES[testType]}.
             Le test sera adapté à ce niveau.
           </Typography>
         </Box>

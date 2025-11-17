@@ -44,7 +44,6 @@ interface AdaptiveLearningPlanProps {
 
 export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNavigate }) => {
   const { user, responses } = useUser();
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<LearningGoal | null>(null);
   const [autoAdapt, setAutoAdapt] = useState(true);
@@ -187,7 +186,6 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
   };
 
   const handleRefreshPlan = () => {
-    setRefreshTrigger(prev => prev + 1);
     setManualGoals([]);
     setRemovedGoalIds(new Set());
   };
