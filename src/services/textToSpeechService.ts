@@ -12,6 +12,8 @@ interface TTSOptions {
   pitch?: number;
 }
 
+import { buildApiUrl } from "./apiConfig";
+
 interface CachedAudio {
   url: string;
   timestamp: number;
@@ -20,8 +22,6 @@ interface CachedAudio {
 // Cache in memory (survit au rafraîchissement de la page via localStorage)
 const CACHE_KEY_PREFIX = "tts_cache_";
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 jours
-
-import { buildApiUrl } from "./apiConfig";
 
 class TextToSpeechService {
   private apiEndpoint = buildApiUrl("/api/text-to-speech");

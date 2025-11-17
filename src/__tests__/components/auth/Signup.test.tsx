@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { Signup } from "../../../components/auth/Signup";
@@ -305,8 +305,8 @@ describe("Signup Component", () => {
       // Should show email verification component
       await waitFor(() => {
         expect(screen.getByTestId("verify-email")).toBeInTheDocument();
-        expect(screen.getByText(/Verify Email: test@example.com/i)).toBeInTheDocument();
       });
+      expect(screen.getByText(/Verify Email: test@example.com/i)).toBeInTheDocument();
 
       expect(mockOnSuccess).not.toHaveBeenCalled();
     });
@@ -342,8 +342,8 @@ describe("Signup Component", () => {
 
       await waitFor(() => {
         expect(localStorage.getItem("token")).toBe("test-token");
-        expect(mockOnSuccess).toHaveBeenCalledWith("test-token", mockResponse.data.user);
       });
+      expect(mockOnSuccess).toHaveBeenCalledWith("test-token", mockResponse.data.user);
     });
 
     it("should show loading state during submission", async () => {
@@ -368,7 +368,7 @@ describe("Signup Component", () => {
       await user.click(submitButton);
 
       // Check loading state
-      expect(screen.queryByRole("progressbar")).toBeInTheDocument();
+      expect(screen.getByRole("progressbar")).toBeInTheDocument();
       expect(submitButton).toBeDisabled();
 
       // Resolve the promise

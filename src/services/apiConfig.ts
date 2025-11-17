@@ -10,9 +10,9 @@
 
 const getApiBaseUrl = (): string => {
   // En développement, utiliser le proxy (endpoints relatifs)
-  const isDev = process.env.NODE_ENV === "development" || 
+  const isDev = process.env.NODE_ENV === "development" ||
                 (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"));
-  
+
   if (isDev) {
     return ""; // Endpoints relatifs, proxy gère la redirection
   }
@@ -27,13 +27,13 @@ const getApiBaseUrl = (): string => {
     if (cleanedUrl.endsWith("/api")) {
       cleanedUrl = cleanedUrl.replace(/\/api$/, "");
     }
-    
+
     // Validation : ne pas utiliser localhost en production
     if (cleanedUrl.includes("localhost") || cleanedUrl.includes("127.0.0.1")) {
       console.warn("[API Config] ⚠️ REACT_APP_API_URL pointe vers localhost en production, utilisation de l'URL par défaut");
       return "https://backend.learning-english.iaproject.fr";
     }
-    
+
     return cleanedUrl;
   }
 
@@ -77,8 +77,8 @@ export const API_CONFIG = {
 // Log uniquement en développement pour éviter le bruit en production
 // Vérifier à la fois NODE_ENV et l'hostname pour être sûr
 if (typeof window !== "undefined") {
-  const isDev = process.env.NODE_ENV === "development" || 
-                window.location.hostname === "localhost" || 
+  const isDev = process.env.NODE_ENV === "development" ||
+                window.location.hostname === "localhost" ||
                 window.location.hostname === "127.0.0.1";
 
   if (isDev) {

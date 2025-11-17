@@ -4,6 +4,8 @@
  * @date 09-11-2025
  */
 
+import { buildApiUrl } from "./apiConfig";
+
 interface STTOptions {
   audioBlob: Blob;
   lang?: string;
@@ -23,8 +25,6 @@ interface STTResponse {
   }>;
   error?: string;
 }
-
-import { buildApiUrl } from "./apiConfig";
 
 class SpeechToTextService {
   private apiEndpoint = buildApiUrl("/api/speech-to-text"); // Endpoint backend

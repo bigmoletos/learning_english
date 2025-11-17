@@ -140,10 +140,10 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.user).not.toBeNull();
-        expect(result.current.user?.id).toBe("firebase-user-123");
-        expect(result.current.user?.name).toBe("Test User");
-        expect(result.current.isAuthenticated).toBe(true);
       });
+      expect(result.current.user?.id).toBe("firebase-user-123");
+      expect(result.current.user?.name).toBe("Test User");
+      expect(result.current.isAuthenticated).toBe(true);
 
       // Should sync to Firestore
       expect(firestoreService.createOrUpdateUserProfile).toHaveBeenCalledWith(
@@ -395,8 +395,8 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.responses).toHaveLength(1);
-        expect(result.current.responses[0]).toEqual(response);
       });
+      expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises
       expect(result.current.user?.completedExercises).toBe(1);
@@ -452,10 +452,10 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.stats.totalExercises).toBe(2); // 2 unique exercises
-        expect(result.current.stats.completedExercises).toBe(2);
-        expect(result.current.stats.averageScore).toBeCloseTo(66.67, 1); // 2/3 correct
-        expect(result.current.stats.timeSpent).toBe(60); // 20 + 25 + 15
       });
+      expect(result.current.stats.completedExercises).toBe(2);
+      expect(result.current.stats.averageScore).toBeCloseTo(66.67, 1); // 2/3 correct
+      expect(result.current.stats.timeSpent).toBe(60); // 20 + 25 + 15
     });
 
     it("should calculate streak correctly", async () => {
@@ -528,10 +528,11 @@ describe("UserContext", () => {
       await waitFor(() => {
         const stored = localStorage.getItem("userResponses");
         expect(stored).not.toBeNull();
-        const parsed = JSON.parse(stored!);
-        expect(parsed).toHaveLength(1);
-        expect(parsed[0].exerciseId).toBe("ex-persist");
       });
+      const stored = localStorage.getItem("userResponses");
+      const parsed = JSON.parse(stored!);
+      expect(parsed).toHaveLength(1);
+      expect(parsed[0].exerciseId).toBe("ex-persist");
     });
 
     it("should load responses from localStorage on init", () => {
