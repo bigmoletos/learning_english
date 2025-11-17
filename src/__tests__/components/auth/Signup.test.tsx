@@ -52,7 +52,7 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^Mot de passe$/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /S'inscrire/i })).toBeInTheDocument();
       expect(screen.getByText(/Déjà un compte/i)).toBeInTheDocument();
@@ -548,7 +548,7 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^Mot de passe$/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
     });
 
