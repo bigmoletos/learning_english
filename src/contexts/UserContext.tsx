@@ -338,11 +338,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const firebaseLogout = async () => {
     // Marquer que la déconnexion est en cours pour éviter les appels répétés
     logoutInProgressRef.current = true;
-    
+
     // Nettoyer l'état local IMMÉDIATEMENT avant d'appeler Firebase logout
     // Cela garantit que l'UI se met à jour même si Firebase logout échoue
     logout();
-    
+
     try {
       const result = await firebaseAuth.logout();
       // Firebase logout devrait déclencher onAuthStateChange qui va maintenir l'état nettoyé
