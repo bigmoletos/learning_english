@@ -17,6 +17,10 @@ describe('Auth Routes', () => {
   let app;
 
   beforeAll(() => {
+    // Définir JWT_SECRET pour les tests
+    process.env.JWT_SECRET = 'test-secret-key-for-jwt';
+    process.env.JWT_EXPIRES_IN = '7d';
+    
     app = express();
     app.use(express.json());
     app.use('/api/auth', authRoutes);

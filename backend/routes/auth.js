@@ -56,10 +56,10 @@ router.post('/register',
         // Extraire le premier message d'erreur
         const firstError = errors.array()[0];
         const errorMessage = firstError.msg || firstError.message || 'Données invalides';
-        
+
         console.log('Erreurs de validation:', errors.array());
-        
-        return res.status(400).json({ 
+
+        return res.status(400).json({
           success: false,
           message: errorMessage,
           errors: errors.array()
@@ -140,8 +140,8 @@ router.post('/login',
         // Extraire le premier message d'erreur
         const firstError = errors.array()[0];
         const errorMessage = firstError.msg || firstError.message || 'Données invalides';
-        
-        return res.status(400).json({ 
+
+        return res.status(400).json({
           success: false,
           message: errorMessage,
           errors: errors.array()
@@ -153,7 +153,7 @@ router.post('/login',
       const password = req.body.password;
 
       // Trouver l'utilisateur (recherche case-insensitive avec Sequelize)
-      const user = await User.findOne({ 
+      const user = await User.findOne({
         where: sequelize.where(
           sequelize.fn('LOWER', sequelize.col('email')),
           email.toLowerCase()

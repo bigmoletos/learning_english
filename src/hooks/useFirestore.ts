@@ -30,12 +30,10 @@ export const useUserProfile = (userId: string | null) => {
 
   useEffect(() => {
     if (!userId) {
-      // Use setTimeout to avoid synchronous setState in effect
-      const timer = setTimeout(() => {
-        setProfile(null);
-        setLoading(false);
-      }, 0);
-      return () => clearTimeout(timer);
+      setProfile(null);
+      setLoading(false);
+      setError(null);
+      return;
     }
 
     const fetchProfile = async () => {
@@ -91,12 +89,10 @@ export const useProgress = (userId: string | null, realtime = false) => {
 
   useEffect(() => {
     if (!userId) {
-      // Use setTimeout to avoid synchronous setState in effect
-      const timer = setTimeout(() => {
-        setProgress(null);
-        setLoading(false);
-      }, 0);
-      return () => clearTimeout(timer);
+      setProgress(null);
+      setLoading(false);
+      setError(null);
+      return;
     }
 
     if (realtime) {
@@ -165,12 +161,10 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
 
   useEffect(() => {
     if (!userId) {
-      // Use setTimeout to avoid synchronous setState in effect
-      const timer = setTimeout(() => {
-        setTestResults([]);
-        setLoading(false);
-      }, 0);
-      return () => clearTimeout(timer);
+      setTestResults([]);
+      setLoading(false);
+      setError(null);
+      return;
     }
 
     if (realtime) {

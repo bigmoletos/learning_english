@@ -42,7 +42,12 @@ export const convertTimestamps = (data: any): any => {
   const converted: any = { ...data };
 
   Object.keys(converted).forEach((key) => {
-    if (converted[key] instanceof Timestamp) {
+    // Vérifier si c'est un Timestamp Firebase (peut être un objet avec toDate)
+    if (
+      converted[key] &&
+      typeof converted[key] === "object" &&
+      typeof converted[key].toDate === "function"
+    ) {
       converted[key] = converted[key].toDate();
     } else if (
       converted[key] &&
