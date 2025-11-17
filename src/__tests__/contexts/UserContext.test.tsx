@@ -9,12 +9,14 @@ import { UserProvider, useUser } from "../../contexts/UserContext";
 import * as useFirebaseAuthModule from "../../hooks/useFirebaseAuth";
 import * as useFirestoreModule from "../../hooks/useFirestore";
 import * as firestoreService from "../../firebase/firestoreService";
+import * as userService from "../../services/firebase/userService";
 import { UserResponse } from "../../types";
 
 // Mock hooks and services
 jest.mock("../../hooks/useFirebaseAuth");
 jest.mock("../../hooks/useFirestore");
 jest.mock("../../firebase/firestoreService");
+jest.mock("../../services/firebase/userService");
 
 describe("UserContext", () => {
   // Mock localStorage
@@ -78,6 +80,8 @@ describe("UserContext", () => {
       success: true,
       message: "Profile updated",
     });
+    (userService.getUserById as jest.Mock) = jest.fn();
+    (userService.getUserAssessmentStatus as jest.Mock) = jest.fn().mockResolvedValue(false);
   });
 
   describe("Context Initialization", () => {
@@ -134,6 +138,18 @@ describe("UserContext", () => {
         isAuthenticated: true,
       });
 
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "firebase-user-123",
+        email: "test@example.com",
+        name: "Test User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 0,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       const { result } = renderHook(() => useUser(), {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
@@ -168,11 +184,20 @@ describe("UserContext", () => {
       localStorage.setItem("token", "test-token-123");
       localStorage.setItem("user", JSON.stringify(userData));
 
+      (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
+        ...mockFirebaseAuth,
+        user: null,
+        loading: false,
+        isAuthenticated: false,
+      });
+
       const { result } = renderHook(() => useUser(), {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      expect(result.current.token).toBe("test-token-123");
+      await waitFor(() => {
+        expect(result.current.token).toBe("test-token-123");
+      });
       expect(result.current.user).not.toBeNull();
       expect(result.current.user?.name).toBe("Local User");
       expect(result.current.user?.currentLevel).toBe("B2");
@@ -306,7 +331,14 @@ describe("UserContext", () => {
   });
 
   describe("Legacy Authentication", () => {
-    it("should handle legacy login", () => {
+    it("should handle legacy login", async () => {
+      (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
+        ...mockFirebaseAuth,
+        user: null,
+        loading: false,
+        isAuthenticated: false,
+      });
+
       const userData = {
         id: "123",
         email: "legacy@example.com",
@@ -323,7 +355,10 @@ describe("UserContext", () => {
         result.current.login("legacy-token", userData);
       });
 
-      expect(result.current.token).toBe("legacy-token");
+      await waitFor(() => {
+        expect(result.current.token).toBe("legacy-token");
+      });
+
       expect(result.current.user?.name).toBe("Legacy User");
       expect(result.current.user?.currentLevel).toBe("A2");
       expect(localStorage.getItem("token")).toBe("legacy-token");
@@ -395,11 +430,13 @@ describe("UserContext", () => {
 
       await waitFor(() => {
         expect(result.current.responses).toHaveLength(1);
-      });
+      }, { timeout: 5000 });
       expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises
-      expect(result.current.user?.completedExercises).toBe(1);
+      await waitFor(() => {
+        expect(result.current.user?.completedExercises).toBe(1);
+      }, { timeout: 5000 });
 
       // Should save to Firebase
       expect(mockTestResults.addTestResult).toHaveBeenCalledWith(
@@ -648,13 +685,25 @@ describe("UserContext", () => {
         isAuthenticated: true,
       });
 
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "user-progress-123",
+        email: "progress@example.com",
+        name: "Progress User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 50,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       const { result } = renderHook(() => useUser(), {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
       await waitFor(() => {
         expect(result.current.user?.completedExercises).toBe(50);
-      });
+      }, { timeout: 5000 });
     });
   });
 

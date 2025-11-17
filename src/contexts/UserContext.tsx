@@ -214,15 +214,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(updatedUser);
 
       // Save to Firebase if authenticated
-      if (firebaseAuth.user) {
-        addTestResult({
+      if (firebaseAuth.user && testResults.addTestResult) {
+        const testResultPromise = addTestResult({
           exerciseId: response.exerciseId,
           questionId: response.questionId,
           answer: response.answer,
           isCorrect: response.isCorrect,
           timeSpent: response.timeSpent,
           timestamp: response.timestamp,
-        }).catch((error) => console.error("Error saving test result to Firebase:", error));
+        });
+        if (testResultPromise && typeof testResultPromise.catch === "function") {
+          testResultPromise.catch((error) => console.error("Error saving test result to Firebase:", error));
+        }
       }
     }
   };
@@ -247,14 +250,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // Update progress in Firebase if authenticated
     if (firebaseAuth.user && user) {
-      updateProgress({
+      const progressPromise = updateProgress({
         totalTests: newStats.totalExercises,
         averageScore: newStats.averageScore,
         timeSpent: newStats.timeSpent,
         streakDays: newStats.streakDays,
         currentLevel: user.currentLevel,
         targetLevel: user.targetLevel,
-      }).catch((error) => console.error("Error updating progress in Firebase:", error));
+      });
+      if (progressPromise && typeof progressPromise.catch === "function") {
+        progressPromise.catch((error) => console.error("Error updating progress in Firebase:", error));
+      }
     }
   };
 

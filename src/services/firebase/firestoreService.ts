@@ -229,7 +229,7 @@ export const setDocument = async <T = DocumentData>(
     await setDoc(
       docRef,
       {
-        ...firestoreData,
+      ...firestoreData,
         updatedAt: Timestamp.now(),
       },
       { merge: true }
@@ -252,8 +252,8 @@ export const setDocument = async <T = DocumentData>(
       dataSample:
         collectionName === "users"
           ? {
-              id: (data as any)?.id,
-              email: (data as any)?.email,
+        id: (data as any)?.id,
+        email: (data as any)?.email,
               currentLevel: (data as any)?.currentLevel,
             }
           : "N/A",
@@ -351,13 +351,13 @@ export const updateDocument = async <T = DocumentData>(
     console.error(
       `❌ [updateDocument] Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`,
       {
-        code: error.code,
-        message: error.message,
-        stack: error.stack,
-        collection: collectionName,
-        documentId: documentId,
-        authUid: auth.currentUser?.uid || "non authentifié",
-        dataKeys: Object.keys(data || {}),
+      code: error.code,
+      message: error.message,
+      stack: error.stack,
+      collection: collectionName,
+      documentId: documentId,
+      authUid: auth.currentUser?.uid || "non authentifié",
+      dataKeys: Object.keys(data || {}),
         error: error,
       }
     );
@@ -395,12 +395,12 @@ export const deleteDocument = async (collectionName: string, documentId: string)
     console.error(
       `❌ [deleteDocument] Erreur lors de la suppression du document ${collectionName}/${documentId}:`,
       {
-        code: error.code,
-        message: error.message,
-        stack: error.stack,
-        collection: collectionName,
-        documentId: documentId,
-        authUid: auth.currentUser?.uid || "non authentifié",
+      code: error.code,
+      message: error.message,
+      stack: error.stack,
+      collection: collectionName,
+      documentId: documentId,
+      authUid: auth.currentUser?.uid || "non authentifié",
         error: error,
       }
     );
