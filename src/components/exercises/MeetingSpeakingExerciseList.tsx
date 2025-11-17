@@ -31,8 +31,6 @@ import { LanguageLevel } from "../../types";
 import {
   meetingSpeakingExercises,
   MeetingSpeakingExercise,
-  getMeetingExercisesByCategory,
-  getMeetingExercisesByLevel,
 } from "../../data/exercises/meetingSpeakingExercises";
 
 export const MeetingSpeakingExerciseList: React.FC = () => {

@@ -7,9 +7,9 @@
 import React, { useState, useRef } from "react";
 import {
   Box, Card, CardContent, Typography, Radio, RadioGroup,
-  FormControlLabel, FormControl, Button, Alert, Chip, TextField
+  FormControlLabel, FormControl, Button, Alert, Chip
 } from "@mui/material";
-import { CheckCircle, Cancel, PlayArrow, Pause } from "@mui/icons-material";
+import { CheckCircle, Cancel } from "@mui/icons-material";
 import { Question } from "../../types";
 
 interface ListeningExerciseProps {
@@ -30,7 +30,6 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
   const [startTime] = useState(() => Date.now());
-  const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleSubmit = () => {
@@ -42,7 +41,6 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
   };
 
   const isCorrect = submitted && selectedAnswer === question.correctAnswer;
-  const isIncorrect = submitted && selectedAnswer !== question.correctAnswer;
 
   return (
     <Card elevation={3} sx={{ mb: 3 }}>
@@ -77,9 +75,6 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
                   src={audioUrl}
                   controls
                   style={{ flexGrow: 1, maxWidth: "400px" }}
-                  onPlay={() => setPlaying(true)}
-                  onPause={() => setPlaying(false)}
-                  onEnded={() => setPlaying(false)}
                 />
               </Box>
               <Typography variant="caption" sx={{ display: "block", mt: 1, color: "white" }}>

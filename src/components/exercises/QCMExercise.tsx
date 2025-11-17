@@ -4,7 +4,7 @@
  * @date 31-10-2025
  */
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Box, Card, CardContent, Typography, Radio, RadioGroup,
   FormControlLabel, FormControl, Button, Alert, Chip
@@ -36,7 +36,6 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
   };
 
   const isCorrect = submitted && selectedAnswer === question.correctAnswer;
-  const isIncorrect = submitted && selectedAnswer !== question.correctAnswer;
 
   return (
     <Card elevation={3} sx={{ mb: 3 }}>
