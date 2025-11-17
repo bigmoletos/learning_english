@@ -10,7 +10,10 @@
 
 const getApiBaseUrl = (): string => {
   // En développement, utiliser le proxy (endpoints relatifs)
-  if (process.env.NODE_ENV === "development") {
+  const isDev = process.env.NODE_ENV === "development" || 
+                (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"));
+  
+  if (isDev) {
     return ""; // Endpoints relatifs, proxy gère la redirection
   }
 
@@ -18,8 +21,20 @@ const getApiBaseUrl = (): string => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   if (apiUrl) {
-    // Retirer le slash final s'il existe
-    return apiUrl.replace(/\/$/, "");
+    // Nettoyer l'URL : retirer le slash final et /api si présent
+    let cleanedUrl = apiUrl.replace(/\/$/, "");
+    // Si l'URL se termine par /api, la retirer car buildApiUrl ajoute déjà /api
+    if (cleanedUrl.endsWith("/api")) {
+      cleanedUrl = cleanedUrl.replace(/\/api$/, "");
+    }
+    
+    // Validation : ne pas utiliser localhost en production
+    if (cleanedUrl.includes("localhost") || cleanedUrl.includes("127.0.0.1")) {
+      console.warn("[API Config] ⚠️ REACT_APP_API_URL pointe vers localhost en production, utilisation de l'URL par défaut");
+      return "https://backend.learning-english.iaproject.fr";
+    }
+    
+    return cleanedUrl;
   }
 
   // Fallback : URL de production par défaut
@@ -60,11 +75,26 @@ export const API_CONFIG = {
 } as const;
 
 // Log uniquement en développement pour éviter le bruit en production
-if (process.env.NODE_ENV === "development") {
-  console.log("[API Config] Configuration chargée:", {
-    baseUrl: API_BASE_URL || "(proxy local)",
-    environment: process.env.NODE_ENV,
-    reactAppApiUrl: process.env.REACT_APP_API_URL || "(non défini)",
-  });
+// Vérifier à la fois NODE_ENV et l'hostname pour être sûr
+if (typeof window !== "undefined") {
+  const isDev = process.env.NODE_ENV === "development" || 
+                window.location.hostname === "localhost" || 
+                window.location.hostname === "127.0.0.1";
+
+  if (isDev) {
+    console.log("[API Config] Configuration chargée:", {
+      baseUrl: API_BASE_URL || "(proxy local)",
+      environment: process.env.NODE_ENV,
+      reactAppApiUrl: process.env.REACT_APP_API_URL || "(non défini)",
+      hostname: window.location.hostname,
+    });
+  } else if (API_BASE_URL && (API_BASE_URL.includes("localhost") || API_BASE_URL.includes("127.0.0.1"))) {
+    // Avertissement si on détecte localhost en production
+    console.error("[API Config] ❌ ERREUR: URL de l'API pointe vers localhost en production!", {
+      baseUrl: API_BASE_URL,
+      reactAppApiUrl: process.env.REACT_APP_API_URL,
+      hostname: window.location.hostname,
+    });
+  }
 }
 
