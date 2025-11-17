@@ -58,7 +58,7 @@ describe("UserContext", () => {
     progress: null,
     loading: false,
     error: null,
-    updateProgress: jest.fn(),
+    updateProgress: jest.fn().mockResolvedValue({ success: true }),
   };
 
   const mockTestResults = {
