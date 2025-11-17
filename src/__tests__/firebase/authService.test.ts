@@ -177,7 +177,7 @@ describe("Firebase Auth Service", () => {
         displayName: "Google User",
       };
 
-      (firebaseAuth.GoogleAuthProvider as jest.Mock).mockImplementation(() => ({}));
+      (firebaseAuth.GoogleAuthProvider as unknown as jest.Mock).mockImplementation(() => ({}));
       (firebaseAuth.signInWithPopup as jest.Mock).mockResolvedValue({
         user: mockUser,
       });
@@ -191,7 +191,7 @@ describe("Firebase Auth Service", () => {
 
     it("should handle popup closed error", async () => {
       const error = { code: "auth/popup-closed-by-user" };
-      (firebaseAuth.GoogleAuthProvider as jest.Mock).mockImplementation(() => ({}));
+      (firebaseAuth.GoogleAuthProvider as unknown as jest.Mock).mockImplementation(() => ({}));
       (firebaseAuth.signInWithPopup as jest.Mock).mockRejectedValue(error);
 
       const result = await signInWithGoogle();

@@ -5,10 +5,17 @@
  * @date 2025-11-06
  */
 
-import { Preferences } from "@capacitor/preferences";
+// Import conditionnel de Capacitor Preferences (uniquement si disponible)
+let Preferences: any;
+try {
+  Preferences = require("@capacitor/preferences").Preferences;
+} catch {
+  // @capacitor/preferences n'est pas disponible (environnement web uniquement)
+  Preferences = null;
+}
 
 // Détecter la plateforme
-const isCapacitor = typeof (window as any).Capacitor !== "undefined";
+const isCapacitor = typeof (window as any).Capacitor !== "undefined" && Preferences !== null;
 
 /**
  * Interface pour le service de stockage
