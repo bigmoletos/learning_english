@@ -183,6 +183,14 @@ router.post('/login',
         });
       }
 
+      // Verifier si l'email est verifie
+      if (!user.isEmailVerified) {
+        return res.status(403).json({
+          success: false,
+          message: 'Veuillez verifier votre email avant de vous connecter'
+        });
+      }
+
       // Mettre a jour la derniere connexion
       user.lastLogin = new Date();
       await user.save();
@@ -215,10 +223,11 @@ router.post('/login',
 // VERIFICATION EMAIL
 // ==================================
 
-// Route GET pour la vérification via navigateur (lien email)
+// Route GET pour la vérification via navigateur (lien email) ou API
 router.get('/verify-email/:token', async (req, res) => {
   try {
     const { token } = req.params;
+    const isApiRequest = req.headers.accept && req.headers.accept.includes('application/json');
 
     const user = await User.findOne({
       where: {
@@ -228,8 +237,34 @@ router.get('/verify-email/:token', async (req, res) => {
     });
 
     if (!user) {
+      if (isApiRequest) {
+        return res.status(400).json({
+          success: false,
+          message: 'Token de verification invalide ou expire'
+        });
+      }
       // Rediriger vers la page d'erreur dans le frontend
       return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error?token=${token}`);
+    }
+
+    // Si l'email est déjà vérifié
+    if (user.isEmailVerified) {
+      const jwtToken = jwt.sign(
+        { userId: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      );
+
+      if (isApiRequest) {
+        return res.status(200).json({
+          success: true,
+          message: 'Votre email a deja ete verifie. Vous etes maintenant connecte.',
+          token: jwtToken,
+          user: user.toJSON(),
+          alreadyVerified: true
+        });
+      }
+      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/success?token=${jwtToken}`);
     }
 
     // Marquer l'email comme vérifié
@@ -245,10 +280,26 @@ router.get('/verify-email/:token', async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
+    if (isApiRequest) {
+      return res.status(200).json({
+        success: true,
+        message: 'Email verifie avec succes. Vous pouvez maintenant vous connecter.',
+        token: jwtToken,
+        user: user.toJSON()
+      });
+    }
+
     // Rediriger vers la page de succès avec le token
     return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/success?token=${jwtToken}`);
   } catch (error) {
     console.error('Erreur verification email:', error);
+    const isApiRequest = req.headers.accept && req.headers.accept.includes('application/json');
+    if (isApiRequest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Erreur lors de la verification'
+      });
+    }
     return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error`);
   }
 });
@@ -336,6 +387,16 @@ router.post('/forgot-password',
   [body('email').isEmail().normalizeEmail()],
   async (req, res) => {
     try {
+      // Verifier les erreurs de validation
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          message: 'Format d\'email invalide',
+          errors: errors.array()
+        });
+      }
+
       const { email } = req.body;
 
       const user = await User.findOne({ where: { email } });
@@ -377,7 +438,7 @@ router.post('/forgot-password',
 // REINITIALISATION MOT DE PASSE
 // ==================================
 
-router.post('/reset-password/:token',
+router.post('/reset-password/:token?',
   [
     body('password')
       .isLength({ min: 8 })
@@ -385,8 +446,26 @@ router.post('/reset-password/:token',
   ],
   async (req, res) => {
     try {
-      const { token } = req.params;
+      // Accepter le token soit dans les paramètres, soit dans le body
+      const token = req.params.token || req.body.token;
       const { password } = req.body;
+
+      // Vérifier les erreurs de validation
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          message: 'Le mot de passe doit contenir au moins 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special',
+          errors: errors.array()
+        });
+      }
+
+      if (!token) {
+        return res.status(400).json({
+          success: false,
+          message: 'Token de reinitialisation requis'
+        });
+      }
 
       const user = await User.findOne({
         where: {

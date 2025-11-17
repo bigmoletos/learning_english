@@ -8,6 +8,7 @@ export const mockUser = {
     creationTime: new Date().toISOString(),
     lastSignInTime: new Date().toISOString(),
   },
+  getIdToken: jest.fn(() => Promise.resolve("mock-id-token")),
 };
 
 // Mock auth instance
@@ -21,14 +22,22 @@ export const getAuth = jest.fn(() => mockAuth);
 
 export const createUserWithEmailAndPassword = jest.fn((auth, email, password) =>
   Promise.resolve({
-    user: { ...mockUser, email },
+    user: {
+      ...mockUser,
+      email,
+      getIdToken: jest.fn(() => Promise.resolve("mock-id-token")),
+    },
     providerId: "password",
   })
 );
 
 export const signInWithEmailAndPassword = jest.fn((auth, email, password) =>
   Promise.resolve({
-    user: { ...mockUser, email },
+    user: {
+      ...mockUser,
+      email,
+      getIdToken: jest.fn(() => Promise.resolve("mock-id-token")),
+    },
     providerId: "password",
   })
 );
@@ -51,7 +60,10 @@ export class GoogleAuthProvider {
 
 export const signInWithPopup = jest.fn((auth, provider) =>
   Promise.resolve({
-    user: mockUser,
+    user: {
+      ...mockUser,
+      getIdToken: jest.fn(() => Promise.resolve("mock-id-token")),
+    },
     providerId: "google.com",
     operationType: "signIn",
   })
