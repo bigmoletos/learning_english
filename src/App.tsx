@@ -158,7 +158,7 @@ const theme = createTheme({
 type ViewType = "dashboard" | "exercises" | "progress" | "tests" | "learning" | "toeic" | "toefl" | "efset" | "speaking";
 
 const AppContent: React.FC = () => {
-  const { isAuthenticated, login, logout, user } = useUser();
+  const { isAuthenticated, login, logout, firebaseLogout, user } = useUser();
   const [currentView, setCurrentView] = useState<ViewType>("dashboard");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedTestType, setSelectedTestType] = useState<"efset" | "toeic" | "toefl" | null>(null);
@@ -565,7 +565,16 @@ const AppContent: React.FC = () => {
           </Typography>
           <IconButton
             color="inherit"
-            onClick={logout}
+            onClick={async () => {
+              try {
+                // Essayer de déconnecter Firebase d'abord
+                await firebaseLogout();
+              } catch (error) {
+                // En cas d'erreur, nettoyer l'état local quand même
+                console.error("Erreur lors de la déconnexion Firebase:", error);
+                logout();
+              }
+            }}
             title="Déconnexion"
           >
             <ExitToApp />

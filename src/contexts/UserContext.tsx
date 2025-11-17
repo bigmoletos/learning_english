@@ -284,13 +284,29 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
+    // Réinitialiser tous les états
     setToken(null);
     setUser(null);
+    setResponses([]);
+    setStats({
+      totalExercises: 0,
+      completedExercises: 0,
+      averageScore: 0,
+      timeSpent: 0,
+      streakDays: 0,
+      levelProgress: {},
+      domainProgress: {}
+    });
+    
+    // Nettoyer localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("userProfile");
     localStorage.removeItem("userResponses");
     localStorage.removeItem("levelAssessed");
+    
+    // Note: On garde levelAssessed pour permettre de ne pas refaire le test
+    // mais on pourrait aussi le supprimer si nécessaire
   };
 
   // Firebase authentication methods
@@ -305,11 +321,21 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const firebaseLogout = async () => {
-    const result = await firebaseAuth.logout();
-    if (result.success) {
+    try {
+      const result = await firebaseAuth.logout();
+      // Toujours nettoyer l'état local même si Firebase logout échoue
       logout(); // Clear local state
+      return result;
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion Firebase:", error);
+      // Nettoyer l'état local même en cas d'erreur
+      logout();
+      return {
+        success: false,
+        error: "logout_failed",
+        message: "Erreur lors de la déconnexion"
+      };
     }
-    return result;
   };
 
   const googleSignIn = async () => {

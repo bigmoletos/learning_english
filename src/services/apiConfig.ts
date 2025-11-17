@@ -59,9 +59,12 @@ export const API_CONFIG = {
   isProduction: process.env.NODE_ENV === "production",
 } as const;
 
-console.log("[API Config] Configuration chargée:", {
-  baseUrl: API_BASE_URL || "(proxy local)",
-  environment: process.env.NODE_ENV,
-  reactAppApiUrl: process.env.REACT_APP_API_URL || "(non défini)",
-});
+// Log uniquement en développement pour éviter le bruit en production
+if (process.env.NODE_ENV === "development") {
+  console.log("[API Config] Configuration chargée:", {
+    baseUrl: API_BASE_URL || "(proxy local)",
+    environment: process.env.NODE_ENV,
+    reactAppApiUrl: process.env.REACT_APP_API_URL || "(non défini)",
+  });
+}
 
