@@ -54,25 +54,34 @@ jest.mock('../../database/connection', () => {
   };
 });
 
-// Create mock functions outside factory so they can be configured
-const mockFindOne = jest.fn();
-const mockFindAll = jest.fn();
-const mockCreate = jest.fn();
-const mockUpdate = jest.fn();
-const mockDestroy = jest.fn();
+// Mock User model BEFORE importing it - define mocks inline to avoid hoisting issues
+jest.mock('../../models/User', () => {
+  const mockFindOne = jest.fn();
+  const mockFindAll = jest.fn();
+  const mockCreate = jest.fn();
+  const mockUpdate = jest.fn();
+  const mockDestroy = jest.fn();
+  
+  return {
+    findOne: mockFindOne,
+    findAll: mockFindAll,
+    create: mockCreate,
+    update: mockUpdate,
+    destroy: mockDestroy,
+    beforeSave: jest.fn((callback) => {}),
+    beforeCreate: jest.fn((callback) => {}),
+    beforeUpdate: jest.fn((callback) => {}),
+    addHook: jest.fn((hookName, callback) => {}),
+  };
+});
 
-// Mock User model BEFORE importing it
-jest.mock('../../models/User', () => ({
-  findOne: mockFindOne,
-  findAll: mockFindAll,
-  create: mockCreate,
-  update: mockUpdate,
-  destroy: mockDestroy,
-  beforeSave: jest.fn((callback) => {}),
-  beforeCreate: jest.fn((callback) => {}),
-  beforeUpdate: jest.fn((callback) => {}),
-  addHook: jest.fn((hookName, callback) => {}),
-}));
+// Create mock functions that reference the mocked User methods
+const User = require('../../models/User');
+const mockFindOne = User.findOne;
+const mockFindAll = User.findAll;
+const mockCreate = User.create;
+const mockUpdate = User.update;
+const mockDestroy = User.destroy;
 
 // Mock email service BEFORE it's imported to prevent setImmediate error
 jest.mock('../../utils/emailService', () => ({
@@ -81,7 +90,6 @@ jest.mock('../../utils/emailService', () => ({
   sendWelcomeEmail: jest.fn(),
 }));
 
-const User = require('../../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
 
 // Import routes after mocks
