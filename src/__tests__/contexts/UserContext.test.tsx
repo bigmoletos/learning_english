@@ -319,17 +319,23 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await waitFor(() => {
-        expect(result.current.user).not.toBeNull();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user).not.toBeNull();
+        },
+        { timeout: 5000 }
+      );
 
       await act(async () => {
         await result.current.firebaseLogout();
       });
 
-      await waitFor(() => {
-        expect(result.current.user).toBeNull();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user).toBeNull();
+        },
+        { timeout: 5000 }
+      );
 
       expect(mockFirebaseAuth.logout).toHaveBeenCalled();
       expect(result.current.token).toBeNull();
@@ -456,15 +462,21 @@ describe("UserContext", () => {
         result.current.addResponse(response);
       });
 
-      await waitFor(() => {
-        expect(result.current.responses).toHaveLength(1);
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.responses).toHaveLength(1);
+        },
+        { timeout: 5000 }
+      );
       expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises
-      await waitFor(() => {
-        expect(result.current.user?.completedExercises).toBe(1);
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user?.completedExercises).toBe(1);
+        },
+        { timeout: 5000 }
+      );
 
       // Should save to Firebase
       expect(mockTestResults.addTestResult).toHaveBeenCalledWith(
@@ -663,9 +675,12 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await waitFor(() => {
-        expect(result.current.user).not.toBeNull();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user).not.toBeNull();
+        },
+        { timeout: 5000 }
+      );
 
       const response: UserResponse = {
         exerciseId: "ex-sync",
@@ -680,17 +695,20 @@ describe("UserContext", () => {
         result.current.addResponse(response);
       });
 
-      await waitFor(() => {
-        expect(mockProgress.updateProgress).toHaveBeenCalledWith(
-          expect.objectContaining({
-            totalTests: expect.any(Number),
-            averageScore: expect.any(Number),
-            timeSpent: expect.any(Number),
-            currentLevel: "B1",
-            targetLevel: "C1",
-          })
-        );
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(mockProgress.updateProgress).toHaveBeenCalledWith(
+            expect.objectContaining({
+              totalTests: expect.any(Number),
+              averageScore: expect.any(Number),
+              timeSpent: expect.any(Number),
+              currentLevel: "B1",
+              targetLevel: "C1",
+            })
+          );
+        },
+        { timeout: 5000 }
+      );
     });
 
     it("should use Firebase progress data when available", async () => {
@@ -741,9 +759,12 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await waitFor(() => {
-        expect(result.current.user?.completedExercises).toBe(50);
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user?.completedExercises).toBe(50);
+        },
+        { timeout: 5000 }
+      );
     });
   });
 
@@ -800,9 +821,12 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await waitFor(() => {
-        expect(result.current.user).not.toBeNull();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(result.current.user).not.toBeNull();
+        },
+        { timeout: 5000 }
+      );
 
       const response: UserResponse = {
         exerciseId: "ex-error",

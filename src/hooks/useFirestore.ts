@@ -30,8 +30,8 @@ export const useUserProfile = (userId: string | null) => {
 
   useEffect(() => {
     if (!userId) {
-        setProfile(null);
-        setLoading(false);
+      setProfile(null);
+      setLoading(false);
       setError(null);
       return;
     }
@@ -89,8 +89,8 @@ export const useProgress = (userId: string | null, realtime = false) => {
 
   useEffect(() => {
     if (!userId) {
-        setProgress(null);
-        setLoading(false);
+      setProgress(null);
+      setLoading(false);
       setError(null);
       return;
     }
@@ -161,8 +161,8 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
 
   useEffect(() => {
     if (!userId) {
-        setTestResults([]);
-        setLoading(false);
+      setTestResults([]);
+      setLoading(false);
       setError(null);
       return;
     }
@@ -172,8 +172,8 @@ export const useTestResults = (userId: string | null, limit = 10, realtime = fal
       const unsubscribe = subscribeToTestResults(
         userId,
         (data) => {
-        setTestResults(data);
-        setLoading(false);
+          setTestResults(data);
+          setLoading(false);
         },
         limit
       );

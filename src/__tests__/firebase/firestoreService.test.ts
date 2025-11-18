@@ -27,8 +27,8 @@ jest.mock("firebase/firestore", () => ({
   orderBy: jest.fn(),
   limit: jest.fn(),
   getDocs: jest.fn(),
-  increment: jest.fn((value: number) => ({ type: 'increment', value })),
-  serverTimestamp: jest.fn(() => ({ type: 'serverTimestamp' })),
+  increment: jest.fn((value: number) => ({ type: "increment", value })),
+  serverTimestamp: jest.fn(() => ({ type: "serverTimestamp" })),
   Timestamp: {
     now: jest.fn(() => new Date()),
   },

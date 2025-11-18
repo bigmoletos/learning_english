@@ -224,7 +224,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           timestamp: response.timestamp,
         });
         if (testResultPromise && typeof testResultPromise.catch === "function") {
-          testResultPromise.catch((error) => console.error("Error saving test result to Firebase:", error));
+          testResultPromise.catch((error) =>
+            console.error("Error saving test result to Firebase:", error)
+          );
         }
       }
     }
@@ -259,7 +261,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         targetLevel: user.targetLevel,
       });
       if (progressPromise && typeof progressPromise.catch === "function") {
-        progressPromise.catch((error) => console.error("Error updating progress in Firebase:", error));
+        progressPromise.catch((error) =>
+          console.error("Error updating progress in Firebase:", error)
+        );
       }
     }
   };
