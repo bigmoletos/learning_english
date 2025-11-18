@@ -16,14 +16,16 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Vérifier la configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('❌ Erreur configuration email:', error);
-  } else {
-    console.log('✅ Service email prêt');
-  }
-});
+// Vérifier la configuration (sauf en environnement de test)
+if (process.env.NODE_ENV !== 'test') {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error('❌ Erreur configuration email:', error);
+    } else {
+      console.log('✅ Service email prêt');
+    }
+  });
+}
 
 /**
  * Envoyer un email de vérification

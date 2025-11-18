@@ -15,7 +15,24 @@ import {
 import * as firestore from "firebase/firestore";
 
 // Mock Firestore
-jest.mock("firebase/firestore");
+jest.mock("firebase/firestore", () => ({
+  doc: jest.fn(),
+  getDoc: jest.fn(),
+  setDoc: jest.fn(),
+  updateDoc: jest.fn(),
+  deleteDoc: jest.fn(),
+  collection: jest.fn(),
+  query: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  limit: jest.fn(),
+  getDocs: jest.fn(),
+  increment: jest.fn((value: number) => ({ type: 'increment', value })),
+  serverTimestamp: jest.fn(() => ({ type: 'serverTimestamp' })),
+  Timestamp: {
+    now: jest.fn(() => new Date()),
+  },
+}));
 jest.mock("../../firebase/config", () => ({
   db: {},
 }));

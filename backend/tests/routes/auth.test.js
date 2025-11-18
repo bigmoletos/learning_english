@@ -5,6 +5,14 @@
 
 const request = require('supertest');
 const express = require('express');
+
+// Mock email service BEFORE it's imported to prevent setImmediate error
+jest.mock('../../utils/emailService', () => ({
+  sendVerificationEmail: jest.fn(),
+  sendPasswordResetEmail: jest.fn(),
+  sendWelcomeEmail: jest.fn(),
+}));
+
 const User = require('../../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
 
@@ -56,9 +64,21 @@ jest.mock('../../database/connection', () => {
   };
 });
 
-// Mock models and services
-jest.mock('../../models/User');
-jest.mock('../../utils/emailService');
+// Mock User model - using auto-mock with manual stubs
+jest.mock('../../models/User', () => {
+  // Create a mock that has both data methods and hook methods
+  return {
+    findOne: jest.fn(),
+    findAll: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    destroy: jest.fn(),
+    beforeSave: jest.fn((callback) => {}), // Mock hook registration
+    beforeCreate: jest.fn((callback) => {}),
+    beforeUpdate: jest.fn((callback) => {}),
+    addHook: jest.fn((hookName, callback) => {}),
+  };
+});
 
 // Import routes after mocks
 const authRoutes = require('../../routes/auth');

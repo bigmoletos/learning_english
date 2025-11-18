@@ -214,7 +214,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(updatedUser);
 
       // Save to Firebase if authenticated
-      if (firebaseAuth.user && testResults.addTestResult) {
+      if (firebaseAuth.user && addTestResult) {
         const testResultPromise = addTestResult({
           exerciseId: response.exerciseId,
           questionId: response.questionId,

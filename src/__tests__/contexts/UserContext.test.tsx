@@ -161,18 +161,12 @@ describe("UserContext", () => {
       expect(result.current.user?.name).toBe("Test User");
       expect(result.current.isAuthenticated).toBe(true);
 
-      // Should sync to Firestore
-      expect(firestoreService.createOrUpdateUserProfile).toHaveBeenCalledWith(
-        "firebase-user-123",
-        expect.objectContaining({
-          email: "test@example.com",
-          displayName: "Test User",
-          emailVerified: true,
-        })
-      );
+      // Should load existing user from Firestore (not create a new one)
+      expect(userService.getUserById).toHaveBeenCalledWith("firebase-user-123");
+      expect(firestoreService.createOrUpdateUserProfile).not.toHaveBeenCalled();
     });
 
-    it("should fallback to localStorage when no Firebase user", () => {
+    it("should clean localStorage when Firebase user is null but localStorage has data", async () => {
       const userData = {
         id: "local-user-123",
         email: "local@example.com",
@@ -195,12 +189,14 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
+      // Should clean up localStorage when Firebase says no user but localStorage has data
+      // This prevents inconsistent state
       await waitFor(() => {
-        expect(result.current.token).toBe("test-token-123");
+        expect(result.current.token).toBeNull();
       });
-      expect(result.current.user).not.toBeNull();
-      expect(result.current.user?.name).toBe("Local User");
-      expect(result.current.user?.currentLevel).toBe("B2");
+      expect(result.current.user).toBeNull();
+      expect(localStorage.getItem("token")).toBeNull();
+      expect(localStorage.getItem("user")).toBeNull();
     });
 
     it("should handle corrupted localStorage data", () => {
