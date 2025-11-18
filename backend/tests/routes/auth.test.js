@@ -6,17 +6,7 @@
 const request = require('supertest');
 const express = require('express');
 
-// Mock email service BEFORE it's imported to prevent setImmediate error
-jest.mock('../../utils/emailService', () => ({
-  sendVerificationEmail: jest.fn(),
-  sendPasswordResetEmail: jest.fn(),
-  sendWelcomeEmail: jest.fn(),
-}));
-
-const User = require('../../models/User');
-const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
-
-// Mock Sequelize before importing routes
+// Mock Sequelize FIRST before anything else
 jest.mock('sequelize', () => {
   const mockOp = {
     gt: Symbol('gt'),
@@ -42,7 +32,7 @@ jest.mock('sequelize', () => {
   };
 });
 
-// Mock database connection before importing routes
+// Mock database connection before importing User model
 jest.mock('../../database/connection', () => {
   const { Op } = require('sequelize');
   const mockModel = {
@@ -63,6 +53,17 @@ jest.mock('../../database/connection', () => {
     Op,
   };
 });
+
+// Mock email service BEFORE it's imported to prevent setImmediate error
+jest.mock('../../utils/emailService', () => ({
+  sendVerificationEmail: jest.fn(),
+  sendPasswordResetEmail: jest.fn(),
+  sendWelcomeEmail: jest.fn(),
+}));
+
+const User = require('../../models/User');
+const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
+
 
 // Create mock functions outside factory so they can be configured
 const mockFindOne = jest.fn();
