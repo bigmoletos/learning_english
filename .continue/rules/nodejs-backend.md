@@ -135,3 +135,64 @@ app.use((err, req, res, next) => {
 });
 ```
 
+## Performance & Frugalité
+
+### Optimisation Mémoire
+
+```javascript
+// ✅ Bon - Limiter la taille des caches
+const cache = new Map();
+const MAX_CACHE_SIZE = 100;
+
+function setCache(key, value) {
+  if (cache.size >= MAX_CACHE_SIZE) {
+    const firstKey = cache.keys().next().value;
+    cache.delete(firstKey);
+  }
+  cache.set(key, value);
+}
+
+// ✅ Bon - Nettoyage des connexions
+process.on('SIGTERM', () => {
+  server.close(() => {
+    sequelize.close();
+    process.exit(0);
+  });
+});
+```
+
+### Optimisation Requêtes
+
+```javascript
+// ✅ Bon - Pagination pour éviter de charger trop de données
+router.get('/api/users', async (req, res) => {
+  const { page = 1, limit = 20 } = req.query;
+  const offset = (page - 1) * limit;
+  
+  const users = await User.findAll({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+    attributes: ['id', 'email', 'name'] // Seulement les champs nécessaires
+  });
+  
+  res.json({ users, page, limit });
+});
+
+// ❌ Mauvais - Charger toutes les données
+const users = await User.findAll(); // ❌
+```
+
+### Monitoring
+
+```javascript
+// ✅ Bon - Monitoring de la mémoire
+setInterval(() => {
+  const usage = process.memoryUsage();
+  logger.info('Memory usage', {
+    heapUsed: `${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`,
+    heapTotal: `${(usage.heapTotal / 1024 / 1024).toFixed(2)} MB`,
+    rss: `${(usage.rss / 1024 / 1024).toFixed(2)} MB`
+  });
+}, 60000); // Toutes les minutes
+```
+

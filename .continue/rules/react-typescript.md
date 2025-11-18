@@ -52,11 +52,60 @@ if (condition) {
 }
 ```
 
-### Performance
-- Utiliser `useMemo` pour les calculs coûteux
-- Utiliser `useCallback` pour les fonctions passées en props
-- Éviter les re-renders inutiles avec `React.memo` si nécessaire
-- Lazy loading pour les routes et composants volumineux
+### Performance & Frugalité
+
+#### Optimisation Mémoire
+```typescript
+// ✅ Bon - Nettoyage des ressources
+useEffect(() => {
+  const timer = setInterval(() => {}, 1000);
+  return () => clearInterval(timer); // Nettoyer
+}, []);
+
+// ✅ Bon - Limiter la taille des états
+const [items, setItems] = useState<Item[]>([]);
+// Limiter à 100 items max
+useEffect(() => {
+  if (items.length > 100) {
+    setItems(prev => prev.slice(-100));
+  }
+}, [items]);
+```
+
+#### Optimisation Re-renders
+```typescript
+// ✅ Bon - useMemo pour calculs coûteux
+const expensiveValue = useMemo(() => {
+  return computeExpensiveValue(data);
+}, [data]);
+
+// ✅ Bon - useCallback pour fonctions stables
+const handleClick = useCallback(() => {
+  // ...
+}, [dependencies]);
+
+// ✅ Bon - React.memo pour composants purs
+export const ExpensiveComponent = React.memo(({ data }) => {
+  return <div>{data}</div>;
+});
+```
+
+#### Lazy Loading
+```typescript
+// ✅ Bon - Lazy loading des routes
+const Dashboard = lazy(() => import('./Dashboard'));
+const Settings = lazy(() => import('./Settings'));
+
+// ✅ Bon - Suspense pour le fallback
+<Suspense fallback={<Loading />}>
+  <Dashboard />
+</Suspense>
+```
+
+#### Monitoring
+- Utiliser React DevTools Profiler pour identifier les composants lents
+- Mesurer la consommation mémoire avec Chrome DevTools
+- Surveiller la taille des bundles avec webpack-bundle-analyzer
 
 ### État Local vs Global
 - État local : `useState` pour les composants simples

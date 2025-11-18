@@ -25,11 +25,26 @@ alwaysApply: true
    - Utiliser des variables d'environnement pour les configurations sensibles
    - Respecter les principes de sécurité (OWASP Top 10)
 
-4. **Performance**
-   - Optimiser les requêtes et les appels API
-   - Utiliser le lazy loading pour les composants volumineux
-   - Minimiser les re-renders inutiles
-   - Surveiller la taille des bundles
+4. **Performance & Frugalité**
+   - **Optimiser les requêtes et les appels API** : Réduire le nombre de requêtes, utiliser le caching
+   - **Lazy loading** : Charger les composants volumineux à la demande
+   - **Minimiser les re-renders** : Utiliser React.memo, useMemo, useCallback
+   - **Surveiller la taille des bundles** : Analyser avec webpack-bundle-analyzer
+   - **Frugalité mémoire** :
+     - Tester régulièrement la consommation mémoire avec les DevTools
+     - Utiliser des techniques de mémoire optimisées (object pooling, weak references)
+     - Éviter les memory leaks (nettoyer les event listeners, subscriptions, timers)
+     - Limiter la taille des caches et des données en mémoire
+   - **Frugalité en taille** :
+     - Minimiser les dépendances (vérifier la taille avec `npm ls --depth=0`)
+     - Utiliser des alternatives légères (date-fns vs moment.js, axios vs fetch)
+     - Code splitting et tree shaking
+     - Optimiser les images et assets (compression, formats modernes)
+   - **Frameworks et principes connus** :
+     - Utiliser des patterns éprouvés (Observer, Factory, Singleton si approprié)
+     - Suivre les principes SOLID pour maintenir un code efficient
+     - Utiliser des bibliothèques optimisées et maintenues
+     - Profiler avant d'optimiser (mesurer, optimiser, mesurer à nouveau)
 
 5. **Git & Commits**
    - Format de commit : `type(scope): description`
