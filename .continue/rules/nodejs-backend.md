@@ -128,8 +128,8 @@ app.use((err, req, res, next) => {
   logger.error('Error:', err);
   res.status(err.status || 500).json({
     success: false,
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
+    error: process.env.NODE_ENV === 'production'
+      ? 'Internal server error'
       : err.message
   });
 });
@@ -168,13 +168,13 @@ process.on('SIGTERM', () => {
 router.get('/api/users', async (req, res) => {
   const { page = 1, limit = 20 } = req.query;
   const offset = (page - 1) * limit;
-  
+
   const users = await User.findAll({
     limit: parseInt(limit),
     offset: parseInt(offset),
     attributes: ['id', 'email', 'name'] // Seulement les champs nécessaires
   });
-  
+
   res.json({ users, page, limit });
 });
 

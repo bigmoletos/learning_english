@@ -30,7 +30,7 @@ useEffect(() => {
   const subscription = observable.subscribe(data => {
     // ...
   });
-  
+
   return () => {
     subscription.unsubscribe(); // Nettoyer
   };
@@ -49,11 +49,11 @@ useEffect(() => {
 // ✅ Bon - Réutilisation d'objets
 class ObjectPool<T> {
   private pool: T[] = [];
-  
+
   acquire(): T {
     return this.pool.pop() || this.create();
   }
-  
+
   release(obj: T): void {
     this.pool.push(obj);
   }
@@ -79,11 +79,11 @@ function getCachedData(key: object): ExpensiveData {
 class LRUCache<K, V> {
   private cache = new Map<K, V>();
   private maxSize: number;
-  
+
   constructor(maxSize: number = 100) {
     this.maxSize = maxSize;
   }
-  
+
   set(key: K, value: V): void {
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
@@ -138,7 +138,7 @@ const Dashboard = lazy(() => import('./components/Dashboard'));
 const Settings = lazy(() => import('./components/Settings'));
 
 // ✅ Bon - Dynamic import pour les composants lourds
-const HeavyComponent = lazy(() => 
+const HeavyComponent = lazy(() =>
   import('./components/HeavyComponent').then(module => ({
     default: module.HeavyComponent
   }))
@@ -149,8 +149,8 @@ const HeavyComponent = lazy(() =>
 
 ```typescript
 // ✅ Bon - Images optimisées
-<img 
-  src="image.webp" 
+<img
+  src="image.webp"
   srcSet="image-small.webp 400w, image-large.webp 800w"
   sizes="(max-width: 600px) 400px, 800px"
   loading="lazy"
