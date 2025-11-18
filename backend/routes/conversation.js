@@ -58,10 +58,10 @@ router.post("/", conversationRateLimiter, async (req, res) => {
         const explanationStyle = explanationLevel === 0
           ? "Do NOT provide explanations. Just respond briefly."
           : explanationLevel <= 3
-          ? "Provide minimal explanations. Keep responses very short (1-2 sentences)."
-          : explanationLevel <= 7
-          ? "Provide moderate explanations. Keep responses concise (2-3 sentences)."
-          : "Provide detailed explanations with grammar rules, examples, and context. Responses can be longer (3-5 sentences).";
+            ? "Provide minimal explanations. Keep responses very short (1-2 sentences)."
+            : explanationLevel <= 7
+              ? "Provide moderate explanations. Keep responses concise (2-3 sentences)."
+              : "Provide detailed explanations with grammar rules, examples, and context. Responses can be longer (3-5 sentences).";
 
         const systemPrompt = messages?.find((m) => m.role === "system")?.content ||
           `You are a friendly and supportive English teacher and conversation coach. Your student is at ${level} level.
@@ -95,7 +95,7 @@ router.post("/", conversationRateLimiter, async (req, res) => {
 
 ${conversationContext ? `Previous conversation:\n${conversationContext}\n\n` : ""}Student: ${userMessage}
 ${errors.length > 0 ? `\nNote: The student made ${errors.length} error(s). Please correct them gently and explain the mistakes.` : ""}
-${isRepetitive ? `\nImportant: Do NOT repeat "keep going" or "excellent" again. Provide a different, more specific response.` : ""}
+${isRepetitive ? "\nImportant: Do NOT repeat \"keep going\" or \"excellent\" again. Provide a different, more specific response." : ""}
 
 Teacher:`;
 
@@ -139,9 +139,9 @@ Teacher:`;
     if (errors.length > 0) {
       response = `Good effort! I noticed ${errors.length} error(s) in your sentence. `;
       response += errors.map((e) => `"${e.original}" should be "${e.corrected}".`).join(" ");
-      response += ` What else would you like to talk about?`;
+      response += " What else would you like to talk about?";
     } else {
-      response = `That's great! Your sentence is correct. What would you like to discuss next?`;
+      response = "That's great! Your sentence is correct. What would you like to discuss next?";
     }
 
     res.json({

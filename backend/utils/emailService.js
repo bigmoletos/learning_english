@@ -3,13 +3,13 @@
  * @version 1.0.0
  */
 
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 // Configuration du transporteur SMTP
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT) || 587,
-  secure: process.env.SMTP_SECURE === 'true',
+  secure: process.env.SMTP_SECURE === "true",
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD
@@ -17,12 +17,12 @@ const transporter = nodemailer.createTransport({
 });
 
 // Vérifier la configuration (sauf en environnement de test)
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   transporter.verify((error, success) => {
     if (error) {
-      console.error('❌ Erreur configuration email:', error);
+      console.error("❌ Erreur configuration email:", error);
     } else {
-      console.log('✅ Service email prêt');
+      console.log("✅ Service email prêt");
     }
   });
 }
@@ -31,13 +31,13 @@ if (process.env.NODE_ENV !== 'test') {
  * Envoyer un email de vérification
  */
 const sendVerificationEmail = async (email, token) => {
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
   const verificationUrl = `${frontendUrl}/verify-email/${token}`;
 
   const mailOptions = {
     from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM}>`,
     to: email,
-    subject: 'Vérifiez votre adresse email - AI English Trainer',
+    subject: "Vérifiez votre adresse email - AI English Trainer",
     html: `
       <!DOCTYPE html>
       <html>
@@ -97,7 +97,7 @@ const sendPasswordResetEmail = async (email, token) => {
   const mailOptions = {
     from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM}>`,
     to: email,
-    subject: 'Réinitialisation de votre mot de passe - AI English Trainer',
+    subject: "Réinitialisation de votre mot de passe - AI English Trainer",
     html: `
       <!DOCTYPE html>
       <html>
@@ -168,7 +168,7 @@ const sendWelcomeEmail = async (email, firstName) => {
   const mailOptions = {
     from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM}>`,
     to: email,
-    subject: 'Bienvenue sur AI English Trainer ! 🎉',
+    subject: "Bienvenue sur AI English Trainer ! 🎉",
     html: `
       <!DOCTYPE html>
       <html>

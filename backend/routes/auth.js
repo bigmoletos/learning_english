@@ -3,25 +3,25 @@
  * @version 1.0.0
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const rateLimit = require('express-rate-limit');
-const { body, validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const { Op } = require('sequelize');
-const sequelize = require('../database/connection');
-const User = require('../models/User');
-const { sendVerificationEmail, sendPasswordResetEmail } = require('../utils/emailService');
+const rateLimit = require("express-rate-limit");
+const { body, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const { Op } = require("sequelize");
+const sequelize = require("../database/connection");
+const User = require("../models/User");
+const { sendVerificationEmail, sendPasswordResetEmail } = require("../utils/emailService");
 
 // Rate limiting plus permissif pour la vérification d'email
 const emailVerificationLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 10, // 10 tentatives max (pour gérer les clics multiples)
-  message: 'Trop de tentatives de verification. Veuillez attendre quelques minutes.',
+  message: "Trop de tentatives de verification. Veuillez attendre quelques minutes.",
   skip: (req) => {
     // Skip rate limiting si c'est une requête GET (redirection depuis email)
-    return req.method === 'GET';
+    return req.method === "GET";
   }
 });
 
@@ -29,21 +29,21 @@ const emailVerificationLimiter = rateLimit({
 // INSCRIPTION
 // ==================================
 
-router.post('/register',
+router.post("/register",
   [
-    body('email').isEmail().normalizeEmail().withMessage('Email invalide'),
-    body('password')
+    body("email").isEmail().normalizeEmail().withMessage("Email invalide"),
+    body("password")
       .isLength({ min: 8 })
-      .withMessage('Le mot de passe doit contenir au moins 8 caracteres')
+      .withMessage("Le mot de passe doit contenir au moins 8 caracteres")
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/)
-      .withMessage('Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractere special'),
-    body('firstName').optional().trim().isLength({ min: 2 }),
-    body('lastName').optional().trim().isLength({ min: 2 })
+      .withMessage("Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractere special"),
+    body("firstName").optional().trim().isLength({ min: 2 }),
+    body("lastName").optional().trim().isLength({ min: 2 })
   ],
   async (req, res) => {
     try {
       // Log pour debug (ne pas logger le mot de passe)
-      console.log('Inscription - Données reçues:', {
+      console.log("Inscription - Données reçues:", {
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -55,9 +55,9 @@ router.post('/register',
       if (!errors.isEmpty()) {
         // Extraire le premier message d'erreur
         const firstError = errors.array()[0];
-        const errorMessage = firstError.msg || firstError.message || 'Données invalides';
+        const errorMessage = firstError.msg || firstError.message || "Données invalides";
 
-        console.log('Erreurs de validation:', errors.array());
+        console.log("Erreurs de validation:", errors.array());
 
         return res.status(400).json({
           success: false,
@@ -73,12 +73,12 @@ router.post('/register',
       if (existingUser) {
         return res.status(400).json({
           success: false,
-          message: 'Un compte existe deja avec cet email'
+          message: "Un compte existe deja avec cet email"
         });
       }
 
       // Generer le token de verification
-      const verificationToken = crypto.randomBytes(32).toString('hex');
+      const verificationToken = crypto.randomBytes(32).toString("hex");
       const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
 
       // Creer l'utilisateur
@@ -95,7 +95,7 @@ router.post('/register',
       try {
         await sendVerificationEmail(user.email, verificationToken);
       } catch (emailError) {
-        console.error('Erreur envoi email:', emailError);
+        console.error("Erreur envoi email:", emailError);
         // Ne pas bloquer l'inscription si l'email echoue
       }
 
@@ -104,16 +104,16 @@ router.post('/register',
 
       res.status(201).json({
         success: true,
-        message: 'Inscription reussie. Un email de verification a ete envoye. Veuillez verifier votre boite de reception.',
+        message: "Inscription reussie. Un email de verification a ete envoye. Veuillez verifier votre boite de reception.",
         email: user.email,
         requiresVerification: true
       });
 
     } catch (error) {
-      console.error('Erreur inscription:', error);
+      console.error("Erreur inscription:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de l\'inscription'
+        message: "Erreur lors de l'inscription"
       });
     }
   }
@@ -123,15 +123,15 @@ router.post('/register',
 // CONNEXION
 // ==================================
 
-router.post('/login',
+router.post("/login",
   [
-    body('email')
+    body("email")
       .isEmail()
-      .withMessage('L\'adresse email doit être au format valide (ex: nom@domaine.com)')
+      .withMessage("L'adresse email doit être au format valide (ex: nom@domaine.com)")
       .normalizeEmail(),
-    body('password')
+    body("password")
       .exists()
-      .withMessage('Le mot de passe est requis')
+      .withMessage("Le mot de passe est requis")
   ],
   async (req, res) => {
     try {
@@ -139,7 +139,7 @@ router.post('/login',
       if (!errors.isEmpty()) {
         // Extraire le premier message d'erreur
         const firstError = errors.array()[0];
-        const errorMessage = firstError.msg || firstError.message || 'Données invalides';
+        const errorMessage = firstError.msg || firstError.message || "Données invalides";
 
         return res.status(400).json({
           success: false,
@@ -155,14 +155,14 @@ router.post('/login',
       // Trouver l'utilisateur (recherche case-insensitive avec Sequelize)
       const user = await User.findOne({
         where: sequelize.where(
-          sequelize.fn('LOWER', sequelize.col('email')),
+          sequelize.fn("LOWER", sequelize.col("email")),
           email.toLowerCase()
         )
       });
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'Email ou mot de passe incorrect'
+          message: "Email ou mot de passe incorrect"
         });
       }
 
@@ -170,7 +170,7 @@ router.post('/login',
       if (!user.isActive) {
         return res.status(403).json({
           success: false,
-          message: 'Ce compte a ete desactive'
+          message: "Ce compte a ete desactive"
         });
       }
 
@@ -179,7 +179,7 @@ router.post('/login',
       if (!isPasswordValid) {
         return res.status(401).json({
           success: false,
-          message: 'Email ou mot de passe incorrect'
+          message: "Email ou mot de passe incorrect"
         });
       }
 
@@ -187,7 +187,7 @@ router.post('/login',
       if (!user.isEmailVerified) {
         return res.status(403).json({
           success: false,
-          message: 'Veuillez verifier votre email avant de vous connecter'
+          message: "Veuillez verifier votre email avant de vous connecter"
         });
       }
 
@@ -199,21 +199,21 @@ router.post('/login',
       const token = jwt.sign(
         { userId: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+        { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
       );
 
       res.status(200).json({
         success: true,
-        message: 'Connexion reussie',
+        message: "Connexion reussie",
         token,
         user: user.toJSON()
       });
 
     } catch (error) {
-      console.error('Erreur connexion:', error);
+      console.error("Erreur connexion:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la connexion'
+        message: "Erreur lors de la connexion"
       });
     }
   }
@@ -224,10 +224,10 @@ router.post('/login',
 // ==================================
 
 // Route GET pour la vérification via navigateur (lien email) ou API
-router.get('/verify-email/:token', async (req, res) => {
+router.get("/verify-email/:token", async (req, res) => {
   try {
     const { token } = req.params;
-    const isApiRequest = req.headers.accept && req.headers.accept.includes('application/json');
+    const isApiRequest = req.headers.accept && req.headers.accept.includes("application/json");
 
     const user = await User.findOne({
       where: {
@@ -240,11 +240,11 @@ router.get('/verify-email/:token', async (req, res) => {
       if (isApiRequest) {
         return res.status(400).json({
           success: false,
-          message: 'Token de verification invalide ou expire'
+          message: "Token de verification invalide ou expire"
         });
       }
       // Rediriger vers la page d'erreur dans le frontend
-      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error?token=${token}`);
+      return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email/error?token=${token}`);
     }
 
     // Si l'email est déjà vérifié
@@ -252,19 +252,19 @@ router.get('/verify-email/:token', async (req, res) => {
       const jwtToken = jwt.sign(
         { userId: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+        { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
       );
 
       if (isApiRequest) {
         return res.status(200).json({
           success: true,
-          message: 'Votre email a deja ete verifie. Vous etes maintenant connecte.',
+          message: "Votre email a deja ete verifie. Vous etes maintenant connecte.",
           token: jwtToken,
           user: user.toJSON(),
           alreadyVerified: true
         });
       }
-      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/success?token=${jwtToken}`);
+      return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email/success?token=${jwtToken}`);
     }
 
     // Marquer l'email comme vérifié
@@ -277,35 +277,35 @@ router.get('/verify-email/:token', async (req, res) => {
     const jwtToken = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     if (isApiRequest) {
       return res.status(200).json({
         success: true,
-        message: 'Email verifie avec succes. Vous pouvez maintenant vous connecter.',
+        message: "Email verifie avec succes. Vous pouvez maintenant vous connecter.",
         token: jwtToken,
         user: user.toJSON()
       });
     }
 
     // Rediriger vers la page de succès avec le token
-    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/success?token=${jwtToken}`);
+    return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email/success?token=${jwtToken}`);
   } catch (error) {
-    console.error('Erreur verification email:', error);
-    const isApiRequest = req.headers.accept && req.headers.accept.includes('application/json');
+    console.error("Erreur verification email:", error);
+    const isApiRequest = req.headers.accept && req.headers.accept.includes("application/json");
     if (isApiRequest) {
       return res.status(500).json({
         success: false,
-        message: 'Erreur lors de la verification'
+        message: "Erreur lors de la verification"
       });
     }
-    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/error`);
+    return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email/error`);
   }
 });
 
 // Route POST pour la vérification via API (alternative)
-router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) => {
+router.post("/verify-email/:token", emailVerificationLimiter, async (req, res) => {
   try {
     const { token } = req.params;
 
@@ -320,7 +320,7 @@ router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) =
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: 'Token de verification invalide ou expire'
+        message: "Token de verification invalide ou expire"
       });
     }
 
@@ -330,12 +330,12 @@ router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) =
       const jwtToken = jwt.sign(
         { userId: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+        { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
       );
 
       return res.status(200).json({
         success: true,
-        message: 'Votre email a deja ete verifie. Vous etes maintenant connecte.',
+        message: "Votre email a deja ete verifie. Vous etes maintenant connecte.",
         token: jwtToken,
         user: user.toJSON(),
         alreadyVerified: true
@@ -346,7 +346,7 @@ router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) =
     if (user.emailVerificationExpires && user.emailVerificationExpires < new Date()) {
       return res.status(400).json({
         success: false,
-        message: 'Le lien de verification a expire. Veuillez demander un nouveau lien.'
+        message: "Le lien de verification a expire. Veuillez demander un nouveau lien."
       });
     }
 
@@ -360,21 +360,21 @@ router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) =
     const jwtToken = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     res.status(200).json({
       success: true,
-      message: 'Email verifie avec succes. Vous pouvez maintenant vous connecter.',
+      message: "Email verifie avec succes. Vous pouvez maintenant vous connecter.",
       token: jwtToken,
       user: user.toJSON()
     });
 
   } catch (error) {
-    console.error('Erreur verification email:', error);
+    console.error("Erreur verification email:", error);
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la verification'
+      message: "Erreur lors de la verification"
     });
   }
 });
@@ -383,8 +383,8 @@ router.post('/verify-email/:token', emailVerificationLimiter, async (req, res) =
 // DEMANDE DE REINITIALISATION MOT DE PASSE
 // ==================================
 
-router.post('/forgot-password',
-  [body('email').isEmail().normalizeEmail()],
+router.post("/forgot-password",
+  [body("email").isEmail().normalizeEmail()],
   async (req, res) => {
     try {
       // Verifier les erreurs de validation
@@ -392,7 +392,7 @@ router.post('/forgot-password',
       if (!errors.isEmpty()) {
         return res.status(400).json({
           success: false,
-          message: 'Format d\'email invalide',
+          message: "Format d'email invalide",
           errors: errors.array()
         });
       }
@@ -404,12 +404,12 @@ router.post('/forgot-password',
         // Ne pas reveler si l'email existe
         return res.status(200).json({
           success: true,
-          message: 'Si cet email existe, un lien de reinitialisation a ete envoye'
+          message: "Si cet email existe, un lien de reinitialisation a ete envoye"
         });
       }
 
       // Generer le token
-      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetToken = crypto.randomBytes(32).toString("hex");
       const resetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1h
 
       user.passwordResetToken = resetToken;
@@ -420,20 +420,20 @@ router.post('/forgot-password',
       try {
         await sendPasswordResetEmail(user.email, resetToken);
       } catch (emailError) {
-        console.error('Erreur envoi email reset password:', emailError);
+        console.error("Erreur envoi email reset password:", emailError);
         // Continuer même si l'email échoue (le token est déjà sauvegardé)
       }
 
       res.status(200).json({
         success: true,
-        message: 'Un email de reinitialisation a ete envoye'
+        message: "Un email de reinitialisation a ete envoye"
       });
 
     } catch (error) {
-      console.error('Erreur reset password:', error);
+      console.error("Erreur reset password:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la demande de reinitialisation'
+        message: "Erreur lors de la demande de reinitialisation"
       });
     }
   }
@@ -443,9 +443,9 @@ router.post('/forgot-password',
 // REINITIALISATION MOT DE PASSE
 // ==================================
 
-router.post('/reset-password/:token?',
+router.post("/reset-password/:token?",
   [
-    body('password')
+    body("password")
       .isLength({ min: 8 })
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/)
   ],
@@ -460,7 +460,7 @@ router.post('/reset-password/:token?',
       if (!errors.isEmpty()) {
         return res.status(400).json({
           success: false,
-          message: 'Le mot de passe doit contenir au moins 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special',
+          message: "Le mot de passe doit contenir au moins 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special",
           errors: errors.array()
         });
       }
@@ -468,21 +468,21 @@ router.post('/reset-password/:token?',
       if (!token) {
         return res.status(400).json({
           success: false,
-          message: 'Token de reinitialisation requis'
+          message: "Token de reinitialisation requis"
         });
       }
 
       const user = await User.findOne({
         where: {
           passwordResetToken: token,
-          passwordResetExpires: { [require('sequelize').Op.gt]: new Date() }
+          passwordResetExpires: { [require("sequelize").Op.gt]: new Date() }
         }
       });
 
       if (!user) {
         return res.status(400).json({
           success: false,
-          message: 'Token invalide ou expire'
+          message: "Token invalide ou expire"
         });
       }
 
@@ -493,14 +493,14 @@ router.post('/reset-password/:token?',
 
       res.status(200).json({
         success: true,
-        message: 'Mot de passe reinitialise avec succes'
+        message: "Mot de passe reinitialise avec succes"
       });
 
     } catch (error) {
-      console.error('Erreur reset password:', error);
+      console.error("Erreur reset password:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la reinitialisation'
+        message: "Erreur lors de la reinitialisation"
       });
     }
   }

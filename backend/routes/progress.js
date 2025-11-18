@@ -3,13 +3,13 @@
  * @version 1.0.0
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { auth } = require('../middleware/auth');
-const UserProgress = require('../models/UserProgress');
+const { auth } = require("../middleware/auth");
+const UserProgress = require("../models/UserProgress");
 
 // Sauvegarder la progression
-router.post('/', auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const {
       exerciseId,
@@ -38,25 +38,25 @@ router.post('/', auth, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Progression sauvegardée',
+      message: "Progression sauvegardée",
       progress
     });
 
   } catch (error) {
-    console.error('Erreur sauvegarde progression:', error);
+    console.error("Erreur sauvegarde progression:", error);
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la sauvegarde'
+      message: "Erreur lors de la sauvegarde"
     });
   }
 });
 
 // Récupérer la progression
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const progress = await UserProgress.findAll({
       where: { userId: req.userId },
-      order: [['completedAt', 'DESC']]
+      order: [["completedAt", "DESC"]]
     });
 
     res.status(200).json({
@@ -68,20 +68,20 @@ router.get('/', auth, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la récupération'
+      message: "Erreur lors de la récupération"
     });
   }
 });
 
 // Statistiques
-router.get('/stats', auth, async (req, res) => {
+router.get("/stats", auth, async (req, res) => {
   try {
-    const { Op, fn, col } = require('sequelize');
+    const { Op, fn, col } = require("sequelize");
     
     const totalExercises = await UserProgress.count({
       where: { userId: req.userId },
       distinct: true,
-      col: 'exerciseId'
+      col: "exerciseId"
     });
 
     const correctAnswers = await UserProgress.count({
@@ -99,7 +99,7 @@ router.get('/stats', auth, async (req, res) => {
       ? Math.round((correctAnswers / totalAnswers) * 100)
       : 0;
 
-    const totalTime = await UserProgress.sum('timeSpent', {
+    const totalTime = await UserProgress.sum("timeSpent", {
       where: { userId: req.userId }
     }) || 0;
 
@@ -115,10 +115,10 @@ router.get('/stats', auth, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Erreur stats:', error);
+    console.error("Erreur stats:", error);
     res.status(500).json({
       success: false,
-      message: 'Erreur lors du calcul des statistiques'
+      message: "Erreur lors du calcul des statistiques"
     });
   }
 });

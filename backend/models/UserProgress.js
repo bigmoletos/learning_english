@@ -3,11 +3,11 @@
  * @version 1.0.0
  */
 
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/connection');
-const User = require('./User');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/connection");
+const User = require("./User");
 
-const UserProgress = sequelize.define('UserProgress', {
+const UserProgress = sequelize.define("UserProgress", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -17,8 +17,8 @@ const UserProgress = sequelize.define('UserProgress', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'users',
-      key: 'id'
+      model: "users",
+      key: "id"
     }
   },
   exerciseId: {
@@ -26,7 +26,7 @@ const UserProgress = sequelize.define('UserProgress', {
     allowNull: false
   },
   exerciseType: {
-    type: DataTypes.ENUM('qcm', 'cloze', 'writing', 'listening', 'reading', 'speaking'),
+    type: DataTypes.ENUM("qcm", "cloze", "writing", "listening", "reading", "speaking"),
     allowNull: false
   },
   questionId: {
@@ -44,14 +44,14 @@ const UserProgress = sequelize.define('UserProgress', {
   timeSpent: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    comment: 'Temps en secondes'
+    comment: "Temps en secondes"
   },
   score: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
   level: {
-    type: DataTypes.ENUM('A2', 'B1', 'B2', 'C1'),
+    type: DataTypes.ENUM("A2", "B1", "B2", "C1"),
     allowNull: false
   },
   domain: {
@@ -63,13 +63,13 @@ const UserProgress = sequelize.define('UserProgress', {
     defaultValue: DataTypes.NOW
   }
 }, {
-  tableName: 'user_progress',
+  tableName: "user_progress",
   timestamps: true
 });
 
 // Association avec User
-UserProgress.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-User.hasMany(UserProgress, { foreignKey: 'userId', as: 'progress' });
+UserProgress.belongsTo(User, { foreignKey: "userId", as: "user" });
+User.hasMany(UserProgress, { foreignKey: "userId", as: "progress" });
 
 module.exports = UserProgress;
 

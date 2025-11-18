@@ -19,8 +19,8 @@ class OllamaService {
     // Validation de l'URL pour prévenir SSRF
     try {
       const parsedUrl = new URL(rawUrl);
-      const allowedHosts = ['localhost', '127.0.0.1', '::1'];
-      const allowedProtocols = ['http:', 'https:'];
+      const allowedHosts = ["localhost", "127.0.0.1", "::1"];
+      const allowedProtocols = ["http:", "https:"];
 
       // Vérifier le protocole
       if (!allowedProtocols.includes(parsedUrl.protocol)) {
@@ -33,12 +33,12 @@ class OllamaService {
       }
 
       // Vérifier le port (doit être entre 1024 et 65535)
-      const port = parsedUrl.port ? parseInt(parsedUrl.port) : (parsedUrl.protocol === 'https:' ? 443 : 80);
+      const port = parsedUrl.port ? parseInt(parsedUrl.port) : (parsedUrl.protocol === "https:" ? 443 : 80);
       if (port < 1024 || port > 65535) {
         throw new Error(`Invalid port: ${port}. Must be between 1024 and 65535.`);
       }
 
-      this.ollamaUrl = parsedUrl.toString().replace(/\/$/, ''); // Remove trailing slash
+      this.ollamaUrl = parsedUrl.toString().replace(/\/$/, ""); // Remove trailing slash
       logger.info(`[Ollama] Service configured at: ${this.ollamaUrl}`);
     } catch (error) {
       logger.error(`[Ollama] Invalid URL configuration: ${error.message}`);

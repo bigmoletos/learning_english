@@ -4,10 +4,10 @@
  * @date 09-11-2025
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const speech = require('@google-cloud/speech');
-const logger = require('../utils/logger');
+const speech = require("@google-cloud/speech");
+const logger = require("../utils/logger");
 
 // Initialiser le client Google Cloud Speech-to-Text
 let sttClient;
@@ -23,15 +23,15 @@ try {
     // Sinon, utiliser les credentials directement depuis les variables d'environnement
     config.credentials = {
       client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, "\n"),
     };
     config.projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
   }
 
   sttClient = new speech.SpeechClient(config);
-  logger.info('Client Google Cloud Speech-to-Text initialisé avec succès');
+  logger.info("Client Google Cloud Speech-to-Text initialisé avec succès");
 } catch (error) {
-  logger.error('Erreur initialisation Google Cloud Speech-to-Text:', error);
+  logger.error("Erreur initialisation Google Cloud Speech-to-Text:", error);
   sttClient = null;
 }
 
@@ -39,21 +39,21 @@ try {
  * POST /api/speech-to-text
  * Transcrit de l'audio en texte
  */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     if (!sttClient) {
       return res.status(503).json({
         success: false,
-        message: 'Service STT non disponible. Veuillez configurer Google Cloud credentials.'
+        message: "Service STT non disponible. Veuillez configurer Google Cloud credentials."
       });
     }
 
-    const { audioContent, languageCode = 'en-US', sampleRateHertz = 16000, encoding = 'WEBM_OPUS' } = req.body;
+    const { audioContent, languageCode = "en-US", sampleRateHertz = 16000, encoding = "WEBM_OPUS" } = req.body;
 
     if (!audioContent) {
       return res.status(400).json({
         success: false,
-        message: 'L\'audio est requis'
+        message: "L'audio est requis"
       });
     }
 
@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
       languageCode: languageCode,
       enableAutomaticPunctuation: true,
       enableWordConfidence: true,
-      model: 'default', // ou 'command_and_search', 'phone_call', 'video', 'default'
+      model: "default", // ou 'command_and_search', 'phone_call', 'video', 'default'
       useEnhanced: true,
     };
 
@@ -85,10 +85,10 @@ router.post('/', async (req, res) => {
     if (!response.results || response.results.length === 0) {
       return res.json({
         success: true,
-        transcript: '',
+        transcript: "",
         confidence: 0,
         words: [],
-        message: 'Aucune parole détectée dans l\'audio'
+        message: "Aucune parole détectée dans l'audio"
       });
     }
 
@@ -97,7 +97,7 @@ router.post('/', async (req, res) => {
       .map(result => result.alternatives[0])
       .filter(alternative => alternative)
       .map(alternative => alternative.transcript)
-      .join('\n');
+      .join("\n");
 
     const confidence = response.results[0]?.alternatives[0]?.confidence || 0;
     const words = response.results[0]?.alternatives[0]?.words || [];
@@ -122,12 +122,12 @@ router.post('/', async (req, res) => {
     });
 
   } catch (error) {
-    logger.error('[STT] Erreur lors de la transcription:', error);
+    logger.error("[STT] Erreur lors de la transcription:", error);
 
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la transcription audio',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Erreur lors de la transcription audio",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 });
@@ -136,20 +136,20 @@ router.post('/', async (req, res) => {
  * GET /api/speech-to-text/languages
  * Liste les langues supportées
  */
-router.get('/languages', async (req, res) => {
+router.get("/languages", async (req, res) => {
   try {
     // Liste des langues couramment supportées par Google Cloud STT
     const languages = [
-      { code: 'en-US', name: 'English (US)' },
-      { code: 'en-GB', name: 'English (UK)' },
-      { code: 'fr-FR', name: 'French' },
-      { code: 'es-ES', name: 'Spanish' },
-      { code: 'de-DE', name: 'German' },
-      { code: 'it-IT', name: 'Italian' },
-      { code: 'pt-BR', name: 'Portuguese (Brazil)' },
-      { code: 'ja-JP', name: 'Japanese' },
-      { code: 'ko-KR', name: 'Korean' },
-      { code: 'zh-CN', name: 'Chinese (Simplified)' },
+      { code: "en-US", name: "English (US)" },
+      { code: "en-GB", name: "English (UK)" },
+      { code: "fr-FR", name: "French" },
+      { code: "es-ES", name: "Spanish" },
+      { code: "de-DE", name: "German" },
+      { code: "it-IT", name: "Italian" },
+      { code: "pt-BR", name: "Portuguese (Brazil)" },
+      { code: "ja-JP", name: "Japanese" },
+      { code: "ko-KR", name: "Korean" },
+      { code: "zh-CN", name: "Chinese (Simplified)" },
     ];
 
     res.json({
@@ -159,12 +159,12 @@ router.get('/languages', async (req, res) => {
     });
 
   } catch (error) {
-    logger.error('[STT] Erreur récupération des langues:', error);
+    logger.error("[STT] Erreur récupération des langues:", error);
 
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la récupération des langues',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Erreur lors de la récupération des langues",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 });

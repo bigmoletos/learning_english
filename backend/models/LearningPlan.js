@@ -3,11 +3,11 @@
  * @version 1.0.0
  */
 
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/connection');
-const User = require('./User');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/connection");
+const User = require("./User");
 
-const LearningPlan = sequelize.define('LearningPlan', {
+const LearningPlan = sequelize.define("LearningPlan", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -17,8 +17,8 @@ const LearningPlan = sequelize.define('LearningPlan', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'users',
-      key: 'id'
+      model: "users",
+      key: "id"
     }
   },
   title: {
@@ -30,11 +30,11 @@ const LearningPlan = sequelize.define('LearningPlan', {
     allowNull: true
   },
   priority: {
-    type: DataTypes.ENUM('high', 'medium', 'low'),
-    defaultValue: 'medium'
+    type: DataTypes.ENUM("high", "medium", "low"),
+    defaultValue: "medium"
   },
   targetLevel: {
-    type: DataTypes.ENUM('A2', 'B1', 'B2', 'C1'),
+    type: DataTypes.ENUM("A2", "B1", "B2", "C1"),
     allowNull: false
   },
   estimatedWeeks: {
@@ -70,13 +70,13 @@ const LearningPlan = sequelize.define('LearningPlan', {
     allowNull: true
   }
 }, {
-  tableName: 'learning_plans',
+  tableName: "learning_plans",
   timestamps: true
 });
 
 // Association avec User
-LearningPlan.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-User.hasMany(LearningPlan, { foreignKey: 'userId', as: 'learningPlans' });
+LearningPlan.belongsTo(User, { foreignKey: "userId", as: "user" });
+User.hasMany(LearningPlan, { foreignKey: "userId", as: "learningPlans" });
 
 module.exports = LearningPlan;
 

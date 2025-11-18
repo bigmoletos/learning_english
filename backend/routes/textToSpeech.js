@@ -4,10 +4,10 @@
  * @date 08-11-2025
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const textToSpeech = require('@google-cloud/text-to-speech');
-const logger = require('../utils/logger');
+const textToSpeech = require("@google-cloud/text-to-speech");
+const logger = require("../utils/logger");
 
 // Initialiser le client Google Cloud TTS
 let ttsClient;
@@ -23,15 +23,15 @@ try {
     // Sinon, utiliser les credentials directement depuis les variables d'environnement
     config.credentials = {
       client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, "\n"),
     };
     config.projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
   }
 
   ttsClient = new textToSpeech.TextToSpeechClient(config);
-  logger.info('Client Google Cloud TTS initialisé avec succès');
+  logger.info("Client Google Cloud TTS initialisé avec succès");
 } catch (error) {
-  logger.error('Erreur initialisation Google Cloud TTS:', error);
+  logger.error("Erreur initialisation Google Cloud TTS:", error);
   ttsClient = null;
 }
 
@@ -39,21 +39,21 @@ try {
  * POST /api/text-to-speech
  * Synthétise du texte en audio
  */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     if (!ttsClient) {
       return res.status(503).json({
         success: false,
-        message: 'Service TTS non disponible. Veuillez configurer Google Cloud credentials.'
+        message: "Service TTS non disponible. Veuillez configurer Google Cloud credentials."
       });
     }
 
-    const { text, languageCode = 'en-US', voiceName, speakingRate = 1.0, pitch = 0 } = req.body;
+    const { text, languageCode = "en-US", voiceName, speakingRate = 1.0, pitch = 0 } = req.body;
 
     if (!text) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte est requis'
+        message: "Le texte est requis"
       });
     }
 
@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
     if (text.length > 5000) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte est trop long (max 5000 caractères)'
+        message: "Le texte est trop long (max 5000 caractères)"
       });
     }
 
@@ -74,10 +74,10 @@ router.post('/', async (req, res) => {
         languageCode,
         name: voiceName || undefined, // Si null, Google choisit automatiquement
         // Ne pas spécifier ssmlGender si voiceName est fourni (Google le détermine automatiquement)
-        ...(voiceName ? {} : { ssmlGender: 'FEMALE' }) // Fallback si pas de voiceName
+        ...(voiceName ? {} : { ssmlGender: "FEMALE" }) // Fallback si pas de voiceName
       },
       audioConfig: {
-        audioEncoding: 'MP3',
+        audioEncoding: "MP3",
         speakingRate: Math.max(0.25, Math.min(4.0, speakingRate)), // Limiter entre 0.25 et 4.0
         pitch: Math.max(-20.0, Math.min(20.0, pitch)), // Limiter entre -20 et 20
       },
@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
     const [response] = await ttsClient.synthesizeSpeech(request);
 
     // Convertir le buffer audio en base64
-    const audioContent = response.audioContent.toString('base64');
+    const audioContent = response.audioContent.toString("base64");
 
     logger.info(`[TTS] Synthèse réussie: ${audioContent.length} bytes`);
 
@@ -97,18 +97,18 @@ router.post('/', async (req, res) => {
       stats: {
         textLength: text.length,
         audioSize: audioContent.length,
-        voice: voiceName || 'default',
+        voice: voiceName || "default",
         languageCode
       }
     });
 
   } catch (error) {
-    logger.error('[TTS] Erreur lors de la synthèse:', error);
+    logger.error("[TTS] Erreur lors de la synthèse:", error);
 
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la génération audio',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Erreur lors de la génération audio",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 });
@@ -117,16 +117,16 @@ router.post('/', async (req, res) => {
  * GET /api/text-to-speech/voices?lang=en-US
  * Liste les voix disponibles pour une langue
  */
-router.get('/voices', async (req, res) => {
+router.get("/voices", async (req, res) => {
   try {
     if (!ttsClient) {
       return res.status(503).json({
         success: false,
-        message: 'Service TTS non disponible'
+        message: "Service TTS non disponible"
       });
     }
 
-    const languageCode = req.query.lang || 'en-US';
+    const languageCode = req.query.lang || "en-US";
 
     logger.info(`[TTS] Liste des voix demandée pour: ${languageCode}`);
 
@@ -152,12 +152,12 @@ router.get('/voices', async (req, res) => {
     });
 
   } catch (error) {
-    logger.error('[TTS] Erreur récupération des voix:', error);
+    logger.error("[TTS] Erreur récupération des voix:", error);
 
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de la récupération des voix',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Erreur lors de la récupération des voix",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 });

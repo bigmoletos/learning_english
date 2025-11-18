@@ -1,19 +1,19 @@
 // Backend test setup
-const dotenv = require('dotenv');
-const path = require('path');
-const { TextEncoder, TextDecoder } = require('util');
+const dotenv = require("dotenv");
+const path = require("path");
+const { TextEncoder, TextDecoder } = require("util");
 
 // Polyfills for Node.js environment
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 // Load test environment variables
-dotenv.config({ path: path.join(__dirname, '../../.env.test') });
+dotenv.config({ path: path.join(__dirname, "../../.env.test") });
 
 // Set test environment
-process.env.NODE_ENV = 'test';
-process.env.JWT_SECRET = 'test-secret-key-for-testing-purposes-only-minimum-32-chars';
-process.env.DATABASE_PATH = ':memory:'; // Use in-memory SQLite for tests
+process.env.NODE_ENV = "test";
+process.env.JWT_SECRET = "test-secret-key-for-testing-purposes-only-minimum-32-chars";
+process.env.DATABASE_PATH = ":memory:"; // Use in-memory SQLite for tests
 
 // Global test utilities
 global.testHelpers = {
@@ -22,11 +22,11 @@ global.testHelpers = {
 
   // Helper to generate test JWT token
   generateTestToken: () => {
-    const jwt = require('jsonwebtoken');
+    const jwt = require("jsonwebtoken");
     return jwt.sign(
-      { userId: 'test-user-123', email: 'test@example.com' },
+      { userId: "test-user-123", email: "test@example.com" },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: "1h" }
     );
   },
 };

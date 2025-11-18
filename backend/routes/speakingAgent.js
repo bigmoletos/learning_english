@@ -284,7 +284,7 @@ const GRAMMAR_PATTERNS = [
       "Avec he/she/it, il faut ajouter -s/-es au verbe au présent simple.",
     exceptions: [
       "Verbes modaux (can, must, should) ne prennent jamais de -s",
-      'Verbe "to be" : he is, she is, it is',
+      "Verbe \"to be\" : he is, she is, it is",
     ],
     severity: "high",
   },
@@ -293,31 +293,31 @@ const GRAMMAR_PATTERNS = [
     type: "subject_verb_agreement",
     explanation:
       "Avec I/you/we/they, le verbe ne prend pas de -s au présent simple.",
-    exceptions: ['Sauf avec "have" qui devient "have" pour I/you/we/they'],
+    exceptions: ["Sauf avec \"have\" qui devient \"have\" pour I/you/we/they"],
     severity: "high",
   },
   {
     pattern: /\b(a)\s+([aeiou]\w+)\b/gi,
     type: "article",
     explanation:
-      'Utilisez "an" devant un mot commençant par une voyelle (a, e, i, o, u).',
+      "Utilisez \"an\" devant un mot commençant par une voyelle (a, e, i, o, u).",
     exceptions: [
-      'Exception : "a university" (son de "you"), "a European" (son de "eu")',
+      "Exception : \"a university\" (son de \"you\"), \"a European\" (son de \"eu\")",
     ],
     severity: "medium",
   },
   {
     pattern: /\b(an)\s+([bcdfghjklmnpqrstvwxyz]\w+)\b/gi,
     type: "article",
-    explanation: 'Utilisez "a" devant un mot commençant par une consonne.',
-    exceptions: ['Exception : "an hour" (h muet), "an honest person"'],
+    explanation: "Utilisez \"a\" devant un mot commençant par une consonne.",
+    exceptions: ["Exception : \"an hour\" (h muet), \"an honest person\""],
     severity: "medium",
   },
   {
     pattern: /\bmuch\s+(people|things|cars|books)\b/gi,
     type: "quantifier",
     explanation:
-      '"Much" s\'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez "many".',
+      "\"Much\" s'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez \"many\".",
     exceptions: [
       "Much water, much time (indénombrables) vs many cars, many people (dénombrables)",
     ],
@@ -327,7 +327,7 @@ const GRAMMAR_PATTERNS = [
     pattern: /\bdidn't\s+(went|had|was|were|did)\b/gi,
     type: "double_negative",
     explanation:
-      'Après "didn\'t", utilisez la forme de base du verbe (infinitif sans "to").',
+      "Après \"didn't\", utilisez la forme de base du verbe (infinitif sans \"to\").",
     exceptions: [
       "didn't go (pas \"didn't went\")",
       "didn't have (pas \"didn't had\")",
@@ -468,9 +468,9 @@ function generateFeedback(score, errors, text) {
   } else if (score >= 60) {
     return `Bon effort ! Concentrez-vous sur l'amélioration de ${errors.length} points grammaticaux. Voyez les explications ci-dessous.`;
   } else if (score >= 40) {
-    return `Vous progressez. Il y a plusieurs points à améliorer. Pratiquez les exercices suggérés pour renforcer vos bases.`;
+    return "Vous progressez. Il y a plusieurs points à améliorer. Pratiquez les exercices suggérés pour renforcer vos bases.";
   } else {
-    return `Continuez à pratiquer ! La grammaire de base nécessite plus d'attention. Commencez par les exercices de niveau A2.`;
+    return "Continuez à pratiquer ! La grammaire de base nécessite plus d'attention. Commencez par les exercices de niveau A2.";
   }
 }
 
@@ -534,21 +534,21 @@ function createExerciseForErrorType(errorType, level, index) {
       type: "grammar",
       title: "Articles a/an",
       prompt:
-        'Énumérez 5 objets dans votre pièce en utilisant "a" ou "an". Exemple: "I see an apple and a book."',
+        "Énumérez 5 objets dans votre pièce en utilisant \"a\" ou \"an\". Exemple: \"I see an apple and a book.\"",
       focusAreas: ["indefinite articles", "pronunciation"],
     },
     quantifier: {
       type: "grammar",
       title: "Quantificateurs much/many",
       prompt:
-        'Décrivez ce que vous avez dans votre cuisine en utilisant "much" et "many". Exemple: "I have many apples but not much milk."',
+        "Décrivez ce que vous avez dans votre cuisine en utilisant \"much\" et \"many\". Exemple: \"I have many apples but not much milk.\"",
       focusAreas: ["countable/uncountable nouns", "quantifiers"],
     },
     double_negative: {
       type: "grammar",
       title: "Négation au passé",
       prompt:
-        'Racontez ce que vous n\'avez pas fait hier en utilisant "didn\'t". Exemple: "I didn\'t go to the gym yesterday."',
+        "Racontez ce que vous n'avez pas fait hier en utilisant \"didn't\". Exemple: \"I didn't go to the gym yesterday.\"",
       focusAreas: ["past simple negative", "base form"],
     },
   };

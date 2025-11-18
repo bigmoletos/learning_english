@@ -1,17 +1,17 @@
 // Jest configuration for backend
 module.exports = {
-  testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  testEnvironment: "node",
+  setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
   testMatch: [
-    '**/__tests__/**/*.js',
-    '**/?(*.)+(spec|test).js'
+    "**/__tests__/**/*.js",
+    "**/?(*.)+(spec|test).js"
   ],
   collectCoverageFrom: [
-    '**/*.js',
-    '!**/node_modules/**',
-    '!**/tests/**',
-    '!**/coverage/**',
-    '!jest.config.js',
+    "**/*.js",
+    "!**/node_modules/**",
+    "!**/tests/**",
+    "!**/coverage/**",
+    "!jest.config.js",
   ],
   coverageThreshold: {
     global: {

@@ -3,11 +3,11 @@
  * @version 1.0.0
  */
 
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/connection');
-const User = require('./User');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/connection");
+const User = require("./User");
 
-const AssessmentResult = sequelize.define('AssessmentResult', {
+const AssessmentResult = sequelize.define("AssessmentResult", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -17,13 +17,13 @@ const AssessmentResult = sequelize.define('AssessmentResult', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'users',
-      key: 'id'
+      model: "users",
+      key: "id"
     }
   },
   assessmentType: {
-    type: DataTypes.ENUM('initial', 'progress', 'final'),
-    defaultValue: 'initial'
+    type: DataTypes.ENUM("initial", "progress", "final"),
+    defaultValue: "initial"
   },
   totalQuestions: {
     type: DataTypes.INTEGER,
@@ -54,7 +54,7 @@ const AssessmentResult = sequelize.define('AssessmentResult', {
     allowNull: false
   },
   assessedLevel: {
-    type: DataTypes.ENUM('A2', 'B1', 'B2', 'C1'),
+    type: DataTypes.ENUM("A2", "B1", "B2", "C1"),
     allowNull: false
   },
   weakAreas: {
@@ -67,20 +67,20 @@ const AssessmentResult = sequelize.define('AssessmentResult', {
   },
   answers: {
     type: DataTypes.JSON,
-    comment: 'Détails de toutes les réponses'
+    comment: "Détails de toutes les réponses"
   },
   completedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
 }, {
-  tableName: 'assessment_results',
+  tableName: "assessment_results",
   timestamps: true
 });
 
 // Association avec User
-AssessmentResult.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-User.hasMany(AssessmentResult, { foreignKey: 'userId', as: 'assessments' });
+AssessmentResult.belongsTo(User, { foreignKey: "userId", as: "user" });
+User.hasMany(AssessmentResult, { foreignKey: "userId", as: "assessments" });
 
 module.exports = AssessmentResult;
 
