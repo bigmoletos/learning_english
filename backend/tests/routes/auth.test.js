@@ -54,17 +54,6 @@ jest.mock('../../database/connection', () => {
   };
 });
 
-// Mock email service BEFORE it's imported to prevent setImmediate error
-jest.mock('../../utils/emailService', () => ({
-  sendVerificationEmail: jest.fn(),
-  sendPasswordResetEmail: jest.fn(),
-  sendWelcomeEmail: jest.fn(),
-}));
-
-const User = require('../../models/User');
-const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
-
-
 // Create mock functions outside factory so they can be configured
 const mockFindOne = jest.fn();
 const mockFindAll = jest.fn();
@@ -72,7 +61,7 @@ const mockCreate = jest.fn();
 const mockUpdate = jest.fn();
 const mockDestroy = jest.fn();
 
-// Mock User model - using auto-mock with manual stubs
+// Mock User model BEFORE importing it
 jest.mock('../../models/User', () => ({
   findOne: mockFindOne,
   findAll: mockFindAll,
@@ -84,6 +73,16 @@ jest.mock('../../models/User', () => ({
   beforeUpdate: jest.fn((callback) => {}),
   addHook: jest.fn((hookName, callback) => {}),
 }));
+
+// Mock email service BEFORE it's imported to prevent setImmediate error
+jest.mock('../../utils/emailService', () => ({
+  sendVerificationEmail: jest.fn(),
+  sendPasswordResetEmail: jest.fn(),
+  sendWelcomeEmail: jest.fn(),
+}));
+
+const User = require('../../models/User');
+const { sendVerificationEmail, sendPasswordResetEmail } = require('../../utils/emailService');
 
 // Import routes after mocks
 const authRoutes = require('../../routes/auth');
