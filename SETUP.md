@@ -13,6 +13,11 @@
 - **Compte Google Cloud** (TTS nécessite facturation)
 - **Android Studio** (optionnel, pour build APK)
 
+**Dépendances backend essentielles** :
+```bash
+npm install sequelize winston
+```
+
 ---
 
 ## 🚀 Installation locale
@@ -33,6 +38,7 @@ npm install
 # Backend
 cd backend
 npm install
+npm install sequelize winston
 cd ..
 ```
 

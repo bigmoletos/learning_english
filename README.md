@@ -26,6 +26,11 @@ Application React + Firebase pour l'apprentissage interactif de l'anglais techni
 - Compte Firebase (authentification)
 - Compte Google Cloud (TTS)
 
+**Dépendances backend essentielles** :
+```bash
+npm install sequelize winston
+```
+
 ### Installation
 
 ```bash
@@ -34,7 +39,7 @@ cd /mnt/c/programmation/learning_english
 
 # 2. Installer les dépendances
 npm install
-cd backend && npm install && cd ..
+cd backend && npm install && npm install sequelize winston && cd ..
 
 # 3. Configurer les variables d'environnement
 cp .env.example .env
