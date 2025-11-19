@@ -28,6 +28,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download during CI
 
       - name: Run linter
         run: npm run lint --if-present
@@ -36,6 +38,7 @@ jobs:
         run: npm run test:ci
         env:
           CI: true
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -163,16 +166,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download during CI
 
       - name: Run Firebase service tests
         run: npm test -- --testPathPattern=firebase
         env:
           CI: true
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download
 
   # Code Quality Checks
   code-quality:
@@ -186,11 +192,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download during CI
 
       - name: Run ESLint
         run: npm run lint --if-present
@@ -213,11 +221,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0  # Skip Cypress binary download during CI
 
       - name: Build frontend
         run: npm run build
