@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: 🔍 Run ESLint
-        run: npx eslint src/
+        run: npx eslint src/ --max-warnings 1000
         continue-on-error: false
 
       - name: 📘 Run TypeScript check
