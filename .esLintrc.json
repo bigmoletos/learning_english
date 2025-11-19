@@ -82,7 +82,7 @@
       "react/jsx-uses-react": "off",  // Pas besoin d'importer React avec la nouvelle JSX transform
       "react/jsx-uses-vars": "error",  // Vérifie que les variables JSX sont utilisées
       "react/no-unescaped-entities": "warn",  // Met les apostrophes non échappées en warning
-      
+
       /* ========== RÈGLES REACT HOOKS ========== */
       "react-hooks/rules-of-hooks": "error",  // Vérifie les règles des hooks
       "react-hooks/exhaustive-deps": "warn"  // Avertit des dépendances manquantes
@@ -105,9 +105,11 @@
     "overrides": [
       {
         // Applique ces règles uniquement aux fichiers de test
-        "files": ["**/*.test.ts", "**/*.test.tsx"],
+        "files": ["**/*.test.ts", "**/*.test.tsx", "**/__tests__/**/*.ts", "**/__tests__/**/*.tsx", "**/__mocks__/**/*.ts"],
         "rules": {
-          "no-console": "off"  // Autorise console.log dans les tests
+          "no-console": "off",  // Autorise console.log dans les tests
+          "@typescript-eslint/no-empty-function": "off",  // Autorise les fonctions vides dans les tests (pour les mocks)
+          "@typescript-eslint/no-var-requires": "off"  // Autorise require() dans les tests
         }
       }
     ]
