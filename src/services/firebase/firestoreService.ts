@@ -252,10 +252,10 @@ export const setDocument = async <T = DocumentData>(
       dataSample:
         collectionName === "users"
           ? {
-              id: (data as any)?.id,
-              email: (data as any)?.email,
-              currentLevel: (data as any)?.currentLevel,
-            }
+            id: (data as any)?.id,
+            email: (data as any)?.email,
+            currentLevel: (data as any)?.currentLevel,
+          }
           : "N/A",
       errorObject: error,
     };
