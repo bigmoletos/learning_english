@@ -111,6 +111,14 @@
           "@typescript-eslint/no-empty-function": "off",  // Autorise les fonctions vides dans les tests (pour les mocks)
           "@typescript-eslint/no-var-requires": "off"  // Autorise require() dans les tests
         }
+      },
+      {
+        // Applique ces règles aux fichiers de setup et ErrorBoundary
+        "files": ["**/setupTests.ts", "**/ErrorBoundary.tsx"],
+        "rules": {
+          "@typescript-eslint/no-empty-function": "off",  // Autorise les fonctions vides pour les mocks
+          "@typescript-eslint/no-var-requires": "off"  // Autorise require() pour les mocks
+        }
       }
     ]
   }

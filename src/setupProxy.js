@@ -3,6 +3,7 @@
  * Redirige les requêtes /api/* vers le backend sur http://localhost:5010
  */
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
@@ -12,10 +13,12 @@ module.exports = function (app) {
       target: "http://localhost:5010",
       changeOrigin: true,
       logLevel: "debug",
-      onProxyReq: (proxyReq, req, res) => {
+      onProxyReq: (proxyReq, req) => {
+        // eslint-disable-next-line no-console
         console.log(`[Proxy] ${req.method} ${req.url} -> http://localhost:5010${req.url}`);
       },
       onError: (err, req, res) => {
+        // eslint-disable-next-line no-console
         console.error("[Proxy] Erreur:", err.message);
         res.status(500).json({ error: "Erreur de proxy", message: err.message });
       },

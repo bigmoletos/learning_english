@@ -245,27 +245,27 @@ export const AdaptiveLearningPlan: React.FC<AdaptiveLearningPlanProps> = ({ onNa
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case "critical":
-        return "error";
-      case "moderate":
-        return "warning";
-      case "minor":
-        return "info";
-      default:
-        return "default";
+    case "critical":
+      return "error";
+    case "moderate":
+      return "warning";
+    case "minor":
+      return "info";
+    default:
+      return "default";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high":
-        return "error";
-      case "medium":
-        return "warning";
-      case "low":
-        return "info";
-      default:
-        return "default";
+    case "high":
+      return "error";
+    case "medium":
+      return "warning";
+    case "low":
+      return "info";
+    default:
+      return "default";
     }
   };
 

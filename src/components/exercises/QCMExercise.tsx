@@ -86,8 +86,8 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
                     {submitted &&
                       option === selectedAnswer &&
                       option !== question.correctAnswer && (
-                        <Cancel color="error" fontSize="small" />
-                      )}
+                      <Cancel color="error" fontSize="small" />
+                    )}
                   </Box>
                 }
                 sx={{

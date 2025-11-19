@@ -20,7 +20,7 @@ const mockUser = {
   emailVerified: true,
   displayName: "Test User",
   getIdToken: jest.fn().mockResolvedValue("mock-token"),
-  reload: jest.fn().mockResolvedValue(undefined)
+  reload: jest.fn().mockResolvedValue(undefined),
 };
 
 // Mock de la navigation
@@ -36,7 +36,7 @@ describe("EmailVerification Component", () => {
     Object.defineProperty(auth, "currentUser", {
       value: mockUser,
       writable: true,
-      configurable: true
+      configurable: true,
     });
     (storageService.get as jest.Mock).mockImplementation((key) => {
       if (key === StorageKeys.PENDING_USER) return Promise.resolve(null);
@@ -49,12 +49,7 @@ describe("EmailVerification Component", () => {
 
   // Test de rendu de base
   it("renders loading state initially", () => {
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
     expect(screen.getByText("Vérification de votre email...")).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
@@ -64,18 +59,15 @@ describe("EmailVerification Component", () => {
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
 
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
       expect(screen.getByText("✅ Email vérifié !")).toBeInTheDocument();
     });
     expect(
-      screen.getByText("Votre email a été vérifié avec succès. Vous pouvez maintenant utiliser toutes les fonctionnalités de l'application.")
+      screen.getByText(
+        "Votre email a été vérifié avec succès. Vous pouvez maintenant utiliser toutes les fonctionnalités de l'application."
+      )
     ).toBeInTheDocument();
 
     expect(mockLogin).toHaveBeenCalledWith("mock-token", expect.any(Object));
@@ -88,12 +80,7 @@ describe("EmailVerification Component", () => {
     mockError.code = "auth/invalid-action-code";
     (checkActionCode as jest.Mock).mockRejectedValue(mockError);
 
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
       expect(screen.getByText("❌ Erreur de vérification")).toBeInTheDocument();
@@ -107,27 +94,24 @@ describe("EmailVerification Component", () => {
   it("resends verification email when user is not verified", async () => {
     const mockUnverifiedUser = {
       ...mockUser,
-      emailVerified: false
+      emailVerified: false,
     };
     Object.defineProperty(auth, "currentUser", {
       value: mockUnverifiedUser,
       writable: true,
-      configurable: true
+      configurable: true,
     });
     (sendEmailVerification as jest.Mock).mockResolvedValue(undefined);
 
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
       expect(screen.getByText("❌ Erreur de vérification")).toBeInTheDocument();
     });
     expect(
-      screen.getByText("Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception.")
+      screen.getByText(
+        "Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception."
+      )
     ).toBeInTheDocument();
   });
 
@@ -136,12 +120,7 @@ describe("EmailVerification Component", () => {
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
 
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith("mock-token", expect.any(Object));
@@ -151,12 +130,7 @@ describe("EmailVerification Component", () => {
 
   // Test de navigation vers la connexion
   it("navigates to login when clicking continue button", async () => {
-    render(
-      <EmailVerification
-        onSuccess={mockOnSuccess}
-        onSwitchToLogin={mockOnSwitchToLogin}
-      />
-    );
+    render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
       expect(screen.getByText("Continuer")).toBeInTheDocument();
