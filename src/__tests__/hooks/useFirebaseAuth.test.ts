@@ -7,6 +7,19 @@ import { renderHook, act } from "@testing-library/react";
 import { useFirebaseAuth } from "../../hooks/useFirebaseAuth";
 import * as authService from "../../firebase/authService";
 
+// Mock logger
+jest.mock("../../services/logger", () => ({
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    log: jest.fn(),
+    time: jest.fn(),
+    timeEnd: jest.fn(),
+  },
+}));
+
 // Mock auth service
 jest.mock("../../firebase/authService");
 

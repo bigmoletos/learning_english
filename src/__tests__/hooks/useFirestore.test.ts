@@ -7,6 +7,19 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { useUserProfile, useProgress, useTestResults } from "../../hooks/useFirestore";
 import * as firestoreService from "../../firebase/firestoreService";
 
+// Mock logger
+jest.mock("../../services/logger", () => ({
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    log: jest.fn(),
+    time: jest.fn(),
+    timeEnd: jest.fn(),
+  },
+}));
+
 // Mock firestore service
 jest.mock("../../firebase/firestoreService");
 

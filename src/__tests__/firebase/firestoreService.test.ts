@@ -14,6 +14,19 @@ import {
 } from "../../firebase/firestoreService";
 import * as firestore from "firebase/firestore";
 
+// Mock logger
+jest.mock("../../services/logger", () => ({
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    log: jest.fn(),
+    time: jest.fn(),
+    timeEnd: jest.fn(),
+  },
+}));
+
 // Mock Firestore
 jest.mock("firebase/firestore", () => ({
   doc: jest.fn(),

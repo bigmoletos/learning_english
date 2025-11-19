@@ -18,6 +18,19 @@ jest.mock("../../hooks/useFirestore");
 jest.mock("../../firebase/firestoreService");
 jest.mock("../../services/firebase/userService");
 
+// Mock logger to prevent actual logging during tests
+jest.mock("../../services/logger", () => ({
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    log: jest.fn(),
+    time: jest.fn(),
+    timeEnd: jest.fn(),
+  },
+}));
+
 describe("UserContext", () => {
   // Mock localStorage
   const localStorageMock = (() => {
@@ -389,9 +402,8 @@ describe("UserContext", () => {
         result.current.login("legacy-token", userData);
       });
 
-      await waitFor(() => {
-        expect(result.current.token).toBe("legacy-token");
-      });
+      // Token should be set immediately
+      expect(result.current.token).toBe("legacy-token");
 
       expect(result.current.user?.name).toBe("Legacy User");
       expect(result.current.user?.currentLevel).toBe("A2");
@@ -436,6 +448,23 @@ describe("UserContext", () => {
         isAuthenticated: true,
       });
 
+      (userService.getUserById as jest.Mock).mockResolvedValue({
+        id: "user-123",
+        email: "test@example.com",
+        name: "Test User",
+        currentLevel: "B1",
+        targetLevel: "C1",
+        completedExercises: 0,
+        totalScore: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      (userService.getUserAssessmentStatus as jest.Mock).mockResolvedValue({
+        hasCompletedAssessment: false,
+        assessmentLevel: null,
+      });
+
       mockTestResults.addTestResult.mockResolvedValue({
         success: true,
         testId: "test-result-123",
@@ -445,9 +474,12 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await waitFor(() => {
-        expect(result.current.user).not.toBeNull();
-      });
+      await waitFor(
+        () => {
+          expect(result.current.user).not.toBeNull();
+        },
+        { timeout: 5000 }
+      );
 
       const response: UserResponse = {
         exerciseId: "ex-123",
@@ -462,12 +494,8 @@ describe("UserContext", () => {
         result.current.addResponse(response);
       });
 
-      await waitFor(
-        () => {
-          expect(result.current.responses).toHaveLength(1);
-        },
-        { timeout: 5000 }
-      );
+      // Response is added immediately to local state
+      expect(result.current.responses).toHaveLength(1);
       expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises
@@ -813,6 +841,12 @@ describe("UserContext", () => {
         updatedAt: new Date(),
       });
 
+      // Mock getUserAssessmentStatus to avoid errors
+      (userService.getUserAssessmentStatus as jest.Mock).mockResolvedValue({
+        hasCompletedAssessment: false,
+        assessmentLevel: null,
+      });
+
       mockTestResults.addTestResult.mockRejectedValue(new Error("Firebase error"));
 
       const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -827,6 +861,9 @@ describe("UserContext", () => {
         },
         { timeout: 5000 }
       );
+
+      // Ensure user is set before calling addResponse
+      expect(result.current.user).not.toBeNull();
 
       const response: UserResponse = {
         exerciseId: "ex-error",
