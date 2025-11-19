@@ -171,17 +171,17 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
       // Configuration adaptée pour Web et Android
       const audioConstraints = isNativePlatform
         ? {
-          // Configuration simplifiée pour Android
-          audio: true,
-        }
+            // Configuration simplifiée pour Android
+            audio: true,
+          }
         : {
-          // Configuration avancée pour Web
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            sampleRate: 48000,
-          },
-        };
+            // Configuration avancée pour Web
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              sampleRate: 48000,
+            },
+          };
 
       const stream = await navigator.mediaDevices.getUserMedia(audioConstraints);
 

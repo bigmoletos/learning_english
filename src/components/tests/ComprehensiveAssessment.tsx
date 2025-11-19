@@ -1119,11 +1119,11 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
                           </Typography>
                           {Array.isArray(question.correctAnswer) &&
                             question.correctAnswer.length > 1 && (
-                            <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                              <Typography variant="caption" display="block" sx={{ mt: 1 }}>
                                 Autres réponses acceptées :{" "}
-                              {question.correctAnswer.slice(1).join(", ")}
-                            </Typography>
-                          )}
+                                {question.correctAnswer.slice(1).join(", ")}
+                              </Typography>
+                            )}
                         </Box>
                       </Grid>
                     )}

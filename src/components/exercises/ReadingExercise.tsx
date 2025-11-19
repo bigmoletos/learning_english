@@ -90,8 +90,8 @@ export const ReadingExercise: React.FC<ReadingExerciseProps> = ({
                     {submitted &&
                       option === selectedAnswer &&
                       option !== question.correctAnswer && (
-                      <Cancel color="error" fontSize="small" />
-                    )}
+                        <Cancel color="error" fontSize="small" />
+                      )}
                   </Box>
                 }
                 sx={{

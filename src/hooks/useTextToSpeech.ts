@@ -218,20 +218,20 @@ export const useTextToSpeech = (): UseTextToSpeechReturn => {
 
         // Gestion des erreurs spécifiques
         switch (event.error) {
-        case "network":
-          setError("Erreur réseau lors de la synthèse vocale.");
-          break;
-        case "synthesis-failed":
-          setError("Échec de la synthèse vocale.");
-          break;
-        case "audio-busy":
-          setError("Audio occupé. Réessayez.");
-          break;
-        case "not-allowed":
-          setError("Permission audio refusée.");
-          break;
-        default:
-          setError(`Erreur: ${event.error}`);
+          case "network":
+            setError("Erreur réseau lors de la synthèse vocale.");
+            break;
+          case "synthesis-failed":
+            setError("Échec de la synthèse vocale.");
+            break;
+          case "audio-busy":
+            setError("Audio occupé. Réessayez.");
+            break;
+          case "not-allowed":
+            setError("Permission audio refusée.");
+            break;
+          default:
+            setError(`Erreur: ${event.error}`);
         }
 
         setIsSpeaking(false);

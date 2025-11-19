@@ -383,11 +383,11 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                     question.type === "essay"
                       ? !!(userAnswer && userAnswer.length > 50)
                       : !!(
-                        userAnswer &&
+                          userAnswer &&
                           question.correctAnswer &&
                           userAnswer.toLowerCase().trim() ===
                             question.correctAnswer.toLowerCase().trim()
-                      );
+                        );
 
                   return (
                     <Card key={question.id} variant="outlined" sx={{ mb: 3 }}>

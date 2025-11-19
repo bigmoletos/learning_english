@@ -306,37 +306,37 @@ export const processSyncQueue = async (): Promise<void> => {
 
     try {
       switch (item.type) {
-      case "user":
-        console.log("👤 [processSyncQueue] Synchronisation utilisateur...");
-        if (item.action === "create") {
-          await saveUser(item.data);
-          console.log("✅ [processSyncQueue] Utilisateur créé");
-        } else if (item.action === "update") {
-          await updateUser(item.data.userId, item.data.updates);
-          console.log("✅ [processSyncQueue] Utilisateur mis à jour");
-        }
-        break;
-      case "progress":
-        console.log("📊 [processSyncQueue] Synchronisation progression...");
-        if (item.action === "create") {
-          await saveProgress(
-            item.data.userId,
-            item.data.progress,
-            item.data.exerciseId,
-            item.data.exerciseType,
-            item.data.level,
-            item.data.domain
-          );
-          console.log("✅ [processSyncQueue] Progression sauvegardée");
-        }
-        break;
-      case "assessment":
-        console.log("📝 [processSyncQueue] Synchronisation évaluation...");
-        if (item.action === "create") {
-          await saveAssessment(item.data);
-          console.log("✅ [processSyncQueue] Évaluation sauvegardée");
-        }
-        break;
+        case "user":
+          console.log("👤 [processSyncQueue] Synchronisation utilisateur...");
+          if (item.action === "create") {
+            await saveUser(item.data);
+            console.log("✅ [processSyncQueue] Utilisateur créé");
+          } else if (item.action === "update") {
+            await updateUser(item.data.userId, item.data.updates);
+            console.log("✅ [processSyncQueue] Utilisateur mis à jour");
+          }
+          break;
+        case "progress":
+          console.log("📊 [processSyncQueue] Synchronisation progression...");
+          if (item.action === "create") {
+            await saveProgress(
+              item.data.userId,
+              item.data.progress,
+              item.data.exerciseId,
+              item.data.exerciseType,
+              item.data.level,
+              item.data.domain
+            );
+            console.log("✅ [processSyncQueue] Progression sauvegardée");
+          }
+          break;
+        case "assessment":
+          console.log("📝 [processSyncQueue] Synchronisation évaluation...");
+          if (item.action === "create") {
+            await saveAssessment(item.data);
+            console.log("✅ [processSyncQueue] Évaluation sauvegardée");
+          }
+          break;
       }
       processed.push(item.timestamp);
       successCount++;

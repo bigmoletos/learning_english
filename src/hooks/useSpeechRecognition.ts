@@ -165,31 +165,31 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
 
       // Gestion des erreurs spécifiques Android
       switch (event.error) {
-      case "network":
-        setError("Erreur réseau. Vérifiez votre connexion Internet.");
-        setListening(false);
-        break;
-      case "not-allowed":
-        setError("Permission microphone refusée.");
-        setPermissionGranted(false);
-        setListening(false);
-        break;
-      case "no-speech":
-        // Ne pas afficher d'erreur pour "no-speech", juste logger
-        console.log("[SpeechRecognition] Aucune parole détectée, en attente...");
-        // Ne pas arrêter l'écoute
-        break;
-      case "audio-capture":
-        setError("Impossible d'accéder au microphone.");
-        setListening(false);
-        break;
-      case "aborted":
-        // Ignore, c'est un arrêt volontaire
-        console.log("[SpeechRecognition] Reconnaissance arrêtée (aborted)");
-        break;
-      default:
-        setError(`Erreur de reconnaissance: ${event.error}`);
-        setListening(false);
+        case "network":
+          setError("Erreur réseau. Vérifiez votre connexion Internet.");
+          setListening(false);
+          break;
+        case "not-allowed":
+          setError("Permission microphone refusée.");
+          setPermissionGranted(false);
+          setListening(false);
+          break;
+        case "no-speech":
+          // Ne pas afficher d'erreur pour "no-speech", juste logger
+          console.log("[SpeechRecognition] Aucune parole détectée, en attente...");
+          // Ne pas arrêter l'écoute
+          break;
+        case "audio-capture":
+          setError("Impossible d'accéder au microphone.");
+          setListening(false);
+          break;
+        case "aborted":
+          // Ignore, c'est un arrêt volontaire
+          console.log("[SpeechRecognition] Reconnaissance arrêtée (aborted)");
+          break;
+        default:
+          setError(`Erreur de reconnaissance: ${event.error}`);
+          setListening(false);
       }
     };
 
