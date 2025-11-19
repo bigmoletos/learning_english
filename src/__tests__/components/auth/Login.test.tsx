@@ -65,6 +65,7 @@ describe("Login Component", () => {
   });
 
   it("should display error for wrong password", async () => {
+    // Mock loginUser to throw an error with auth/invalid-credential code
     mockedLoginUser.mockRejectedValueOnce({
       code: "auth/invalid-credential",
       message: "Email ou mot de passe incorrect",
