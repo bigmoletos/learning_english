@@ -188,10 +188,19 @@ jobs:
         run: npm ci
 
       - name: 🔒 Run npm audit (Frontend)
+        id: frontend-audit
         run: |
           npm audit --audit-level=moderate --json > frontend-audit.json || true
-          npm audit --audit-level=moderate || echo "⚠️ Vulnerabilities found (see frontend-audit.json)"
-        continue-on-error: true
+          # Vérifier le nombre de vulnérabilités dans le JSON
+          VULN_COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('frontend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+          echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "❌ $VULN_COUNT vulnérabilité(s) trouvée(s) dans le frontend"
+            npm audit --audit-level=moderate
+            exit 1
+          else
+            echo "✅ Aucune vulnérabilité trouvée dans le frontend"
+          fi
 
       - name: 📊 Upload frontend audit report
         uses: actions/upload-artifact@v4
@@ -202,12 +211,21 @@ jobs:
           retention-days: 30
 
       - name: 🔒 Run npm audit (Backend)
+        id: backend-audit
         run: |
           cd backend
           npm ci
           npm audit --audit-level=moderate --json > ../backend-audit.json || true
-          npm audit --audit-level=moderate || echo "⚠️ Vulnerabilities found (see backend-audit.json)"
-        continue-on-error: true
+          # Vérifier le nombre de vulnérabilités dans le JSON
+          VULN_COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('../backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+          echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "❌ $VULN_COUNT vulnérabilité(s) trouvée(s) dans le backend"
+            npm audit --audit-level=moderate
+            exit 1
+          else
+            echo "✅ Aucune vulnérabilité trouvée dans le backend"
+          fi
 
       - name: 📊 Upload backend audit report
         uses: actions/upload-artifact@v4
@@ -226,21 +244,33 @@ jobs:
           echo "✅ No obvious secrets found"
 
       - name: 📝 Generate security summary
+        if: always()
         run: |
           echo "## Security Audit Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Frontend" >> $GITHUB_STEP_SUMMARY
           if [ -f frontend-audit.json ]; then
-            echo "Audit report generated: frontend-audit.json" >> $GITHUB_STEP_SUMMARY
+            FRONTEND_VULN=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('frontend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+            if [ "$FRONTEND_VULN" -gt 0 ]; then
+              echo "❌ **$FRONTEND_VULN vulnérabilité(s) trouvée(s)**" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "✅ Aucune vulnérabilité" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "Audit report: frontend-audit.json" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Backend" >> $GITHUB_STEP_SUMMARY
           if [ -f backend-audit.json ]; then
-            echo "Audit report generated: backend-audit.json" >> $GITHUB_STEP_SUMMARY
+            BACKEND_VULN=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+            if [ "$BACKEND_VULN" -gt 0 ]; then
+              echo "❌ **$BACKEND_VULN vulnérabilité(s) trouvée(s)**" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "✅ Aucune vulnérabilité" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "Audit report: backend-audit.json" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "⚠️ **Note**: Most vulnerabilities are in dev dependencies (Jest, webpack-dev-server, etc.) and do not affect production builds." >> $GITHUB_STEP_SUMMARY
-          echo "See SECURITY.md for detailed information." >> $GITHUB_STEP_SUMMARY
+          echo "📋 **Note**: Voir SECURITY.md pour plus de détails sur les vulnérabilités acceptées (dépendances de dev uniquement)." >> $GITHUB_STEP_SUMMARY
 
   # Job 6: Build Android (optionnel, commenté par défaut)
   # build-android:
