@@ -2,11 +2,12 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import axios from "axios";
 import { Login } from "../../../components/auth/Login";
-// Mock axios
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+import { loginUser } from "../../../firebase/authService";
+
+// Mock Firebase Auth Service
+jest.mock("../../../firebase/authService");
+const mockedLoginUser = loginUser as jest.MockedFunction<typeof loginUser>;
 
 describe("Login Component", () => {
   const mockOnSuccess = jest.fn();
@@ -43,16 +44,30 @@ describe("Login Component", () => {
     expect(passwordInput).toHaveAttribute("type", "password");
   });
   it("should show loading state during submission", async () => {
+    // Mock a delayed response to see loading state
+    mockedLoginUser.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => resolve({ success: false, message: "Error" }), 100);
+        })
+    );
+
     render(<Login {...defaultProps} />);
+    const emailInput = screen.getByLabelText(/Email/i);
+    const passwordInput = screen.getByLabelText(/Mot de passe/i);
     const submitButton = screen.getByRole("button", { name: /Se connecter/i });
 
+    await userEvent.type(emailInput, "test@example.com");
+    await userEvent.type(passwordInput, "password");
     await userEvent.click(submitButton);
+
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
 
   it("should display error for wrong password", async () => {
-    (mockedAxios.post as jest.Mock).mockRejectedValueOnce({
-      response: { data: { message: "Email ou mot de passe incorrect" } },
+    mockedLoginUser.mockRejectedValueOnce({
+      code: "auth/invalid-credential",
+      message: "Email ou mot de passe incorrect",
     });
 
     render(<Login {...defaultProps} />);
@@ -64,9 +79,14 @@ describe("Login Component", () => {
     await userEvent.type(passwordInput, "wrongpassword");
     await userEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(screen.getByText(/Email ou mot de passe incorrect/i)).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(
+          screen.getByText(/Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte./i)
+        ).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
   });
 
   // Ajoutez d'autres tests similaires pour les autres fonctionnalités
