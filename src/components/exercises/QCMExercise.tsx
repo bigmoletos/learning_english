@@ -64,10 +64,7 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
         </Box>
 
         <FormControl component="fieldset" fullWidth disabled={submitted}>
-          <RadioGroup
-            value={selectedAnswer}
-            onChange={(e) => setSelectedAnswer(e.target.value)}
-          >
+          <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
             {question.options &&
               question.options.map((option, idx) => (
                 <FormControlLabel
@@ -83,8 +80,8 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
                       ? option === question.correctAnswer
                         ? "success.light"
                         : option === selectedAnswer && !isCorrect
-                        ? "error.light"
-                        : "transparent"
+                          ? "error.light"
+                          : "transparent"
                       : "transparent",
                   }}
                 />
@@ -108,19 +105,11 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
         {submitted && showExplanation && (
           <Box sx={{ mt: 3 }}>
             {isCorrect ? (
-              <Alert
-                severity="success"
-                icon={<CheckCircle />}
-                sx={{ mb: 2 }}
-              >
+              <Alert severity="success" icon={<CheckCircle />} sx={{ mb: 2 }}>
                 Correct ! Excellente réponse.
               </Alert>
             ) : (
-              <Alert
-                severity="error"
-                icon={<Cancel />}
-                sx={{ mb: 2 }}
-              >
+              <Alert severity="error" icon={<Cancel />} sx={{ mb: 2 }}>
                 Incorrect. La bonne réponse est : {question.correctAnswer}
               </Alert>
             )}
@@ -136,4 +125,3 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
     </Card>
   );
 };
-
