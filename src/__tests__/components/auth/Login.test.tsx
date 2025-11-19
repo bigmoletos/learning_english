@@ -4,10 +4,20 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Login } from "../../../components/auth/Login";
 import { loginUser } from "../../../firebase/authService";
+import { tokenManager } from "../../../services/tokenManager";
 
 // Mock Firebase Auth Service
 jest.mock("../../../firebase/authService");
 const mockedLoginUser = loginUser as jest.MockedFunction<typeof loginUser>;
+
+// Mock Token Manager
+jest.mock("../../../services/tokenManager", () => ({
+  tokenManager: {
+    initialize: jest.fn(),
+    setToken: jest.fn(() => Promise.resolve()),
+    getToken: jest.fn(() => Promise.resolve("mock-token")),
+  },
+}));
 
 describe("Login Component", () => {
   const mockOnSuccess = jest.fn();
@@ -23,6 +33,11 @@ describe("Login Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
+    sessionStorage.clear();
+    // Reset tokenManager mocks
+    (tokenManager.initialize as jest.Mock).mockClear();
+    (tokenManager.setToken as jest.Mock).mockResolvedValue(undefined);
+    (tokenManager.getToken as jest.Mock).mockResolvedValue("mock-token");
   });
 
   it("should render all form fields", () => {
