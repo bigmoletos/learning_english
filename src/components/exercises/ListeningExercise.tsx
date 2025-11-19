@@ -133,8 +133,8 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
                     {submitted &&
                       option === selectedAnswer &&
                       option !== question.correctAnswer && (
-                        <Cancel color="error" fontSize="small" />
-                      )}
+                      <Cancel color="error" fontSize="small" />
+                    )}
                   </Box>
                 }
                 sx={{

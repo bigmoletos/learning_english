@@ -86,30 +86,30 @@ export const Login: React.FC<LoginProps> = ({
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-          case "auth/user-not-found":
-            errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
-            break;
-          case "auth/wrong-password":
-            errorMessage = "Mot de passe incorrect.";
-            break;
-          case "auth/invalid-credential":
-            errorMessage =
+        case "auth/user-not-found":
+          errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Mot de passe incorrect.";
+          break;
+        case "auth/invalid-credential":
+          errorMessage =
               "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.";
-            break;
-          case "auth/invalid-email":
-            errorMessage = "Adresse email invalide.";
-            break;
-          case "auth/user-disabled":
-            errorMessage = "Ce compte a été désactivé.";
-            break;
-          case "auth/too-many-requests":
-            errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
-            break;
-          case "auth/network-request-failed":
-            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-            break;
-          default:
-            errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Adresse email invalide.";
+          break;
+        case "auth/user-disabled":
+          errorMessage = "Ce compte a été désactivé.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
+          break;
+        case "auth/network-request-failed":
+          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+          break;
+        default:
+          errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;
