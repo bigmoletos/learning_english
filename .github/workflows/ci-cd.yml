@@ -215,10 +215,10 @@ jobs:
         run: |
           cd backend
           npm ci
-          # Toujours créer le fichier JSON, même si npm audit échoue
-          npm audit --audit-level=moderate --json > ../backend-audit.json 2>&1 || npm audit --audit-level=moderate --json > ../backend-audit.json 2>&1 || echo '{"metadata":{"vulnerabilities":{"total":0}}}' > ../backend-audit.json
-          # Vérifier le nombre de vulnérabilités dans le JSON
+          # Créer le fichier JSON à la racine du projet
+          npm audit --audit-level=moderate --json > ../backend-audit.json 2>&1 || echo '{"metadata":{"vulnerabilities":{"total":0}}}' > ../backend-audit.json
           cd ..
+          # Vérifier le nombre de vulnérabilités dans le JSON
           VULN_COUNT=$(node -e "const fs=require('fs'); try { const data=JSON.parse(fs.readFileSync('backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0); } catch(e) { console.log(0); }")
           echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
           if [ "$VULN_COUNT" -gt 0 ]; then

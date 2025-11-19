@@ -24,7 +24,7 @@ interface ForgotPasswordProps {
   onSuccess?: () => void;
 }
 
-export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin, onSuccess }) => {
+export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,6 +49,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
         setError(result.message || "Erreur lors de la demande de réinitialisation");
       }
     } catch (err: any) {
+      // eslint-disable-next-line no-console
       console.error("Erreur réinitialisation Firebase:", err);
 
       let errorMessage = "Erreur lors de la demande de réinitialisation.";
@@ -56,22 +57,22 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin,
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-          case "auth/user-not-found":
-            // Ne pas révéler si l'email existe (sécurité)
-            setMessage(
-              "Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception."
-            );
-            setEmailSent(true);
-            setLoading(false);
-            return;
-          case "auth/invalid-email":
-            errorMessage = "Adresse email invalide.";
-            break;
-          case "auth/network-request-failed":
-            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-            break;
-          default:
-            errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
+        case "auth/user-not-found":
+          // Ne pas révéler si l'email existe (sécurité)
+          setMessage(
+            "Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception."
+          );
+          setEmailSent(true);
+          setLoading(false);
+          return;
+        case "auth/invalid-email":
+          errorMessage = "Adresse email invalide.";
+          break;
+        case "auth/network-request-failed":
+          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+          break;
+        default:
+          errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
         }
       } else if (err.message) {
         errorMessage = err.message;
