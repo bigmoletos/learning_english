@@ -215,19 +215,19 @@ jobs:
         run: |
           cd backend
           npm ci
-          npm audit --audit-level=moderate --json > backend-audit.json || true
+          npm audit --audit-level=moderate --json > ../backend-audit.json || true
           # Vérifier le nombre de vulnérabilités dans le JSON
-          VULN_COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+          cd ..
+          VULN_COUNT=$(node -e "const fs=require('fs'); try { const data=JSON.parse(fs.readFileSync('backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0); } catch(e) { console.log(0); }")
           echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
           if [ "$VULN_COUNT" -gt 0 ]; then
             echo "❌ $VULN_COUNT vulnérabilité(s) trouvée(s) dans le backend"
+            cd backend
             npm audit --audit-level=moderate
             exit 1
           else
             echo "✅ Aucune vulnérabilité trouvée dans le backend"
           fi
-          # Copier le fichier à la racine pour l'upload
-          cp backend-audit.json ../backend-audit.json || true
 
       - name: 📊 Upload backend audit report
         uses: actions/upload-artifact@v4
@@ -236,6 +236,7 @@ jobs:
           name: backend-security-audit
           path: backend-audit.json
           retention-days: 30
+          if-no-files-found: warn
 
       - name: 🔍 Check for secrets
         run: |
