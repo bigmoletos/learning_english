@@ -1,7 +1,7 @@
 /**
  * Composant de connexion avec Firebase Auth
- * @version 2.0.0
- * @date 2025-11-06
+ * @version 2.1.0
+ * @date 2025-11-19
  */
 
 import React, { useState } from "react";
@@ -20,6 +20,8 @@ import {
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import { loginUser } from "../../firebase/authService";
+import { tokenManager } from "../../services/tokenManager";
+import { logger } from "../../services/logger";
 
 interface LoginProps {
   onSuccess: (token: string, user: any) => void;
@@ -60,12 +62,20 @@ export const Login: React.FC<LoginProps> = ({
           lastLogin: new Date().toISOString(),
         };
 
-        // Utiliser l'ID token Firebase comme token
-        const token = await firebaseUser.getIdToken();
+        // Initialiser le token manager avec l'utilisateur Firebase
+        tokenManager.initialize(firebaseUser);
+        await tokenManager.setToken(firebaseUser);
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem(
+        // Obtenir le token sécurisé
+        const token = await tokenManager.getToken();
+
+        if (!token) {
+          throw new Error("Impossible d'obtenir le token d'authentification");
+        }
+
+        // Stocker uniquement les données utilisateur (pas le token)
+        sessionStorage.setItem("user", JSON.stringify(userData));
+        sessionStorage.setItem(
           "firebaseUser",
           JSON.stringify({
             uid: firebaseUser.uid,
@@ -74,18 +84,21 @@ export const Login: React.FC<LoginProps> = ({
           })
         );
 
+        logger.info("Connexion réussie", { userId: firebaseUser.uid });
         onSuccess(token, userData);
       } else {
         setError(result.message || "Erreur de connexion");
       }
-    } catch (err: any) {
-      console.error("Erreur de connexion Firebase:", err);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      logger.error("Erreur de connexion Firebase", error);
 
       let errorMessage = "Erreur de connexion. Vérifiez vos identifiants.";
 
       // Gérer les erreurs Firebase spécifiques
-      if (err.code) {
-        switch (err.code) {
+      const firebaseError = err as any;
+      if (firebaseError.code) {
+        switch (firebaseError.code) {
           case "auth/user-not-found":
             errorMessage = "Aucun compte trouvé avec cet email. Créez un compte pour commencer.";
             break;
@@ -109,10 +122,10 @@ export const Login: React.FC<LoginProps> = ({
             errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
             break;
           default:
-            errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
+            errorMessage = error.message || "Erreur de connexion. Veuillez réessayer.";
         }
-      } else if (err.message) {
-        errorMessage = err.message;
+      } else if (error.message) {
+        errorMessage = error.message;
       }
 
       setError(errorMessage);

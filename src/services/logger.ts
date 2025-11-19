@@ -1,9 +1,11 @@
 /**
  * Service de logging sécurisé avec niveaux
  * Empêche l'exposition de données sensibles en production
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2025-11-19
  */
+
+import { monitoring } from "./monitoring";
 
 type LogLevel = "debug" | "info" | "warn" | "error";
 
@@ -74,7 +76,7 @@ class Logger {
   }
 
   /**
-   * Error logs - always logged and can be sent to monitoring service
+   * Error logs - always logged and sent to monitoring service in production
    */
   error(message: string, error?: Error | unknown, context?: LogContext): void {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -88,10 +90,10 @@ class Logger {
 
     console.error(this.formatMessage("error", message, errorContext));
 
-    // TODO: Send to monitoring service (Sentry, LogRocket, etc.)
-    // if (!this.isDevelopment) {
-    //   this.sendToMonitoring(message, errorContext);
-    // }
+    // Send to monitoring service in production
+    if (!this.isDevelopment && error instanceof Error) {
+      monitoring.captureException(error, this.sanitize(context));
+    }
   }
 
   /**
