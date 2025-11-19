@@ -19,7 +19,7 @@ describe("Logger Service", () => {
     // Mock console methods
     console.debug = jest.fn();
     console.info = jest.fn();
-    console.warn = jest.warn = jest.fn();
+    console.warn = jest.fn();
     console.error = jest.fn();
   });
 
