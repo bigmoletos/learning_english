@@ -61,7 +61,7 @@
      */
     "rules": {
       /* ========== RÈGLES DE BASE ========== */
-      "indent": ["error", 2],  // Force une indentation de 2 espaces (standard React/JS)
+      "indent": "off",  // Désactivé car géré par Prettier
       "quotes": ["error", "double"],  // Utilise des guillemets doubles ("") pour les chaînes
       "semi": ["error", "always"],  // Oblige à mettre un point-virgule à la fin des instructions
       "no-console": "warn",  // Avertit si console.log() est utilisé (utile en production)
