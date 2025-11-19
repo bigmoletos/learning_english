@@ -842,9 +842,8 @@ describe("UserContext", () => {
       });
 
       // Should still add response locally even if Firebase fails
-      await waitFor(() => {
-        expect(result.current.responses).toHaveLength(1);
-      });
+      // The response is added immediately to local state, so we can check it right away
+      expect(result.current.responses).toHaveLength(1);
 
       expect(consoleSpy).toHaveBeenCalledWith(
         "Error saving test result to Firebase:",

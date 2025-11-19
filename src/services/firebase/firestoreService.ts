@@ -1,7 +1,7 @@
 /**
  * Service Firestore générique pour opérations CRUD
- * @version 1.1.0
- * @date 01-11-2025
+ * @version 1.2.0
+ * @date 2025-11-19
  */
 
 import {
@@ -21,6 +21,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db, auth } from "./config";
+import { logger } from "../logger";
 
 /**
  * Vérifie si l'utilisateur est authentifié
@@ -69,7 +70,7 @@ export const getDocument = async <T = DocumentData>(
   documentId: string
 ): Promise<T | null> => {
   if (!db) {
-    console.warn("Firestore n'est pas initialisé");
+    logger.warn("Firestore n'est pas initialisé");
     return null;
   }
 
@@ -96,13 +97,15 @@ export const getDocument = async <T = DocumentData>(
       error.message?.includes("authenticated")
     ) {
       // Client offline ou non authentifié - retourner null silencieusement
+      logger.debug("Client offline ou non authentifié lors de getDocument", {
+        collection: collectionName,
+        documentId,
+        errorCode: error.code
+      });
       return null;
     }
     // Ne logger que les autres erreurs
-    console.error(
-      `Erreur lors de la récupération du document ${collectionName}/${documentId}:`,
-      error
-    );
+    logger.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}`, error);
     throw error;
   }
 };
@@ -115,7 +118,7 @@ export const getDocuments = async <T = DocumentData>(
   constraints: QueryConstraint[] = []
 ): Promise<T[]> => {
   if (!db) {
-    console.warn("Firestore n'est pas initialisé");
+    logger.warn("Firestore n'est pas initialisé");
     return [];
   }
 
@@ -145,10 +148,14 @@ export const getDocuments = async <T = DocumentData>(
       error.message?.includes("authenticated")
     ) {
       // Client offline ou non authentifié - retourner un tableau vide silencieusement
+      logger.debug("Client offline ou non authentifié lors de getDocuments", {
+        collection: collectionName,
+        errorCode: error.code
+      });
       return [];
     }
     // Ne logger que les autres erreurs
-    console.error(`Erreur lors de la récupération des documents ${collectionName}:`, error);
+    logger.error(`Erreur lors de la récupération des documents ${collectionName}`, error);
     throw error;
   }
 };

@@ -39,27 +39,41 @@ interface SpeakingExerciseProps {
     difficulty: number;
     focusAreas: string[];
   };
-  onComplete?: (analysis: any) => void;
+  onComplete?: (analysis: AnalysisResult) => void;
+}
+
+interface GrammarError {
+  type: string;
+  original: string;
+  corrected: string;
+  explanation: string;
+  exceptions?: string[];
+  severity: "low" | "medium" | "high";
+}
+
+interface SuggestedExercise {
+  id: string;
+  level: LanguageLevel;
+  type: "pronunciation" | "fluency" | "grammar" | "vocabulary";
+  title: string;
+  prompt: string;
+  targetSentence?: string;
+  duration: number;
+  difficulty: number;
+  focusAreas: string[];
 }
 
 interface AnalysisResult {
   originalTranscript: string;
   correctedSentence?: string;
-  errors: Array<{
-    type: string;
-    original: string;
-    corrected: string;
-    explanation: string;
-    exceptions?: string[];
-    severity: "low" | "medium" | "high";
-  }>;
+  errors: GrammarError[];
   score: number;
   fluencyScore: number;
   grammarScore: number;
   pronunciationScore: number;
   feedback: string;
   recommendations: string[];
-  suggestedExercises: any[];
+  suggestedExercises: SuggestedExercise[];
 }
 
 export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, onComplete }) => {
@@ -73,12 +87,25 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const isMountedRef = useRef(true); // Track component mount status
   const isNativePlatform = Capacitor.isNativePlatform();
+
+  // Stable refs for exercise properties to avoid recreating callbacks
+  const exerciseLevelRef = useRef(exercise.level);
+  const targetSentenceRef = useRef(exercise.targetSentence);
+
+  // Update refs when exercise changes
+  React.useEffect(() => {
+    exerciseLevelRef.current = exercise.level;
+    targetSentenceRef.current = exercise.targetSentence;
+  }, [exercise.level, exercise.targetSentence]);
 
   /**
    * Traite l'enregistrement : transcription + analyse
    */
   const processRecording = useCallback(async () => {
+    if (!isMountedRef.current) return; // Prevent state updates if unmounted
+
     setIsProcessing(true);
     setError(null);
 
@@ -108,6 +135,8 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
         sampleRate: 48000,
       });
 
+      if (!isMountedRef.current) return; // Check again after async operation
+
       if (!sttResult.success || !sttResult.transcript) {
         throw new Error(sttResult.error || "Aucune transcription disponible. Réessayez.");
       }
@@ -125,16 +154,20 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
         body: JSON.stringify({
           transcript: sttResult.transcript,
           confidence: sttResult.confidence / 100, // Convertir en 0-1
-          targetLevel: exercise.level,
-          expectedSentence: exercise.targetSentence,
+          targetLevel: exerciseLevelRef.current, // Use ref instead of prop
+          expectedSentence: targetSentenceRef.current, // Use ref instead of prop
         }),
       });
+
+      if (!isMountedRef.current) return; // Check again after async operation
 
       if (!analysisResponse.ok) {
         throw new Error("Erreur lors de l'analyse");
       }
 
       const analysisData = await analysisResponse.json();
+
+      if (!isMountedRef.current) return; // Final check before setting state
 
       if (!analysisData.success) {
         throw new Error(analysisData.message || "Erreur lors de l'analyse");
@@ -148,18 +181,25 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
       }
 
       console.log("[SpeakingExercise] Analyse complète:", analysisData);
-    } catch (err: any) {
-      console.error("[SpeakingExercise] Erreur traitement:", err);
-      setError(err.message || "Erreur lors du traitement de l'audio");
+    } catch (err) {
+      if (!isMountedRef.current) return; // Don't set error if unmounted
+
+      const error = err instanceof Error ? err : new Error(String(err));
+      console.error("[SpeakingExercise] Erreur traitement:", error);
+      setError(error.message || "Erreur lors du traitement de l'audio");
     } finally {
-      setIsProcessing(false);
+      if (isMountedRef.current) {
+        setIsProcessing(false);
+      }
     }
-  }, [exercise.level, exercise.targetSentence, onComplete]);
+  }, [onComplete]); // Remove exercise dependencies, use refs instead
 
   /**
    * Démarre l'enregistrement audio
    */
   const startRecording = useCallback(async () => {
+    if (!isMountedRef.current) return;
+
     try {
       setError(null);
       setTranscript("");
@@ -229,16 +269,23 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
       };
 
       mediaRecorder.start();
+
+      if (!isMountedRef.current) return;
       setIsRecording(true);
 
       // Timer pour afficher le temps d'enregistrement
       timerRef.current = setInterval(() => {
-        setRecordingTime((prev) => prev + 1);
+        if (isMountedRef.current) {
+          setRecordingTime((prev) => prev + 1);
+        }
       }, 1000);
-    } catch (err: any) {
-      console.error("[SpeakingExercise] Erreur démarrage enregistrement:", err);
+    } catch (err) {
+      if (!isMountedRef.current) return;
+
+      const error = err instanceof Error ? err : new Error(String(err));
+      console.error("[SpeakingExercise] Erreur démarrage enregistrement:", error);
       setError(
-        err.name === "NotAllowedError"
+        (err as any).name === "NotAllowedError"
           ? "Permission microphone refusée. Veuillez autoriser l'accès."
           : "Erreur lors du démarrage de l'enregistrement."
       );
@@ -272,9 +319,15 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
     audioChunksRef.current = [];
   }, [stopRecording]);
 
-  // Nettoyage
+  // Nettoyage et gestion du cycle de vie du composant
   React.useEffect(() => {
+    // Component is mounted
+    isMountedRef.current = true;
+
     return () => {
+      // Component is unmounting - mark as unmounted first
+      isMountedRef.current = false;
+
       // Nettoyer le timer
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -289,8 +342,13 @@ export const SpeakingExercise: React.FC<SpeakingExerciseProps> = ({ exercise, on
 
       // Nettoyer le MediaRecorder
       if (mediaRecorderRef.current) {
-        if (mediaRecorderRef.current.state === "recording") {
-          mediaRecorderRef.current.stop();
+        try {
+          if (mediaRecorderRef.current.state === "recording") {
+            mediaRecorderRef.current.stop();
+          }
+        } catch (error) {
+          // Ignore errors during cleanup
+          console.warn("[SpeakingExercise] Error stopping recorder during cleanup:", error);
         }
         mediaRecorderRef.current = null;
       }

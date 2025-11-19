@@ -50,6 +50,7 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
   const recognitionRef = useRef<any>(null);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isMountedRef = useRef<boolean>(true); // Track component mount status
 
   const browserSupportsSpeechRecognition =
     typeof window !== "undefined" &&
@@ -63,14 +64,20 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       // Arrêter le stream immédiatement
       stream.getTracks().forEach((track) => track.stop());
+
+      if (!isMountedRef.current) return false;
+
       setPermissionGranted(true);
       setError(null);
       return true;
-    } catch (err: any) {
-      console.error("Microphone permission error:", err);
-      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+    } catch (err) {
+      if (!isMountedRef.current) return false;
+
+      const error = err as any;
+      console.error("Microphone permission error:", error);
+      if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
         setError("Permission microphone refusée. Veuillez autoriser l'accès au microphone.");
-      } else if (err.name === "NotFoundError") {
+      } else if (error.name === "NotFoundError") {
         setError("Aucun microphone détecté sur votre appareil.");
       } else {
         setError("Erreur d'accès au microphone.");
@@ -145,12 +152,13 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       setTranscript(fullTranscript.trim());
 
       // Sur Android, redémarrer automatiquement si en mode continu simulé
-      if (isAndroid() && finalTranscript && listening) {
+      if (isAndroid() && finalTranscript && listening && isMountedRef.current) {
         // Redémarrer après un court délai
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
         restartTimeoutRef.current = setTimeout(() => {
+          if (!isMountedRef.current) return; // Don't restart if unmounted
           try {
             recognition.start();
           } catch (e) {
@@ -162,6 +170,8 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
 
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error:", event.error);
+
+      if (!isMountedRef.current) return; // Don't update state if unmounted
 
       // Gestion des erreurs spécifiques Android
       switch (event.error) {
@@ -195,20 +205,26 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
 
     recognition.onstart = () => {
       console.log("[SpeechRecognition] Recognition started (onstart event)");
+      if (!isMountedRef.current) return;
       setError(null);
       setListening(true);
     };
 
     recognition.onend = () => {
+      if (!isMountedRef.current) return;
       setListening(false);
       if (restartTimeoutRef.current) {
         clearTimeout(restartTimeoutRef.current);
+        restartTimeoutRef.current = null;
       }
     };
 
     recognitionRef.current = recognition;
 
     return () => {
+      // Cleanup function - mark as unmounted
+      isMountedRef.current = false;
+
       if (recognitionRef.current) {
         try {
           recognitionRef.current.stop();
@@ -218,9 +234,10 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
       }
       if (restartTimeoutRef.current) {
         clearTimeout(restartTimeoutRef.current);
+        restartTimeoutRef.current = null;
       }
     };
-  }, [browserSupportsSpeechRecognition, listening]);
+  }, [browserSupportsSpeechRecognition]);
 
   const startListening = useCallback(async () => {
     console.log("[SpeechRecognition] startListening called", {
