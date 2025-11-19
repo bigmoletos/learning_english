@@ -51,7 +51,9 @@ describe("Login Component", () => {
   });
 
   it("should display error for wrong password", async () => {
-    (mockedAxios.post as jest.Mock).mockRejectedValueOnce({ response: { data: { message: "Email ou mot de passe incorrect" } } });
+    (mockedAxios.post as jest.Mock).mockRejectedValueOnce({
+      response: { data: { message: "Email ou mot de passe incorrect" } },
+    });
 
     render(<Login {...defaultProps} />);
     const emailInput = screen.getByLabelText(/Email/i);

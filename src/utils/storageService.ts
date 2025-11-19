@@ -8,6 +8,7 @@
 // Import conditionnel de Capacitor Preferences (uniquement si disponible)
 let Preferences: any;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   Preferences = require("@capacitor/preferences").Preferences;
 } catch {
   // @capacitor/preferences n'est pas disponible (environnement web uniquement)

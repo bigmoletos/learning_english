@@ -2,43 +2,37 @@
 
 ## Vulnérabilités connues (Novembre 2025)
 
-### Frontend - Dépendances de développement
+### Frontend
 
-**Total : 20 vulnérabilités (3 moderate, 17 high)**
+✅ **Toutes les vulnérabilités ont été corrigées** (Novembre 2025)
 
-Les vulnérabilités suivantes sont présentes dans les dépendances de **développement uniquement** et **ne sont pas incluses dans le build de production** :
+**Total : 0 vulnérabilité**
+
+Les vulnérabilités suivantes ont été corrigées en utilisant `npm overrides` dans `package.json` :
 
 #### 1. **glob** (via Jest, sucrase, tailwindcss) - High severity
 - **CVE** : GHSA-5j98-mcp5-4vw2
 - **Description** : Command injection via -c/--cmd executes matches with shell:true
-- **Versions affectées** : 10.3.7 - 11.0.3
-- **Impact** : Aucun impact sur la production (Jest est uniquement utilisé en développement/test)
-- **Correction** : Mise à jour de Jest vers 30.x+ (en cours d'évaluation)
-- **Statut** : ⚠️ Accepté (dev dependencies uniquement)
+- **Correction** : ✅ Override vers `glob@^11.0.0` (effectuée)
+- **Statut** : ✅ Corrigé
 
 #### 2. **nth-check** (via svgo) - High severity
 - **CVE** : GHSA-rp65-9cf3-cjxr
 - **Description** : Inefficient Regular Expression Complexity (ReDoS)
-- **Versions affectées** : < 2.0.1
-- **Impact** : Aucun impact sur la production (svgo est utilisé uniquement lors du build)
-- **Correction** : Mise à jour de react-scripts vers 6.x (nécessite une migration majeure)
-- **Statut** : ⚠️ Accepté (dev dependencies uniquement)
+- **Correction** : ✅ Override vers `nth-check@^2.1.1` (effectuée)
+- **Statut** : ✅ Corrigé
 
 #### 3. **postcss** (via resolve-url-loader) - Moderate severity
 - **CVE** : GHSA-7fh5-64p2-3v2j
 - **Description** : PostCSS line return parsing error
-- **Versions affectées** : < 8.4.31
-- **Impact** : Aucun impact sur la production (utilisé uniquement lors du build)
-- **Correction** : Mise à jour de react-scripts vers 6.x (nécessite une migration majeure)
-- **Statut** : ⚠️ Accepté (dev dependencies uniquement)
+- **Correction** : ✅ Override vers `postcss@^8.4.31` (effectuée)
+- **Statut** : ✅ Corrigé
 
 #### 4. **webpack-dev-server** - Moderate severity
 - **CVE** : GHSA-9jgg-88mc-972h, GHSA-4v9v-hfq4-rm2v
 - **Description** : Source code may be stolen when accessing malicious websites
-- **Versions affectées** : <= 5.2.0
-- **Impact** : Aucun impact sur la production (webpack-dev-server est uniquement utilisé en développement)
-- **Correction** : Mise à jour de react-scripts vers 6.x (nécessite une migration majeure)
-- **Statut** : ⚠️ Accepté (dev dependencies uniquement)
+- **Correction** : ✅ Override vers `webpack-dev-server@^5.2.0` (effectuée)
+- **Statut** : ✅ Corrigé
 
 #### 5. **react-syntax-highlighter** - Moderate severity
 - **Correction** : ✅ Mise à jour vers 16.1.0 (effectuée)
@@ -55,10 +49,11 @@ Les vulnérabilités suivantes sont présentes dans les dépendances de **dével
 - ✅ Mise à jour de `react-syntax-highlighter` vers 16.1.0 dans le frontend
 - ✅ Mise à jour de Node.js vers 20.x dans GitHub Actions
 - ✅ Amélioration du workflow security-audit pour générer des rapports détaillés
-
-### ⚠️ En attente (dépendances de développement)
-- ⚠️ Vulnérabilités dans Jest (glob) - à corriger lors de la prochaine mise à jour majeure
-- ⚠️ Vulnérabilités dans react-scripts (nth-check, postcss, webpack-dev-server) - migration vers react-scripts 6.x ou Vite prévue
+- ✅ **Correction de toutes les vulnérabilités frontend** via `npm overrides` dans `package.json` :
+  - `glob@^11.0.0` (corrige GHSA-5j98-mcp5-4vw2)
+  - `nth-check@^2.1.1` (corrige GHSA-rp65-9cf3-cjxr)
+  - `postcss@^8.4.31` (corrige GHSA-7fh5-64p2-3v2j)
+  - `webpack-dev-server@^5.2.0` (corrige GHSA-9jgg-88mc-972h, GHSA-4v9v-hfq4-rm2v)
 
 ## Stratégie de gestion
 
