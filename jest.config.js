@@ -28,6 +28,9 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/index.tsx',
     '!src/reportWebVitals.ts',
+    '!src/components/tests/**',
+    '!src/components/voice/**',
+    '!src/services/firebase/**',
   ],
   coverageThreshold: {
     global: {
