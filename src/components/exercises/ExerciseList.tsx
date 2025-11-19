@@ -369,7 +369,7 @@ export const ExerciseList: React.FC = () => {
                 <QCMExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) =>
+                  onAnswer={(answer: string, isCorrect: boolean, timeSpent: number) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                 />
@@ -391,7 +391,7 @@ export const ExerciseList: React.FC = () => {
                 <ClozeExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) =>
+                  onAnswer={(answer: string, isCorrect: boolean, timeSpent: number) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                 />
@@ -438,7 +438,7 @@ export const ExerciseList: React.FC = () => {
                     <ListeningExercise
                       key={question.id || `q${idx}`}
                       question={question}
-                      onAnswer={(answer, isCorrect, timeSpent) =>
+                      onAnswer={(answer: string, isCorrect: boolean, timeSpent: number) =>
                         handleAnswer(question.id, answer, isCorrect, timeSpent)
                       }
                       audioUrl={undefined} // Pas besoin, l'audio est déjà affiché en haut
@@ -489,7 +489,7 @@ export const ExerciseList: React.FC = () => {
                 <ReadingExercise
                   key={question.id}
                   question={question}
-                  onAnswer={(answer, isCorrect, timeSpent) =>
+                  onAnswer={(answer: string, isCorrect: boolean, timeSpent: number) =>
                     handleAnswer(question.id, answer, isCorrect, timeSpent)
                   }
                   text={undefined} // Pas besoin, le texte est déjà affiché en haut
