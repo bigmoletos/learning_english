@@ -61,8 +61,8 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
 
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "wrap" }}>
-              {question.grammarFocus.map((focus, idx) => (
-                <Chip key={idx} label={focus} size="small" color="primary" variant="outlined" />
+              {question.grammarFocus.map((focus) => (
+                <Chip key={focus} label={focus} size="small" color="primary" variant="outlined" />
               ))}
             </Box>
           )}
@@ -119,9 +119,9 @@ export const ListeningExercise: React.FC<ListeningExerciseProps> = ({
 
         <FormControl component="fieldset" fullWidth disabled={submitted}>
           <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
-            {question.options?.map((option, index) => (
+            {question.options?.map((option) => (
               <FormControlLabel
-                key={index}
+                key={option}
                 value={option}
                 control={<Radio />}
                 label={

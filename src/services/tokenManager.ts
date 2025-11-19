@@ -5,8 +5,8 @@
  * @date 2025-11-19
  */
 
-import { User } from 'firebase/auth';
-import { logger } from './logger';
+import { User } from "firebase/auth";
+import { logger } from "./logger";
 
 interface TokenData {
   token: string;
@@ -15,7 +15,7 @@ interface TokenData {
 }
 
 class TokenManager {
-  private static readonly TOKEN_STORAGE_KEY = 'firebase_token_data';
+  private static readonly TOKEN_STORAGE_KEY = "firebase_token_data";
   private static readonly TOKEN_REFRESH_INTERVAL = 55 * 60 * 1000; // 55 minutes
   private static readonly TOKEN_VALIDITY_DURATION = 60 * 60 * 1000; // 1 hour
 
@@ -28,7 +28,7 @@ class TokenManager {
   initialize(user: User): void {
     this.currentUser = user;
     this.startAutoRefresh();
-    logger.info('[TokenManager] Initialized', { userId: user.uid });
+    logger.info("[TokenManager] Initialized", { userId: user.uid });
   }
 
   /**
@@ -46,17 +46,14 @@ class TokenManager {
       };
 
       // Store encrypted data (in a real app, consider using Web Crypto API)
-      sessionStorage.setItem(
-        TokenManager.TOKEN_STORAGE_KEY,
-        JSON.stringify(tokenData)
-      );
+      sessionStorage.setItem(TokenManager.TOKEN_STORAGE_KEY, JSON.stringify(tokenData));
 
-      logger.debug('[TokenManager] Token stored', {
+      logger.debug("[TokenManager] Token stored", {
         userId: user.uid,
-        expiresAt: new Date(expiresAt).toISOString()
+        expiresAt: new Date(expiresAt).toISOString(),
       });
     } catch (error) {
-      logger.error('[TokenManager] Failed to store token', error, { userId: user.uid });
+      logger.error("[TokenManager] Failed to store token", error, { userId: user.uid });
       throw error;
     }
   }
@@ -69,7 +66,7 @@ class TokenManager {
       const storedData = sessionStorage.getItem(TokenManager.TOKEN_STORAGE_KEY);
 
       if (!storedData) {
-        logger.warn('[TokenManager] No token found in storage');
+        logger.warn("[TokenManager] No token found in storage");
         return null;
       }
 
@@ -79,8 +76,8 @@ class TokenManager {
       const isExpired = tokenData.expiresAt - Date.now() < 5 * 60 * 1000;
 
       if (isExpired && this.currentUser) {
-        logger.info('[TokenManager] Token expired, refreshing...', {
-          userId: tokenData.userId
+        logger.info("[TokenManager] Token expired, refreshing...", {
+          userId: tokenData.userId,
         });
         await this.refreshToken();
         return this.getToken(); // Recursive call to get new token
@@ -88,7 +85,7 @@ class TokenManager {
 
       return tokenData.token;
     } catch (error) {
-      logger.error('[TokenManager] Failed to get token', error);
+      logger.error("[TokenManager] Failed to get token", error);
       return null;
     }
   }
@@ -98,13 +95,13 @@ class TokenManager {
    */
   async refreshToken(): Promise<void> {
     if (!this.currentUser) {
-      logger.warn('[TokenManager] Cannot refresh token: no user');
+      logger.warn("[TokenManager] Cannot refresh token: no user");
       return;
     }
 
     try {
-      logger.debug('[TokenManager] Refreshing token...', {
-        userId: this.currentUser.uid
+      logger.debug("[TokenManager] Refreshing token...", {
+        userId: this.currentUser.uid,
       });
 
       const newToken = await this.currentUser.getIdToken(true); // Force refresh
@@ -116,18 +113,15 @@ class TokenManager {
         userId: this.currentUser.uid,
       };
 
-      sessionStorage.setItem(
-        TokenManager.TOKEN_STORAGE_KEY,
-        JSON.stringify(tokenData)
-      );
+      sessionStorage.setItem(TokenManager.TOKEN_STORAGE_KEY, JSON.stringify(tokenData));
 
-      logger.info('[TokenManager] Token refreshed successfully', {
+      logger.info("[TokenManager] Token refreshed successfully", {
         userId: this.currentUser.uid,
-        expiresAt: new Date(expiresAt).toISOString()
+        expiresAt: new Date(expiresAt).toISOString(),
       });
     } catch (error) {
-      logger.error('[TokenManager] Failed to refresh token', error, {
-        userId: this.currentUser?.uid
+      logger.error("[TokenManager] Failed to refresh token", error, {
+        userId: this.currentUser?.uid,
       });
       throw error;
     }
@@ -143,14 +137,14 @@ class TokenManager {
     // Set up new interval
     this.refreshInterval = setInterval(() => {
       if (this.currentUser) {
-        this.refreshToken().catch(error => {
-          logger.error('[TokenManager] Auto-refresh failed', error);
+        this.refreshToken().catch((error) => {
+          logger.error("[TokenManager] Auto-refresh failed", error);
         });
       }
     }, TokenManager.TOKEN_REFRESH_INTERVAL);
 
-    logger.debug('[TokenManager] Auto-refresh started', {
-      intervalMs: TokenManager.TOKEN_REFRESH_INTERVAL
+    logger.debug("[TokenManager] Auto-refresh started", {
+      intervalMs: TokenManager.TOKEN_REFRESH_INTERVAL,
     });
   }
 
@@ -161,7 +155,7 @@ class TokenManager {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
       this.refreshInterval = null;
-      logger.debug('[TokenManager] Auto-refresh stopped');
+      logger.debug("[TokenManager] Auto-refresh stopped");
     }
   }
 
@@ -172,7 +166,7 @@ class TokenManager {
     sessionStorage.removeItem(TokenManager.TOKEN_STORAGE_KEY);
     this.stopAutoRefresh();
     this.currentUser = null;
-    logger.info('[TokenManager] Token cleared');
+    logger.info("[TokenManager] Token cleared");
   }
 
   /**
@@ -196,7 +190,7 @@ class TokenManager {
   destroy(): void {
     this.stopAutoRefresh();
     this.clearToken();
-    logger.info('[TokenManager] Destroyed');
+    logger.info("[TokenManager] Destroyed");
   }
 }
 

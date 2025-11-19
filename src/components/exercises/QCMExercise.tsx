@@ -56,8 +56,8 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
 
           {question.grammarFocus && question.grammarFocus.length > 0 && (
             <Box sx={{ display: "flex", gap: 1, mt: 2, flexWrap: "wrap" }}>
-              {question.grammarFocus.map((focus, idx) => (
-                <Chip key={idx} label={focus} size="small" color="primary" variant="outlined" />
+              {question.grammarFocus.map((focus) => (
+                <Chip key={focus} label={focus} size="small" color="primary" variant="outlined" />
               ))}
             </Box>
           )}
@@ -66,9 +66,9 @@ export const QCMExercise: React.FC<QCMExerciseProps> = ({
         <FormControl component="fieldset" fullWidth disabled={submitted}>
           <RadioGroup value={selectedAnswer} onChange={(e) => setSelectedAnswer(e.target.value)}>
             {question.options &&
-              question.options.map((option, idx) => (
+              question.options.map((option) => (
                 <FormControlLabel
-                  key={idx}
+                  key={option}
                   value={option}
                   control={<Radio />}
                   label={option}

@@ -5,7 +5,7 @@
  * @date 2025-11-19
  */
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 interface LogContext {
   [key: string]: any;
@@ -16,8 +16,8 @@ class Logger {
   private isTest: boolean;
 
   constructor() {
-    this.isDevelopment = process.env.NODE_ENV === 'development';
-    this.isTest = process.env.NODE_ENV === 'test';
+    this.isDevelopment = process.env.NODE_ENV === "development";
+    this.isTest = process.env.NODE_ENV === "test";
   }
 
   /**
@@ -27,12 +27,12 @@ class Logger {
     if (!context) return undefined;
 
     const sanitized = { ...context };
-    const sensitiveKeys = ['password', 'token', 'apiKey', 'secret', 'credential', 'auth'];
+    const sensitiveKeys = ["password", "token", "apiKey", "secret", "credential", "auth"];
 
-    Object.keys(sanitized).forEach(key => {
+    Object.keys(sanitized).forEach((key) => {
       const lowerKey = key.toLowerCase();
-      if (sensitiveKeys.some(sensitive => lowerKey.includes(sensitive))) {
-        sanitized[key] = '[REDACTED]';
+      if (sensitiveKeys.some((sensitive) => lowerKey.includes(sensitive))) {
+        sanitized[key] = "[REDACTED]";
       }
     });
 
@@ -44,7 +44,7 @@ class Logger {
    */
   private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
     const timestamp = new Date().toISOString();
-    const contextStr = context ? ` ${JSON.stringify(this.sanitize(context))}` : '';
+    const contextStr = context ? ` ${JSON.stringify(this.sanitize(context))}` : "";
     return `[${timestamp}] [${level.toUpperCase()}] ${message}${contextStr}`;
   }
 
@@ -53,7 +53,7 @@ class Logger {
    */
   debug(message: string, context?: LogContext): void {
     if (this.isDevelopment && !this.isTest) {
-      console.debug(this.formatMessage('debug', message, context));
+      console.debug(this.formatMessage("debug", message, context));
     }
   }
 
@@ -62,7 +62,7 @@ class Logger {
    */
   info(message: string, context?: LogContext): void {
     if (this.isDevelopment && !this.isTest) {
-      console.info(this.formatMessage('info', message, context));
+      console.info(this.formatMessage("info", message, context));
     }
   }
 
@@ -70,7 +70,7 @@ class Logger {
    * Warning logs - always logged
    */
   warn(message: string, context?: LogContext): void {
-    console.warn(this.formatMessage('warn', message, this.sanitize(context)));
+    console.warn(this.formatMessage("warn", message, this.sanitize(context)));
   }
 
   /**
@@ -86,7 +86,7 @@ class Logger {
       stack: errorStack,
     };
 
-    console.error(this.formatMessage('error', message, errorContext));
+    console.error(this.formatMessage("error", message, errorContext));
 
     // TODO: Send to monitoring service (Sentry, LogRocket, etc.)
     // if (!this.isDevelopment) {
@@ -99,16 +99,16 @@ class Logger {
    */
   log(level: LogLevel, message: string, context?: LogContext): void {
     switch (level) {
-      case 'debug':
+      case "debug":
         this.debug(message, context);
         break;
-      case 'info':
+      case "info":
         this.info(message, context);
         break;
-      case 'warn':
+      case "warn":
         this.warn(message, context);
         break;
-      case 'error':
+      case "error":
         this.error(message, undefined, context);
         break;
     }

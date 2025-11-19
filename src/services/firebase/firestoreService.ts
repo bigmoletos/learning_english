@@ -100,12 +100,15 @@ export const getDocument = async <T = DocumentData>(
       logger.debug("Client offline ou non authentifié lors de getDocument", {
         collection: collectionName,
         documentId,
-        errorCode: error.code
+        errorCode: error.code,
       });
       return null;
     }
     // Ne logger que les autres erreurs
-    logger.error(`Erreur lors de la récupération du document ${collectionName}/${documentId}`, error);
+    logger.error(
+      `Erreur lors de la récupération du document ${collectionName}/${documentId}`,
+      error
+    );
     throw error;
   }
 };
@@ -150,7 +153,7 @@ export const getDocuments = async <T = DocumentData>(
       // Client offline ou non authentifié - retourner un tableau vide silencieusement
       logger.debug("Client offline ou non authentifié lors de getDocuments", {
         collection: collectionName,
-        errorCode: error.code
+        errorCode: error.code,
       });
       return [];
     }
@@ -169,23 +172,25 @@ export const setDocument = async <T = DocumentData>(
   data: Partial<T>
 ): Promise<void> => {
   if (!db) {
-    console.warn("Firestore n'est pas initialisé");
+    logger.warn("Firestore n'est pas initialisé");
     return;
   }
 
   // Vérifier l'authentification avant l'écriture
   if (!isAuthenticated() || !auth || !auth.currentUser) {
-    throw new Error("Utilisateur non authentifie. Impossible de sauvegarder dans Firestore.");
+    throw new Error("Utilisateur non authentifié. Impossible de sauvegarder dans Firestore.");
   }
 
   // Vérifier que le documentId correspond à l'UID de l'utilisateur pour la collection users
   const currentUser = auth?.currentUser;
   if (collectionName === "users" && currentUser && documentId !== currentUser.uid) {
-    throw new Error(`UID mismatch: documentId=${documentId}, auth.uid=${currentUser.uid}`);
+    const errorMsg = `UID mismatch: documentId=${documentId}, auth.uid=${currentUser.uid}`;
+    logger.error(errorMsg);
+    throw new Error(errorMsg);
   }
 
   try {
-    console.log(`📝 [setDocument] Préparation sauvegarde: ${collectionName}/${documentId}`, {
+    logger.debug(`Préparation sauvegarde: ${collectionName}/${documentId}`, {
       authUid: auth.currentUser?.uid,
       dataKeys: Object.keys(data || {}),
       dataSize: JSON.stringify(data).length,
@@ -194,7 +199,7 @@ export const setDocument = async <T = DocumentData>(
     const docRef = doc(db, collectionName, documentId);
 
     // Convertir les dates en Timestamp Firestore
-    console.log("🔄 [setDocument] Conversion des dates...");
+    logger.debug("Conversion des dates...");
     const firestoreData: any = { ...data };
     let convertedDates = 0;
     Object.keys(firestoreData).forEach((key) => {
@@ -211,28 +216,25 @@ export const setDocument = async <T = DocumentData>(
           firestoreData[key] = Timestamp.fromDate(new Date(firestoreData[key]));
           convertedDates++;
         } catch (e) {
-          console.warn(
-            `⚠️ [setDocument] Impossible de convertir la date pour ${key}:`,
-            firestoreData[key]
-          );
+          logger.warn(`Impossible de convertir la date pour ${key}`, {
+            value: firestoreData[key],
+          });
         }
       }
     });
-    console.log(`✅ [setDocument] ${convertedDates} date(s) convertie(s)`);
 
-    // Vérifier que les données essentielles sont présentes
-    if (collectionName === "users") {
-      if (!firestoreData.email) {
-        console.warn("⚠️ [setDocument] Tentative de sauvegarde utilisateur sans email:", {
-          id: firestoreData.id,
-          keys: Object.keys(firestoreData),
-        });
-      } else {
-        console.log("✅ [setDocument] Email présent:", firestoreData.email);
-      }
+    if (convertedDates > 0) {
+      logger.debug(`${convertedDates} date(s) convertie(s)`);
     }
 
-    console.log("💾 [setDocument] Écriture dans Firestore...");
+    // Vérifier que les données essentielles sont présentes
+    if (collectionName === "users" && !firestoreData.email) {
+      logger.warn("Tentative de sauvegarde utilisateur sans email", {
+        id: firestoreData.id,
+        keys: Object.keys(firestoreData),
+      });
+    }
+
     await setDoc(
       docRef,
       {
@@ -242,49 +244,37 @@ export const setDocument = async <T = DocumentData>(
       { merge: true }
     );
 
-    console.log(
-      `✅ [setDocument] Document sauvegardé avec succès: ${collectionName}/${documentId}`
-    );
+    logger.info(`Document sauvegardé avec succès: ${collectionName}/${documentId}`);
   } catch (error: any) {
     // Logger l'erreur complète pour diagnostic
-    const errorDetails = {
-      code: error.code,
-      message: error.message,
-      stack: error.stack,
-      collection: collectionName,
-      documentId: documentId,
-      authUid: auth.currentUser?.uid || "non authentifié",
-      authEmail: auth.currentUser?.email || "non défini",
-      dataKeys: Object.keys(data || {}),
-      dataSample:
-        collectionName === "users"
-          ? {
-              id: (data as any)?.id,
-              email: (data as any)?.email,
-              currentLevel: (data as any)?.currentLevel,
-            }
-          : "N/A",
-      errorObject: error,
-    };
-
-    console.error(
-      `❌ [setDocument] Erreur lors de la sauvegarde du document ${collectionName}/${documentId}:`,
-      errorDetails
+    logger.error(
+      `Erreur lors de la sauvegarde du document ${collectionName}/${documentId}`,
+      error,
+      {
+        code: error.code,
+        collection: collectionName,
+        documentId: documentId,
+        authUid: auth.currentUser?.uid || "non authentifié",
+        dataKeys: Object.keys(data || {}),
+      }
     );
 
     // Si c'est une erreur de permission, donner plus de détails
     if (error.code === "permission-denied") {
-      console.error("🔒 [setDocument] Permission refusée. Vérifiez que:");
-      console.error("  1. Les règles Firestore sont déployées dans Firebase Console");
-      console.error("  2. L'utilisateur est authentifié (auth.uid:", auth.currentUser?.uid, ")");
-      console.error("  3. Le documentId correspond à auth.uid pour la collection users");
-      console.error("  4. Le token Firebase est valide (non expiré)");
+      logger.error(
+        "Permission refusée. Vérifiez les règles Firestore et l'authentification",
+        undefined,
+        {
+          authUid: auth.currentUser?.uid,
+          collection: collectionName,
+          documentId,
+        }
+      );
     } else if (error.code === "unauthenticated") {
-      console.error("🔐 [setDocument] Utilisateur non authentifié. Vérifiez que:");
-      console.error("  1. L'utilisateur est connecté via Firebase Auth");
-      console.error("  2. Le token Firebase est valide");
-    } else if (error.code) {
-      console.error(`⚠️ [setDocument] Code d'erreur Firebase: ${error.code}`);
+      logger.error("Utilisateur non authentifié. Vérifiez Firebase Auth", undefined, {
+        collection: collectionName,
+        documentId,
+      });
     }
 
     throw error;
@@ -300,17 +290,17 @@ export const updateDocument = async <T = DocumentData>(
   data: Partial<T>
 ): Promise<void> => {
   if (!db) {
-    console.warn("Firestore n'est pas initialisé");
+    logger.warn("Firestore n'est pas initialisé");
     return;
   }
 
   // Vérifier l'authentification avant l'écriture
   if (!isAuthenticated() || !auth || !auth.currentUser) {
-    throw new Error("Utilisateur non authentifie. Impossible de mettre a jour dans Firestore.");
+    throw new Error("Utilisateur non authentifié. Impossible de mettre à jour dans Firestore.");
   }
 
   try {
-    console.log(`📝 [updateDocument] Préparation mise à jour: ${collectionName}/${documentId}`, {
+    logger.debug(`Préparation mise à jour: ${collectionName}/${documentId}`, {
       authUid: auth?.currentUser?.uid,
       dataKeys: Object.keys(data || {}),
       dataSize: JSON.stringify(data).length,
@@ -319,7 +309,6 @@ export const updateDocument = async <T = DocumentData>(
     const docRef = doc(db, collectionName, documentId);
 
     // Convertir les dates en Timestamp Firestore
-    console.log("🔄 [updateDocument] Conversion des dates...");
     const firestoreData: any = { ...data };
     let convertedDates = 0;
     Object.keys(firestoreData).forEach((key) => {
@@ -335,37 +324,33 @@ export const updateDocument = async <T = DocumentData>(
           firestoreData[key] = Timestamp.fromDate(new Date(firestoreData[key]));
           convertedDates++;
         } catch (e) {
-          console.warn(
-            `⚠️ [updateDocument] Impossible de convertir la date pour ${key}:`,
-            firestoreData[key]
-          );
+          logger.warn(`Impossible de convertir la date pour ${key}`, {
+            value: firestoreData[key],
+          });
         }
       }
     });
-    console.log(`✅ [updateDocument] ${convertedDates} date(s) convertie(s)`);
 
-    console.log("💾 [updateDocument] Mise à jour dans Firestore...");
+    if (convertedDates > 0) {
+      logger.debug(`${convertedDates} date(s) convertie(s)`);
+    }
+
     await updateDoc(docRef, {
       ...firestoreData,
       updatedAt: Timestamp.now(),
     });
 
-    console.log(
-      `✅ [updateDocument] Document mis à jour avec succès: ${collectionName}/${documentId}`
-    );
+    logger.info(`Document mis à jour avec succès: ${collectionName}/${documentId}`);
   } catch (error: any) {
-    // Logger l'erreur complète pour diagnostic
-    console.error(
-      `❌ [updateDocument] Erreur lors de la mise à jour du document ${collectionName}/${documentId}:`,
+    logger.error(
+      `Erreur lors de la mise à jour du document ${collectionName}/${documentId}`,
+      error,
       {
         code: error.code,
-        message: error.message,
-        stack: error.stack,
         collection: collectionName,
         documentId: documentId,
         authUid: auth.currentUser?.uid || "non authentifié",
         dataKeys: Object.keys(data || {}),
-        error: error,
       }
     );
     throw error;
@@ -377,38 +362,33 @@ export const updateDocument = async <T = DocumentData>(
  */
 export const deleteDocument = async (collectionName: string, documentId: string): Promise<void> => {
   if (!db) {
-    console.warn("Firestore n'est pas initialisé");
+    logger.warn("Firestore n'est pas initialisé");
     return;
   }
 
   // Vérifier l'authentification avant la suppression
   if (!isAuthenticated() || !auth || !auth.currentUser) {
-    throw new Error("Utilisateur non authentifie. Impossible de supprimer dans Firestore.");
+    throw new Error("Utilisateur non authentifié. Impossible de supprimer dans Firestore.");
   }
 
   try {
-    console.log(`🗑️ [deleteDocument] Suppression: ${collectionName}/${documentId}`, {
+    logger.debug(`Suppression: ${collectionName}/${documentId}`, {
       authUid: auth?.currentUser?.uid,
     });
 
     const docRef = doc(db, collectionName, documentId);
     await deleteDoc(docRef);
 
-    console.log(
-      `✅ [deleteDocument] Document supprimé avec succès: ${collectionName}/${documentId}`
-    );
+    logger.info(`Document supprimé avec succès: ${collectionName}/${documentId}`);
   } catch (error: any) {
-    // Logger l'erreur complète pour diagnostic
-    console.error(
-      `❌ [deleteDocument] Erreur lors de la suppression du document ${collectionName}/${documentId}:`,
+    logger.error(
+      `Erreur lors de la suppression du document ${collectionName}/${documentId}`,
+      error,
       {
         code: error.code,
-        message: error.message,
-        stack: error.stack,
         collection: collectionName,
         documentId: documentId,
         authUid: auth.currentUser?.uid || "non authentifié",
-        error: error,
       }
     );
     throw error;
