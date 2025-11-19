@@ -135,24 +135,24 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) =>
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-        case "auth/email-already-in-use":
-          errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter.";
-          break;
-        case "auth/invalid-email":
-          errorMessage = "Adresse email invalide.";
-          break;
-        case "auth/weak-password":
-          errorMessage = "Le mot de passe est trop faible. Utilisez au moins 6 caractères.";
-          break;
-        case "auth/operation-not-allowed":
-          errorMessage =
+          case "auth/email-already-in-use":
+            errorMessage = "Un compte existe déjà avec cet email. Essayez de vous connecter.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Adresse email invalide.";
+            break;
+          case "auth/weak-password":
+            errorMessage = "Le mot de passe est trop faible. Utilisez au moins 6 caractères.";
+            break;
+          case "auth/operation-not-allowed":
+            errorMessage =
               "L'inscription par email/mot de passe n'est pas activée. Contactez l'administrateur.";
-          break;
-        case "auth/network-request-failed":
-          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-          break;
-        default:
-          errorMessage = err.message || "Erreur d'inscription. Veuillez réessayer.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+            break;
+          default:
+            errorMessage = err.message || "Erreur d'inscription. Veuillez réessayer.";
         }
       } else if (err.message) {
         errorMessage = err.message;

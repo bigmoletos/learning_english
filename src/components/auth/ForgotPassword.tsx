@@ -57,22 +57,22 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onSwitchToLogin 
       // Gérer les erreurs Firebase spécifiques
       if (err.code) {
         switch (err.code) {
-        case "auth/user-not-found":
-          // Ne pas révéler si l'email existe (sécurité)
-          setMessage(
-            "Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception."
-          );
-          setEmailSent(true);
-          setLoading(false);
-          return;
-        case "auth/invalid-email":
-          errorMessage = "Adresse email invalide.";
-          break;
-        case "auth/network-request-failed":
-          errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
-          break;
-        default:
-          errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
+          case "auth/user-not-found":
+            // Ne pas révéler si l'email existe (sécurité)
+            setMessage(
+              "Si cet email existe, un lien de réinitialisation a été envoyé. Vérifiez votre boîte de réception."
+            );
+            setEmailSent(true);
+            setLoading(false);
+            return;
+          case "auth/invalid-email":
+            errorMessage = "Adresse email invalide.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Erreur réseau. Vérifiez votre connexion internet.";
+            break;
+          default:
+            errorMessage = err.message || "Erreur lors de la demande de réinitialisation.";
         }
       } else if (err.message) {
         errorMessage = err.message;

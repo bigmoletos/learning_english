@@ -65,7 +65,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
       fontSize: "clamp(1.5rem, 5vw, 2.125rem)", // Responsive
@@ -368,187 +368,187 @@ const AppContent: React.FC = () => {
     }
 
     switch (currentView) {
-    case "dashboard":
-      return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
-    case "learning":
-      return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
-    case "progress":
-      return <ProgressTracker />;
-    case "exercises":
-      return <ExerciseList />;
-    case "speaking":
-      return (
-        <Box sx={{ p: 3 }}>
-          <ConversationalSpeaking
-            level={user?.currentLevel || "B1"}
-            onComplete={(stats) => {
-              console.log("[App] Conversation terminée:", stats);
-            }}
-          />
-        </Box>
-      );
-    case "tests":
-      return (
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+      case "dashboard":
+        return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
+      case "learning":
+        return <AdaptiveLearningPlan onNavigate={handleNavigate} />;
+      case "progress":
+        return <ProgressTracker />;
+      case "exercises":
+        return <ExerciseList />;
+      case "speaking":
+        return (
+          <Box sx={{ p: 3 }}>
+            <ConversationalSpeaking
+              level={user?.currentLevel || "B1"}
+              onComplete={(stats) => {
+                console.log("[App] Conversation terminée:", stats);
+              }}
+            />
+          </Box>
+        );
+      case "tests":
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
               Tests d'Évaluation
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+            </Typography>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       EF SET - 4 Skills
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
                       Test adaptatif complet inspiré d'EF SET : Reading, Listening, Writing,
                       Speaking (90 min).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    color="primary"
-                    onClick={() => setSelectedTestType("efset")}
-                  >
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      color="primary"
+                      onClick={() => setSelectedTestType("efset")}
+                    >
                       Passer le test EF SET
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       Test TOEIC
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
                       Testez votre niveau d'anglais avec un test TOEIC complet (Grammaire +
                       Compréhension audio).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => setSelectedTestType("toeic")}
-                  >
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => setSelectedTestType("toeic")}
+                    >
                       Passer le test TOEIC
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Card elevation={3}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
                       Test TOEFL
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
                       Testez votre niveau d'anglais avec un test TOEFL avancé (Reading + Listening +
                       Writing).
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => setSelectedTestType("toefl")}
-                  >
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => setSelectedTestType("toefl")}
+                    >
                       Passer le test TOEFL
-                  </Button>
-                </CardContent>
-              </Card>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      );
-    case "efset":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
+          </Box>
+        );
+      case "efset":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <EFSETTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date(),
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("efsetResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "efset");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    case "toeic":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
+            </Button>
+            <EFSETTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test EF SET
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("efsetResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "efset");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      case "toeic":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <TOEICTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date(),
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("toeicResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "toeic");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    case "toefl":
-      return (
-        <Box sx={{ p: 0 }}>
-          <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
+            </Button>
+            <TOEICTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEIC
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("toeicResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "toeic");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setSelectedTestLevel(null);
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      case "toefl":
+        return (
+          <Box sx={{ p: 0 }}>
+            <Button variant="text" onClick={() => setCurrentView("tests")} sx={{ mb: 2 }}>
               ← Retour aux tests
-          </Button>
-          <TOEFLTest
-            level={selectedTestLevel || undefined}
-            onComplete={(scores) => {
-              if (user) {
-                // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
-                const updatedUser = {
-                  ...user,
-                  currentLevel: scores.level,
-                  lastActivity: new Date(),
-                };
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                // Sauvegarder les résultats dans localStorage
-                localStorage.setItem("toeflResults", JSON.stringify(scores));
-                localStorage.setItem("lastTestType", "toefl");
-                // Rafraîchir le contexte utilisateur
-                window.location.reload(); // Simple refresh pour mettre à jour
-              }
-              // Retourner aux tests après 5 secondes
-              setSelectedTestLevel(null);
-              setTimeout(() => setCurrentView("tests"), 5000);
-            }}
-          />
-        </Box>
-      );
-    default:
-      return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
+            </Button>
+            <TOEFLTest
+              level={selectedTestLevel || undefined}
+              onComplete={(scores) => {
+                if (user) {
+                  // Mettre à jour le niveau de l'utilisateur avec le résultat du test TOEFL
+                  const updatedUser = {
+                    ...user,
+                    currentLevel: scores.level,
+                    lastActivity: new Date(),
+                  };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  // Sauvegarder les résultats dans localStorage
+                  localStorage.setItem("toeflResults", JSON.stringify(scores));
+                  localStorage.setItem("lastTestType", "toefl");
+                  // Rafraîchir le contexte utilisateur
+                  window.location.reload(); // Simple refresh pour mettre à jour
+                }
+                // Retourner aux tests après 5 secondes
+                setSelectedTestLevel(null);
+                setTimeout(() => setCurrentView("tests"), 5000);
+              }}
+            />
+          </Box>
+        );
+      default:
+        return <Dashboard onStartAssessment={handleStartAssessment} onNavigate={handleNavigate} />;
     }
   };
 
