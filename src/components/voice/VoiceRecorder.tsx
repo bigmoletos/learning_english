@@ -93,7 +93,12 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
         {/* Affichage des erreurs */}
         {recognitionError && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => {}}>
+          <Alert
+            severity="error"
+            sx={{ mb: 2 }}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onClose={() => {}}
+          >
             {recognitionError}
           </Alert>
         )}
