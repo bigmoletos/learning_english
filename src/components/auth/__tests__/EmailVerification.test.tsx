@@ -33,7 +33,11 @@ describe("EmailVerification Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (useUser as jest.Mock).mockReturnValue({ login: mockLogin });
-    (auth.currentUser as jest.Mock).mockReturnValue(mockUser);
+    Object.defineProperty(auth, "currentUser", {
+      value: mockUser,
+      writable: true,
+      configurable: true
+    });
     (storageService.get as jest.Mock).mockImplementation((key) => {
       if (key === StorageKeys.PENDING_USER) return Promise.resolve(null);
       if (key === StorageKeys.FIREBASE_USER) return Promise.resolve(mockUser);
@@ -80,7 +84,7 @@ describe("EmailVerification Component", () => {
 
   // Test d'erreur de vérification
   it("shows error message when verification fails", async () => {
-    const mockError = new Error("Invalid action code");
+    const mockError: Error & { code?: string } = new Error("Invalid action code");
     mockError.code = "auth/invalid-action-code";
     (checkActionCode as jest.Mock).mockRejectedValue(mockError);
 
@@ -105,7 +109,11 @@ describe("EmailVerification Component", () => {
       ...mockUser,
       emailVerified: false
     };
-    (auth.currentUser as jest.Mock).mockReturnValue(mockUnverifiedUser);
+    Object.defineProperty(auth, "currentUser", {
+      value: mockUnverifiedUser,
+      writable: true,
+      configurable: true
+    });
     (sendEmailVerification as jest.Mock).mockResolvedValue(undefined);
 
     render(

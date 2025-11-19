@@ -215,9 +215,9 @@ jobs:
         run: |
           cd backend
           npm ci
-          npm audit --audit-level=moderate --json > ../backend-audit.json || true
+          npm audit --audit-level=moderate --json > backend-audit.json || true
           # Vérifier le nombre de vulnérabilités dans le JSON
-          VULN_COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('../backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+          VULN_COUNT=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
           echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
           if [ "$VULN_COUNT" -gt 0 ]; then
             echo "❌ $VULN_COUNT vulnérabilité(s) trouvée(s) dans le backend"
@@ -226,6 +226,8 @@ jobs:
           else
             echo "✅ Aucune vulnérabilité trouvée dans le backend"
           fi
+          # Copier le fichier à la racine pour l'upload
+          cp backend-audit.json ../backend-audit.json || true
 
       - name: 📊 Upload backend audit report
         uses: actions/upload-artifact@v4
@@ -268,6 +270,14 @@ jobs:
               echo "✅ Aucune vulnérabilité" >> $GITHUB_STEP_SUMMARY
             fi
             echo "Audit report: backend-audit.json" >> $GITHUB_STEP_SUMMARY
+          elif [ -f backend/backend-audit.json ]; then
+            BACKEND_VULN=$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('backend/backend-audit.json','utf8')); console.log(data.metadata?.vulnerabilities?.total || 0)")
+            if [ "$BACKEND_VULN" -gt 0 ]; then
+              echo "❌ **$BACKEND_VULN vulnérabilité(s) trouvée(s)**" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "✅ Aucune vulnérabilité" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "Audit report: backend/backend-audit.json" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📋 **Note**: Voir SECURITY.md pour plus de détails sur les vulnérabilités acceptées (dépendances de dev uniquement)." >> $GITHUB_STEP_SUMMARY

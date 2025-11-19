@@ -6,6 +6,7 @@ import axios from "axios";
 import { Login } from "../../../components/auth/Login";
 // Mock axios
 jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Login Component", () => {
   const mockOnSuccess = jest.fn();
@@ -50,7 +51,7 @@ describe("Login Component", () => {
   });
 
   it("should display error for wrong password", async () => {
-    axios.post.mockRejectedValueOnce({ response: { data: { message: "Email ou mot de passe incorrect" } } });
+    (mockedAxios.post as jest.Mock).mockRejectedValueOnce({ response: { data: { message: "Email ou mot de passe incorrect" } } });
 
     render(<Login {...defaultProps} />);
     const emailInput = screen.getByLabelText(/Email/i);
