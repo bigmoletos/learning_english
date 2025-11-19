@@ -177,7 +177,8 @@ const getAuthErrorMessage = (errorCode: string): string => {
   const errorMessages: { [key: string]: string } = {
     "auth/email-already-in-use": "This email is already registered.",
     "auth/invalid-email": "Invalid email address.",
-    "auth/invalid-credential": "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.",
+    "auth/invalid-credential":
+      "Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.",
     "auth/operation-not-allowed": "Operation not allowed. Please contact support.",
     "auth/weak-password": "Password is too weak. Use at least 6 characters.",
     "auth/user-disabled": "This account has been disabled.",

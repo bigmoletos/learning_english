@@ -99,7 +99,9 @@ describe("Login Component", () => {
     await waitFor(
       () => {
         expect(
-          screen.getByText(/Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte./i)
+          screen.getByText(
+            /Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte./i
+          )
         ).toBeInTheDocument();
       },
       { timeout: 3000 }
