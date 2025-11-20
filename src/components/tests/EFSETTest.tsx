@@ -583,7 +583,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                     >
                       {currentQuestion.options.map((option, _index) => (
                         <FormControlLabel
-                          key={index}
+                          key={_index}
                           value={option}
                           control={<Radio />}
                           label={option}

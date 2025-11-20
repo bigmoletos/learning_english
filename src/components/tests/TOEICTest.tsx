@@ -519,7 +519,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                   >
                     {currentQuestion.options.map((option, _index) => (
                       <FormControlLabel
-                        key={index}
+                        key={_index}
                         value={option}
                         control={<Radio />}
                         label={option}

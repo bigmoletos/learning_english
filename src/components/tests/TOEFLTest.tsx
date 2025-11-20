@@ -591,7 +591,7 @@ export const TOEFLTest: React.FC<TOEFLTestProps> = ({ testId = "toefl_c1", level
                     >
                       {currentQuestion.options.map((option, _index) => (
                         <FormControlLabel
-                          key={index}
+                          key={_index}
                           value={option}
                           control={<Radio />}
                           label={option}
