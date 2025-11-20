@@ -15,7 +15,7 @@
 
 **Dépendances backend essentielles** :
 ```bash
-npm install sequelize winston
+npm install sequelize winston express-rate-limit
 ```
 
 ---
@@ -38,7 +38,7 @@ npm install
 # Backend
 cd backend
 npm install
-npm install sequelize winston
+npm install sequelize winston express-rate-limit
 cd ..
 ```
 

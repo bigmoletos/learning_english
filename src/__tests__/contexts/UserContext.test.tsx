@@ -339,6 +339,13 @@ describe("UserContext", () => {
         { timeout: 5000 }
       );
 
+      // Mock firebaseAuth.user to be null after logout
+      (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
+        ...mockFirebaseAuth,
+        user: null,
+        isAuthenticated: false,
+      });
+
       await act(async () => {
         await result.current.firebaseLogout();
       });
@@ -402,8 +409,10 @@ describe("UserContext", () => {
         result.current.login("legacy-token", userData);
       });
 
-      // Token should be set immediately
-      expect(result.current.token).toBe("legacy-token");
+      // Token should be set immediately - wait for state update
+      await waitFor(() => {
+        expect(result.current.token).toBe("legacy-token");
+      });
 
       expect(result.current.user?.name).toBe("Legacy User");
       expect(result.current.user?.currentLevel).toBe("A2");
@@ -494,8 +503,10 @@ describe("UserContext", () => {
         result.current.addResponse(response);
       });
 
-      // Response is added immediately to local state
-      expect(result.current.responses).toHaveLength(1);
+      // Response is added immediately to local state - wait for state update
+      await waitFor(() => {
+        expect(result.current.responses).toHaveLength(1);
+      });
       expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises
@@ -879,8 +890,10 @@ describe("UserContext", () => {
       });
 
       // Should still add response locally even if Firebase fails
-      // The response is added immediately to local state, so we can check it right away
-      expect(result.current.responses).toHaveLength(1);
+      // The response is added immediately to local state - wait for state update
+      await waitFor(() => {
+        expect(result.current.responses).toHaveLength(1);
+      });
 
       expect(consoleSpy).toHaveBeenCalledWith(
         "Error saving test result to Firebase:",

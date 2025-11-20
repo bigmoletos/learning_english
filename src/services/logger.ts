@@ -29,11 +29,12 @@ class Logger {
     if (!context) return undefined;
 
     const sanitized = { ...context };
-    const sensitiveKeys = ["password", "token", "apiKey", "secret", "credential", "auth"];
+    const sensitiveKeys = ["password", "token", "apikey", "secret", "credential", "auth", "key"];
 
     Object.keys(sanitized).forEach((key) => {
       const lowerKey = key.toLowerCase();
-      if (sensitiveKeys.some((sensitive) => lowerKey.includes(sensitive))) {
+      // Check if the key contains any sensitive keyword
+      if (sensitiveKeys.some((sensitive) => lowerKey.includes(sensitive.toLowerCase()))) {
         sanitized[key] = "[REDACTED]";
       }
     });

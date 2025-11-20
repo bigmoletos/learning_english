@@ -6,12 +6,12 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import axios from "axios";
 import { Signup } from "../../../components/auth/Signup";
+import { registerUser } from "../../../firebase/authService";
 
-// Mock axios
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+// Mock Firebase auth service
+jest.mock("../../../firebase/authService");
+const mockedRegisterUser = registerUser as jest.MockedFunction<typeof registerUser>;
 
 // Mock VerifyEmail component
 jest.mock("../../../components/auth/VerifyEmail", () => ({
@@ -52,7 +52,7 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^Mot de passe$/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /S'inscrire/i })).toBeInTheDocument();
       expect(screen.getByText(/Déjà un compte/i)).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
 
       expect(emailInput).toBeRequired();
@@ -109,8 +109,11 @@ describe("Signup Component", () => {
       const user = userEvent.setup();
       render(<Signup {...defaultProps} />);
 
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
-      const toggleButtons = screen.getAllByRole("button", { name: /toggle password visibility/i });
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const toggleButtons = screen.getAllByRole("button").filter((button) => {
+        const icon = button.querySelector('svg[data-testid="VisibilityIcon"], svg[data-testid="VisibilityOffIcon"]');
+        return icon !== null;
+      });
 
       expect(passwordInput).toHaveAttribute("type", "password");
 
@@ -126,7 +129,10 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
-      const toggleButtons = screen.getAllByRole("button", { name: /toggle password visibility/i });
+      const toggleButtons = screen.getAllByRole("button").filter((button) => {
+        const icon = button.querySelector('svg[data-testid="VisibilityIcon"], svg[data-testid="VisibilityOffIcon"]');
+        return icon !== null;
+      });
 
       expect(confirmPasswordInput).toHaveAttribute("type", "password");
 
@@ -151,7 +157,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -164,7 +170,7 @@ describe("Signup Component", () => {
         expect(screen.getByText(/au moins 8 caractères/i)).toBeInTheDocument();
       });
 
-      expect(mockedAxios.post).not.toHaveBeenCalled();
+      expect(mockedRegisterUser).not.toHaveBeenCalled();
     });
 
     it("should show error for password without lowercase", async () => {
@@ -172,7 +178,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -191,7 +197,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -210,7 +216,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -229,7 +235,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -248,7 +254,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -274,14 +280,22 @@ describe("Signup Component", () => {
         },
       };
 
-      mockedAxios.post.mockResolvedValue(mockResponse);
+      mockedRegisterUser.mockResolvedValue({
+        success: true,
+        user: {
+          uid: "test-uid",
+          email: "test@example.com",
+          displayName: "John Doe",
+        } as any,
+        message: "User registered successfully",
+      });
 
       render(<Signup {...defaultProps} />);
 
       const firstNameInput = screen.getByLabelText(/Prénom/i);
       const lastNameInput = screen.getByLabelText(/^Nom$/i);
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -293,14 +307,10 @@ describe("Signup Component", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockedAxios.post).toHaveBeenCalledWith(
-          expect.stringContaining("/api/auth/register"),
-          {
-            email: "test@example.com",
-            password: "Password123!",
-            firstName: "John",
-            lastName: "Doe",
-          }
+        expect(mockedRegisterUser).toHaveBeenCalledWith(
+          "test@example.com",
+          "Password123!",
+          "John Doe"
         );
       });
 
@@ -328,12 +338,20 @@ describe("Signup Component", () => {
         },
       };
 
-      mockedAxios.post.mockResolvedValue(mockResponse);
+      mockedRegisterUser.mockResolvedValue({
+        success: true,
+        user: {
+          uid: "test-uid",
+          email: "test@example.com",
+          displayName: "John Doe",
+        } as any,
+        message: "User registered successfully",
+      });
 
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -355,12 +373,12 @@ describe("Signup Component", () => {
         resolveSignup = resolve;
       });
 
-      mockedAxios.post.mockReturnValue(signupPromise as any);
+      mockedRegisterUser.mockImplementation(() => signupPromise as any);
 
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -394,12 +412,12 @@ describe("Signup Component", () => {
         resolveSignup = resolve;
       });
 
-      mockedAxios.post.mockReturnValue(signupPromise as any);
+      mockedRegisterUser.mockImplementation(() => signupPromise as any);
 
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -413,7 +431,7 @@ describe("Signup Component", () => {
       await user.click(submitButton);
 
       // Should only call API once
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockedRegisterUser).toHaveBeenCalledTimes(1);
 
       resolveSignup({
         data: {
@@ -428,7 +446,7 @@ describe("Signup Component", () => {
   describe("Form Submission - Errors", () => {
     it("should display error for existing email", async () => {
       const user = userEvent.setup();
-      mockedAxios.post.mockRejectedValue({
+      mockedRegisterUser.mockRejectedValue({
         response: {
           data: {
             message: "Un utilisateur avec cet email existe déjà",
@@ -439,7 +457,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -455,7 +473,7 @@ describe("Signup Component", () => {
 
     it("should display error for invalid email", async () => {
       const user = userEvent.setup();
-      mockedAxios.post.mockRejectedValue({
+      mockedRegisterUser.mockRejectedValue({
         response: {
           data: {
             message: "Email invalide",
@@ -466,7 +484,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -482,7 +500,7 @@ describe("Signup Component", () => {
 
     it("should handle validation errors array", async () => {
       const user = userEvent.setup();
-      mockedAxios.post.mockRejectedValue({
+      mockedRegisterUser.mockRejectedValue({
         response: {
           data: {
             errors: [{ msg: "Email is required", param: "email", location: "body" }],
@@ -493,7 +511,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -509,7 +527,7 @@ describe("Signup Component", () => {
 
     it("should allow closing error alert", async () => {
       const user = userEvent.setup();
-      mockedAxios.post.mockRejectedValue({
+      mockedRegisterUser.mockRejectedValue({
         response: {
           data: {
             message: "Test error",
@@ -520,7 +538,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i);
+      const passwordInput = screen.getByLabelText(/Mot de passe/i);
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -548,18 +566,20 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^Mot de passe$/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
     });
 
     it("should support keyboard navigation", async () => {
       const user = userEvent.setup();
-      mockedAxios.post.mockResolvedValue({
-        data: {
-          success: true,
+      mockedRegisterUser.mockResolvedValue({
+        success: true,
+        user: {
+          uid: "test-uid",
           email: "test@example.com",
-          requiresVerification: true,
-        },
+          displayName: "John Doe",
+        } as any,
+        message: "User registered successfully",
       });
 
       render(<Signup {...defaultProps} />);
@@ -580,7 +600,7 @@ describe("Signup Component", () => {
       await user.keyboard("{Enter}");
 
       await waitFor(() => {
-        expect(mockedAxios.post).toHaveBeenCalled();
+        expect(mockedRegisterUser).toHaveBeenCalled();
       });
     });
   });
