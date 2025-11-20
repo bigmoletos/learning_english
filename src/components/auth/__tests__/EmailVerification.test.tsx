@@ -59,7 +59,7 @@ describe("EmailVerification Component", () => {
     } catch (e) {
       // Ignore if already deleted or not configurable
     }
-    
+
     const mockLocation = {
       search: "",
       href: "",
@@ -67,14 +67,14 @@ describe("EmailVerification Component", () => {
       replace: jest.fn(),
       reload: jest.fn(),
     };
-    
+
     // Define location as a new property
     Object.defineProperty(window, "location", {
       value: mockLocation,
       writable: true,
       configurable: true,
     });
-    
+
     // Mock window.location.href setter to prevent navigation errors
     Object.defineProperty(window.location, "href", {
       set: jest.fn((url) => {

@@ -598,9 +598,12 @@ describe("Signup Component", () => {
       // Press Enter to submit the form
       await user.keyboard("{Enter}");
 
-      await waitFor(() => {
-        expect(mockedRegisterUser).toHaveBeenCalled();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(mockedRegisterUser).toHaveBeenCalled();
+        },
+        { timeout: 5000 }
+      );
     });
   });
 });
