@@ -52,7 +52,9 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
+      // There are two password fields, use getAllByLabelText
+      const passwordFields = screen.getAllByLabelText(/Mot de passe/i);
+      expect(passwordFields.length).toBeGreaterThanOrEqual(1);
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /S'inscrire/i })).toBeInTheDocument();
       expect(screen.getByText(/Déjà un compte/i)).toBeInTheDocument();
@@ -70,7 +72,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
 
       expect(emailInput).toBeRequired();
@@ -109,7 +111,7 @@ describe("Signup Component", () => {
       const user = userEvent.setup();
       render(<Signup {...defaultProps} />);
 
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       // Find toggle buttons - they are IconButtons without accessible names
       // Get all buttons and find the IconButtons (buttons before submit button without text)
       const allButtons = screen.getAllByRole("button");
@@ -163,7 +165,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -184,7 +186,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -203,7 +205,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -222,7 +224,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -241,7 +243,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -260,7 +262,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -294,7 +296,7 @@ describe("Signup Component", () => {
       const firstNameInput = screen.getByLabelText(/Prénom/i);
       const lastNameInput = screen.getByLabelText(/^Nom$/i);
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -350,7 +352,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -377,7 +379,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -416,7 +418,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -456,7 +458,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -483,7 +485,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -510,7 +512,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -537,7 +539,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Mot de passe/i);
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
@@ -565,7 +567,9 @@ describe("Signup Component", () => {
       expect(screen.getByLabelText(/Prénom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^Nom$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
+      // There are two password fields, use getAllByLabelText
+      const passwordFields = screen.getAllByLabelText(/Mot de passe/i);
+      expect(passwordFields.length).toBeGreaterThanOrEqual(1);
       expect(screen.getByLabelText(/Confirmer le mot de passe/i)).toBeInTheDocument();
     });
 

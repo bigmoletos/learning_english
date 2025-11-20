@@ -197,10 +197,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [user]);
 
   useEffect(() => {
-    localStorage.setItem("userResponses", JSON.stringify(responses));
+    // Only save to localStorage if responses is not empty (to avoid saving "[]" after logout)
+    if (responses.length > 0) {
+      localStorage.setItem("userResponses", JSON.stringify(responses));
+    } else {
+      // If responses is empty and there's no user, remove from localStorage
+      if (!user) {
+        localStorage.removeItem("userResponses");
+      }
+    }
     updateStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [responses]);
+  }, [responses, user]);
 
   const addResponse = (response: UserResponse) => {
     setResponses((prev) => [...prev, response]);
@@ -362,6 +370,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Nettoyer l'état local IMMÉDIATEMENT avant d'appeler Firebase logout
     // Cela garantit que l'UI se met à jour même si Firebase logout échoue
     logout();
+    // Force remove userResponses from localStorage (in case useEffect hasn't run yet)
+    localStorage.removeItem("userResponses");
 
     try {
       const result = await firebaseAuth.logout();

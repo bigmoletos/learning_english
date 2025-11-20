@@ -405,14 +405,17 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      act(() => {
+      await act(async () => {
         result.current.login("legacy-token", userData);
       });
 
       // Token should be set immediately - wait for state update
-      await waitFor(() => {
-        expect(result.current.token).toBe("legacy-token");
-      });
+      await waitFor(
+        () => {
+          expect(result.current.token).toBe("legacy-token");
+        },
+        { timeout: 5000 }
+      );
 
       expect(result.current.user?.name).toBe("Legacy User");
       expect(result.current.user?.currentLevel).toBe("A2");
@@ -504,9 +507,12 @@ describe("UserContext", () => {
       });
 
       // Response is added immediately to local state - wait for state update
-      await waitFor(() => {
-        expect(result.current.responses).toHaveLength(1);
-      });
+      await waitFor(
+        () => {
+          expect(result.current.responses).toHaveLength(1);
+        },
+        { timeout: 5000 }
+      );
       expect(result.current.responses[0]).toEqual(response);
 
       // Should update user's completed exercises

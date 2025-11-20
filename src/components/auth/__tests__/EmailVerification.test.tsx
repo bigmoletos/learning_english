@@ -51,7 +51,16 @@ describe("EmailVerification Component", () => {
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
     // Mock window.location.search to be empty initially
     delete (window as any).location;
-    (window as any).location = { search: "" };
+    (window as any).location = { search: "", href: "" };
+    // Mock window.location.href setter to avoid jsdom navigation error
+    Object.defineProperty(window, "location", {
+      value: {
+        search: "",
+        href: "",
+      },
+      writable: true,
+      configurable: true,
+    });
   });
 
   // Test de rendu de base
