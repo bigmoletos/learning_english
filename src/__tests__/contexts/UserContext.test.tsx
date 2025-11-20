@@ -366,9 +366,7 @@ describe("UserContext", () => {
       expect(localStorage.getItem("levelAssessed")).toBeNull();
     });
 
-    it(
-      "should handle firebaseLogout failure",
-      async () => {
+    it("should handle firebaseLogout failure", async () => {
       // Setup a user first
       const mockUser = {
         uid: "test-user-123",
@@ -409,9 +407,7 @@ describe("UserContext", () => {
       expect(logoutResult.success).toBe(false);
       // State is cleared even on failure (logout() is called before Firebase logout)
       expect(logoutResult.error).toBe("logout_failed");
-      },
-      15000
-    );
+    }, 15000);
   });
 
   describe("Legacy Authentication", () => {

@@ -65,7 +65,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
       fontSize: "clamp(1.5rem, 5vw, 2.125rem)", // Responsive
