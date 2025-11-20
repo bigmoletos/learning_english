@@ -417,7 +417,7 @@ describe("UserContext", () => {
         },
         { timeout: 5000 }
       );
-      
+
       // Also verify localStorage was updated
       expect(localStorage.getItem("token")).toBe("legacy-token");
 
