@@ -368,6 +368,17 @@ describe("UserContext", () => {
 
     it("should handle firebaseLogout failure", async () => {
       // Setup a user first
+      const mockUser = {
+        uid: "test-user-123",
+        email: "test@example.com",
+        displayName: "Test User",
+        emailVerified: true,
+        metadata: {
+          creationTime: new Date("2025-01-01").toISOString(),
+          lastSignInTime: new Date().toISOString(),
+        },
+      };
+
       (useFirebaseAuthModule.useFirebaseAuth as jest.Mock).mockReturnValue({
         ...mockFirebaseAuth,
         user: mockUser,

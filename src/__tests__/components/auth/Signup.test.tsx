@@ -450,7 +450,7 @@ describe("Signup Component", () => {
       mockedRegisterUser.mockResolvedValue({
         success: false,
         message: "Un compte existe déjà avec cet email. Essayez de vous connecter.",
-        user: null,
+        user: undefined,
       });
 
       render(<Signup {...defaultProps} />);
@@ -476,7 +476,7 @@ describe("Signup Component", () => {
       mockedRegisterUser.mockResolvedValue({
         success: false,
         message: "Adresse email invalide.",
-        user: null,
+        user: undefined,
       });
 
       render(<Signup {...defaultProps} />);
@@ -502,7 +502,7 @@ describe("Signup Component", () => {
       mockedRegisterUser.mockResolvedValue({
         success: false,
         message: "Erreur d'inscription. Veuillez réessayer.",
-        user: null,
+        user: undefined,
       });
 
       render(<Signup {...defaultProps} />);
@@ -528,7 +528,7 @@ describe("Signup Component", () => {
       mockedRegisterUser.mockResolvedValue({
         success: false,
         message: "Test error",
-        user: null,
+        user: undefined,
       });
 
       render(<Signup {...defaultProps} />);
