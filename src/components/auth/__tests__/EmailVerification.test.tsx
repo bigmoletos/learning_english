@@ -54,10 +54,9 @@ describe("EmailVerification Component", () => {
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
     // Mock window.location to avoid jsdom navigation error
     // Delete and recreate to avoid "Cannot redefine property" error
-    try {
+    const descriptor = Object.getOwnPropertyDescriptor(window, "location");
+    if (descriptor && descriptor.configurable) {
       delete (window as any).location;
-    } catch (e) {
-      // Ignore if already deleted or not configurable
     }
 
     const mockLocation = {
@@ -87,11 +86,10 @@ describe("EmailVerification Component", () => {
 
   // Restore original location after each test
   afterEach(() => {
-    try {
+    const descriptor = Object.getOwnPropertyDescriptor(window, "location");
+    if (descriptor && descriptor.configurable) {
       delete (window as any).location;
       (window as any).location = originalLocation;
-    } catch (e) {
-      // Ignore errors during cleanup
     }
   });
 

@@ -26,7 +26,7 @@ $allRuns = @()
 
 do {
     $url = "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs?per_page=100&page=$page&status=completed&conclusion=failure"
-    
+
     try {
         $response = Invoke-RestMethod -Uri $url -Headers $headers -Method Get
         $allRuns += $response.workflow_runs
@@ -61,12 +61,12 @@ $failed = 0
 
 foreach ($run in $allRuns) {
     Write-Host "🗑️  Suppression du run $($run.id)..." -ForegroundColor Cyan
-    
+
     $deleteUrl = "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/$($run.id)"
-    
+
     try {
         $response = Invoke-WebRequest -Uri $deleteUrl -Headers $headers -Method Delete
-        
+
         if ($response.StatusCode -eq 204) {
             Write-Host "  ✅ Run $($run.id) supprimé" -ForegroundColor Green
             $deleted++

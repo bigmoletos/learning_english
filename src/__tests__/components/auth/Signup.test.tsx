@@ -481,11 +481,16 @@ describe("Signup Component", () => {
 
       render(<Signup {...defaultProps} />);
 
+      const firstNameInput = screen.getByLabelText(/Prénom/i);
+      const lastNameInput = screen.getByLabelText(/Nom/i);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
+      // Fill all required fields
+      await user.type(firstNameInput, "Test");
+      await user.type(lastNameInput, "User");
       // Use a properly formatted email to bypass HTML5 validation
       await user.type(emailInput, "invalid@email.com");
       await user.type(passwordInput, "Password123!");

@@ -56,9 +56,9 @@ echo "$RUN_IDS" | while read -r run_id; do
       -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/$run_id")
-    
+
     HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-    
+
     if [ "$HTTP_CODE" = "204" ]; then
       echo "  ✅ Run $run_id supprimé"
       DELETED=$((DELETED + 1))

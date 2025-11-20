@@ -190,7 +190,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.error("Erreur chargement réponses:", error);
       }
     }
-  }, [firebaseAuth.user, firebaseAuth.loading, progress, token, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firebaseAuth.user, firebaseAuth.loading]);
 
   useEffect(() => {
     if (user) {

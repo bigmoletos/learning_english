@@ -367,6 +367,8 @@ describe("UserContext", () => {
     });
 
     it("should handle firebaseLogout failure", async () => {
+      jest.useFakeTimers();
+
       // Setup a user first
       const mockUser = {
         uid: "test-user-123",
@@ -392,6 +394,10 @@ describe("UserContext", () => {
       });
 
       // Wait for initial state
+      await act(async () => {
+        jest.advanceTimersByTime(0);
+      });
+
       await waitFor(
         () => {
           expect(result.current.user).not.toBeNull();
@@ -400,14 +406,21 @@ describe("UserContext", () => {
       );
 
       let logoutResult: any;
-      await act(async () => {
-        logoutResult = await result.current.firebaseLogout();
+      const logoutPromise = act(async () => {
+        const promise = result.current.firebaseLogout();
+        // Advance timers to process the setTimeout in finally block
+        jest.advanceTimersByTime(1000);
+        logoutResult = await promise;
       });
+
+      await logoutPromise;
 
       expect(logoutResult.success).toBe(false);
       // State is cleared even on failure (logout() is called before Firebase logout)
       expect(logoutResult.error).toBe("logout_failed");
-    }, 15000);
+
+      jest.useRealTimers();
+    });
   });
 
   describe("Legacy Authentication", () => {
