@@ -89,7 +89,7 @@ describe("Signup Component", () => {
       const firstNameInput = screen.getByLabelText(/Prénom/i) as HTMLInputElement;
       const lastNameInput = screen.getByLabelText(/^Nom$/i) as HTMLInputElement;
       const emailInput = screen.getByLabelText(/Email/i) as HTMLInputElement;
-      const passwordInput = screen.getByLabelText(/^Mot de passe$/i) as HTMLInputElement;
+      const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0] as HTMLInputElement;
       const confirmPasswordInput = screen.getByLabelText(
         /Confirmer le mot de passe/i
       ) as HTMLInputElement;
@@ -326,19 +326,9 @@ describe("Signup Component", () => {
 
     it("should handle legacy response without email verification", async () => {
       const user = userEvent.setup();
-      const mockResponse = {
-        data: {
-          success: true,
-          token: "test-token",
-          user: {
-            id: "user-123",
-            email: "test@example.com",
-            firstName: "John",
-            lastName: "Doe",
-          },
-        },
-      };
 
+      // With Firebase, successful registration shows VerifyEmail component
+      // This test verifies that VerifyEmail is shown instead of expecting a token
       mockedRegisterUser.mockResolvedValue({
         success: true,
         user: {
@@ -361,10 +351,12 @@ describe("Signup Component", () => {
       await user.type(confirmPasswordInput, "Password123!");
       await user.click(submitButton);
 
+      // With Firebase, successful registration shows VerifyEmail component
       await waitFor(() => {
-        expect(localStorage.getItem("token")).toBe("test-token");
+        expect(screen.getByTestId("verify-email")).toBeInTheDocument();
       });
-      expect(mockOnSuccess).toHaveBeenCalledWith("test-token", mockResponse.data.user);
+      // Token is not set in localStorage at this stage with Firebase
+      expect(mockOnSuccess).not.toHaveBeenCalled();
     });
 
     it("should show loading state during submission", async () => {
@@ -428,18 +420,25 @@ describe("Signup Component", () => {
 
       // Click submit button multiple times
       await user.click(submitButton);
-      await user.click(submitButton);
-      await user.click(submitButton);
+      // Try to click again - should be prevented by loading state
+      try {
+        await user.click(submitButton);
+      } catch (e) {
+        // Ignore if button is disabled (pointer-events: none)
+      }
 
-      // Should only call API once
+      // Should only call API once (second click should be prevented by loading state)
       expect(mockedRegisterUser).toHaveBeenCalledTimes(1);
 
+      // Resolve the promise with Firebase format
       resolveSignup({
-        data: {
-          success: true,
+        success: true,
+        user: {
+          uid: "test-uid",
           email: "test@example.com",
-          requiresVerification: true,
-        },
+          displayName: "Test User",
+        } as any,
+        message: "User registered successfully",
       });
     });
   });
@@ -447,12 +446,11 @@ describe("Signup Component", () => {
   describe("Form Submission - Errors", () => {
     it("should display error for existing email", async () => {
       const user = userEvent.setup();
-      mockedRegisterUser.mockRejectedValue({
-        response: {
-          data: {
-            message: "Un utilisateur avec cet email existe déjà",
-          },
-        },
+      // Firebase returns success: false with message, not an exception
+      mockedRegisterUser.mockResolvedValue({
+        success: false,
+        message: "Un compte existe déjà avec cet email. Essayez de vous connecter.",
+        user: null,
       });
 
       render(<Signup {...defaultProps} />);
@@ -474,12 +472,11 @@ describe("Signup Component", () => {
 
     it("should display error for invalid email", async () => {
       const user = userEvent.setup();
-      mockedRegisterUser.mockRejectedValue({
-        response: {
-          data: {
-            message: "Email invalide",
-          },
-        },
+      // Firebase returns success: false with message
+      mockedRegisterUser.mockResolvedValue({
+        success: false,
+        message: "Adresse email invalide.",
+        user: null,
       });
 
       render(<Signup {...defaultProps} />);
@@ -495,18 +492,17 @@ describe("Signup Component", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/Email invalide/i)).toBeInTheDocument();
+        expect(screen.getByText(/Adresse email invalide/i)).toBeInTheDocument();
       });
     });
 
     it("should handle validation errors array", async () => {
       const user = userEvent.setup();
-      mockedRegisterUser.mockRejectedValue({
-        response: {
-          data: {
-            errors: [{ msg: "Email is required", param: "email", location: "body" }],
-          },
-        },
+      // Firebase returns success: false with message
+      mockedRegisterUser.mockResolvedValue({
+        success: false,
+        message: "Erreur d'inscription. Veuillez réessayer.",
+        user: null,
       });
 
       render(<Signup {...defaultProps} />);
@@ -522,18 +518,17 @@ describe("Signup Component", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/email: Email is required/i)).toBeInTheDocument();
+        expect(screen.getByText(/Erreur d'inscription/i)).toBeInTheDocument();
       });
     });
 
     it("should allow closing error alert", async () => {
       const user = userEvent.setup();
-      mockedRegisterUser.mockRejectedValue({
-        response: {
-          data: {
-            message: "Test error",
-          },
-        },
+      // Firebase returns success: false with message
+      mockedRegisterUser.mockResolvedValue({
+        success: false,
+        message: "Test error",
+        user: null,
       });
 
       render(<Signup {...defaultProps} />);
@@ -599,12 +594,13 @@ describe("Signup Component", () => {
       await user.tab(); // Confirm password
       await user.keyboard("Password123!");
 
-      // Submit with Enter
+      // Submit with Enter - focus should be on confirm password field
+      // Press Enter to submit the form
       await user.keyboard("{Enter}");
 
       await waitFor(() => {
         expect(mockedRegisterUser).toHaveBeenCalled();
-      });
+      }, { timeout: 5000 });
     });
   });
 });

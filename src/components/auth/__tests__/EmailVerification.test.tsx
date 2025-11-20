@@ -29,6 +29,9 @@ describe("EmailVerification Component", () => {
   const mockOnSuccess = jest.fn();
   const mockOnSwitchToLogin = jest.fn();
 
+  // Store original location for restoration
+  const originalLocation = window.location;
+
   // Configuration avant chaque test
   beforeEach(() => {
     jest.clearAllMocks();
@@ -50,7 +53,13 @@ describe("EmailVerification Component", () => {
     (storageService.setMultiple as jest.Mock).mockResolvedValue(undefined);
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
     // Mock window.location to avoid jsdom navigation error
-    delete (window as any).location;
+    // Delete and recreate to avoid "Cannot redefine property" error
+    try {
+      delete (window as any).location;
+    } catch (e) {
+      // Ignore if already deleted or not configurable
+    }
+    
     const mockLocation = {
       search: "",
       href: "",
@@ -58,11 +67,14 @@ describe("EmailVerification Component", () => {
       replace: jest.fn(),
       reload: jest.fn(),
     };
+    
+    // Define location as a new property
     Object.defineProperty(window, "location", {
       value: mockLocation,
       writable: true,
       configurable: true,
     });
+    
     // Mock window.location.href setter to prevent navigation errors
     Object.defineProperty(window.location, "href", {
       set: jest.fn((url) => {
@@ -71,6 +83,16 @@ describe("EmailVerification Component", () => {
       get: jest.fn(() => mockLocation.href),
       configurable: true,
     });
+  });
+
+  // Restore original location after each test
+  afterEach(() => {
+    try {
+      delete (window as any).location;
+      (window as any).location = originalLocation;
+    } catch (e) {
+      // Ignore errors during cleanup
+    }
   });
 
   // Test de rendu de base

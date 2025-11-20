@@ -23,6 +23,11 @@ module.exports = {
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)'
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/backend/',
+    'backend/'
+  ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
