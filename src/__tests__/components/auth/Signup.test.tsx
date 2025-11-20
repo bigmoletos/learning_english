@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Signup } from "../../../components/auth/Signup";
 import { registerUser } from "../../../firebase/authService";
@@ -110,10 +110,13 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const passwordInput = screen.getByLabelText(/Mot de passe/i);
-      const toggleButtons = screen.getAllByRole("button").filter((button) => {
-        const icon = button.querySelector('svg[data-testid="VisibilityIcon"], svg[data-testid="VisibilityOffIcon"]');
-        return icon !== null;
-      });
+      // Find toggle buttons - they are IconButtons without accessible names
+      // Get all buttons and find the IconButtons (buttons before submit button without text)
+      const allButtons = screen.getAllByRole("button");
+      const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
+      const submitIndex = allButtons.indexOf(submitButton);
+      // IconButtons are the buttons before the submit button (typically 2 buttons for password visibility)
+      const toggleButtons = allButtons.slice(0, submitIndex);
 
       expect(passwordInput).toHaveAttribute("type", "password");
 
@@ -129,10 +132,13 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
-      const toggleButtons = screen.getAllByRole("button").filter((button) => {
-        const icon = button.querySelector('svg[data-testid="VisibilityIcon"], svg[data-testid="VisibilityOffIcon"]');
-        return icon !== null;
-      });
+      // Find toggle buttons - they are IconButtons without accessible names
+      // Get all buttons and find the IconButtons (buttons before submit button without text)
+      const allButtons = screen.getAllByRole("button");
+      const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
+      const submitIndex = allButtons.indexOf(submitButton);
+      // IconButtons are the buttons before the submit button (typically 2 buttons for password visibility)
+      const toggleButtons = allButtons.slice(0, submitIndex);
 
       expect(confirmPasswordInput).toHaveAttribute("type", "password");
 
@@ -272,13 +278,6 @@ describe("Signup Component", () => {
   describe("Form Submission - Success", () => {
     it("should submit form successfully and show email verification", async () => {
       const user = userEvent.setup();
-      const mockResponse = {
-        data: {
-          success: true,
-          email: "test@example.com",
-          requiresVerification: true,
-        },
-      };
 
       mockedRegisterUser.mockResolvedValue({
         success: true,
