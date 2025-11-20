@@ -1136,7 +1136,7 @@ export const ComprehensiveAssessment: React.FC<{ onComplete: () => void }> = ({ 
                     📚 Explication grammaticale
                   </Typography>
                   <Box sx={{ p: 2, bgcolor: "white", borderRadius: 1 }}>
-                    {getDetailedExplanation(question, isCorrect)}
+                    {getDetailedExplanation(question, _isCorrect)}
                   </Box>
                 </Box>
               </CardContent>

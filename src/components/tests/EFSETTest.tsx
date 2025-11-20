@@ -483,7 +483,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
           </Box>
 
           <Stepper activeStep={currentSectionIndex} sx={{ mb: 3 }}>
-            {testData.sections.map((section, index) => (
+            {testData.sections.map((section, _index) => (
               <Step key={section.id}>
                 <StepLabel>{section.name}</StepLabel>
               </Step>
@@ -581,7 +581,7 @@ export const EFSETTest: React.FC<EFSETTestProps> = ({ testId = "efset_b2", level
                       value={answers[currentQuestion.id] || ""}
                       onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
                     >
-                      {currentQuestion.options.map((option, index) => (
+                      {currentQuestion.options.map((option, _index) => (
                         <FormControlLabel
                           key={index}
                           value={option}

@@ -98,7 +98,11 @@ describe("EmailVerification Component", () => {
   // Test de rendu de base
   it("renders loading state initially", () => {
     // Mock window.location.search to be empty so component shows loading state
-    (window as any).location = { search: "" };
+    Object.defineProperty(window.location, "search", {
+      value: "",
+      writable: true,
+      configurable: true,
+    });
     Object.defineProperty(auth, "currentUser", {
       value: null,
       writable: true,

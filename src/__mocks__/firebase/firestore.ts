@@ -46,7 +46,7 @@ export const updateDoc = jest.fn(() => Promise.resolve());
 
 export const deleteDoc = jest.fn(() => Promise.resolve());
 
-export const query = jest.fn((collection, ...constraints) => ({
+export const query = jest.fn((_collection, ..._constraints) => ({
   type: "query",
   firestore: mockFirestore,
   converter: null,

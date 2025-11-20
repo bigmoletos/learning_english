@@ -20,7 +20,7 @@ const mockAuth = {
 
 export const getAuth = jest.fn(() => mockAuth);
 
-export const createUserWithEmailAndPassword = jest.fn((auth, email, password) =>
+export const createUserWithEmailAndPassword = jest.fn((auth, email, _password) =>
   Promise.resolve({
     user: {
       ...mockUser,
@@ -31,7 +31,7 @@ export const createUserWithEmailAndPassword = jest.fn((auth, email, password) =>
   })
 );
 
-export const signInWithEmailAndPassword = jest.fn((auth, email, password) =>
+export const signInWithEmailAndPassword = jest.fn((auth, email, _password) =>
   Promise.resolve({
     user: {
       ...mockUser,
@@ -58,7 +58,7 @@ export class GoogleAuthProvider {
   setCustomParameters = jest.fn();
 }
 
-export const signInWithPopup = jest.fn((auth, provider) =>
+export const signInWithPopup = jest.fn((_auth, _provider) =>
   Promise.resolve({
     user: {
       ...mockUser,

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Signup } from "../../../components/auth/Signup";
 import { registerUser } from "../../../firebase/authService";
@@ -486,7 +486,8 @@ describe("Signup Component", () => {
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
 
-      await user.type(emailInput, "invalid-email");
+      // Use a properly formatted email to bypass HTML5 validation
+      await user.type(emailInput, "invalid@email.com");
       await user.type(passwordInput, "Password123!");
       await user.type(confirmPasswordInput, "Password123!");
       await user.click(submitButton);

@@ -61,7 +61,7 @@ class SpeakingAgent {
       explanation: "Avec he/she/it, il faut ajouter -s/-es au verbe au présent simple.",
       exceptions: [
         "Verbes modaux (can, must, should) ne prennent jamais de -s",
-        'Verbe "to be" : he is, she is, it is',
+        "Verbe \"to be\" : he is, she is, it is",
       ],
     },
     {
@@ -72,28 +72,28 @@ class SpeakingAgent {
       },
       type: "subject_verb_agreement",
       explanation: "Avec I/you/we/they, le verbe ne prend pas de -s au présent simple.",
-      exceptions: ['Sauf avec "have" qui devient "have" pour I/you/we/they'],
+      exceptions: ["Sauf avec \"have\" qui devient \"have\" pour I/you/we/they"],
     },
     {
       pattern: /\b(a)\s+([aeiou]\w+)\b/gi,
       correction: (match: string) => match.replace(/^a\s+/i, "an "),
       type: "article",
-      explanation: 'Utilisez "an" devant un mot commençant par une voyelle (a, e, i, o, u).',
-      exceptions: ['Exception : "a university" (son de "you"), "a European" (son de "eu")'],
+      explanation: "Utilisez \"an\" devant un mot commençant par une voyelle (a, e, i, o, u).",
+      exceptions: ["Exception : \"a university\" (son de \"you\"), \"a European\" (son de \"eu\")"],
     },
     {
       pattern: /\b(an)\s+([bcdfghjklmnpqrstvwxyz]\w+)\b/gi,
       correction: (match: string) => match.replace(/^an\s+/i, "a "),
       type: "article",
-      explanation: 'Utilisez "a" devant un mot commençant par une consonne.',
-      exceptions: ['Exception : "an hour" (h muet), "an honest person"'],
+      explanation: "Utilisez \"a\" devant un mot commençant par une consonne.",
+      exceptions: ["Exception : \"an hour\" (h muet), \"an honest person\""],
     },
     {
       pattern: /\bmuch\s+(people|things|cars|books)\b/gi,
       correction: (match: string) => match.replace(/much/i, "many"),
       type: "quantifier",
       explanation:
-        '"Much" s\'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez "many".',
+        "\"Much\" s'utilise avec les noms indénombrables. Pour les noms dénombrables, utilisez \"many\".",
       exceptions: [
         "Much water, much time (indénombrables) vs many cars, many people (dénombrables)",
       ],
@@ -103,7 +103,7 @@ class SpeakingAgent {
       correction: (match: string) => match.replace(/many/i, "much"),
       type: "quantifier",
       explanation:
-        '"Many" s\'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez "much".',
+        "\"Many\" s'utilise avec les noms dénombrables. Pour les noms indénombrables, utilisez \"much\".",
       exceptions: [],
     },
     {
@@ -113,7 +113,7 @@ class SpeakingAgent {
         return `didn't ${this.getBaseForm(verb)}`;
       },
       type: "double_negative",
-      explanation: 'Après "didn\'t", utilisez la forme de base du verbe (infinitif sans "to").',
+      explanation: "Après \"didn't\", utilisez la forme de base du verbe (infinitif sans \"to\").",
       exceptions: ["didn't go (pas \"didn't went\")", "didn't have (pas \"didn't had\")"],
     },
     {
@@ -149,7 +149,7 @@ class SpeakingAgent {
       pattern: /\b(projek|projec|proj|projeckt)\b/gi,
       correction: () => "project",
       type: "spelling",
-      explanation: 'L\'orthographe correcte est "project".',
+      explanation: "L'orthographe correcte est \"project\".",
       exceptions: [],
     },
     {
@@ -166,7 +166,7 @@ class SpeakingAgent {
       },
       type: "sentence_structure",
       explanation:
-        'La structure de la phrase est incorrecte. Utilisez "call me to update" ou "update me".',
+        "La structure de la phrase est incorrecte. Utilisez \"call me to update\" ou \"update me\".",
       exceptions: [],
     },
     {
@@ -178,7 +178,7 @@ class SpeakingAgent {
       },
       type: "sentence_structure",
       explanation:
-        'La structure est incorrecte. Utilisez "please [verb]" ou "could you please [verb]".',
+        "La structure est incorrecte. Utilisez \"please [verb]\" ou \"could you please [verb]\".",
       exceptions: [],
     },
     {
@@ -189,7 +189,7 @@ class SpeakingAgent {
         return `could you please ${verb}`;
       },
       type: "sentence_structure",
-      explanation: 'La structure est incorrecte. Utilisez "could you please [verb]" sans "call".',
+      explanation: "La structure est incorrecte. Utilisez \"could you please [verb]\" sans \"call\".",
       exceptions: [],
     },
     {
@@ -197,7 +197,7 @@ class SpeakingAgent {
       correction: () => "call me",
       type: "pronoun_error",
       explanation:
-        'Utilisez "call me" pour dire que vous allez appeler quelqu\'un, ou "I\'ll call you" pour dire que vous allez l\'appeler.',
+        "Utilisez \"call me\" pour dire que vous allez appeler quelqu'un, ou \"I'll call you\" pour dire que vous allez l'appeler.",
       exceptions: [],
     },
     {
@@ -209,7 +209,7 @@ class SpeakingAgent {
       },
       type: "sentence_structure",
       explanation:
-        'La structure est incorrecte. Utilisez "call me to [verb]" ou "I\'ll call you to [verb]".',
+        "La structure est incorrecte. Utilisez \"call me to [verb]\" ou \"I'll call you to [verb]\".",
       exceptions: [],
     },
     {
@@ -221,7 +221,7 @@ class SpeakingAgent {
         return `${verb} ${pronoun}`;
       },
       type: "preposition_error",
-      explanation: 'Utilisez "provide me" ou "provide me with" (pas "provide with me").',
+      explanation: "Utilisez \"provide me\" ou \"provide me with\" (pas \"provide with me\").",
       exceptions: [],
     },
     {
@@ -233,7 +233,7 @@ class SpeakingAgent {
         return `${verb} ${pronoun}`;
       },
       type: "preposition_error",
-      explanation: 'L\'ordre est incorrect. Utilisez "provide me" ou "provide me with".',
+      explanation: "L'ordre est incorrect. Utilisez \"provide me\" ou \"provide me with\".",
       exceptions: [],
     },
     {
@@ -252,7 +252,7 @@ class SpeakingAgent {
       },
       type: "redundant_preposition",
       explanation:
-        'Vous avez répété le pronom après "with". Utilisez simplement "provide me" ou "give me".',
+        "Vous avez répété le pronom après \"with\". Utilisez simplement \"provide me\" ou \"give me\".",
       exceptions: [],
     },
     {
@@ -268,7 +268,7 @@ class SpeakingAgent {
       },
       type: "missing_preposition",
       explanation:
-        'Il manque "with" après le pronom. Utilisez "provide me with a date" (pas "provide me and a date").',
+        "Il manque \"with\" après le pronom. Utilisez \"provide me with a date\" (pas \"provide me and a date\").",
       exceptions: [],
     },
     {
@@ -282,7 +282,7 @@ class SpeakingAgent {
       },
       type: "missing_preposition",
       explanation:
-        'Il manque "with" après le pronom. Utilisez "provide me with [something]" (pas "provide me and [something]").',
+        "Il manque \"with\" après le pronom. Utilisez \"provide me with [something]\" (pas \"provide me and [something]\").",
       exceptions: [],
     },
     {
@@ -296,7 +296,7 @@ class SpeakingAgent {
         return `${preposition1} an update ${preposition2}`;
       },
       type: "word_choice",
-      explanation: 'Dans un contexte professionnel, utilisez "an update" plutôt que "the date".',
+      explanation: "Dans un contexte professionnel, utilisez \"an update\" plutôt que \"the date\".",
       exceptions: [],
     },
     {
@@ -323,7 +323,7 @@ class SpeakingAgent {
       },
       type: "article_error",
       explanation:
-        'Utilisez "the" plutôt que "a" pour parler d\'un projet ou d\'une tâche spécifique.',
+        "Utilisez \"the\" plutôt que \"a\" pour parler d'un projet ou d'une tâche spécifique.",
       exceptions: [],
     },
     {
@@ -340,7 +340,7 @@ class SpeakingAgent {
       },
       type: "missing_article",
       explanation:
-        'Il manque l\'article "the" avant le nom. Utilisez "on the project progress" ou "about the project progress".',
+        "Il manque l'article \"the\" avant le nom. Utilisez \"on the project progress\" ou \"about the project progress\".",
       exceptions: [],
     },
     {
@@ -381,7 +381,7 @@ class SpeakingAgent {
           .replace(/recieved/gi, "received")
           .replace(/recieving/gi, "receiving"),
       type: "spelling",
-      explanation: 'L\'orthographe correcte est "receive" (i avant e sauf après c).',
+      explanation: "L'orthographe correcte est \"receive\" (i avant e sauf après c).",
       exceptions: [],
     },
     {
@@ -392,14 +392,14 @@ class SpeakingAgent {
           .replace(/seperated/gi, "separated")
           .replace(/seperating/gi, "separating"),
       type: "spelling",
-      explanation: 'L\'orthographe correcte est "separate" (a, pas e).',
+      explanation: "L'orthographe correcte est \"separate\" (a, pas e).",
       exceptions: [],
     },
     {
       pattern: /\b(definately|definately|definetly)\b/gi,
       correction: () => "definitely",
       type: "spelling",
-      explanation: 'L\'orthographe correcte est "definitely".',
+      explanation: "L'orthographe correcte est \"definitely\".",
       exceptions: [],
     },
     {
@@ -407,7 +407,7 @@ class SpeakingAgent {
       correction: (match: string) =>
         match.replace(/accomodate/gi, "accommodate").replace(/accomodation/gi, "accommodation"),
       type: "spelling",
-      explanation: 'L\'orthographe correcte est "accommodate" (double m et double c).',
+      explanation: "L'orthographe correcte est \"accommodate\" (double m et double c).",
       exceptions: [],
     },
   ];
@@ -419,7 +419,7 @@ class SpeakingAgent {
     transcript: string,
     confidence: number,
     targetLevel: LanguageLevel = "B1",
-    expectedSentence?: string
+    _expectedSentence?: string
   ): Promise<SpeakingAnalysis> {
     if (!transcript || transcript.trim().length === 0) {
       return {
@@ -699,28 +699,28 @@ class SpeakingAgent {
         type: "grammar",
         title: "Concordance sujet-verbe",
         prompt:
-          'Décrivez votre routine quotidienne en utilisant he/she pour parler d\'une personne. Exemple: "She works from 9 to 5."',
+          "Décrivez votre routine quotidienne en utilisant he/she pour parler d'une personne. Exemple: \"She works from 9 to 5.\"",
         focusAreas: ["third person singular", "present simple"],
       },
       article: {
         type: "grammar",
         title: "Articles a/an",
         prompt:
-          'Énumérez 5 objets dans votre pièce en utilisant "a" ou "an". Exemple: "I see an apple and a book."',
+          "Énumérez 5 objets dans votre pièce en utilisant \"a\" ou \"an\". Exemple: \"I see an apple and a book.\"",
         focusAreas: ["indefinite articles", "pronunciation"],
       },
       quantifier: {
         type: "grammar",
         title: "Quantificateurs much/many",
         prompt:
-          'Décrivez ce que vous avez dans votre cuisine en utilisant "much" et "many". Exemple: "I have many apples but not much milk."',
+          "Décrivez ce que vous avez dans votre cuisine en utilisant \"much\" et \"many\". Exemple: \"I have many apples but not much milk.\"",
         focusAreas: ["countable/uncountable nouns", "quantifiers"],
       },
       double_negative: {
         type: "grammar",
         title: "Négation au passé",
         prompt:
-          'Racontez ce que vous n\'avez pas fait hier en utilisant "didn\'t". Exemple: "I didn\'t go to the gym yesterday."',
+          "Racontez ce que vous n'avez pas fait hier en utilisant \"didn't\". Exemple: \"I didn't go to the gym yesterday.\"",
         focusAreas: ["past simple negative", "base form"],
       },
     };

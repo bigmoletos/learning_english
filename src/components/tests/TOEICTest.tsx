@@ -345,7 +345,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
               Test : {testData.title}
             </Typography>
 
-            {testData.sections.map((section, sectionIdx) => (
+            {testData.sections.map((section, _sectionIdx) => (
               <Box key={section.id} sx={{ mb: 4 }}>
                 <Divider sx={{ mb: 2 }} />
                 <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
@@ -469,7 +469,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
           </Box>
 
           <Stepper activeStep={currentSectionIndex} sx={{ mb: 3 }}>
-            {testData.sections.map((section, index) => (
+            {testData.sections.map((section, _index) => (
               <Step key={section.id}>
                 <StepLabel>{section.name}</StepLabel>
               </Step>
@@ -517,7 +517,7 @@ export const TOEICTest: React.FC<TOEICTestProps> = ({ testId = "toeic_b2", level
                     value={answers[currentQuestion.id] || ""}
                     onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
                   >
-                    {currentQuestion.options.map((option, index) => (
+                    {currentQuestion.options.map((option, _index) => (
                       <FormControlLabel
                         key={index}
                         value={option}

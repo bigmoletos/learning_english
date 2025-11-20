@@ -63,6 +63,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Référence pour éviter les appels répétés à logout() lors de la déconnexion Firebase
   const logoutInProgressRef = React.useRef(false);
+  const legacyLoginRef = React.useRef(false); // Track if using legacy login (without Firebase)
 
   // Sync Firebase user with local user state
   useEffect(() => {
@@ -138,7 +139,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       firebaseAuth.user === null &&
       !firebaseAuth.loading &&
       (token || user) &&
-      !logoutInProgressRef.current
+      !logoutInProgressRef.current &&
+      !legacyLoginRef.current // Don't auto-logout if using legacy auth
     ) {
       // IMPORTANT: Nettoyer l'état local quand Firebase user devient null (déconnexion)
       // Vérifier qu'il y a un état local à nettoyer et qu'on n'est pas déjà en train de nettoyer
@@ -304,6 +306,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const login = (newToken: string, userData: any) => {
+    // Mark as legacy login (without Firebase auth)
+    legacyLoginRef.current = true;
+
     setToken(newToken);
     localStorage.setItem("token", newToken);
     localStorage.setItem("user", JSON.stringify(userData));
@@ -327,6 +332,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
+    // Reset legacy login flag
+    legacyLoginRef.current = false;
+
     // Réinitialiser tous les états
     setToken(null);
     setUser(null);
