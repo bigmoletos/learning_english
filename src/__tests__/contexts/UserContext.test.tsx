@@ -405,17 +405,21 @@ describe("UserContext", () => {
         wrapper: ({ children }) => <UserProvider>{children}</UserProvider>,
       });
 
-      await act(async () => {
+      act(() => {
         result.current.login("legacy-token", userData);
       });
 
       // Token should be set immediately - wait for state update
+      // Use waitFor to ensure React state is updated
       await waitFor(
         () => {
           expect(result.current.token).toBe("legacy-token");
         },
         { timeout: 5000 }
       );
+      
+      // Also verify localStorage was updated
+      expect(localStorage.getItem("token")).toBe("legacy-token");
 
       expect(result.current.user?.name).toBe("Legacy User");
       expect(result.current.user?.currentLevel).toBe("A2");

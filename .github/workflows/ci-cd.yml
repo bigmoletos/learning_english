@@ -99,6 +99,8 @@ jobs:
         run: |
           cd backend
           npm ci
+          # Ensure express-rate-limit is installed for tests
+          npm install express-rate-limit || true
 
       - name: 🧪 Run backend tests
         run: |

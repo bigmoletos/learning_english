@@ -49,16 +49,26 @@ describe("EmailVerification Component", () => {
     });
     (storageService.setMultiple as jest.Mock).mockResolvedValue(undefined);
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
-    // Mock window.location.search to be empty initially
+    // Mock window.location to avoid jsdom navigation error
     delete (window as any).location;
-    (window as any).location = { search: "", href: "" };
-    // Mock window.location.href setter to avoid jsdom navigation error
+    const mockLocation = {
+      search: "",
+      href: "",
+      assign: jest.fn(),
+      replace: jest.fn(),
+      reload: jest.fn(),
+    };
     Object.defineProperty(window, "location", {
-      value: {
-        search: "",
-        href: "",
-      },
+      value: mockLocation,
       writable: true,
+      configurable: true,
+    });
+    // Mock window.location.href setter to prevent navigation errors
+    Object.defineProperty(window.location, "href", {
+      set: jest.fn((url) => {
+        mockLocation.href = url;
+      }),
+      get: jest.fn(() => mockLocation.href),
       configurable: true,
     });
   });
