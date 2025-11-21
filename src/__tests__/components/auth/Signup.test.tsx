@@ -588,21 +588,23 @@ describe("Signup Component", () => {
 
       render(<Signup {...defaultProps} />);
 
-      // Navigate through form with Tab
-      await user.tab(); // First name
-      await user.keyboard("John");
-      await user.tab(); // Last name
-      await user.keyboard("Doe");
-      await user.tab(); // Email
-      await user.keyboard("test@example.com");
-      await user.tab(); // Password
-      await user.keyboard("Password123!");
-      await user.tab(); // Confirm password
-      await user.keyboard("Password123!");
+      // Navigate through form with Tab and fill fields
+      const firstNameInput = screen.getByLabelText(/Prénom/i);
+      const lastNameInput = screen.getByLabelText(/^Nom$/i);
+      const emailInput = screen.getByLabelText(/Email/i);
+      const passwordInputs = screen.getAllByLabelText(/Mot de passe/i);
+      const passwordInput = passwordInputs[0];
+      const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
 
-      // Submit with Enter - focus should be on confirm password field
-      // Press Enter to submit the form
-      await user.keyboard("{Enter}");
+      await user.type(firstNameInput, "John");
+      await user.type(lastNameInput, "Doe");
+      await user.type(emailInput, "test@example.com");
+      await user.type(passwordInput, "Password123!");
+      await user.type(confirmPasswordInput, "Password123!");
+
+      // Find and click the submit button
+      const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
+      await user.click(submitButton);
 
       await waitFor(
         () => {

@@ -92,8 +92,18 @@ describe("EmailVerification Component", () => {
 
   // Test de rendu de base
   it("renders loading state initially", () => {
-    // Override location.search for this test
-    (window as any).location.search = "";
+    // Override auth.currentUser to have unverified email
+    Object.defineProperty(auth, "currentUser", {
+      value: { ...mockUser, emailVerified: false },
+      writable: true,
+      configurable: true,
+    });
+
+    // Mock checkActionCode to return a promise that never resolves (keeps loading state)
+    (checkActionCode as jest.Mock).mockImplementation(() => new Promise(() => {}));
+
+    // Override location.search for this test to have verification code
+    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
     expect(screen.getByText("Vérification de votre email...")).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
@@ -101,8 +111,18 @@ describe("EmailVerification Component", () => {
 
   // Test de succès de vérification
   it("shows success message when email is verified", async () => {
+    // Override auth.currentUser to have unverified email initially
+    Object.defineProperty(auth, "currentUser", {
+      value: { ...mockUser, emailVerified: false },
+      writable: true,
+      configurable: true,
+    });
+
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
+
+    // Set location.search to have verification code
+    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
@@ -121,9 +141,19 @@ describe("EmailVerification Component", () => {
 
   // Test d'erreur de vérification
   it("shows error message when verification fails", async () => {
+    // Override auth.currentUser to have unverified email
+    Object.defineProperty(auth, "currentUser", {
+      value: { ...mockUser, emailVerified: false },
+      writable: true,
+      configurable: true,
+    });
+
     const mockError: Error & { code?: string } = new Error("Invalid action code");
     mockError.code = "auth/invalid-action-code";
     (checkActionCode as jest.Mock).mockRejectedValue(mockError);
+
+    // Set location.search to have verification code
+    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
@@ -162,8 +192,18 @@ describe("EmailVerification Component", () => {
 
   // Test de connexion après vérification
   it("logs in user after successful verification", async () => {
+    // Override auth.currentUser to have unverified email initially
+    Object.defineProperty(auth, "currentUser", {
+      value: { ...mockUser, emailVerified: false },
+      writable: true,
+      configurable: true,
+    });
+
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
+
+    // Set location.search to have verification code
+    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 

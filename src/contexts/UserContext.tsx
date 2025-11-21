@@ -329,8 +329,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setToken(newToken);
 
-    // Only save to localStorage if not in test environment
-    if (typeof window !== "undefined" && !process.env.JEST_WORKER_ID) {
+    // Save to localStorage
+    if (typeof window !== "undefined") {
       localStorage.setItem("token", newToken);
       localStorage.setItem("user", JSON.stringify(userData));
     }
