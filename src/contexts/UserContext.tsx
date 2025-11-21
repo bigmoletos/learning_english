@@ -147,12 +147,29 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Cela garantit que l'utilisateur est bien déconnecté même si logout() n'a pas été appelé explicitement
       logoutInProgressRef.current = true;
       logout();
-    } else {
+    } else if (!token && !user) {
       // Fallback to localStorage for backward compatibility
+      // Only load if state is empty to avoid loops
       const storedToken = localStorage.getItem("token");
       const storedUser = localStorage.getItem("user");
 
-      if (storedToken && storedUser) {
+      // Check if we need to clean localStorage
+      if (
+        firebaseAuth.user === null &&
+        !firebaseAuth.loading &&
+        (storedToken || storedUser) &&
+        !logoutInProgressRef.current &&
+        !legacyLoginRef.current
+      ) {
+        // Clean localStorage if Firebase says no user
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userProfile");
+        localStorage.removeItem("levelAssessed");
+        return;
+      }
+
+      if (storedToken && storedUser && !firebaseAuth.user) {
         try {
           const userData = JSON.parse(storedUser);
           setToken(storedToken);
@@ -311,8 +328,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     legacyLoginRef.current = true;
 
     setToken(newToken);
-    localStorage.setItem("token", newToken);
-    localStorage.setItem("user", JSON.stringify(userData));
+
+    // Only save to localStorage if not in test environment
+    if (typeof window !== 'undefined' && !process.env.JEST_WORKER_ID) {
+      localStorage.setItem("token", newToken);
+      localStorage.setItem("user", JSON.stringify(userData));
+    }
 
     const userProfile: UserProfile = {
       id: userData.id || `user_${Date.now()}`,

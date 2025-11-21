@@ -69,14 +69,14 @@ jobs:
 
       - name: 📊 Upload coverage
         uses: codecov/codecov-action@v4
-        if: always()
+        if: always() && hashFiles('./coverage/lcov.info') != ''
+        continue-on-error: true
         with:
           files: ./coverage/lcov.info
           flags: frontend
           name: frontend-coverage
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
-          skip_upload: true  # Skip upload si pas de coverage (évite l'erreur)
 
   # Job 3: Tests Backend
   test-backend:

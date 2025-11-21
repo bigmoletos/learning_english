@@ -9,8 +9,16 @@ import { storageService, StorageKeys } from "../../../utils/storageService";
 
 // Mock des modules externes
 jest.mock("../../../contexts/UserContext");
-jest.mock("../../../firebase/config");
-jest.mock("firebase/auth");
+jest.mock("../../../firebase/config", () => ({
+  auth: {
+    currentUser: null,
+  },
+}));
+jest.mock("firebase/auth", () => ({
+  checkActionCode: jest.fn(),
+  applyActionCode: jest.fn(),
+  sendEmailVerification: jest.fn(),
+}));
 jest.mock("../../../utils/storageService");
 
 // Mock de l'utilisateur
@@ -36,15 +44,19 @@ describe("EmailVerification Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (useUser as jest.Mock).mockReturnValue({ login: mockLogin });
+
+    // Mock Firebase auth functions
+    (checkActionCode as jest.Mock).mockResolvedValue(undefined);
+    (applyActionCode as jest.Mock).mockResolvedValue(undefined);
+    (sendEmailVerification as jest.Mock).mockResolvedValue(undefined);
+
+    // Mock auth.currentUser with proper Firebase User structure
     Object.defineProperty(auth, "currentUser", {
-      value: null,
+      value: mockUser,
       writable: true,
       configurable: true,
     });
-    // Mock Firebase auth functions
-    (checkActionCode as jest.Mock) = jest.fn();
-    (applyActionCode as jest.Mock) = jest.fn();
-    (sendEmailVerification as jest.Mock) = jest.fn();
+
     (storageService.get as jest.Mock).mockImplementation((key) => {
       if (key === StorageKeys.PENDING_USER) return Promise.resolve(null);
       if (key === StorageKeys.FIREBASE_USER) return Promise.resolve(null);
@@ -52,36 +64,16 @@ describe("EmailVerification Component", () => {
     });
     (storageService.setMultiple as jest.Mock).mockResolvedValue(undefined);
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
-    // Mock window.location to avoid jsdom navigation error
-    // Delete and recreate to avoid "Cannot redefine property" error
-    const descriptor = Object.getOwnPropertyDescriptor(window, "location");
-    if (descriptor && descriptor.configurable) {
-      delete (window as any).location;
-    }
 
-    const mockLocation = {
-      search: "",
+    // Mock window.location to avoid jsdom navigation error
+    delete (window as any).location;
+    (window as any).location = {
+      search: "?mode=verifyEmail&oobCode=test-code",
       href: "",
       assign: jest.fn(),
       replace: jest.fn(),
       reload: jest.fn(),
     };
-
-    // Define location as a new property
-    Object.defineProperty(window, "location", {
-      value: mockLocation,
-      writable: true,
-      configurable: true,
-    });
-
-    // Mock window.location.href setter to prevent navigation errors
-    Object.defineProperty(window.location, "href", {
-      set: jest.fn((url) => {
-        mockLocation.href = url;
-      }),
-      get: jest.fn(() => mockLocation.href),
-      configurable: true,
-    });
   });
 
   // Restore original location after each test
@@ -95,17 +87,8 @@ describe("EmailVerification Component", () => {
 
   // Test de rendu de base
   it("renders loading state initially", () => {
-    // Mock window.location.search to be empty so component shows loading state
-    Object.defineProperty(window.location, "search", {
-      value: "",
-      writable: true,
-      configurable: true,
-    });
-    Object.defineProperty(auth, "currentUser", {
-      value: null,
-      writable: true,
-      configurable: true,
-    });
+    // Override location.search for this test
+    (window as any).location.search = "";
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
     expect(screen.getByText("Vérification de votre email...")).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
