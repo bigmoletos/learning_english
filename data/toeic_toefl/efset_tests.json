@@ -1,0 +1,231 @@
+{
+  "tests": [
+    {
+      "id": "efset_4skill",
+      "type": "efset",
+      "title": "EF SET - Test d'anglais complet",
+      "description": "Testez vos 4 compétences en anglais : Reading, Listening, Writing, Speaking",
+      "duration": 50,
+      "totalPoints": 200,
+      "adaptive": true,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 50,
+          "timeLimit": 25,
+          "adaptive": true,
+          "initialLevel": "B2",
+          "questions": [
+            {
+              "id": "r1",
+              "level": "B2",
+              "text": "Technical debt in software development refers to the implied cost of additional rework caused by choosing an easy solution now instead of using a better approach that would take longer. What is the main characteristic of technical debt?",
+              "options": [
+                "It always results in better code quality",
+                "It represents the cost of shortcuts taken in development",
+                "It can only occur in large organizations",
+                "It has no impact on long-term maintenance"
+              ],
+              "correctAnswer": "It represents the cost of shortcuts taken in development",
+              "explanation": "Technical debt is the cost of taking shortcuts or choosing quick solutions over better long-term approaches.",
+              "points": 3,
+              "nextLevel": "C1",
+              "wrongLevel": "B1"
+            },
+            {
+              "id": "r2",
+              "level": "B2",
+              "text": "DevOps practices emphasize automation and collaboration between development and operations teams. According to the text, what is emphasized by DevOps?",
+              "options": [
+                "Manual processes and strict separation",
+                "Automation and collaboration",
+                "Individual work and competition",
+                "Minimal communication between teams"
+              ],
+              "correctAnswer": "Automation and collaboration",
+              "explanation": "DevOps emphasizes automation of processes and collaboration between different teams.",
+              "points": 3,
+              "nextLevel": "C1",
+              "wrongLevel": "B1"
+            },
+            {
+              "id": "r3",
+              "level": "C1",
+              "text": "Machine learning models can identify patterns in data that may not be immediately apparent to human analysts. What capability does this sentence highlight?",
+              "options": [
+                "Machine learning only works with simple data",
+                "ML models can discover non-obvious patterns",
+                "Human analysts are always faster",
+                "Pattern identification is impossible for computers"
+              ],
+              "correctAnswer": "ML models can discover non-obvious patterns",
+              "explanation": "The sentence emphasizes that ML models can find patterns that humans might not notice immediately.",
+              "points": 4,
+              "nextLevel": "C2",
+              "wrongLevel": "B2"
+            },
+            {
+              "id": "r4",
+              "level": "B1",
+              "text": "Cloud computing allows companies to store data on remote servers. What is cloud computing?",
+              "options": [
+                "Storing data only on local computers",
+                "Using remote servers to store data",
+                "A type of physical storage device",
+                "A method that doesn't use servers"
+              ],
+              "correctAnswer": "Using remote servers to store data",
+              "explanation": "Cloud computing involves using remote servers accessed via the internet to store and process data.",
+              "points": 2,
+              "nextLevel": "B2",
+              "wrongLevel": "A2"
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 50,
+          "timeLimit": 25,
+          "adaptive": true,
+          "initialLevel": "B2",
+          "questions": [
+            {
+              "id": "l1",
+              "level": "B2",
+              "text": "What does the speaker say about CI/CD pipelines?",
+              "audioText": "Continuous Integration and Continuous Deployment pipelines automate the testing and deployment processes. This automation significantly reduces the time between writing code and deploying it to production, enabling teams to release software more frequently and reliably.",
+              "options": [
+                "They require manual intervention at every step",
+                "They automate testing and deployment, reducing time to production",
+                "They only work for large teams",
+                "They increase the time needed for deployment"
+              ],
+              "correctAnswer": "They automate testing and deployment, reducing time to production",
+              "explanation": "The speaker states that CI/CD pipelines automate processes and reduce time to production.",
+              "points": 3,
+              "nextLevel": "C1",
+              "wrongLevel": "B1"
+            },
+            {
+              "id": "l2",
+              "level": "B2",
+              "text": "According to the discussion, what is a key benefit of containerization?",
+              "audioText": "Containerization with technologies like Docker ensures that applications run consistently across different environments - from development to production. This consistency eliminates the common problem of 'it works on my machine' and simplifies deployment across various platforms.",
+              "options": [
+                "Containers only work in development environments",
+                "Containers ensure consistent application behavior across environments",
+                "Containers make deployment more complex",
+                "Containers only work on specific operating systems"
+              ],
+              "correctAnswer": "Containers ensure consistent application behavior across environments",
+              "explanation": "The key benefit mentioned is consistent behavior across different environments.",
+              "points": 3,
+              "nextLevel": "C1",
+              "wrongLevel": "B1"
+            },
+            {
+              "id": "l3",
+              "level": "C1",
+              "text": "What does the speaker mention about microservices architecture?",
+              "audioText": "Microservices architecture breaks down applications into smaller, independent services. Each service can be developed, deployed, and scaled independently. This approach improves fault isolation - if one service fails, others can continue operating, which enhances system resilience.",
+              "options": [
+                "All services must be deployed together",
+                "Services are interdependent and cannot be scaled separately",
+                "Each service can be developed and scaled independently, improving resilience",
+                "Microservices always reduce system reliability"
+              ],
+              "correctAnswer": "Each service can be developed and scaled independently, improving resilience",
+              "explanation": "The speaker emphasizes independence of services and improved resilience through fault isolation.",
+              "points": 4,
+              "nextLevel": "C2",
+              "wrongLevel": "B2"
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 50,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "w1",
+              "level": "B2",
+              "text": "Explain the concept of Infrastructure as Code (IaC) and describe its main benefits for DevOps teams. Write 150-200 words.",
+              "type": "essay",
+              "correctAnswer": "Infrastructure as Code (IaC) is a practice where infrastructure configuration is managed through code files rather than manual processes. Key benefits include version control, reproducibility, and automation. Teams can track changes, roll back to previous configurations, and provision infrastructure consistently across environments.",
+              "explanation": "A good answer should include: definition of IaC, benefits (version control, automation, consistency), and practical applications.",
+              "points": 25,
+              "rubric": {
+                "content": 10,
+                "organization": 6,
+                "language": 6,
+                "vocabulary": 3
+              }
+            },
+            {
+              "id": "w2",
+              "level": "C1",
+              "text": "Discuss the importance of monitoring and observability in modern software systems. Explain how they contribute to system reliability. Write 150-200 words.",
+              "type": "essay",
+              "correctAnswer": "Monitoring and observability are crucial for maintaining system reliability. Monitoring tracks system metrics and alerts on issues, while observability provides deeper insights into system behavior. Together, they enable proactive problem detection, faster incident response, and data-driven optimization decisions.",
+              "explanation": "A comprehensive answer should cover: definitions, importance, contribution to reliability, and practical benefits.",
+              "points": 25,
+              "rubric": {
+                "content": 10,
+                "organization": 6,
+                "language": 6,
+                "vocabulary": 3
+              }
+            }
+          ]
+        },
+        {
+          "id": "speaking",
+          "name": "Speaking",
+          "type": "speaking",
+          "points": 50,
+          "timeLimit": 15,
+          "questions": [
+            {
+              "id": "s1",
+              "level": "B2",
+              "text": "Describe how your team manages software deployments. Speak for 1-2 minutes.",
+              "audioText": "Please describe how your team manages software deployments. Consider discussing: deployment processes, tools used, automation, and challenges faced.",
+              "type": "speaking",
+              "explanation": "Evaluate: fluency, pronunciation, vocabulary range, grammar accuracy, and ability to express technical concepts clearly.",
+              "points": 25,
+              "rubric": {
+                "fluency": 8,
+                "pronunciation": 6,
+                "vocabulary": 6,
+                "grammar": 5
+              }
+            },
+            {
+              "id": "s2",
+              "level": "C1",
+              "text": "Explain the concept of technical debt and discuss strategies for managing it in large software projects. Speak for 2-3 minutes.",
+              "audioText": "Please explain technical debt and discuss strategies for managing it. Consider: causes of technical debt, impact on projects, and effective management approaches.",
+              "type": "speaking",
+              "explanation": "Evaluate: ability to explain complex concepts, use appropriate technical vocabulary, organize ideas logically, and maintain fluency throughout.",
+              "points": 25,
+              "rubric": {
+                "fluency": 8,
+                "pronunciation": 6,
+                "vocabulary": 7,
+                "grammar": 4
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

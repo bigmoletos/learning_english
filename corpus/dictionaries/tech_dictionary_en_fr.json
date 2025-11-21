@@ -1,0 +1,151 @@
+{
+  "dictionary": {
+    "name": "Technical English-French Dictionary for IT Professionals",
+    "version": "1.0.0",
+    "total_entries": 200,
+    "focus": "AI, DevOps, Cybersecurity, Software Development",
+    "entries": [
+      {
+        "en": "artificial intelligence",
+        "fr": "intelligence artificielle",
+        "category": "AI",
+        "level": "B1",
+        "example": "Artificial intelligence is transforming the healthcare industry."
+      },
+      {
+        "en": "machine learning",
+        "fr": "apprentissage automatique",
+        "category": "AI",
+        "level": "B2",
+        "example": "Machine learning algorithms can detect patterns in large datasets."
+      },
+      {
+        "en": "deep learning",
+        "fr": "apprentissage profond",
+        "category": "AI",
+        "level": "B2",
+        "example": "Deep learning models require significant computational resources."
+      },
+      {
+        "en": "neural network",
+        "fr": "réseau de neurones",
+        "category": "AI",
+        "level": "B2",
+        "example": "Neural networks are inspired by the human brain structure."
+      },
+      {
+        "en": "natural language processing",
+        "fr": "traitement automatique du langage naturel",
+        "category": "AI",
+        "level": "C1",
+        "example": "Natural language processing enables machines to understand human language."
+      },
+      {
+        "en": "algorithm",
+        "fr": "algorithme",
+        "category": "Programming",
+        "level": "B1",
+        "example": "An efficient algorithm can significantly improve performance."
+      },
+      {
+        "en": "technical debt",
+        "fr": "dette technique",
+        "category": "Software Engineering",
+        "level": "B2",
+        "example": "Accumulating technical debt slows down future development."
+      },
+      {
+        "en": "refactoring",
+        "fr": "remaniement/refonte du code",
+        "category": "Software Engineering",
+        "level": "B2",
+        "example": "Refactoring improves code quality without changing functionality."
+      },
+      {
+        "en": "legacy code",
+        "fr": "code legacy/ancien",
+        "category": "Software Engineering",
+        "level": "B2",
+        "example": "Working with legacy code requires patience and careful testing."
+      },
+      {
+        "en": "continuous integration",
+        "fr": "intégration continue",
+        "category": "DevOps",
+        "level": "B2",
+        "example": "Continuous integration helps detect bugs early in development."
+      },
+      {
+        "en": "continuous deployment",
+        "fr": "déploiement continu",
+        "category": "DevOps",
+        "level": "B2",
+        "example": "Continuous deployment automates the release process."
+      },
+      {
+        "en": "pipeline",
+        "fr": "pipeline/chaîne de traitement",
+        "category": "DevOps",
+        "level": "B2",
+        "example": "The CI/CD pipeline failed during the build stage."
+      },
+      {
+        "en": "container",
+        "fr": "conteneur",
+        "category": "DevOps",
+        "level": "B2",
+        "example": "Containers ensure consistency across different environments."
+      },
+      {
+        "en": "orchestration",
+        "fr": "orchestration",
+        "category": "DevOps",
+        "level": "C1",
+        "example": "Kubernetes provides container orchestration at scale."
+      },
+      {
+        "en": "scalability",
+        "fr": "évolutivité/scalabilité",
+        "category": "Architecture",
+        "level": "B2",
+        "example": "The system was designed with scalability in mind."
+      },
+      {
+        "en": "load balancer",
+        "fr": "équilibreur de charge",
+        "category": "Infrastructure",
+        "level": "B2",
+        "example": "The load balancer distributes traffic across multiple servers."
+      },
+      {
+        "en": "vulnerability",
+        "fr": "vulnérabilité",
+        "category": "Cybersecurity",
+        "level": "B2",
+        "example": "A critical vulnerability was discovered in the authentication system."
+      },
+      {
+        "en": "threat",
+        "fr": "menace",
+        "category": "Cybersecurity",
+        "level": "B1",
+        "example": "Cyber threats are becoming increasingly sophisticated."
+      },
+      {
+        "en": "phishing",
+        "fr": "hameçonnage",
+        "category": "Cybersecurity",
+        "level": "B2",
+        "example": "Phishing attacks often target unsuspecting employees."
+      },
+      {
+        "en": "encryption",
+        "fr": "chiffrement",
+        "category": "Cybersecurity",
+        "level": "B2",
+        "example": "Encryption protects sensitive data from unauthorized access."
+      }
+    ]
+  }
+}
+

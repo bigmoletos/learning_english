@@ -1,0 +1,406 @@
+{
+  "tests": [
+    {
+      "id": "toeic_a1",
+      "type": "toeic",
+      "level": "A1",
+      "title": "TOEIC Practice Test - Niveau A1",
+      "description": "Testez votre niveau d'anglais avec ce test TOEIC niveau A1",
+      "duration": 60,
+      "totalPoints": 16,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 12,
+          "timeLimit": 25,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "I ___ a developer.",
+              "options": [
+                "am",
+                "is",
+                "are",
+                "be"
+              ],
+              "correctAnswer": "am",
+              "explanation": "Use 'am' with 'I' in present simple.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 4
+            },
+            {
+              "id": "g2",
+              "text": "She ___ code every day.",
+              "options": [
+                "write",
+                "writes",
+                "writing",
+                "written"
+              ],
+              "correctAnswer": "writes",
+              "explanation": "Use 'writes' with 'she' in present simple (third person).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 4
+            },
+            {
+              "id": "g3",
+              "text": "What ___ you do?",
+              "options": [
+                "do",
+                "does",
+                "is",
+                "are"
+              ],
+              "correctAnswer": "do",
+              "explanation": "Use 'do' with 'you' in questions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 4
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 4,
+          "timeLimit": 25,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker say?",
+              "audioText": "Hello, I am a software developer.",
+              "options": [
+                "The speaker is a teacher",
+                "The speaker is a developer",
+                "The speaker is a student",
+                "The speaker is a manager"
+              ],
+              "correctAnswer": "The speaker is a developer",
+              "explanation": "The audio clearly states 'I am a software developer'.",
+              "points": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toeic_a2",
+      "type": "toeic",
+      "level": "A2",
+      "title": "TOEIC Practice Test - Niveau A2",
+      "description": "Testez votre niveau d'anglais avec ce test TOEIC niveau A2",
+      "duration": 90,
+      "totalPoints": 14,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 10,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "I ___ English for two years.",
+              "options": [
+                "study",
+                "studied",
+                "have studied",
+                "am studying"
+              ],
+              "correctAnswer": "have studied",
+              "explanation": "Use present perfect for actions started in the past and continuing now.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 4
+            },
+            {
+              "id": "g2",
+              "text": "The application ___ yesterday.",
+              "options": [
+                "deploy",
+                "deployed",
+                "was deployed",
+                "deploying"
+              ],
+              "correctAnswer": "was deployed",
+              "explanation": "Use passive voice in past simple for completed actions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 4,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What did the team do yesterday?",
+              "audioText": "We deployed the new version of the application yesterday.",
+              "options": [
+                "They tested the application",
+                "They deployed the application",
+                "They designed the application",
+                "They documented the application"
+              ],
+              "correctAnswer": "They deployed the application",
+              "explanation": "The audio states 'We deployed the new version'.",
+              "points": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toeic_b1",
+      "type": "toeic",
+      "level": "B1",
+      "title": "TOEIC Practice Test - Niveau B1",
+      "description": "Testez votre niveau d'anglais avec ce test TOEIC niveau B1",
+      "duration": 120,
+      "totalPoints": 18,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 12,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "If I ___ more time, I would improve the code.",
+              "options": [
+                "have",
+                "had",
+                "has",
+                "having"
+              ],
+              "correctAnswer": "had",
+              "explanation": "Use past simple in second conditional (if-clause).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            },
+            {
+              "id": "g2",
+              "text": "The system ___ by the team last week.",
+              "options": [
+                "updated",
+                "was updated",
+                "has updated",
+                "updating"
+              ],
+              "correctAnswer": "was updated",
+              "explanation": "Passive voice in past simple for completed actions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 6,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What is mentioned about CI/CD?",
+              "audioText": "Continuous Integration helps teams integrate code changes more frequently and reliably.",
+              "options": [
+                "It requires manual intervention",
+                "It helps integrate code more frequently",
+                "It slows down development",
+                "It only works for small teams"
+              ],
+              "correctAnswer": "It helps integrate code more frequently",
+              "explanation": "The audio states that CI helps integrate code changes more frequently.",
+              "points": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toeic_b2",
+      "type": "toeic",
+      "level": "B2",
+      "title": "TOEIC Practice Test - Niveau B2",
+      "description": "Testez votre niveau d'anglais avec ce test TOEIC niveau B2",
+      "duration": 120,
+      "totalPoints": 18,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 12,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "Technical debt accumulates when teams choose quick solutions ___ better approaches.",
+              "options": [
+                "instead of",
+                "instead",
+                "rather",
+                "than"
+              ],
+              "correctAnswer": "instead of",
+              "explanation": "'Instead of' means 'rather than' or 'as an alternative to'.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            },
+            {
+              "id": "g2",
+              "text": "DevOps practices ___ automation and collaboration.",
+              "options": [
+                "emphasize",
+                "emphasizes",
+                "emphasized",
+                "emphasizing"
+              ],
+              "correctAnswer": "emphasize",
+              "explanation": "Use present simple plural form with 'practices' (plural subject).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 6,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker say about CI/CD pipelines?",
+              "audioText": "CI/CD pipelines automate testing and deployment, reducing time to production.",
+              "options": [
+                "They require manual steps",
+                "They automate processes and reduce time",
+                "They only work for large teams",
+                "They increase deployment time"
+              ],
+              "correctAnswer": "They automate processes and reduce time",
+              "explanation": "The audio states that CI/CD automates processes and reduces time.",
+              "points": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toeic_c1",
+      "type": "toeic",
+      "level": "C1",
+      "title": "TOEIC Practice Test - Niveau C1",
+      "description": "Testez votre niveau d'anglais avec ce test TOEIC niveau C1",
+      "duration": 120,
+      "totalPoints": 24,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 16,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "Had the team ___ best practices, the security breach would not have occurred.",
+              "options": [
+                "follow",
+                "followed",
+                "following",
+                "follows"
+              ],
+              "correctAnswer": "followed",
+              "explanation": "Use past perfect in third conditional (if-clause).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 8
+            },
+            {
+              "id": "g2",
+              "text": "Not only ___ the system more secure, but it also improved performance.",
+              "options": [
+                "it made",
+                "made it",
+                "did it make",
+                "it did make"
+              ],
+              "correctAnswer": "did it make",
+              "explanation": "Inversion after 'Not only' at the beginning of a sentence.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 8
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 8,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker mention about microservices?",
+              "audioText": "Microservices architecture enables independent deployment and scaling of services, improving system resilience through fault isolation.",
+              "options": [
+                "Services must be deployed together",
+                "Services can be deployed independently",
+                "Microservices reduce reliability",
+                "Services cannot be scaled separately"
+              ],
+              "correctAnswer": "Services can be deployed independently",
+              "explanation": "The audio emphasizes independent deployment and scaling.",
+              "points": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

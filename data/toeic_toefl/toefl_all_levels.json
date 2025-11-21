@@ -1,0 +1,521 @@
+{
+  "tests": [
+    {
+      "id": "toefl_a1",
+      "type": "toefl",
+      "level": "A1",
+      "title": "TOEFL Practice Test - Niveau A1",
+      "description": "Test avancé TOEFL pour le niveau A1",
+      "duration": 90,
+      "totalPoints": 34,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 18,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "I ___ a developer.",
+              "options": [
+                "am",
+                "is",
+                "are",
+                "be"
+              ],
+              "correctAnswer": "am",
+              "explanation": "Use 'am' with 'I' in present simple.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            },
+            {
+              "id": "r2",
+              "text": "She ___ code every day.",
+              "options": [
+                "write",
+                "writes",
+                "writing",
+                "written"
+              ],
+              "correctAnswer": "writes",
+              "explanation": "Use 'writes' with 'she' in present simple (third person).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            },
+            {
+              "id": "r3",
+              "text": "What ___ you do?",
+              "options": [
+                "do",
+                "does",
+                "is",
+                "are"
+              ],
+              "correctAnswer": "do",
+              "explanation": "Use 'do' with 'you' in questions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 6,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker say?",
+              "audioText": "Hello, I am a software developer.",
+              "options": [
+                "The speaker is a teacher",
+                "The speaker is a developer",
+                "The speaker is a student",
+                "The speaker is a manager"
+              ],
+              "correctAnswer": "The speaker is a developer",
+              "explanation": "The audio clearly states 'I am a software developer'.",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 10,
+          "timeLimit": 20,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Write 3-5 sentences about your work. Use simple present tense.",
+              "type": "essay",
+              "points": 10,
+              "minWords": 30,
+              "maxWords": 50,
+              "rubric": {
+                "content": 4,
+                "organization": 3,
+                "language": 2,
+                "vocabulary": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toefl_a2",
+      "type": "toefl",
+      "level": "A2",
+      "title": "TOEFL Practice Test - Niveau A2",
+      "description": "Test avancé TOEFL pour le niveau A2",
+      "duration": 120,
+      "totalPoints": 36,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 15,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "I ___ English for two years.",
+              "options": [
+                "study",
+                "studied",
+                "have studied",
+                "am studying"
+              ],
+              "correctAnswer": "have studied",
+              "explanation": "Use present perfect for actions started in the past and continuing now.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 6
+            },
+            {
+              "id": "r2",
+              "text": "The application ___ yesterday.",
+              "options": [
+                "deploy",
+                "deployed",
+                "was deployed",
+                "deploying"
+              ],
+              "correctAnswer": "was deployed",
+              "explanation": "Use passive voice in past simple for completed actions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 9
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 6,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What did the team do yesterday?",
+              "audioText": "We deployed the new version of the application yesterday.",
+              "options": [
+                "They tested the application",
+                "They deployed the application",
+                "They designed the application",
+                "They documented the application"
+              ],
+              "correctAnswer": "They deployed the application",
+              "explanation": "The audio states 'We deployed the new version'.",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 15,
+          "timeLimit": 30,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Describe your typical day at work. Write 5-7 sentences using present simple and present continuous.",
+              "type": "essay",
+              "points": 15,
+              "minWords": 50,
+              "maxWords": 100,
+              "rubric": {
+                "content": 6,
+                "organization": 4,
+                "language": 3,
+                "vocabulary": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toefl_b1",
+      "type": "toefl",
+      "level": "B1",
+      "title": "TOEFL Practice Test - Niveau B1",
+      "description": "Test avancé TOEFL pour le niveau B1",
+      "duration": 150,
+      "totalPoints": 47,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 18,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "If I ___ more time, I would improve the code.",
+              "options": [
+                "have",
+                "had",
+                "has",
+                "having"
+              ],
+              "correctAnswer": "had",
+              "explanation": "Use past simple in second conditional (if-clause).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 9
+            },
+            {
+              "id": "r2",
+              "text": "The system ___ by the team last week.",
+              "options": [
+                "updated",
+                "was updated",
+                "has updated",
+                "updating"
+              ],
+              "correctAnswer": "was updated",
+              "explanation": "Passive voice in past simple for completed actions.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 9
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 9,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What is mentioned about CI/CD?",
+              "audioText": "Continuous Integration helps teams integrate code changes more frequently and reliably.",
+              "options": [
+                "It requires manual intervention",
+                "It helps integrate code more frequently",
+                "It slows down development",
+                "It only works for small teams"
+              ],
+              "correctAnswer": "It helps integrate code more frequently",
+              "explanation": "The audio states that CI helps integrate code changes more frequently.",
+              "points": 9
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 20,
+          "timeLimit": 40,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Explain how your team collaborates on projects. Write 100-150 words using past simple and present perfect.",
+              "type": "essay",
+              "points": 20,
+              "minWords": 100,
+              "maxWords": 150,
+              "rubric": {
+                "content": 8,
+                "organization": 6,
+                "language": 4,
+                "vocabulary": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toefl_b2",
+      "type": "toefl",
+      "level": "B2",
+      "title": "TOEFL Practice Test - Niveau B2",
+      "description": "Test avancé TOEFL pour le niveau B2",
+      "duration": 180,
+      "totalPoints": 52,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 18,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "Technical debt accumulates when teams choose quick solutions ___ better approaches.",
+              "options": [
+                "instead of",
+                "instead",
+                "rather",
+                "than"
+              ],
+              "correctAnswer": "instead of",
+              "explanation": "'Instead of' means 'rather than' or 'as an alternative to'.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 9
+            },
+            {
+              "id": "r2",
+              "text": "DevOps practices ___ automation and collaboration.",
+              "options": [
+                "emphasize",
+                "emphasizes",
+                "emphasized",
+                "emphasizing"
+              ],
+              "correctAnswer": "emphasize",
+              "explanation": "Use present simple plural form with 'practices' (plural subject).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 9
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 9,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker say about CI/CD pipelines?",
+              "audioText": "CI/CD pipelines automate testing and deployment, reducing time to production.",
+              "options": [
+                "They require manual steps",
+                "They automate processes and reduce time",
+                "They only work for large teams",
+                "They increase deployment time"
+              ],
+              "correctAnswer": "They automate processes and reduce time",
+              "explanation": "The audio states that CI/CD automates processes and reduces time.",
+              "points": 9
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 25,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Explain the concept of DevOps and its benefits. Write 150-200 words using appropriate technical vocabulary.",
+              "type": "essay",
+              "points": 25,
+              "minWords": 150,
+              "maxWords": 200,
+              "rubric": {
+                "content": 10,
+                "organization": 7,
+                "language": 5,
+                "vocabulary": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toefl_c1",
+      "type": "toefl",
+      "level": "C1",
+      "title": "TOEFL Practice Test - Niveau C1",
+      "description": "Test avancé TOEFL pour le niveau C1",
+      "duration": 180,
+      "totalPoints": 66,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 24,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "Had the team ___ best practices, the security breach would not have occurred.",
+              "options": [
+                "follow",
+                "followed",
+                "following",
+                "follows"
+              ],
+              "correctAnswer": "followed",
+              "explanation": "Use past perfect in third conditional (if-clause).",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 12
+            },
+            {
+              "id": "r2",
+              "text": "Not only ___ the system more secure, but it also improved performance.",
+              "options": [
+                "it made",
+                "made it",
+                "did it make",
+                "it did make"
+              ],
+              "correctAnswer": "did it make",
+              "explanation": "Inversion after 'Not only' at the beginning of a sentence.",
+              "grammarFocus": [
+                "present_simple",
+                "technical_vocabulary"
+              ],
+              "points": 12
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 12,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What does the speaker mention about microservices?",
+              "audioText": "Microservices architecture enables independent deployment and scaling of services, improving system resilience through fault isolation.",
+              "options": [
+                "Services must be deployed together",
+                "Services can be deployed independently",
+                "Microservices reduce reliability",
+                "Services cannot be scaled separately"
+              ],
+              "correctAnswer": "Services can be deployed independently",
+              "explanation": "The audio emphasizes independent deployment and scaling.",
+              "points": 12
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 30,
+          "timeLimit": 50,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Discuss the challenges and benefits of microservices architecture. Write 200-250 words demonstrating advanced vocabulary and complex sentence structures.",
+              "type": "essay",
+              "points": 30,
+              "minWords": 200,
+              "maxWords": 250,
+              "rubric": {
+                "content": 12,
+                "organization": 9,
+                "language": 6,
+                "vocabulary": 3
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

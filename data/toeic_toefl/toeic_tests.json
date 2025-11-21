@@ -1,0 +1,201 @@
+{
+  "tests": [
+    {
+      "id": "toeic_b2",
+      "type": "toeic",
+      "level": "B2",
+      "title": "TOEIC Practice Test - B2 Level",
+      "description": "Test your English skills with this comprehensive TOEIC practice test",
+      "duration": 120,
+      "totalPoints": 180,
+      "sections": [
+        {
+          "id": "grammar",
+          "name": "Grammar and Structure",
+          "type": "reading",
+          "points": 120,
+          "timeLimit": 60,
+          "questions": [
+            {
+              "id": "g1",
+              "text": "One of the duties of library assistants is to shelve books returned _____ borrowers or used by readers within the library.",
+              "options": ["at", "by", "before", "about"],
+              "correctAnswer": "by",
+              "explanation": "The preposition 'by' is used to indicate the agent or source in passive voice constructions. 'Books returned by borrowers' means books that borrowers have returned.",
+              "grammarFocus": ["passive_voice", "prepositions"],
+              "points": 2
+            },
+            {
+              "id": "g2",
+              "text": "When you need supplies, _____ a request with the office manager.",
+              "options": ["filling", "fell", "fallen", "file"],
+              "correctAnswer": "file",
+              "explanation": "After 'when you need', we use the base form of the verb 'file' in imperative mood. 'File a request' means to submit a formal request.",
+              "grammarFocus": ["imperative", "verbs"],
+              "points": 2
+            },
+            {
+              "id": "g3",
+              "text": "_____ the doctors were surprised when the patient made a quick recovery from his injuries.",
+              "options": ["Some", "Many", "Most of", "Almost"],
+              "correctAnswer": "Almost",
+              "explanation": "'Almost' modifies 'all' (implied) and means 'nearly all'. 'Almost all the doctors' or simply 'Almost the doctors' indicates that nearly all doctors were surprised.",
+              "grammarFocus": ["quantifiers", "adverbs"],
+              "points": 3
+            },
+            {
+              "id": "g4",
+              "text": "The assets of Marble Faun Publishing Company _____ last quarter when one of their main local distributors went out of business.",
+              "options": ["suffering", "suffers", "suffer", "suffered"],
+              "correctAnswer": "suffered",
+              "explanation": "The past tense 'suffered' is required because the action happened 'last quarter' (past time). The subject 'assets' is plural, but 'suffered' is correct for both singular and plural subjects.",
+              "grammarFocus": ["past_simple", "subject_verb_agreement"],
+              "points": 2
+            },
+            {
+              "id": "g5",
+              "text": "As portable audio items _____ currently unavailable in the store, you'd better check the Internet for more information.",
+              "options": ["are", "is", "being", "been"],
+              "correctAnswer": "are",
+              "explanation": "The plural subject 'items' requires the plural verb 'are'. 'Are currently unavailable' indicates a present state.",
+              "grammarFocus": ["present_simple", "subject_verb_agreement"],
+              "points": 2
+            },
+            {
+              "id": "g6",
+              "text": "All employees need a written _____ from the manager to access the office during off-hours.",
+              "options": ["permit", "permits", "permissive", "permissively"],
+              "correctAnswer": "permit",
+              "explanation": "A noun is needed here. 'Permit' (noun) means 'official written permission'. The article 'a' requires a singular noun.",
+              "grammarFocus": ["nouns", "articles"],
+              "points": 2
+            },
+            {
+              "id": "g7",
+              "text": "The building built by Emaar Properties was _____ scheduled to be completed at the end of this year but the target date has been changed due to revisions in the building's design.",
+              "options": ["fluently", "considerably", "originally", "currently"],
+              "correctAnswer": "originally",
+              "explanation": "'Originally' means 'in the beginning' or 'initially'. The sentence contrasts the original plan with the changed date, so 'originally' is the correct adverb.",
+              "grammarFocus": ["adverbs", "time_expressions"],
+              "points": 3
+            },
+            {
+              "id": "g8",
+              "text": "When John had to decide _____ to apply for a new job or keep his old one, he kept his old job because there were not that many job opportunities available.",
+              "options": ["either", "whether", "unless", "neither"],
+              "correctAnswer": "whether",
+              "explanation": "'Whether...or' is used to present two alternatives. 'Whether to apply...or keep' shows John's two choices. 'Either' would require 'or' but in a different structure.",
+              "grammarFocus": ["conjunctions", "conditionals"],
+              "points": 3
+            },
+            {
+              "id": "g9",
+              "text": "Employees should be back in the conference room by 10:00 am, as the meeting will resume _____ once the manager has arrived.",
+              "options": ["cordially", "promptly", "particularly", "assertively"],
+              "correctAnswer": "promptly",
+              "explanation": "'Promptly' means 'immediately' or 'without delay'. The sentence indicates the meeting will restart immediately when the manager arrives.",
+              "grammarFocus": ["adverbs", "time_expressions"],
+              "points": 2
+            },
+            {
+              "id": "g10",
+              "text": "While Mr. Christopher Bloom is in New York to meet with an important client, he may _____ a few financial investment seminars.",
+              "options": ["were attending", "attendance", "attendee", "attend"],
+              "correctAnswer": "attend",
+              "explanation": "After 'may', we use the base form of the verb. 'May attend' is the correct modal verb construction expressing possibility.",
+              "grammarFocus": ["modal_verbs", "infinitives"],
+              "points": 2
+            },
+            {
+              "id": "g11",
+              "text": "You will need to pay for the cost of shipping, _____ given alternative instructions from our customer service department.",
+              "options": ["except", "unless", "also", "therefore"],
+              "correctAnswer": "unless",
+              "explanation": "'Unless' means 'except if' or 'if not'. The sentence means 'you pay shipping except if customer service gives other instructions'.",
+              "grammarFocus": ["conjunctions", "conditionals"],
+              "points": 3
+            },
+            {
+              "id": "g12",
+              "text": "The president has just realized that the launch of our new product must be postponed owing to _____ conditions in the market.",
+              "options": ["unwilling", "unfavorable", "reluctant", "opposing"],
+              "correctAnswer": "unfavorable",
+              "explanation": "'Unfavorable' is an adjective meaning 'not favorable' or 'negative'. 'Unfavorable conditions' means market conditions are not good for launching the product.",
+              "grammarFocus": ["adjectives", "prefixes"],
+              "points": 2
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 60,
+          "timeLimit": 60,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "What is NOT available on the ground floor of the library?",
+              "audioText": "The library has several floors. On the ground floor, you'll find computers, photocopying facilities, and an information desk. Books are located on the upper floors.",
+              "options": ["computers", "photocopying facilities", "information desk", "books"],
+              "correctAnswer": "books",
+              "explanation": "According to the audio, books are located on the upper floors, not on the ground floor. The ground floor has computers, photocopying facilities, and an information desk.",
+              "points": 2
+            },
+            {
+              "id": "l2",
+              "text": "Where can you find science books?",
+              "audioText": "Science books are located in the basement of the library, while fiction books are on the first floor. Reference materials can be found on the second floor.",
+              "options": ["in the basement", "on the ground floor", "on the second floor", "on the first floor"],
+              "correctAnswer": "in the basement",
+              "explanation": "The audio clearly states that science books are located in the basement.",
+              "points": 2
+            },
+            {
+              "id": "l3",
+              "text": "Which of the following is true about meeting rooms?",
+              "audioText": "Meeting rooms are available on the second floor. They are usually locked, but you can book them at the information desk. There is a small fee to use them.",
+              "options": [
+                "The meeting rooms are usually locked.",
+                "They are on the ground floor.",
+                "You don't have to pay to use them.",
+                "You need to book them at the information desk."
+              ],
+              "correctAnswer": "You need to book them at the information desk.",
+              "explanation": "The audio mentions multiple facts, but 'You need to book them at the information desk' is stated clearly as a requirement.",
+              "points": 2
+            },
+            {
+              "id": "l4",
+              "text": "What is the woman doing this evening?",
+              "audioText": "Woman: I'm meeting a friend at the airport this evening. She's taking a flight from London. I'll catch a train to get there, and we're planning to go on holiday together next week.",
+              "options": ["taking a flight", "catching a train", "going on holiday", "meeting a friend"],
+              "correctAnswer": "meeting a friend",
+              "explanation": "The woman explicitly states 'I'm meeting a friend at the airport this evening'. The other actions are mentioned but refer to different times or people.",
+              "points": 2
+            },
+            {
+              "id": "l5",
+              "text": "What time is the taxi coming?",
+              "audioText": "I need to be at the station by half past four. The taxi will arrive at half past two, so I'll have plenty of time. My train departs at 7 o'clock.",
+              "options": ["half past four", "8 o'clock", "half past two", "7 o'clock"],
+              "correctAnswer": "half past two",
+              "explanation": "The audio clearly states 'The taxi will arrive at half past two'.",
+              "points": 2
+            },
+            {
+              "id": "l6",
+              "text": "How long will the woman's journey take?",
+              "audioText": "The journey from here to the airport takes about 1 and a half hours by car. If you take the train, it's faster - only 2 and a half hours. The bus takes much longer, about 4 and a half hours.",
+              "options": ["1½ hours", "4½ hours", "2½ hours", "8½ hours"],
+              "correctAnswer": "2½ hours",
+              "explanation": "For the train journey mentioned in the previous question, the audio states it takes '2 and a half hours' (2½ hours).",
+              "points": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

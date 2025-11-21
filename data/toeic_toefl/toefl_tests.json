@@ -1,0 +1,172 @@
+{
+  "tests": [
+    {
+      "id": "toefl_c1",
+      "type": "toefl",
+      "level": "C1",
+      "title": "TOEFL Practice Test - C1 Level",
+      "description": "Advanced TOEFL practice test for C1 level candidates",
+      "duration": 180,
+      "totalPoints": 240,
+      "sections": [
+        {
+          "id": "reading",
+          "name": "Reading Comprehension",
+          "type": "reading",
+          "points": 120,
+          "timeLimit": 60,
+          "questions": [
+            {
+              "id": "r1",
+              "text": "In the context of software development, technical debt refers to the implied cost of additional rework caused by choosing an easy solution now instead of using a better approach that would take longer. Technical debt _____ when development teams prioritize speed over code quality.",
+              "options": ["accumulates", "diminishes", "stabilizes", "disappears"],
+              "correctAnswer": "accumulates",
+              "explanation": "'Accumulates' means 'builds up' or 'increases over time', which fits the context of technical debt growing when shortcuts are taken.",
+              "grammarFocus": ["present_simple", "technical_vocabulary"],
+              "points": 3
+            },
+            {
+              "id": "r2",
+              "text": "DevOps practices _____ automation and collaboration between development and operations teams to accelerate software delivery.",
+              "options": ["emphasize", "discourage", "ignore", "reject"],
+              "correctAnswer": "emphasize",
+              "explanation": "'Emphasize' means 'give special importance to', which correctly describes how DevOps prioritizes automation and collaboration.",
+              "grammarFocus": ["present_simple", "technical_vocabulary"],
+              "points": 3
+            },
+            {
+              "id": "r3",
+              "text": "Machine learning models _____ patterns in data that may not be immediately apparent to human analysts.",
+              "options": ["can identify", "cannot identify", "ignore", "destroy"],
+              "correctAnswer": "can identify",
+              "explanation": "Machine learning models are capable of identifying patterns, which is their primary function. The modal 'can' expresses ability.",
+              "grammarFocus": ["modal_verbs", "present_simple"],
+              "points": 3
+            },
+            {
+              "id": "r4",
+              "text": "The GDPR _____ strict rules for processing personal data, requiring organizations to obtain explicit consent and implement appropriate security measures.",
+              "options": ["establishes", "abolishes", "simplifies", "ignores"],
+              "correctAnswer": "establishes",
+              "explanation": "'Establishes' means 'sets up' or 'creates', which describes how GDPR creates rules and requirements.",
+              "grammarFocus": ["present_simple", "technical_vocabulary"],
+              "points": 3
+            },
+            {
+              "id": "r5",
+              "text": "Cloud computing _____ organizations to scale their infrastructure dynamically based on demand.",
+              "options": ["enables", "prevents", "complicates", "restricts"],
+              "correctAnswer": "enables",
+              "explanation": "'Enables' means 'makes possible' or 'allows', which correctly describes how cloud computing provides this capability.",
+              "grammarFocus": ["present_simple", "technical_vocabulary"],
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "listening",
+          "name": "Listening Comprehension",
+          "type": "listening",
+          "points": 60,
+          "timeLimit": 60,
+          "questions": [
+            {
+              "id": "l1",
+              "text": "According to the speaker, what is the primary benefit of implementing CI/CD pipelines?",
+              "audioText": "Continuous Integration and Continuous Deployment pipelines automate the testing and deployment processes. This automation significantly reduces the time between writing code and deploying it to production. Teams can release software more frequently and reliably, which accelerates the development cycle.",
+              "options": [
+                "It requires more manual intervention",
+                "It reduces deployment time and enables faster releases",
+                "It eliminates the need for testing",
+                "It only works for large organizations"
+              ],
+              "correctAnswer": "It reduces deployment time and enables faster releases",
+              "explanation": "The audio explains that CI/CD automation 'significantly reduces the time' and 'accelerates the development cycle', enabling 'faster releases'.",
+              "points": 3
+            },
+            {
+              "id": "l2",
+              "text": "What does the speaker mention about containerization?",
+              "audioText": "Containerization with technologies like Docker ensures that applications run consistently across different environments - from development to production. This consistency eliminates the common problem of 'it works on my machine' and simplifies deployment across various platforms.",
+              "options": [
+                "Containerization is only useful for development environments",
+                "It ensures consistent application behavior across different environments",
+                "It requires manual configuration for each environment",
+                "It only works on specific operating systems"
+              ],
+              "correctAnswer": "It ensures consistent application behavior across different environments",
+              "explanation": "The audio clearly states that containerization 'ensures that applications run consistently across different environments'.",
+              "points": 3
+            },
+            {
+              "id": "l3",
+              "text": "According to the discussion, what is a key characteristic of microservices architecture?",
+              "audioText": "Microservices architecture breaks down applications into smaller, independent services. Each service can be developed, deployed, and scaled independently. This approach improves fault isolation - if one service fails, others can continue operating.",
+              "options": [
+                "All services must be deployed together",
+                "Services are tightly coupled and interdependent",
+                "Services can be developed and deployed independently",
+                "Microservices require a single large server"
+              ],
+              "correctAnswer": "Services can be developed and deployed independently",
+              "explanation": "The audio explicitly states that in microservices, 'Each service can be developed, deployed, and scaled independently'.",
+              "points": 3
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "Writing",
+          "type": "writing",
+          "points": 60,
+          "timeLimit": 60,
+          "questions": [
+            {
+              "id": "w1",
+              "text": "Explain the concept of Infrastructure as Code (IaC) and its benefits for DevOps teams. Write 150-200 words.",
+              "type": "essay",
+              "correctAnswer": "Infrastructure as Code (IaC) is a practice where infrastructure configuration is managed through code files rather than manual processes. Key benefits include version control, reproducibility, and automation. Teams can track changes, roll back to previous configurations, and provision infrastructure consistently across environments.",
+              "explanation": "A comprehensive answer should mention: definition of IaC, benefits (version control, automation, consistency), and practical applications.",
+              "points": 20,
+              "rubric": {
+                "content": 7,
+                "organization": 5,
+                "language": 5,
+                "vocabulary": 3
+              }
+            },
+            {
+              "id": "w2",
+              "text": "Describe how machine learning models are deployed in production environments. Write 100-150 words.",
+              "type": "essay",
+              "correctAnswer": "ML model deployment involves multiple stages: training, validation, containerization, and serving. Models are typically packaged in containers, exposed via APIs, and monitored for performance and drift. MLOps practices ensure continuous integration and monitoring of models in production.",
+              "explanation": "A good answer covers: deployment stages, containerization, API serving, and monitoring practices.",
+              "points": 20,
+              "rubric": {
+                "content": 7,
+                "organization": 5,
+                "language": 5,
+                "vocabulary": 3
+              }
+            },
+            {
+              "id": "w3",
+              "text": "Discuss the importance of security in cloud computing. Write 100-150 words.",
+              "type": "essay",
+              "correctAnswer": "Cloud security is crucial because organizations entrust sensitive data to cloud providers. Key measures include encryption, access controls, identity management, and compliance with regulations. A shared responsibility model requires both providers and users to implement security measures.",
+              "explanation": "Important points: data protection, encryption, access controls, shared responsibility model.",
+              "points": 20,
+              "rubric": {
+                "content": 7,
+                "organization": 5,
+                "language": 5,
+                "vocabulary": 3
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
