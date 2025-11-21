@@ -369,6 +369,9 @@ describe("UserContext", () => {
     it("should handle firebaseLogout failure", async () => {
       jest.useFakeTimers();
 
+      // Mock console.error to suppress expected error output
+      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
       // Setup a user first
       const mockUser = {
         uid: "test-user-123",
@@ -419,6 +422,7 @@ describe("UserContext", () => {
       // State is cleared even on failure (logout() is called before Firebase logout)
       expect(logoutResult.error).toBe("logout_failed");
 
+      consoleErrorSpy.mockRestore();
       jest.useRealTimers();
     });
   });

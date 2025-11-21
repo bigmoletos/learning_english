@@ -482,7 +482,7 @@ describe("Signup Component", () => {
       render(<Signup {...defaultProps} />);
 
       const firstNameInput = screen.getByLabelText(/Prénom/i);
-      const lastNameInput = screen.getByLabelText(/Nom/i);
+      const lastNameInput = screen.getByLabelText(/^Nom$/i);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getAllByLabelText(/Mot de passe/i)[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);

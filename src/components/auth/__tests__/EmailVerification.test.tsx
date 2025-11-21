@@ -43,6 +43,10 @@ describe("EmailVerification Component", () => {
   // Configuration avant chaque test
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Mock console.error to suppress JSDOM navigation errors
+    jest.spyOn(console, "error").mockImplementation(() => {});
+
     (useUser as jest.Mock).mockReturnValue({ login: mockLogin });
 
     // Mock Firebase auth functions
@@ -83,6 +87,7 @@ describe("EmailVerification Component", () => {
       delete (window as any).location;
       (window as any).location = originalLocation;
     }
+    jest.restoreAllMocks();
   });
 
   // Test de rendu de base
