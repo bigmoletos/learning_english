@@ -596,14 +596,25 @@ describe("Signup Component", () => {
       const passwordInput = passwordInputs[0];
       const confirmPasswordInput = screen.getByLabelText(/Confirmer le mot de passe/i);
 
+      await user.clear(firstNameInput);
       await user.type(firstNameInput, "John");
+      await user.clear(lastNameInput);
       await user.type(lastNameInput, "Doe");
+      await user.clear(emailInput);
       await user.type(emailInput, "test@example.com");
+      await user.clear(passwordInput);
       await user.type(passwordInput, "Password123!");
+      await user.clear(confirmPasswordInput);
       await user.type(confirmPasswordInput, "Password123!");
 
       // Find and click the submit button
       const submitButton = screen.getByRole("button", { name: /S'inscrire/i });
+
+      // Wait for the button to be enabled
+      await waitFor(() => {
+        expect(submitButton).not.toBeDisabled();
+      });
+
       await user.click(submitButton);
 
       await waitFor(

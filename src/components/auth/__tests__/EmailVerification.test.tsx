@@ -25,7 +25,7 @@ jest.mock("../../../utils/storageService");
 const mockUser = {
   uid: "123",
   email: "test@example.com",
-  emailVerified: true,
+  emailVerified: false,
   displayName: "Test User",
   getIdToken: jest.fn().mockResolvedValue("mock-token"),
   reload: jest.fn().mockResolvedValue(undefined),
@@ -40,9 +40,15 @@ describe("EmailVerification Component", () => {
   // Store original location for restoration
   const originalLocation = window.location;
 
+  // Shared location search value that tests can modify
+  let locationSearch = "?mode=verifyEmail&oobCode=test-code";
+
   // Configuration avant chaque test
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Reset location search to default
+    locationSearch = "?mode=verifyEmail&oobCode=test-code";
 
     // Mock console.error to suppress JSDOM navigation errors
     jest.spyOn(console, "error").mockImplementation(() => {});
@@ -69,15 +75,15 @@ describe("EmailVerification Component", () => {
     (storageService.setMultiple as jest.Mock).mockResolvedValue(undefined);
     (storageService.remove as jest.Mock).mockResolvedValue(undefined);
 
-    // Mock window.location to avoid jsdom navigation error
-    delete (window as any).location;
-    (window as any).location = {
-      search: "?mode=verifyEmail&oobCode=test-code",
-      href: "",
-      assign: jest.fn(),
-      replace: jest.fn(),
-      reload: jest.fn(),
-    };
+    // Use JSDOM's jsdom.reconfigure to set the URL properly
+    const { window: domWindow } = global as any;
+    if (domWindow && domWindow.document && domWindow.document.defaultView) {
+      const jsdomWindow = domWindow.document.defaultView;
+      if ((jsdomWindow as any)._virtualConsole) {
+        // Use history API to change URL without reload
+        window.history.pushState({}, "", `http://localhost${locationSearch}`);
+      }
+    }
   });
 
   // Restore original location after each test
@@ -92,18 +98,9 @@ describe("EmailVerification Component", () => {
 
   // Test de rendu de base
   it("renders loading state initially", () => {
-    // Override auth.currentUser to have unverified email
-    Object.defineProperty(auth, "currentUser", {
-      value: { ...mockUser, emailVerified: false },
-      writable: true,
-      configurable: true,
-    });
-
     // Mock checkActionCode to return a promise that never resolves (keeps loading state)
     (checkActionCode as jest.Mock).mockImplementation(() => new Promise(() => {}));
 
-    // Override location.search for this test to have verification code
-    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
     expect(screen.getByText("Vérification de votre email...")).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
@@ -111,18 +108,22 @@ describe("EmailVerification Component", () => {
 
   // Test de succès de vérification
   it("shows success message when email is verified", async () => {
-    // Override auth.currentUser to have unverified email initially
-    Object.defineProperty(auth, "currentUser", {
-      value: { ...mockUser, emailVerified: false },
-      writable: true,
-      configurable: true,
-    });
-
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
 
-    // Set location.search to have verification code
-    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
+    // Mock storage to return a pending user so login gets called
+    (storageService.get as jest.Mock).mockImplementation((key) => {
+      if (key === StorageKeys.PENDING_USER) {
+        return Promise.resolve({
+          id: "123",
+          email: "test@example.com",
+          name: "Test User",
+          currentLevel: "B1",
+          targetLevel: "C1",
+        });
+      }
+      return Promise.resolve(null);
+    });
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
@@ -130,9 +131,7 @@ describe("EmailVerification Component", () => {
       expect(screen.getByText("✅ Email vérifié !")).toBeInTheDocument();
     });
     expect(
-      screen.getByText(
-        "Votre email a été vérifié avec succès. Vous pouvez maintenant utiliser toutes les fonctionnalités de l'application."
-      )
+      screen.getByText("Email vérifié avec succès ! Vous êtes maintenant connecté.")
     ).toBeInTheDocument();
 
     expect(mockLogin).toHaveBeenCalledWith("mock-token", expect.any(Object));
@@ -141,19 +140,9 @@ describe("EmailVerification Component", () => {
 
   // Test d'erreur de vérification
   it("shows error message when verification fails", async () => {
-    // Override auth.currentUser to have unverified email
-    Object.defineProperty(auth, "currentUser", {
-      value: { ...mockUser, emailVerified: false },
-      writable: true,
-      configurable: true,
-    });
-
     const mockError: Error & { code?: string } = new Error("Invalid action code");
     mockError.code = "auth/invalid-action-code";
     (checkActionCode as jest.Mock).mockRejectedValue(mockError);
-
-    // Set location.search to have verification code
-    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
@@ -178,6 +167,15 @@ describe("EmailVerification Component", () => {
     });
     (sendEmailVerification as jest.Mock).mockResolvedValue(undefined);
 
+    // Override location.search to have NO oobCode (no verification link)
+    // Mock URLSearchParams to return empty values since the component uses it to read location.search
+    // This is necessary because history.pushState doesn't reliably update location.search in JSDOM
+    const originalURLSearchParams = window.URLSearchParams;
+    (window as any).URLSearchParams = jest.fn().mockImplementation(() => {
+      const params = new originalURLSearchParams("");
+      return params;
+    });
+
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
@@ -188,22 +186,30 @@ describe("EmailVerification Component", () => {
         "Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception."
       )
     ).toBeInTheDocument();
+    expect(sendEmailVerification).toHaveBeenCalledWith(mockUnverifiedUser);
+
+    // Restore URLSearchParams to avoid affecting other tests
+    (window as any).URLSearchParams = originalURLSearchParams;
   });
 
   // Test de connexion après vérification
   it("logs in user after successful verification", async () => {
-    // Override auth.currentUser to have unverified email initially
-    Object.defineProperty(auth, "currentUser", {
-      value: { ...mockUser, emailVerified: false },
-      writable: true,
-      configurable: true,
-    });
-
     (checkActionCode as jest.Mock).mockResolvedValue(undefined);
     (applyActionCode as jest.Mock).mockResolvedValue(undefined);
 
-    // Set location.search to have verification code
-    (window as any).location.search = "?mode=verifyEmail&oobCode=test-code";
+    // Mock storage to return a pending user so login gets called
+    (storageService.get as jest.Mock).mockImplementation((key) => {
+      if (key === StorageKeys.PENDING_USER) {
+        return Promise.resolve({
+          id: "123",
+          email: "test@example.com",
+          name: "Test User",
+          currentLevel: "B1",
+          targetLevel: "C1",
+        });
+      }
+      return Promise.resolve(null);
+    });
 
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
@@ -215,6 +221,16 @@ describe("EmailVerification Component", () => {
 
   // Test de navigation vers la connexion
   it("navigates to login when clicking continue button", async () => {
+    // Override auth.currentUser to have verified email
+    Object.defineProperty(auth, "currentUser", {
+      value: { ...mockUser, emailVerified: true },
+      writable: true,
+      configurable: true,
+    });
+
+    // Override location.search to have NO oobCode (user is already verified)
+    window.history.pushState({}, "", "http://localhost");
+
     render(<EmailVerification onSuccess={mockOnSuccess} onSwitchToLogin={mockOnSwitchToLogin} />);
 
     await waitFor(() => {
