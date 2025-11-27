@@ -4,7 +4,7 @@
  * @date 07-11-2025
  */
 
-import { initializeApp, FirebaseApp } from "firebase/app";
+import { initializeApp, FirebaseApp, getApps } from "firebase/app";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getAuth, Auth } from "firebase/auth";
 import { getStorage, FirebaseStorage } from "firebase/storage";
@@ -21,16 +21,45 @@ let auth: Auth | null = null;
 let storage: FirebaseStorage | null = null;
 
 try {
-  // Utiliser la configuration générée (fonctionne en dev et prod)
-  app = initializeApp(firebaseConfigGenerated);
-  db = getFirestore(app);
-  auth = getAuth(app);
-  storage = getStorage(app);
+  // Vérifier si Firebase est déjà initialisé pour éviter la double initialisation
+  const existingApps = getApps();
 
-  console.log(`✅ Firebase initialisé avec succès (${platform})`);
+  if (existingApps.length > 0) {
+    // Utiliser l'app existante
+    app = existingApps[0] as FirebaseApp;
+    db = getFirestore(app);
+    auth = getAuth(app);
+    storage = getStorage(app);
+    console.log(`✅ Firebase réutilisé (${platform})`);
+  } else {
+    // Utiliser la configuration générée (fonctionne en dev et prod)
+    app = initializeApp(firebaseConfigGenerated);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    storage = getStorage(app);
+    console.log(`✅ Firebase initialisé avec succès (${platform})`);
+  }
 } catch (error) {
   const errorMessage = error instanceof Error ? error.message : String(error);
-  console.error(`❌ Erreur Firebase (${platform}):`, errorMessage);
+
+  // Ignorer l'erreur de double initialisation si Firebase est déjà initialisé
+  if (errorMessage.includes("already exists") || errorMessage.includes("duplicate-app")) {
+    try {
+      // Récupérer l'app existante
+      const existingApps = getApps();
+      if (existingApps.length > 0) {
+        app = existingApps[0] as FirebaseApp;
+        db = getFirestore(app);
+        auth = getAuth(app);
+        storage = getStorage(app);
+        console.log(`✅ Firebase réutilisé après erreur de duplication (${platform})`);
+      }
+    } catch (reuseError) {
+      console.error(`❌ Erreur Firebase (${platform}):`, errorMessage);
+    }
+  } else {
+    console.error(`❌ Erreur Firebase (${platform}):`, errorMessage);
+  }
 
   // Sur mobile, ne pas crasher l'app
   if (isCapacitor) {

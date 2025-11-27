@@ -1,495 +1,432 @@
-# Guide de déploiement
+# 🚀 Guide de Déploiement Complet
 
-> Production, build APK et hébergement
-
----
-
-## 🏭 Build Production Web
-
-### 1. Préparer le build
-
-```bash
-# Nettoyer les anciens builds
-rm -rf build/
-
-# Vérifier les tests
-npm test
-
-# Vérifier le linting
-npm run lint
-
-# Build optimisé
-npm run build
-```
-
-### 2. Analyser le build
-
-```bash
-# Analyser la taille des bundles
-npm run analyze
-
-# Vérifier les warnings
-cat build/static/js/*.map
-```
-
-### 3. Variables d'environnement production
-
-Créer `.env.production` :
-
-```bash
-REACT_APP_FIREBASE_API_KEY=production_api_key
-REACT_APP_FIREBASE_AUTH_DOMAIN=prod-project.firebaseapp.com
-REACT_APP_FIREBASE_PROJECT_ID=prod-project-id
-# ... autres variables
-NODE_ENV=production
-```
+**Date** : 2025-11-27
+**Projet** : learning-english
+**Architecture** : Frontend (Cloudflare Pages) + Backend (Firebase Functions)
 
 ---
 
-## 📱 Build Android (APK)
+## 📊 Vue d'Ensemble
 
-### Prérequis
-
-- Android Studio installé
-- JDK 11 ou supérieur
-- Gradle configuré
-
-### Étape 1 : Synchroniser avec Capacitor
-
-```bash
-# Build React en mode production
-npm run build
-
-# Synchroniser avec Android
-npx cap sync android
-
-# Copier les assets
-npx cap copy android
+```
+Frontend (React) → Cloudflare Pages ✅
+Backend (API) → Firebase Functions ⚠️ (à déployer)
+Base de données → Firestore (Firebase)
+Authentification → Firebase Auth
 ```
 
-### Étape 2 : Configurer le signing (release)
-
-Créer `android/key.properties` :
-
-```properties
-storePassword=votre_mot_de_passe
-keyPassword=votre_mot_de_passe_key
-keyAlias=learning_english
-storeFile=/chemin/vers/keystore.jks
-```
-
-Générer le keystore :
-
-```bash
-keytool -genkey -v -keystore learning_english.jks \
-  -keyalg RSA -keysize 2048 -validity 10000 \
-  -alias learning_english
-```
-
-### Étape 3 : Build APK
-
-```bash
-cd android
-
-# Debug APK
-./gradlew assembleDebug
-# Fichier : android/app/build/outputs/apk/debug/app-debug.apk
-
-# Release APK (signé)
-./gradlew assembleRelease
-# Fichier : android/app/build/outputs/apk/release/app-release.apk
-```
-
-### Étape 4 : Tester l'APK
-
-```bash
-# Installer sur un appareil Android connecté
-adb install -r app/build/outputs/apk/release/app-release.apk
-
-# Vérifier les logs
-adb logcat | grep "LearningEnglish"
-```
-
-### Étape 5 : Build AAB (pour Play Store)
-
-```bash
-# Android App Bundle
-./gradlew bundleRelease
-
-# Fichier : android/app/build/outputs/bundle/release/app-release.aab
-```
+**URLs** :
+- Frontend : `https://learning-english.iaproject.fr` (Cloudflare Pages) ✅
+- Backend : `https://europe-west1-ia-project-91c03.cloudfunctions.net/api` (Firebase Functions) ✅
+- Backend (domaine personnalisé) : `https://backend.learning-english.iaproject.fr` (à configurer)
 
 ---
 
-## 🚀 Déploiement Firebase Hosting
+## ✅ État Actuel du Déploiement
 
-### Étape 1 : Installer Firebase CLI
+### Frontend (Cloudflare Pages) ✅
 
-```bash
-npm install -g firebase-tools
-firebase login
-```
+- [x] Projet créé et déployé : `https://learning-english-b7d.pages.dev`
+- [x] Domaine personnalisé : `learning-english.iaproject.fr`
+- [x] Variables d'environnement configurées (voir `ENV_VARS.txt`)
+- [x] Bug Firebase double initialisation corrigé
 
-### Étape 2 : Initialiser Firebase
+### Backend (Firebase Functions) ✅
 
-```bash
-firebase init hosting
-
-# Sélectionner :
-# - Public directory: build
-# - Configure as single-page app: Yes
-# - Automatic builds with GitHub: No (optionnel)
-```
-
-### Étape 3 : Déployer
-
-```bash
-# Build + Deploy
-npm run build
-firebase deploy --only hosting
-
-# URL de production :
-# https://votre-projet.web.app
-```
-
-### Étape 4 : Domaine personnalisé
-
-```bash
-# Ajouter un domaine
-firebase hosting:channel:deploy production --expires 30d
-
-# Configurer DNS :
-# CNAME www -> votre-projet.web.app
-# A @ -> IP Firebase Hosting
-```
+- [x] Backend déployé : `https://europe-west1-ia-project-91c03.cloudfunctions.net/api`
+- [x] Health check fonctionne (`/health`)
+- [x] CORS configuré pour Cloudflare Pages
+- [x] Plan Blaze activé
+- [ ] Routes SQLite à adapter pour Firestore (prochaine étape)
 
 ---
 
-## 🐳 Déploiement Docker
+## 🔥 Partie 1 : Backend Firebase Functions
 
-### Dockerfile
+### Étape 1 : Vérifier la Connexion Firebase
 
-Créer `Dockerfile` :
-
-```dockerfile
-# Build stage
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+```powershell
+cd C:\programmation\learning_english
+firebase login:list
+firebase --version
 ```
 
-### Docker Compose
+**Si pas connecté** : `firebase login`
 
-Créer `docker-compose.yml` :
+### Étape 2 : Sélectionner le Projet Firebase
 
-```yaml
-version: '3.8'
-
-services:
-  frontend:
-    build: .
-    ports:
-      - "80:80"
-    environment:
-      - NODE_ENV=production
-    restart: unless-stopped
-
-  backend:
-    build: ./backend
-    ports:
-      - "5010:5010"
-    environment:
-      - NODE_ENV=production
-      - PORT=5010
-    volumes:
-      - ./backend/database:/app/database
-    restart: unless-stopped
+```powershell
+firebase use ia-project-91c03
 ```
 
-### Build et démarrer
+**Si erreur** : Vérifier que le projet existe sur https://console.firebase.google.com/
 
-```bash
-# Build les images
-docker-compose build
+### Étape 3 : Configurer les Variables d'Environnement
 
-# Démarrer
-docker-compose up -d
+Voir **`ENV_VARS.txt`** (section Firebase Functions) pour les commandes complètes.
 
-# Vérifier les logs
-docker-compose logs -f
+```powershell
+firebase functions:config:set `
+  jwt.secret="6e7fd6d08c6a9784dc934342be5266a1b4f500402263e4956a6d6c60c1f738fb" `
+  jwt.expires_in="7d" `
+  cors.origin="https://learning-english.iaproject.fr,https://learning-english-b7d.pages.dev,https://bigmoletos.github.io" `
+  frontend.url="https://learning-english.iaproject.fr"
 ```
+
+### Étape 4 : Adapter les Routes pour Firestore
+
+**⚠️ IMPORTANT** : Les routes actuelles utilisent SQLite (Sequelize). Il faut les adapter pour Firestore.
+
+**Exemple d'adaptation** : `functions/routes/auth.js`
+
+**Avant** (SQLite) :
+```javascript
+const sequelize = require("../database/connection");
+const User = require("../models/User");
+const user = await User.findOne({ where: { email } });
+```
+
+**Après** (Firestore) :
+```javascript
+const admin = require("firebase-admin");
+const snapshot = await admin.firestore()
+  .collection("users")
+  .where("email", "==", email)
+  .get();
+```
+
+**Option temporaire** : Créer une version minimale avec seulement `/health` pour tester le déploiement.
+
+### Étape 5 : Déployer
+
+```powershell
+firebase deploy --only functions
+```
+
+**URL générée** : `https://europe-west1-ia-project-91c03.cloudfunctions.net/api`
+
+### Étape 6 : Tester
+
+```powershell
+curl https://europe-west1-ia-project-91c03.cloudfunctions.net/api/health
+```
+
+**Réponse attendue** :
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-11-27T...",
+  "service": "firebase-functions",
+  "project": "ia-project-91c03"
+}
+```
+
+### Étape 7 : Mettre à Jour le Frontend pour Utiliser le Backend
+
+**⚠️ IMPORTANT** : Firebase Functions ne supporte pas directement les domaines personnalisés. Utilisez l'URL Firebase directement.
+
+**Dans Cloudflare Pages** :
+1. **Dashboard** → **Workers & Pages** → **Pages** → **learning-english**
+2. **Settings** → **Environment variables**
+3. **Modifier** `REACT_APP_API_URL` :
+   ```
+   https://europe-west1-ia-project-91c03.cloudfunctions.net/api
+   ```
+4. **Sauvegarder** (Cloudflare redéploiera automatiquement)
+
+**Note** : Si vous voulez un domaine personnalisé (`backend.learning-english.iaproject.fr`), il faut utiliser Firebase Hosting comme proxy (voir section "Domaine Personnalisé" ci-dessous)
 
 ---
 
-## ☁️ Déploiement Cloud
+## ☁️ Partie 2 : Frontend Cloudflare Pages
 
-### Google Cloud Platform (GCP)
+### Configuration Actuelle ✅
 
-```bash
-# Installer gcloud CLI
-curl https://sdk.cloud.google.com | bash
+**URL** : `https://learning-english-b7d.pages.dev`
+**Domaine** : `learning-english.iaproject.fr`
 
-# Initialiser
-gcloud init
+### Variables d'Environnement (Cloudflare Pages)
 
-# Déployer App Engine
-gcloud app deploy app.yaml
+Dans **Cloudflare Dashboard** → **Pages** → **Settings** → **Environment variables**, ajouter toutes les variables depuis **`ENV_VARS.txt`** (section Cloudflare Pages).
 
-# Ou Cloud Run
-gcloud run deploy learning-english \
-  --source . \
-  --platform managed \
-  --region europe-west1 \
-  --allow-unauthenticated
+**⚠️ IMPORTANT** : `CI=false` et `DISABLE_ESLINT_PLUGIN=true` sont **obligatoires** pour éviter les erreurs de build ESLint.
+
+### Build Configuration
+
+- **Framework preset** : `Create React App`
+- **Build command** : `npm run build`
+- **Build output directory** : `build`
+- **Root directory** : `/`
+
+### Déploiement Automatique
+
+Cloudflare Pages déploie automatiquement à chaque push sur `main`.
+
+---
+
+## 🐛 Bugs et Solutions
+
+### 1. Firebase Initialisé Deux Fois ✅ CORRIGÉ
+
+**Erreur** : `Firebase App named '[DEFAULT]' already exists`
+
+**Solution** : Vérification de l'app existante avant initialisation dans `src/services/firebase/config.ts`
+
+### 2. Backend Non Déployé ⚠️ EN COURS
+
+**Erreur** : `ERR_CERT_COMMON_NAME_INVALID` pour `backend.learning-english.iaproject.fr`
+
+**Solution** : Déployer le backend sur Firebase Functions (voir Partie 1)
+
+### 3. Permission Microphone Refusée ⚠️
+
+**Erreur** : `Permission result: false`
+
+**Solutions** :
+1. Autoriser la permission dans les paramètres du navigateur
+2. Désactiver les bloqueurs de pub temporairement
+3. Vérifier HTTPS (Cloudflare Pages utilise HTTPS ✅)
+
+### 4. Firestore Bloqué par Bloqueur de Pub ⚠️
+
+**Erreur** : `ERR_BLOCKED_BY_CLIENT` pour `firestore.googleapis.com`
+
+**Solution** : Désactiver le bloqueur de pub pour `learning-english.iaproject.fr` ou utiliser un autre navigateur
+
+---
+
+## 📋 Checklist Complète
+
+### Backend Firebase Functions
+
+- [x] Structure créée (`.firebaserc`, `firebase.json`, `functions/`)
+- [x] Routes copiées depuis `backend/routes/`
+- [x] Dépendances installées
+- [ ] Projet Firebase sélectionné (`firebase use ia-project-91c03`)
+- [ ] Variables d'environnement configurées
+- [ ] Routes adaptées pour Firestore
+- [ ] Functions déployées
+- [ ] Endpoint `/health` testé
+- [ ] Domaine personnalisé configuré
+
+### Frontend Cloudflare Pages
+
+- [x] Projet créé sur Cloudflare Pages
+- [x] Dépôt GitHub connecté
+- [x] Build configuré
+- [x] Variables d'environnement ajoutées
+- [x] Déploiement réussi
+- [x] Domaine personnalisé configuré
+- [x] Bug Firebase double initialisation corrigé
+
+---
+
+## 🔧 Dépannage
+
+### Erreur : "Failed to list Firebase projects"
+
+**Solutions** :
+1. Vérifier la connexion : `firebase login:list`
+2. Réessayer : `firebase login`
+3. Utiliser directement : `firebase use ia-project-91c03 --force`
+
+### Erreur : Build failed (ESLint)
+
+**Erreur** : `Treating warnings as errors because process.env.CI = true`
+
+**Solution** : Ajouter dans Cloudflare Pages :
+```
+CI=false
+DISABLE_ESLINT_PLUGIN=true
 ```
 
-### AWS (Elastic Beanstalk)
+### Erreur : Routes ne fonctionnent pas
 
-```bash
-# Installer EB CLI
-pip install awsebcli
+**Cause** : Les routes utilisent Sequelize/SQLite qui n'est pas disponible dans Firebase Functions.
 
-# Initialiser
-eb init -p node.js learning-english
+**Solution** : Adapter les routes pour Firestore (voir Étape 4 de la Partie 1)
 
-# Créer l'environnement
-eb create production
+### Erreur : Module not found
 
-# Déployer
-eb deploy
-```
-
-### Heroku
-
-```bash
-# Login
-heroku login
-
-# Créer l'app
-heroku create learning-english-app
-
-# Déployer
-git push heroku main
-
-# Configurer les variables
-heroku config:set REACT_APP_FIREBASE_API_KEY=xxx
+**Solution** :
+```powershell
+cd functions
+npm install [nom-du-module]
 ```
 
 ---
 
-## 🔒 Checklist pré-production
+## 📚 Structure des Fichiers
 
-### Sécurité
+### Firebase Functions
 
-- [ ] Toutes les API keys sont en variables d'environnement
-- [ ] Firebase Rules configurées en mode production
-- [ ] CORS configuré avec les domaines de production
-- [ ] Rate limiting activé sur toutes les routes sensibles
-- [ ] HTTPS activé (certificat SSL valide)
-- [ ] Helmet configuré dans Express
-- [ ] JWT_SECRET fort (>= 64 caractères)
-
-### Performance
-
-- [ ] Build React optimisé (npm run build)
-- [ ] Code splitting activé
-- [ ] Lazy loading des routes
-- [ ] Images optimisées (WebP, compression)
-- [ ] Cache configuré (Service Worker)
-- [ ] CDN configuré pour les assets statiques
-- [ ] Gzip/Brotli activé
-
-### Fonctionnel
-
-- [ ] Tests unitaires passent (npm test)
-- [ ] Tests E2E passent (npm run test:e2e)
-- [ ] Tous les environnements testés (dev, staging, prod)
-- [ ] Firebase Auth fonctionne
-- [ ] Google Cloud TTS fonctionne
-- [ ] Reconnaissance vocale fonctionne (Chrome, Edge)
-- [ ] APK Android testé sur plusieurs appareils
-
-### Monitoring
-
-- [ ] Logs configurés (Winston)
-- [ ] Sentry ou équivalent pour error tracking
-- [ ] Google Analytics ou équivalent
-- [ ] Uptime monitoring (UptimeRobot, Pingdom)
-- [ ] Alertes configurées (email, Slack)
-
-### Documentation
-
-- [ ] README.md à jour
-- [ ] CHANGELOG.md à jour
-- [ ] Variables d'environnement documentées
-- [ ] API documentée (si publique)
-
----
-
-## 📊 Monitoring en production
-
-### Firebase Analytics
-
-```typescript
-// Tracker les événements
-import { logEvent } from 'firebase/analytics';
-
-logEvent(analytics, 'exercise_completed', {
-  exercise_id: 'grammar_01',
-  score: 85,
-  level: 'B1'
-});
+```
+functions/
+├── index.js              # Point d'entrée
+├── package.json          # Dépendances
+├── .eslintrc.js          # Configuration ESLint
+├── routes/               # Routes API (à adapter pour Firestore)
+│   ├── auth.js
+│   ├── exercises.js
+│   ├── progress.js
+│   └── ...
+├── middleware/           # Middleware Express
+├── services/            # Services (Firebase Admin, etc.)
+└── utils/               # Utilitaires
 ```
 
-### Logs Backend
+### Configuration Firebase
 
-```bash
-# Voir les logs en temps réel
-tail -f backend/logs/app.log
-
-# Chercher les erreurs
-grep "ERROR" backend/logs/app.log
-
-# Analyser les requêtes
-grep "POST /api/auth/login" backend/logs/app.log | wc -l
 ```
-
-### Health Checks
-
-```bash
-# Check backend
-curl https://api.votre-domaine.com/health
-
-# Check frontend
-curl -I https://votre-domaine.com
-
-# Check TTS
-curl https://api.votre-domaine.com/api/text-to-speech/health
+.firebaserc              # Projet Firebase sélectionné
+firebase.json            # Configuration Functions
 ```
 
 ---
 
-## 🔄 CI/CD (optionnel)
+## 🎯 Prochaines Actions
 
-### GitHub Actions
-
-Créer `.github/workflows/deploy.yml` :
-
-```yaml
-name: Deploy to Production
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
-
-      - name: Build
-        run: npm run build
-        env:
-          REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: votre-projet-id
-```
+1. **Sélectionner le projet Firebase** : `firebase use ia-project-91c03`
+2. **Configurer les variables** : `firebase functions:config:set ...`
+3. **Adapter les routes** pour Firestore (ou créer une version minimale)
+4. **Déployer** : `firebase deploy --only functions`
+5. **Tester** : `curl https://europe-west1-ia-project-91c03.cloudfunctions.net/api/health`
+6. **Configurer le domaine** : `backend.learning-english.iaproject.fr`
 
 ---
 
-## 📦 Versions et releases
+## 💰 Coûts
 
-### Créer une release
+- **Cloudflare Pages** : Gratuit (illimité)
+- **Firebase Functions** : Gratuit (2M invocations/mois)
+- **Firestore** : Gratuit (1GB storage, 50K reads/jour)
+- **Firebase Auth** : Gratuit (jusqu'à 50K utilisateurs)
 
-```bash
-# Mettre à jour package.json
-npm version patch   # 1.0.0 → 1.0.1
-npm version minor   # 1.0.0 → 1.1.0
-npm version major   # 1.0.0 → 2.0.0
-
-# Créer un tag Git
-git tag -a v1.0.1 -m "Release 1.0.1 - Bug fixes"
-git push origin v1.0.1
-
-# Build APK de release
-cd android && ./gradlew assembleRelease
-```
-
-### Distribuer l'APK
-
-1. **Google Play Store** :
-   - Build AAB : `./gradlew bundleRelease`
-   - Upload sur Play Console
-   - Review (24-48h)
-
-2. **Distribution directe** :
-   - Héberger l'APK sur votre serveur
-   - Fournir le lien de téléchargement
-   - Utilisateurs doivent activer "Sources inconnues"
+**Total** : **€0/mois** 🎉
 
 ---
 
-## 🆘 Rollback
+## 📞 Support
 
-### Firebase Hosting
-
-```bash
-# Voir les versions
-firebase hosting:channel:list
-
-# Revenir à une version précédente
-firebase hosting:rollback
-```
-
-### Docker
-
-```bash
-# Redémarrer avec l'ancienne image
-docker-compose down
-docker-compose up -d --build --force-recreate
-```
-
-### Git
-
-```bash
-# Revenir au commit précédent
-git revert HEAD
-git push origin main
-```
+- **Firebase Console** : https://console.firebase.google.com/project/ia-project-91c03
+- **Cloudflare Dashboard** : https://dash.cloudflare.com/
+- **Documentation Firebase** : https://firebase.google.com/docs/functions
+- **Documentation Cloudflare** : https://developers.cloudflare.com/pages/
+- **Variables d'environnement** : Voir `ENV_VARS.txt`
+- **Checklist production** : Voir `PRODUCTION_CHECKLIST.md`
 
 ---
 
-## 📞 Support production
+## 🧪 Tests et Validation
 
-- **Incidents** : admin@iaproject.fr
-- **Status page** : https://status.votre-domaine.com (à configurer)
-- **Monitoring** : Firebase Console + Logs
-- **Documentation** : [DEVELOPMENT.md](DEVELOPMENT.md)
+### Vérifier le Déploiement Frontend
+
+1. **Vérifier GitHub Pages** :
+   - Aller sur `https://github.com/bigmoletos/learning_english/settings/pages`
+   - Vérifier : Source = `Deploy from a branch`, Branch = `gh-pages`
+   - Vérifier que le domaine `learning-english.iaproject.fr` est configuré
+
+2. **Tester l'accès** :
+   ```powershell
+   curl -I https://learning-english.iaproject.fr
+   # Devrait retourner : HTTP/2 200
+   ```
+
+3. **Vérifier dans le navigateur** :
+   - Ouvrir `https://learning-english.iaproject.fr`
+   - Ouvrir la console développeur (F12)
+   - Vérifier qu'il n'y a pas d'erreurs critiques
+
+### Vérifier le Déploiement Backend
+
+```powershell
+# Health check
+curl https://backend.learning-english.iaproject.fr/health
+# Devrait retourner : {"status":"ok","timestamp":"..."}
+
+# Ou avec l'URL Firebase Functions
+curl https://europe-west1-ia-project-91c03.cloudfunctions.net/api/health
+```
+
+### Tests Complets
+
+1. **Frontend** : Ouvrir `https://learning-english.iaproject.fr` et vérifier qu'il charge
+2. **Backend** : Vérifier que `/health` répond
+3. **Intégration** : Tester une fonctionnalité qui appelle l'API (ex: connexion)
+4. **CORS** : Vérifier qu'il n'y a pas d'erreurs CORS dans la console
+
+---
+
+## 🔧 Dépannage Avancé
+
+### Problème : GitHub Pages affiche le README au lieu de l'app
+
+**Cause** : GitHub Pages sert depuis `main` au lieu de `gh-pages`
+
+**Solution** :
+1. Aller sur `https://github.com/bigmoletos/learning_english/settings/pages`
+2. Vérifier : Branch = `gh-pages` (pas `main`)
+3. Si la branche `gh-pages` n'existe pas :
+   - Vérifier que le workflow GitHub Actions a réussi
+   - Ou déclencher manuellement : Actions → CI/CD Pipeline → Run workflow
+
+### Problème : Secrets GitHub non disponibles
+
+**Solution** :
+1. Aller sur `https://github.com/bigmoletos/learning_english/settings/secrets/actions`
+2. Vérifier que tous les secrets sont configurés (voir `ENV_VARS.txt`)
+3. Vérifier que les noms correspondent exactement (sensible à la casse)
+
+### Problème : Build échoue avec "REACT_APP_* is not defined"
+
+**Solution** :
+1. Vérifier que tous les secrets Firebase sont configurés dans GitHub
+2. Vérifier les logs du workflow pour voir quels secrets manquent
+3. Vérifier que le workflow utilise `${{ secrets.NOM_DU_SECRET }}`
+
+### Problème : DNS ne fonctionne pas
+
+**Solution** :
+1. Vérifier la propagation : `nslookup learning-english.iaproject.fr`
+2. Attendre jusqu'à 48h pour la propagation complète
+3. Vérifier que le CNAME dans OVH pointe vers le bon service
+
+---
+
+## 🚂 Alternative : Backend sur Railway (si Firebase Functions ne convient pas)
+
+### Option A : Railway (Recommandé)
+
+1. **Créer un compte** : https://railway.app
+2. **Déployer depuis GitHub** : Sélectionner le dépôt et le dossier `backend/`
+3. **Configurer les variables** : Voir `ENV_VARS.txt` (section Railway)
+4. **Configurer le domaine** : `backend.learning-english.iaproject.fr`
+5. **Mettre à jour DNS OVH** : CNAME → Railway CNAME
+
+**Avantages** :
+- Configuration simple
+- HTTPS automatique
+- Déploiement automatique depuis GitHub
+- Logs en temps réel
+
+### Option B : Render (Gratuit)
+
+1. **Créer un compte** : https://render.com
+2. **Créer un Web Service** : Connecter le dépôt GitHub
+3. **Configurer** : Root Directory = `backend`, Start Command = `npm start`
+4. **Variables d'environnement** : Voir `ENV_VARS.txt`
+5. **Domaine personnalisé** : `backend.learning-english.iaproject.fr`
+
+---
+
+## 📚 Fichiers de Documentation
+
+- **`DEPLOYMENT.md`** (ce fichier) - Guide complet de déploiement
+- **`PRODUCTION_CHECKLIST.md`** - Checklist de production
+- **`ENV_VARS.txt`** - Toutes les variables d'environnement consolidées
+- **`DEVELOPMENT.md`** - Guide développeur
+- **`SECURITY.md`** - Politique de sécurité
+
+---
+
+**✅ Frontend déployé, backend en cours de déploiement !**

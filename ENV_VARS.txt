@@ -1,0 +1,132 @@
+# Variables d'Environnement - Consolidation
+
+**Date** : 2025-11-27
+**Projet** : learning-english
+
+---
+
+## ☁️ Cloudflare Pages (Frontend)
+
+### Variables Requises pour le Build
+
+```
+CI=false
+DISABLE_ESLINT_PLUGIN=true
+```
+
+**⚠️ IMPORTANT** : Ces variables sont **obligatoires** pour éviter les erreurs de build ESLint.
+
+### Variables de l'Application
+
+```
+REACT_APP_API_URL=https://europe-west1-ia-project-91c03.cloudfunctions.net/api
+REACT_APP_FIREBASE_API_KEY=AIzaSyA4VxXsU3yI3GedYREVkUIOgHo8NU1DUsw
+REACT_APP_FIREBASE_AUTH_DOMAIN=ia-project-91c03.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=ia-project-91c03
+REACT_APP_FIREBASE_STORAGE_BUCKET=ia-project-91c03.firebasestorage.app
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=764765123671
+REACT_APP_FIREBASE_APP_ID=1:764765123671:web:c6861709d1a881fcfe1f12
+REACT_APP_FIREBASE_MEASUREMENT_ID=
+```
+
+**Où les ajouter** : Cloudflare Dashboard → Pages → Settings → Environment variables
+
+---
+
+## 🔥 Firebase Functions (Backend)
+
+### Configuration Firebase Config
+
+```powershell
+firebase functions:config:set `
+  jwt.secret="6e7fd6d08c6a9784dc934342be5266a1b4f500402263e4956a6d6c60c1f738fb" `
+  jwt.expires_in="7d" `
+  cors.origin="https://learning-english.iaproject.fr,https://learning-english-b7d.pages.dev,https://bigmoletos.github.io" `
+  frontend.url="https://learning-english.iaproject.fr"
+```
+
+**Note** : Utiliser `firebase functions:config:set` (pas de fichier .env)
+
+---
+
+## 🚂 Railway (Backend Alternative)
+
+### Variables d'Environnement
+
+```bash
+# Environnement
+NODE_ENV=production
+PORT=5010
+
+# Base de données
+DATABASE_PATH=/app/database/production.sqlite
+
+# JWT Secrets
+JWT_SECRET=0481f0c2dddf1467fb41b4bc8ea7dce5a1e54085a3071d33ef42cc5d54080ac5030709000dbf35b87bba7b41853db3e77de136d4eadde7e4d33fbeeb546ea836
+JWT_EXPIRES_IN=7d
+REFRESH_TOKEN_SECRET=8d9d958622ec68ca388342f85ac8d52dc7ba2d8b948d10e770185a51059c14ea59275e4ee3b152e010724f3b60be605f4402e90030d3ede3e58c4c4b77d2d8e1
+REFRESH_TOKEN_EXPIRES_IN=30d
+SESSION_SECRET=605ae9e43c1c31d4044e6df966635af50a3e144770a9cc9132ee322ce9a08ecc26aedca5195c0d444ca1fe8416151fe77d8f4fb129d1f790e7afc7ec7a3e4489
+
+# CORS
+CORS_ORIGIN=https://learning-english.iaproject.fr,https://bigmoletos.github.io
+FRONTEND_URL=https://learning-english.iaproject.fr
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=/app/logs/app.log
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# RGPD
+DATA_RETENTION_DAYS=365
+ENABLE_ANALYTICS=false
+COOKIE_SECURE=true
+```
+
+**Où les ajouter** : Railway Dashboard → Settings → Variables
+
+---
+
+## 🏢 OVH VPS (Backend Alternative)
+
+Mêmes variables que Railway, mais dans un fichier `.env` sur le serveur.
+
+---
+
+## 📝 Notes
+
+- **JWT_SECRET** : Doit faire au moins 32 caractères (64 recommandé)
+- **CORS_ORIGIN** : Liste des domaines autorisés, séparés par des virgules
+- **NODE_ENV** : Toujours `production` en production
+- **Secrets** : Ne jamais commiter dans Git, utiliser les outils de gestion de secrets de chaque plateforme
+
+---
+
+## 🔐 Génération de Secrets
+
+### PowerShell
+
+```powershell
+# Générer JWT_SECRET (64 caractères)
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Générer REFRESH_TOKEN_SECRET
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Générer SESSION_SECRET
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+
+### Linux/Mac
+
+```bash
+# Générer JWT_SECRET
+openssl rand -base64 64
+
+# Ou avec Node.js
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+

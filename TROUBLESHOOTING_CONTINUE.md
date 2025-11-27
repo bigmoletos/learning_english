@@ -156,3 +156,5 @@ cursor --list-extensions | Select-String -Pattern "yaml|continue"
 - Les erreurs `TypeError: Cannot read properties of null (reading 'elapsed')` sont souvent liées à des fichiers supprimés ou inaccessibles - généralement non bloquantes
 
 
+
+
