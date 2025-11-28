@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Card, CardContent, Typography, Button, Alert, CircularProgress } from "@mui/material";
 import { CheckCircle, Error as ErrorIcon } from "@mui/icons-material";
 import { useUser } from "../../contexts/UserContext";
-import { auth } from "../../firebase/config";
+import { auth } from "../../services/firebase/config";
 import { applyActionCode, checkActionCode, sendEmailVerification } from "firebase/auth";
 import { storageService, StorageKeys } from "../../utils/storageService";
 
@@ -44,6 +44,11 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
 
         // Si pas de code, vérifier si l'utilisateur est déjà connecté
         if (!actionCode) {
+          if (!auth) {
+            setStatus("error");
+            setError("Firebase Auth n'est pas initialisé. Veuillez rafraîchir la page.");
+            return;
+          }
           const currentUser = auth.currentUser;
           if (currentUser && currentUser.emailVerified) {
             setStatus("success");
@@ -73,6 +78,11 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
 
         // Vérifier le code d'action Firebase
         if (mode === "verifyEmail" && actionCode) {
+          if (!auth) {
+            setStatus("error");
+            setError("Firebase Auth n'est pas initialisé. Veuillez rafraîchir la page.");
+            return;
+          }
           try {
             // Vérifier que le code est valide
             await checkActionCode(auth, actionCode);

@@ -53,8 +53,9 @@ try {
   // app.use("/api/conversation", require("./routes/conversation")); // ❌ Utilise Sequelize/SQLite
 
   // Routes qui fonctionnent sans SQLite (utilisent des services externes)
-  app.use("/api/text-to-speech", require("./routes/textToSpeech")); // ✅ Google Cloud TTS
-  app.use("/api/speech-to-text", require("./routes/speechToText")); // ✅ Web Speech API
+  // Note: Pas de préfixe /api car l'URL Firebase Functions se termine déjà par /api
+  app.use("/text-to-speech", require("./routes/textToSpeech")); // ✅ Google Cloud TTS
+  app.use("/speech-to-text", require("./routes/speechToText")); // ✅ Web Speech API
 } catch (error) {
   console.error("Erreur chargement des routes:", error);
 }

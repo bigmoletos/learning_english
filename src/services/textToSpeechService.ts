@@ -24,7 +24,7 @@ const CACHE_KEY_PREFIX = "tts_cache_";
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 jours
 
 class TextToSpeechService {
-  private apiEndpoint = buildApiUrl("/api/text-to-speech");
+  private apiEndpoint = buildApiUrl("/text-to-speech");
 
   /**
    * Génère une clé de cache unique pour le texte et les options

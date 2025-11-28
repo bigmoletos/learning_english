@@ -107,7 +107,13 @@ firebase deploy --only functions
 
 ### Étape 6 : Tester
 
+**Vérifier que le backend est déployé** :
+
 ```powershell
+# Lister les fonctions déployées
+firebase functions:list
+
+# Tester le health check
 curl https://europe-west1-ia-project-91c03.cloudfunctions.net/api/health
 ```
 
@@ -120,6 +126,38 @@ curl https://europe-west1-ia-project-91c03.cloudfunctions.net/api/health
   "project": "ia-project-91c03"
 }
 ```
+
+**Vérifier les logs** :
+
+```powershell
+# Voir les logs en temps réel
+firebase functions:log --only api
+
+# Voir les logs des dernières 24h
+firebase functions:log --only api --limit 50
+```
+
+**Tester la route TTS** :
+
+```powershell
+# Via PowerShell (nécessite Invoke-WebRequest)
+$body = @{
+    text = "Hello, this is a test"
+    languageCode = "en-US"
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "https://europe-west1-ia-project-91c03.cloudfunctions.net/api/text-to-speech" `
+    -Method POST `
+    -ContentType "application/json" `
+    -Body $body
+```
+
+**Vérifier dans la console Firebase** :
+
+1. Aller sur https://console.firebase.google.com/project/ia-project-91c03/functions
+2. Vérifier que la fonction `api` est déployée et active
+3. Cliquer sur la fonction pour voir les métriques (invocations, erreurs, latence)
+4. Vérifier les logs dans l'onglet "Logs"
 
 ### Étape 7 : Mettre à Jour le Frontend pour Utiliser le Backend
 

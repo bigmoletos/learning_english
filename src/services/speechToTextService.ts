@@ -27,7 +27,7 @@ interface STTResponse {
 }
 
 class SpeechToTextService {
-  private apiEndpoint = buildApiUrl("/api/speech-to-text"); // Endpoint backend
+  private apiEndpoint = buildApiUrl("/speech-to-text"); // Endpoint backend
 
   /**
    * Convertit un Blob audio en base64

@@ -10,7 +10,7 @@ import { saveProgress, getUserProgress } from "./progressService";
 import { saveAssessment, getUserAssessments } from "./assessmentService";
 import { UserProfile, UserResponse } from "../../types";
 import { storageService, StorageKeys } from "../../utils/storageService";
-import { auth } from "../../firebase/config";
+import { auth } from "../firebase/config";
 
 const SYNC_INTERVAL = 5 * 60 * 1000; // 5 minutes
 

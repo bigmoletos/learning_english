@@ -3,13 +3,13 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { EmailVerification } from "../EmailVerification";
 import { useUser } from "../../../contexts/UserContext";
-import { auth } from "../../../firebase/config";
+import { auth } from "../../../services/firebase/config";
 import { applyActionCode, checkActionCode, sendEmailVerification } from "firebase/auth";
 import { storageService, StorageKeys } from "../../../utils/storageService";
 
 // Mock des modules externes
 jest.mock("../../../contexts/UserContext");
-jest.mock("../../../firebase/config", () => ({
+jest.mock("../../../services/firebase/config", () => ({
   auth: {
     currentUser: null,
   },
